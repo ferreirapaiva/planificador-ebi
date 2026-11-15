@@ -12,6 +12,7 @@ import { Asistente } from './paginas/Asistente';
 import { AbrirPlanAnual, EditorPlanAnual, NuevoPlanAnual } from './paginas/EditorPlanAnual';
 import { MisPlanificaciones, NuevaPlanificacion } from './paginas/MisPlanificaciones';
 import { EditorPlanSemanal, NuevoPlanSemanal, PlanesSemanales } from './paginas/PlanSemanal';
+import { HojasActividades } from './paginas/HojasActividades';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -31,6 +32,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="plan-semanal" element={<PlanesSemanales />} />
           <Route path="plan-semanal/:id" element={<EditorPlanSemanal />} />
           <Route path="nuevo-plan-semanal" element={<NuevoPlanSemanal />} />
+          <Route path="actividades" element={<HojasActividades />} />
         </Route>
       </Routes>
     </HashRouter>

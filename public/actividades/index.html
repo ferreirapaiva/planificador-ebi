@@ -1,0 +1,2482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hojas de actividades · Planificador EBI</title>
+<script src="jspdf.umd.min.js"></script>
+<script>if (window.self !== window.top) document.documentElement.classList.add("embebido");</script>
+<style>
+  @font-face{font-family:'Nunito Variable'; font-style:normal; font-display:swap; font-weight:200 1000;
+    src:url(nunito-latin-ext-wght-normal.woff2) format('woff2-variations');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:'Nunito Variable'; font-style:normal; font-display:swap; font-weight:200 1000;
+    src:url(nunito-latin-wght-normal.woff2) format('woff2-variations');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  :root{
+    --paper:#F6F5FB;      /* fondo del Planificador */
+    --grid:#ECEAF6;       /* cuadriculado suave */
+    --ink:#1B1840;        /* tinta */
+    --muted:#6B6890;
+    --line:#E7E5F3;
+    --card:#FFFFFF;
+    --desk:#EEEBFF;       /* mesa donde apoya la hoja */
+    --mate:#5B4BF5; --mate-soft:#EEEBFF;
+    --sopas:#D99100; --sopas-soft:#FFF5D6;
+    --cruci:#13926F; --cruci-soft:#E3F8F1;
+    --repaso:#E5552F; --repaso-soft:#FFEDE6;
+    --c:var(--mate); --c-soft:var(--mate-soft);
+    --ok:#13926F; --err:#C42F40;
+    --display:'Nunito Variable', Nunito, system-ui, sans-serif;
+    --body:'Nunito Variable', Nunito, system-ui, sans-serif;
+  }
+  /* Dentro del Planificador, la barra de la app ya muestra el título */
+  .embebido .top{display:none}
+  .embebido main{padding-top:8px}
+  body[data-area="sopas"]{ --c:var(--sopas); --c-soft:var(--sopas-soft); }
+  body[data-area="cruci"]{ --c:var(--cruci); --c-soft:var(--cruci-soft); }
+  body[data-area="repaso"]{ --c:var(--repaso); --c-soft:var(--repaso-soft); }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.45;
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:24px 24px;
+  }
+  button, input, select, textarea{font:inherit;color:inherit}
+  :focus-visible{outline:3px solid color-mix(in srgb, var(--c) 55%, white); outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important; animation:none!important; scroll-behavior:auto!important} }
+
+  /* ---------- Encabezado ---------- */
+  .top{background:linear-gradient(110deg,#5B4BF5 0%,#8A55FF 55%,#FF7A59 100%); color:#fff}
+  .top-in{max-width:1240px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:14px}
+  .logo{width:38px; height:38px; flex:none}
+  .brand h1{margin:0; font-family:var(--display); font-weight:800; font-size:1.35rem; letter-spacing:-.01em; line-height:1.1}
+  .brand p{margin:2px 0 0; font-size:.88rem; color:#fff; opacity:.9}
+  .combo-chip{margin-left:auto; display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18);
+    color:#fff; border-radius:999px; padding:6px 12px 6px 8px; font-weight:700; font-size:.88rem; cursor:pointer}
+  .combo-chip b{display:inline-grid; place-items:center; min-width:24px; height:24px; border-radius:999px; background:#fff; color:var(--ink); font-size:.8rem}
+  .combo-chip[hidden]{display:none}
+
+  /* ---------- Estructura ---------- */
+  main{max-width:1240px; margin:0 auto; padding:24px 24px 60px; display:grid; grid-template-columns:minmax(330px,450px) 1fr; gap:28px; align-items:start}
+  .controls{display:flex; flex-direction:column; gap:16px}
+
+  /* ---------- Carpetas (áreas) ---------- */
+  .folders{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; align-items:end; padding:0 4px}
+  .area{--ac:var(--mate); --as:var(--mate-soft);
+    position:relative; border:none; cursor:pointer; text-align:left; padding:10px 10px 12px;
+    border-radius:14px 14px 0 0; background:var(--as); color:var(--ink);
+    display:flex; flex-direction:column; gap:6px; min-height:84px;
+    box-shadow:inset 0 4px 0 var(--ac); transition:transform .15s ease, min-height .15s ease}
+  .area[data-a="sopas"]{--ac:var(--sopas); --as:var(--sopas-soft)}
+  .area[data-a="cruci"]{--ac:var(--cruci); --as:var(--cruci-soft)}
+  .area[data-a="repaso"]{--ac:var(--repaso); --as:var(--repaso-soft)}
+  .area:hover{transform:translateY(-2px)}
+  .area .ic{width:30px; height:30px; border-radius:9px; display:grid; place-items:center; background:var(--ac); color:#fff}
+  .area .ic svg{width:18px; height:18px}
+  .area b{font-family:var(--display); font-weight:700; font-size:.98rem; line-height:1.1; letter-spacing:-.01em}
+  .area small{display:none}
+  .area.sel{background:var(--ac); color:#fff; min-height:96px; box-shadow:none; transform:none}
+  .area.sel .ic{background:rgba(255,255,255,.22)}
+
+  .panel{background:var(--card); border:1.5px solid var(--line); border-radius:22px; box-shadow:0 6px 20px -12px rgba(27,24,64,.25); padding:18px 18px 20px}
+  .panel.activity{border:2.5px solid var(--c); border-radius:0 0 18px 18px; margin-top:-16px; padding-top:16px}
+  .panel h2{margin:0 0 12px; font-family:var(--display); font-size:1.12rem; font-weight:700; letter-spacing:-.01em; display:flex; align-items:center; gap:10px}
+  .panel h2 .n{flex:none; width:26px; height:26px; border-radius:999px; display:grid; place-items:center; font-size:.85rem; font-weight:800; background:var(--c); color:#fff}
+  .panel .lead{margin:-6px 0 12px; color:var(--muted); font-size:.92rem}
+
+  .items{display:flex; flex-wrap:wrap; gap:8px}
+  .item{border:2px solid var(--line); background:#fff; border-radius:12px; padding:9px 14px; font-weight:700; cursor:pointer; transition:border-color .15s, background .15s}
+  .item:hover:not([disabled]){border-color:var(--c)}
+  .item.sel{border-color:var(--c); background:var(--c); color:#fff}
+  .item[disabled]{cursor:not-allowed; color:#9AA3B8; background:#F3F5F9; border-style:dashed}
+  .item .soon{font-size:.72rem; font-weight:700; margin-left:6px; color:#8590A8}
+
+  /* ---------- Opciones ---------- */
+  .group{padding:12px 0; border-top:1px solid #EDF1F7}
+  .group:first-child{border-top:none; padding-top:0}
+  .group h4{margin:0 0 8px; font-size:.95rem; font-weight:700}
+  .hint{font-weight:400; color:var(--muted); font-size:.84rem}
+  .opts{display:flex; flex-wrap:wrap; gap:8px}
+  .opt{position:relative}
+  .opt input{position:absolute; opacity:0; pointer-events:none}
+  .opt span{display:inline-flex; align-items:center; gap:7px; border:2px solid var(--line); background:#fff; border-radius:10px; padding:7px 12px; cursor:pointer; font-size:.93rem; user-select:none; transition:border-color .15s, background .15s}
+  .opt span::before{content:""; width:14px; height:14px; border-radius:4px; border:2px solid #AEB8CC; background:#fff; flex:none}
+  .opt input[type=radio] + span::before{border-radius:999px}
+  .opt input:checked + span{border-color:var(--c); background:var(--c-soft); font-weight:700}
+  .opt input:checked + span::before{border-color:var(--c); background:var(--c); box-shadow:inset 0 0 0 2px #fff}
+  .opt input:focus-visible + span{outline:3px solid color-mix(in srgb, var(--c) 55%, white); outline-offset:2px}
+  .opt span:hover{border-color:color-mix(in srgb, var(--c) 60%, var(--line))}
+
+  label.field{display:block; margin:12px 0 0; font-weight:700; font-size:.92rem}
+  label.field:first-of-type{margin-top:0}
+  label.field input[type=text], label.field select, .bank-sel{
+    display:block; width:100%; margin-top:6px; padding:10px 12px; border:2px solid var(--line); border-radius:11px; background:#fff; font-weight:400}
+  label.field input[type=text]:focus, label.field select:focus, .bank-sel:focus, .bank-editor textarea:focus{border-color:var(--c); outline:none}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px}
+  .row2 label.field{margin-top:0}
+  .row2.first{margin:0 0 12px}
+  label.field[hidden]{display:none}
+  .check{display:flex; gap:10px; align-items:center; margin-top:12px; font-size:.95rem; cursor:pointer}
+  .check input{width:20px; height:20px; accent-color:var(--c); flex:none}
+
+  .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
+  .actions .btn{flex:1 1 auto}
+  .btn{white-space:nowrap; border:none; border-radius:999px; font-weight:800 !important; padding:13px 16px; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:transform .1s, background .15s}
+  .btn:active{transform:translateY(1px)}
+  .btn svg{width:18px; height:18px; flex:none}
+  .btn.primary{background:#5B4BF5; color:#fff; flex:1; box-shadow:0 8px 20px rgb(91 75 245 / .28)}
+  .btn.primary:hover{background:#3B2DB8}
+  .btn.ghost{background:#fff; border:2px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--ink)}
+  .btn.wide{width:100%; margin-top:10px}
+  .btn.add{background:var(--c-soft); color:var(--ink); border:2px dashed var(--c)}
+  .msg{margin-top:10px; font-size:.9rem; min-height:1.3em; font-weight:700}
+  .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
+
+  /* ---------- Temas ---------- */
+  .bank-btns{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+  .mini{font-size:.86rem; font-weight:700; border:1.5px solid var(--line); background:#fff; border-radius:9px; padding:6px 10px; cursor:pointer}
+  .mini:hover:not([disabled]){border-color:var(--ink)}
+  .mini[disabled]{opacity:.4; cursor:default}
+  .mini.primary{background:var(--ink); border-color:var(--ink); color:#fff}
+  .mini.danger{color:var(--err)}
+  .mini.file{display:inline-block}
+  .bank-editor{margin-top:12px; padding:14px; border:2px dashed var(--c); border-radius:14px; background:var(--c-soft)}
+  .bank-editor textarea{display:block; width:100%; margin-top:6px; padding:10px 12px; border:2px solid var(--line); border-radius:11px; font-size:.93rem; resize:vertical; background:#fff}
+  .note{margin:0 0 8px; font-size:.88rem; color:#7A5300}
+  .bank-backup{margin-top:10px; font-size:.9rem}
+  .bank-backup summary{cursor:pointer; color:var(--muted); font-weight:700}
+  .bank-backup p{margin:6px 0 0; color:var(--muted)}
+
+  /* ---------- Hoja combinada ---------- */
+  .combo-list{margin:0; padding:0; list-style:none; counter-reset:c}
+  .combo-list li{counter-increment:c; padding:9px 0; border-bottom:1px solid #EDF1F7}
+  .combo-list li .row{display:flex; align-items:center; gap:6px}
+  .combo-list li .row::before{content:counter(c); flex:none; width:24px; height:24px; border-radius:7px; background:var(--desk); display:grid; place-items:center; font-size:.8rem; font-weight:700}
+  .combo-list li .txt{flex:1; min-width:0; margin-left:4px}
+  .combo-list li small{display:block; color:var(--muted)}
+  .combo-list li .mini{padding:4px 9px}
+  #comboClear{margin-top:12px}
+
+  /* ---------- Vista previa ---------- */
+  .preview{position:sticky; top:16px; background:var(--desk); border-radius:22px; padding:16px; max-height:calc(100vh - 32px); display:flex; flex-direction:column}
+  .preview-head{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px}
+  .tabs{display:flex; background:#fff; border-radius:12px; padding:4px; gap:2px}
+  .tabs button{border:none; background:none; padding:7px 14px; border-radius:9px; cursor:pointer; font-weight:700; color:var(--muted)}
+  .tabs button.sel{background:#5B4BF5; color:#fff}
+  .meta{color:var(--muted); font-size:.9rem; font-weight:700}
+  .combo-banner{background:#fff; border-left:5px solid var(--sopas); border-radius:10px; padding:9px 12px; margin-bottom:12px; font-size:.92rem; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .combo-banner[hidden]{display:none}
+  .pages{display:flex; flex-direction:column; gap:18px; align-items:center; overflow:auto; padding:2px 4px 8px; flex:1; min-height:0}
+  .page{width:100%; max-width:620px; background:#fff; border-radius:3px; box-shadow:0 1px 2px rgba(22,34,63,.12), 0 10px 24px -8px rgba(22,34,63,.25)}
+  .page svg{display:block; width:100%; height:auto}
+
+  /* ---------- Barra inferior (celular) ---------- */
+  .mbar{display:none}
+
+  @media (max-width:900px){
+    main{grid-template-columns:1fr; padding:16px 14px 110px; gap:20px}
+    .preview{position:static; max-height:none}
+    .pages{overflow:visible}
+    .top-in{padding:12px 14px}
+    .brand p{display:none}
+    .mbar{display:flex; gap:8px; position:fixed; left:0; right:0; bottom:0; z-index:5; padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+      background:rgba(255,255,255,.96); border-top:1px solid var(--line); backdrop-filter:blur(6px)}
+    .mbar .btn{flex:1; padding:12px 10px}
+  }
+  @media (max-width:430px){
+    .folders{gap:4px; padding:0}
+    .area{padding:8px 7px 10px; min-height:76px}
+    .area.sel{min-height:86px}
+    .area b{font-size:.82rem}
+    .area .ic{width:26px; height:26px}
+    .row2{grid-template-columns:1fr}
+  }
+  .comp-text{display:block; width:100%; padding:10px 12px; border:2px solid var(--line); border-radius:11px; font-size:.95rem; line-height:1.45; resize:vertical; background:#fff}
+  .comp-text:focus{border-color:var(--c); outline:none}
+  .comp-note{margin:8px 0 0; font-size:.88rem; color:var(--muted)}
+  .comp-note.err{color:var(--err); font-weight:700} .comp-note.ok{color:var(--ok); font-weight:700}
+  .bank-btns .btn{padding:10px 14px}
+  .week-days{display:flex; flex-direction:column; gap:8px; margin-top:4px}
+  .week-row{display:grid; grid-template-columns:96px 1fr; align-items:center; gap:10px; font-weight:700}
+  .week-row span{background:var(--desk); border-radius:9px; padding:9px 10px; text-align:center; font-size:.92rem}
+  .week-row select{width:100%; padding:10px 12px; border:2px solid var(--line); border-radius:11px; background:#fff}
+  .week-row select:focus{border-color:var(--c); outline:none}
+  .week-tip{margin:10px 0 0}
+  .intro{background:var(--ink); color:#fff; border-radius:16px; padding:14px 16px}
+  .intro[hidden]{display:none}
+  .intro .mini{color:var(--ink)}
+  .intro b{font-family:var(--display); font-size:1.05rem}
+  .intro p{margin:4px 0 10px; font-size:.93rem; color:#D5DDF0}
+  .act-desc{margin:12px 0 0; font-size:.92rem; color:var(--muted)}
+  .act-desc:empty{display:none}
+  .help{margin:8px 0 0; font-size:.86rem; color:var(--muted)}
+  .help[hidden], .help:empty{display:none}
+  .panel.final{border:2.5px solid #5B4BF5}
+  .summary{margin:-4px 0 0; font-size:.98rem; font-weight:700}
+  .actions.two{margin-top:10px}
+  .actions.two .btn{flex:1 1 0; padding:11px 10px; font-size:.92rem; white-space:normal; line-height:1.2}
+  .more-title{margin:10px 2px -6px; font-family:var(--display); font-size:1rem; color:var(--muted); font-weight:700}
+  .fold{padding:0}
+  .fold summary{list-style:none; cursor:pointer; padding:16px 44px 16px 18px; position:relative; display:flex; flex-direction:column; gap:2px}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary::after{content:""; position:absolute; right:20px; top:50%; width:9px; height:9px; border-right:2.5px solid var(--muted); border-bottom:2.5px solid var(--muted); transform:translateY(-70%) rotate(45deg); transition:transform .15s}
+  .fold[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+  .fold-t{font-family:var(--display); font-weight:700; font-size:1.08rem}
+  .fold-d{font-size:.88rem; color:var(--muted)}
+  .fold > :not(summary){margin-left:18px !important; margin-right:18px !important}
+  .fold > :last-child{margin-bottom:18px}
+  .fold .lead{margin-top:0}
+  .pv-title{font-family:var(--display); font-size:1.05rem}
+  @media (max-width:520px){ .pv-title{display:none} }
+  #msg{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:9; margin:0; min-height:0; max-width:min(92vw,520px);
+    background:var(--ink); color:#fff; padding:11px 16px; border-radius:12px; box-shadow:0 8px 24px -6px rgba(22,34,63,.5); text-align:center}
+  #msg:empty{display:none}
+  #msg.err{background:var(--err); color:#fff} #msg.ok{background:var(--ok); color:#fff}
+  @media (max-width:900px){ #msg{bottom:84px} }
+</style>
+</head>
+<body data-area="mate">
+<header class="top">
+  <div class="top-in">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+      <rect x="7" y="4" width="26" height="32" rx="4" fill="#fff"/>
+      <path d="M7 10h26" stroke="#DB3D4E" stroke-width="2"/>
+      <path d="M12 17h16M12 22h16M12 27h10" stroke="#16223F" stroke-width="2" stroke-linecap="round" opacity=".35"/>
+      <circle cx="31" cy="31" r="8" fill="#E6A100"/>
+      <path d="M31 27v7m-3-3 3 3 3-3" stroke="#16223F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="brand">
+      <h1>Hojas de actividades</h1>
+      <p>Elegí la actividad, ajustala y descargala en PDF lista para imprimir.</p>
+    </div>
+    <button type="button" class="combo-chip" id="comboChip" hidden><b id="comboCount">0</b> en la hoja combinada</button>
+  </div>
+</header>
+
+<main>
+  <section class="controls" aria-label="Opciones de la hoja">
+    <div class="intro" id="intro" hidden>
+      <b>Cómo se usa</b>
+      <p>Seguí los pasos del 1 al 5. A la derecha ves la hoja tal como se va a imprimir, y se actualiza con cada cambio.</p>
+      <button type="button" class="mini" id="introOk">Entendido</button>
+    </div>
+    <div>
+      <div class="folders" id="areas" role="tablist" aria-label="Áreas"></div>
+      <div class="panel activity">
+        <h2><span class="n">1</span>Elegí la actividad</h2>
+        <div class="items" id="items"></div>
+        <p class="act-desc" id="actDesc"></p>
+      </div>
+    </div>
+
+    <div class="panel" id="optsPanel">
+      <h2><span class="n">2</span>Ajustá los ejercicios</h2>
+      <div id="opts"></div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="n">3</span>Escribí el encabezado</h2>
+      <label class="field">Título
+        <input type="text" id="title" maxlength="60">
+      </label>
+      <label class="field">Consigna <span class="hint">· la indicación que lee el alumno</span>
+        <input type="text" id="consigna" maxlength="120">
+      </label>
+      <div class="row2">
+        <label class="field"><span id="countLabel">Cantidad de ejercicios</span>
+          <select id="count"></select>
+        </label>
+        <label class="field" id="orderField">Orden
+          <select id="order">
+            <option value="facil">De fácil a difícil</option>
+            <option value="mezcla">Mezclados</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="n">4</span>Elegí el formato</h2>
+      <div class="row2 first">
+        <label class="field">Tipo de hoja
+          <select id="sheetType">
+            <option value="clase">Hoja de clase</option>
+            <option value="tarea">Tarea domiciliaria</option>
+          </select>
+        </label>
+        <label class="field">Papel
+          <select id="paper">
+            <option value="entera">Hoja entera</option>
+            <option value="media">Media hoja (2 por A4)</option>
+          </select>
+        </label>
+      </div>
+      <p class="help" id="formatHelp"></p>
+      <label class="field" id="notaField" hidden>Nota para la familia <span class="hint">· se imprime al pie de la hoja; dejala vacía si no querés nota</span>
+        <input type="text" id="nota" maxlength="120">
+      </label>
+      <div class="row2">
+        <label class="field">Tamaño de letra
+          <select id="scale">
+            <option value="1">Normal</option>
+            <option value="1.2">Grande</option>
+            <option value="1.4">Muy grande</option>
+          </select>
+        </label>
+        <label class="field">Versiones distintas
+          <select id="versions">
+            <option value="1">Una sola</option>
+            <option value="2">2 (A y B)</option>
+            <option value="3">3 (A, B y C)</option>
+            <option value="4">4 (A, B, C y D)</option>
+          </select>
+        </label>
+      </div>
+      <p class="help" id="versionsHelp" hidden>Cada versión tiene los mismos tipos de ejercicio con otros números, para que no se copien.</p>
+      <label class="check"><input type="checkbox" id="upper"> Todo en mayúscula de imprenta</label>
+      <label class="check"><input type="checkbox" id="withKey" checked> Agregar al final la hoja de respuestas para el docente</label>
+    </div>
+
+    <div class="panel final">
+      <h2><span class="n">5</span>Descargá</h2>
+      <p class="summary" id="summary"></p>
+      <div class="actions">
+        <button class="btn primary" id="download" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m-5-5 5 5 5-5"/><path d="M5 20h14"/></svg>
+          Descargar PDF</button>
+      </div>
+      <div class="actions two">
+        <button class="btn ghost" id="regen" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>
+          <span id="regenTxt">Cambiar los ejercicios</span></button>
+        <button class="btn add" id="addCombo" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Sumar a la hoja combinada</button>
+      </div>
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    </div>
+
+    <h3 class="more-title">Para juntar varias actividades</h3>
+
+    <details class="panel fold" id="comboPanel">
+      <summary><span class="fold-t">Hoja combinada</span><span class="fold-d" id="comboSub">Varias actividades distintas en un solo PDF</span></summary>
+      <p class="lead" id="comboHint">Armá una actividad y tocá "Sumar a la hoja combinada". Repetí con las que quieras: se guardan acá en orden. Cada una empieza en una hoja nueva.</p>
+      <ol class="combo-list" id="comboList"></ol>
+      <div class="actions" id="comboActions" hidden>
+        <button class="btn ghost" id="comboView" type="button">Ver todo junto</button>
+        <button class="btn primary" id="comboDownload" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m-5-5 5 5 5-5"/><path d="M5 20h14"/></svg>
+          Descargar combinada</button>
+      </div>
+      <button class="mini danger" id="comboClear" type="button" hidden>Vaciar la hoja combinada</button>
+    </details>
+
+    <details class="panel fold" id="weekPanel">
+      <summary><span class="fold-t">Tarea de la semana</span><span class="fold-d">Una actividad corta para cada día</span></summary>
+      <p class="lead">Elegí qué va cada día. Cada actividad sale con las opciones que le hayas puesto en el paso 2.</p>
+      <div class="row2 first">
+        <label class="field">Días
+          <select id="weekLen">
+            <option value="4">Lunes a jueves</option>
+            <option value="5">Lunes a viernes</option>
+          </select>
+        </label>
+        <label class="field">Largo
+          <select id="weekSize">
+            <option value="corta">Corta (pocos ejercicios)</option>
+            <option value="normal">La cantidad del paso 3</option>
+          </select>
+        </label>
+      </div>
+      <div class="week-days" id="weekDays"></div>
+      <p class="hint week-tip">Con papel "Media hoja" entran dos días por A4.</p>
+      <div class="actions">
+        <button class="btn ghost" id="weekBuild" type="button">Armar la semana</button>
+      </div>
+      <div class="actions" id="weekReady" hidden>
+        <button class="btn ghost" id="weekView" type="button">Ver la semana</button>
+        <button class="btn primary" id="weekDownload" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m-5-5 5 5 5-5"/><path d="M5 20h14"/></svg>
+          Descargar semana</button>
+      </div>
+      <div class="msg" id="weekMsg" role="status" aria-live="polite"></div>
+    </details>
+  </section>
+
+  <section class="preview" id="preview" aria-label="Vista previa">
+    <div class="preview-head">
+      <b class="pv-title">Vista previa</b>
+      <div class="tabs" role="tablist">
+        <button type="button" id="tabStudent" class="sel">Hoja del alumno</button>
+        <button type="button" id="tabKey">Hoja de respuestas</button>
+      </div>
+      <span class="meta" id="meta"></span>
+    </div>
+    <div class="combo-banner" id="comboBanner" hidden><span id="bannerTxt">Estás viendo la hoja combinada completa.</span> <button type="button" class="mini" id="comboBack">Volver a la actividad</button></div>
+    <div class="pages" id="pages"></div>
+  </section>
+</main>
+
+<div class="mbar">
+  <button class="btn ghost" type="button" id="mView">Ver hoja</button>
+  <button class="btn primary" type="button" id="mDownload">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m-5-5 5 5 5-5"/><path d="M5 20h14"/></svg>
+    Descargar PDF</button>
+</div>
+<script>
+/* ================= Bancos de temas incluidos =================
+   Cada entrada: palabra - pista. La pista sirve para sopa con pistas,
+   y más adelante para crucigramas, unir y completar.               */
+const BUILTIN_BANKS = [
+  { id:'b-digestivo', name:'Sistema digestivo', builtin:true, entries:[
+    ['boca','Por aquí entran los alimentos al cuerpo.'],
+    ['dientes','Cortan, desgarran y trituran los alimentos.'],
+    ['lengua','Mueve el alimento y nos permite sentir los sabores.'],
+    ['saliva','Líquido de la boca que humedece el alimento.'],
+    ['faringe','Conducto que comunica la boca con el esófago.'],
+    ['esófago','Tubo que lleva el alimento de la boca al estómago.'],
+    ['estómago','Órgano con forma de bolsa donde se mezclan los alimentos con jugos.'],
+    ['hígado','Órgano grande que produce la bilis.'],
+    ['páncreas','Glándula que produce jugo pancreático.'],
+    ['vesícula','Pequeña bolsa que guarda la bilis.'],
+    ['intestino','Tubo largo donde se absorben los nutrientes.'],
+    ['ano','Orificio por donde se eliminan los desechos.'],
+    ['nutrientes','Sustancias de los alimentos que el cuerpo aprovecha.'],
+    ['digestión','Proceso que transforma los alimentos en nutrientes.'],
+    ['bilis','Jugo verde que ayuda a digerir las grasas.'],
+  ]},
+  { id:'b-solar', name:'Sistema solar', builtin:true, entries:[
+    ['sol','Estrella que está en el centro del sistema solar.'],
+    ['mercurio','Planeta más cercano al Sol.'],
+    ['venus','Planeta más caliente del sistema solar.'],
+    ['tierra','Planeta donde vivimos.'],
+    ['marte','Planeta conocido como el planeta rojo.'],
+    ['júpiter','Planeta más grande del sistema solar.'],
+    ['saturno','Planeta famoso por sus anillos.'],
+    ['urano','Planeta que gira "acostado" sobre su eje.'],
+    ['neptuno','Planeta más lejano al Sol.'],
+    ['luna','Satélite natural de la Tierra.'],
+    ['órbita','Camino que recorre un planeta alrededor del Sol.'],
+    ['cometa','Cuerpo de hielo y polvo que forma una cola al acercarse al Sol.'],
+    ['asteroide','Roca que gira alrededor del Sol.'],
+    ['satélite','Cuerpo que gira alrededor de un planeta.'],
+    ['estrella','Cuerpo celeste que tiene luz propia.'],
+  ]},
+  { id:'b-geometria', name:'Cuerpos geométricos', builtin:true, entries:[
+    ['cubo','Cuerpo con seis caras cuadradas iguales.'],
+    ['prisma','Cuerpo con dos bases iguales y caras laterales rectangulares.'],
+    ['pirámide','Cuerpo con una base y caras triangulares que se juntan en un vértice.'],
+    ['cilindro','Cuerpo redondo con dos bases circulares.'],
+    ['cono','Cuerpo redondo con una base circular y un vértice.'],
+    ['esfera','Cuerpo redondo como una pelota.'],
+    ['cara','Cada superficie plana de un poliedro.'],
+    ['arista','Línea donde se juntan dos caras.'],
+    ['vértice','Punto donde se juntan las aristas.'],
+    ['base','Cara sobre la que se apoya un cuerpo.'],
+    ['poliedro','Cuerpo que tiene todas sus caras planas.'],
+    ['desarrollo','Figura plana que se dobla para armar un cuerpo.'],
+  ]},
+  { id:'b-animales', name:'Animales de Uruguay', builtin:true, entries:[
+    ['carpincho','Roedor más grande del mundo; vive cerca del agua.'],
+    ['ñandú','Ave grande que no vuela y corre muy rápido.'],
+    ['hornero','Pájaro que construye su nido de barro.'],
+    ['tero','Ave que grita fuerte para cuidar su nido.'],
+    ['mulita','Mamífero con caparazón que cava cuevas.'],
+    ['zorro','Mamífero de cola peluda que caza de noche.'],
+    ['venado','Mamífero de campo; el macho tiene cuernos.'],
+    ['yacaré','Reptil parecido a un pequeño cocodrilo.'],
+    ['lobo marino','Mamífero que vive en la costa y en las islas.'],
+    ['ballena franca','Gran mamífero marino que visita nuestras costas.'],
+    ['cardenal','Pájaro de copete rojo.'],
+    ['benteveo','Pájaro amarillo que parece decir su nombre.'],
+  ]},
+].map(b=>({ ...b, entries:b.entries.map(([word,clue])=>({word,clue})) }));
+/* ================= Generadores (lógica pura, sin pantalla) ================= */
+const rnd = (a,b)=> a + Math.floor(Math.random()*(b-a+1));
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const shuffle = arr => { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; };
+const digitsOf = (n,len)=> String(n).padStart(len,'0').split('').reverse().map(Number);
+const rangeD = d => [d===1?1:10**(d-1), 10**d-1];
+const cartesian = (...lists) => lists.reduce((acc,l)=> acc.flatMap(a=> l.map(x=>[...a,x])), [[]]);
+
+/* ---------- Sumas ---------- */
+function hasCarry(addends, d){
+  for (let c=0;c<d;c++){
+    let s=0; addends.forEach(a=> s += digitsOf(a,d)[c] || 0);
+    if (s>=10) return true;
+  }
+  return false;
+}
+function sumaSin(d,n){
+  const cols = [];
+  for (let c=0;c<d;c++){
+    const min = c===d-1?1:0; let used=0; const col=[];
+    for (let i=0;i<n;i++){
+      const max = 9 - used - (n-1-i)*min;
+      const v = rnd(min, Math.max(min, Math.min(max, 9)));
+      col.push(v); used+=v;
+    }
+    cols.push(shuffle(col));
+  }
+  const add=[];
+  for (let i=0;i<n;i++){ let num=0; for(let c=d-1;c>=0;c--) num=num*10+cols[c][i]; add.push(num); }
+  return add;
+}
+function sumaCon(d,n){
+  const [lo,hi]=rangeD(d);
+  for (let t=0;t<500;t++){ const add=Array.from({length:n},()=>rnd(lo,hi)); if (hasCarry(add,d)) return add; }
+  return Array.from({length:n},()=>hi);
+}
+
+/* ---------- Restas ---------- */
+function hasBorrow(m,s){
+  const L=String(m).length, a=digitsOf(m,L), b=digitsOf(s,L);
+  for (let c=0;c<L;c++) if (b[c]>a[c]) return true;
+  return false;
+}
+function resta(d, dif){
+  for (let t=0;t<3000;t++){
+    let m, s;
+    if (d===1){
+      if (dif==='sin'){ m=rnd(2,9); s=rnd(1,m-1); }
+      else { m=rnd(11,18); s=rnd(2,9); }          // pasando la decena
+    } else {
+      const [lo,hi]=rangeD(d); m=rnd(lo,hi);
+      const L = (Math.random()<.3) ? d-1 : d;      // a veces el sustraendo tiene una cifra menos
+      const [slo,shi]=rangeD(L); s=rnd(slo,shi);
+    }
+    if (s>=m) continue;
+    const b = hasBorrow(m,s);
+    if ((dif==='con') === b) return [m,s];
+  }
+  return d===1 ? [8,3] : [10**d-1, 10**(d-1)];
+}
+
+/* ---------- Multiplicación ---------- */
+function mult(dm, dr){
+  const [lo,hi]=rangeD(dm);
+  const a = dm===1 ? rnd(2,9) : rnd(lo,hi);
+  let b = dr===1 ? rnd(2,9) : rnd(11,99);
+  if (dr===2) while (b%10===0) b=rnd(11,99);
+  return [a,b];
+}
+
+/* ---------- División ---------- */
+function division(dd, dr, resto){
+  const [lo,hi]=rangeD(dd);
+  for (let t=0;t<500;t++){
+    const dv = dr===1 ? rnd(2,9) : rnd(11,49);
+    if (dv>hi) continue;
+    let dvd;
+    if (resto==='exacta'){
+      const kmin=Math.max(2,Math.ceil(lo/dv)), kmax=Math.floor(hi/dv);
+      if (kmin>kmax) continue;
+      dvd = dv*rnd(kmin,kmax);
+    } else {
+      dvd = rnd(Math.max(lo,dv+1),hi);
+      if (dvd%dv===0) continue;
+    }
+    return { dividend:dvd, divisor:dv, q:Math.floor(dvd/dv), r:dvd%dv };
+  }
+  return { dividend:84, divisor:4, q:21, r:0 };
+}
+
+/* ---------- Armado de listas de ejercicios ---------- */
+function fillList(combos, count, make){
+  const out=[], seen=new Set(); let i=0, guard=0;
+  shuffle(combos);
+  while (out.length<count && guard<count*80){
+    guard++;
+    const ex = make(combos[i % combos.length]);
+    if (seen.has(ex.key)) continue;
+    seen.add(ex.key); i++; out.push(ex);
+  }
+  return out;
+}
+
+const GEN = {
+  sumas(sel,count){
+    return fillList(cartesian(sel.dif, sel.cifras, sel.sumandos), count, ([dif,d,n])=>{
+      const add = dif==='sin' ? sumaSin(d,n) : sumaCon(d,n);
+      const result = add.reduce((a,b)=>a+b,0);
+      return { kind:'vert', rows:add, sign:'+', result, space:1,
+        expr: add.join(' + ')+' =', ans:String(result),
+        key:[...add].sort().join('+'), diff: d*10 + (dif==='con'?5:0) + n };
+    });
+  },
+  restas(sel,count){
+    return fillList(cartesian(sel.dif, sel.cifras), count, ([dif,d])=>{
+      const [m,s]=resta(d,dif);
+      return { kind:'vert', rows:[m,s], sign:'-', result:m-s, space:1,
+        expr:`${m} - ${s} =`, ans:String(m-s), key:m+'-'+s, diff:d*10+(dif==='con'?5:0) };
+    });
+  },
+  mult(sel,count){
+    return fillList(cartesian(sel.cifrasA, sel.cifrasB), count, ([dm,dr])=>{
+      const [a,b]=mult(dm,dr);
+      return { kind:'vert', rows:[a,b], sign:'×', result:a*b, space: dr===1?1:3, midLine: dr===2,
+        expr:`${a} × ${b} =`, ans:String(a*b), key:a+'x'+b, diff:dm*10+dr*3 };
+    });
+  },
+  div(sel,count){
+    return fillList(cartesian(sel.dividendo, sel.divisor, sel.resto), count, ([dd,dr,resto])=>{
+      const o = division(dd,dr,resto);
+      return { kind:'div', ...o, expr:`${o.dividend} ÷ ${o.divisor} =`, ans:String(o.q),
+        resto: sel.resto.includes('con'), ansR:String(o.r),
+        key:o.dividend+'/'+o.divisor, diff:dd*10+dr*3+(o.r?1:0) };
+    });
+  },
+
+  /* ---------- Sopa de números ---------- */
+  sopaN(sel,count){
+    const size=Number(sel.tam), lens=sel.cifras.filter(l=>l<=size);
+    const res = buildSopa(size, sel.dir, false, ()=>String(rnd(0,9)), ()=>{
+      const nums=[]; let g=0;
+      while (nums.length<count && g<2000){
+        g++;
+        const [lo,hi]=rangeD(pick(lens)); const s=String(rnd(Math.max(lo,10),hi));
+        if (nums.some(x=> x.includes(s) || s.includes(x))) continue;
+        nums.push(s);
+      }
+      return nums.map(s=>({ key:s }));
+    }, count);
+    res.items.forEach(p=>{
+      const n=Number(p.key);
+      if (sel.pista==='cuentas'){
+        if (Math.random()<.5 || n<20){ const a=rnd(Math.max(1,Math.floor(n*.2)), Math.floor(n*.8)); p.label=`${a} + ${n-a}`; }
+        else { const b=rnd(Math.max(2,Math.floor(n*.1)), Math.floor(n*.6)); p.label=`${n+b} - ${b}`; }
+        p.answer=p.key;
+      } else p.label=p.key;
+    });
+    return { kind:'sopa', size, grid:res.grid, items:res.items, mode: sel.pista==='cuentas'?'cuentas':'lista',
+      listTitle: sel.pista==='cuentas'?'Resolvé cada cuenta y buscá el resultado:':'Números para encontrar:' };
+  },
+
+  /* ---------- Sopa de letras ---------- */
+  sopaL(sel,count,ctx){
+    const size=Number(sel.tam), bank=ctx.bank;
+    const rev = sel.dir.includes('r'), dirs=sel.dir.filter(d=>d!=='r');
+    // palabras usables: sin espacios ni tildes (se conserva la Ñ), de 3 letras o más y que entren en la grilla
+    let pool = (bank?bank.entries:[]).map(e=>({ ...e, key:toSopaWord(e.word) }))
+      .filter(e=> e.key.length>=3 && e.key.length<=size && !(rev && e.key===[...e.key].reverse().join('')));
+    const seen=new Set(); pool=pool.filter(e=> !seen.has(e.key) && seen.add(e.key));
+    const withClue = pool.filter(e=>e.clue && e.clue.trim());
+    if (sel.mostrar==='pistas' && withClue.length) pool = withClue;
+    const res = buildSopa(size, dirs.length?dirs:['h'], rev, randomLetter, ()=>{
+      const chosen=[];
+      for (const e of shuffle([...pool])){
+        if (chosen.length>=count) break;
+        if (chosen.some(x=> x.key.includes(e.key) || e.key.includes(x.key))) continue;
+        chosen.push(e);
+      }
+      return chosen.map(e=>({ key:e.key, word:e.word, clue:e.clue }));
+    }, Math.min(count, pool.length));
+    res.items.forEach(p=>{
+      if (sel.mostrar==='pistas' && p.clue){ p.label=p.clue; p.answer=p.word.toUpperCase(); }
+      else p.label=p.word.toUpperCase();
+    });
+    return { kind:'sopa', size, grid:res.grid, items:res.items,
+      mode: sel.mostrar==='pistas' ? 'pistas' : 'lista',
+      listTitle: sel.mostrar==='pistas' ? 'Leé cada pista, escribí la palabra y buscala en la sopa:' : 'Palabras para encontrar:',
+      warn: !pool.length ? 'El tema elegido no tiene palabras que entren en esta grilla.' :
+            (res.items.length<count ? `Se usaron ${res.items.length} palabras: el tema no tiene más${sel.mostrar==='pistas'?' con pista':''} que entren en la grilla.` : '') };
+  }
+};
+
+/* ---------- Crucigrama ---------- */
+const MAXC=17, MAXR=19;
+function crossword(words){
+  // words: [{key, word, clue}] — devuelve la mejor disposición de varios intentos
+  let best=null;
+  for (let attempt=0; attempt<60; attempt++){
+    const order = attempt===0 ? [...words].sort((a,b)=>b.key.length-a.key.length)
+                              : [words.slice().sort((a,b)=>b.key.length-a.key.length)[0], ...shuffle(words.slice().sort((a,b)=>b.key.length-a.key.length).slice(1))];
+    const g=new Map(), placed=[];
+    const get=(r,c)=>g.get(r+','+c);
+    let minR=0,maxR=0,minC=0,maxC=0;
+    const first=order[0];
+    [...first.key].forEach((ch,k)=>g.set('0,'+k,ch));
+    placed.push({ ...first, r:0, c:0, dir:'h' }); maxC=first.key.length-1;
+    for (const w of order.slice(1)){
+      const s=w.key, cands=[];
+      for (const [pos,ch] of g){
+        const [pr,pc]=pos.split(',').map(Number);
+        for (let i=0;i<s.length;i++){
+          if (s[i]!==ch) continue;
+          for (const dir of ['h','v']){
+            const r0 = dir==='h'?pr:pr-i, c0 = dir==='h'?pc-i:pc;
+            const dr = dir==='v'?1:0, dc = dir==='h'?1:0;
+            if (get(r0-dr,c0-dc) || get(r0+dr*s.length, c0+dc*s.length)) continue;
+            let ok=true, cross=0;
+            for (let k=0;k<s.length && ok;k++){
+              const r=r0+dr*k, c=c0+dc*k, cur=get(r,c);
+              if (cur){ if (cur!==s[k]) ok=false; else cross++; }
+              else if (get(r+dc,c+dr) || get(r-dc,c-dr)) ok=false;   // vecinos a los costados
+            }
+            if (!ok || !cross || cross===s.length) continue;
+            // la palabra no puede ir sobre otra en la misma dirección
+            if (placed.some(p=>p.dir===dir && (dir==='h'? p.r===r0 && !(c0+s.length-1<p.c || c0>p.c+p.key.length-1)
+                                                    : p.c===c0 && !(r0+s.length-1<p.r || r0>p.r+p.key.length-1)))) continue;
+            const nr0=Math.min(minR,r0), nr1=Math.max(maxR,r0+dr*(s.length-1));
+            const nc0=Math.min(minC,c0), nc1=Math.max(maxC,c0+dc*(s.length-1));
+            if (nr1-nr0+1>MAXR || nc1-nc0+1>MAXC) continue;
+            const area=(nr1-nr0+1)*(nc1-nc0+1);
+            cands.push({ r:r0, c:c0, dir, score: cross*40 - area*0.6 + Math.random()*12, nr0,nr1,nc0,nc1 });
+          }
+        }
+      }
+      if (!cands.length) continue;
+      cands.sort((a,b)=>b.score-a.score);
+      const ch=cands[0];
+      [...s].forEach((L,k)=> g.set((ch.r+(ch.dir==='v'?k:0))+','+(ch.c+(ch.dir==='h'?k:0)), L));
+      placed.push({ ...w, r:ch.r, c:ch.c, dir:ch.dir });
+      minR=ch.nr0; maxR=ch.nr1; minC=ch.nc0; maxC=ch.nc1;
+    }
+    const rows=maxR-minR+1, cols=maxC-minC+1;
+    const quality = placed.length*1000 - rows*cols - Math.abs(rows-cols)*3;
+    if (!best || quality>best.quality){
+      best={ quality, rows, cols, placed: placed.map(p=>({ ...p, r:p.r-minR, c:p.c-minC })) };
+    }
+  }
+  // numeración: de arriba a abajo y de izquierda a derecha
+  const starts=[...new Set(best.placed.map(p=>p.r*100+p.c))].sort((a,b)=>a-b);
+  best.placed.forEach(p=> p.num = starts.indexOf(p.r*100+p.c)+1);
+  const grid=Array.from({length:best.rows},()=>Array(best.cols).fill(null));
+  best.placed.forEach(p=> [...p.key].forEach((L,k)=>{ grid[p.r+(p.dir==='v'?k:0)][p.c+(p.dir==='h'?k:0)]=L; }));
+  return { rows:best.rows, cols:best.cols, grid, words:best.placed };
+}
+GEN.crucigrama = function(sel, count, ctx){
+  const bank=ctx.bank;
+  let pool=(bank?bank.entries:[]).filter(e=>e.clue && e.clue.trim()).map(e=>({ word:e.word, clue:e.clue.trim(), key:toSopaWord(e.word) }))
+    .filter(e=>e.key.length>=3 && e.key.length<=MAXC);
+  const seen=new Set(); pool=pool.filter(e=>!seen.has(e.key) && seen.add(e.key));
+  const noClue = bank ? bank.entries.filter(e=>!e.clue || !e.clue.trim()).length : 0;
+  if (pool.length<2) return { kind:'cruci', rows:0, cols:0, grid:[], words:[], ayuda:sel.ayuda,
+    warn:'El tema necesita al menos 2 palabras con pista para armar un crucigrama.' };
+  const chosen=shuffle(pool).slice(0,count);
+  const cw=crossword(chosen);
+  const left=chosen.length-cw.words.length;
+  let warn='';
+  if (left>0) warn=`${left} palabra(s) no se pudieron cruzar y quedaron afuera. Probá "Otra versión".`;
+  else if (chosen.length<count) warn=`Se usaron ${chosen.length} palabras: el tema no tiene más con pista${noClue?` (${noClue} sin pista)`:''}.`;
+  return { kind:'cruci', ...cw, ayuda:sel.ayuda, warn, bancoWords: shuffle(cw.words.map(w=>w.word.toUpperCase())) };
+};
+
+/* ---------- Repaso (usa los temas) ---------- */
+function bankPool(bank, needClue){
+  const seen=new Set();
+  return (bank?bank.entries:[]).filter(e=>e.word && e.word.trim() && (!needClue || (e.clue && e.clue.trim())))
+    .map(e=>({ word:e.word.trim(), clue:(e.clue||'').trim().replace(/\.$/,''), key:toSopaWord(e.word) }))
+    .filter(e=> e.key.length>=2 && !seen.has(e.key) && seen.add(e.key));
+}
+const capFirst = s => s.charAt(0).toUpperCase()+s.slice(1);
+function poolWarn(pool, count, min, what){
+  if (pool.length<min) return `El tema necesita al menos ${min} palabras${what} para esta actividad.`;
+  if (pool.length<count) return `Se usaron ${pool.length} palabras: el tema no tiene más${what}.`;
+  return '';
+}
+
+GEN.unir = function(sel,count,ctx){
+  const pool=bankPool(ctx.bank,true), chosen=shuffle(pool).slice(0,count);
+  const right=shuffle(chosen.map((e,i)=>i));
+  const left = sel.lado==='izq-pista' ? chosen.map(e=>capFirst(e.clue)+'.') : chosen.map(e=>capFirst(e.word));
+  const rightTxt = right.map(i=> sel.lado==='izq-pista' ? capFirst(chosen[i].word) : capFirst(chosen[i].clue)+'.');
+  return { kind:'blocks', cols:1, items: chosen.length>=2 ? [{ type:'unir', left, right:rightTxt,
+    match: chosen.map((_,i)=>right.indexOf(i)), wideLeft: sel.lado==='izq-pista' }] : [],
+    warn: poolWarn(pool,count,2,' con pista') };
+};
+
+GEN.completar = function(sel,count,ctx){
+  const pool=bankPool(ctx.bank, sel.modo==='definicion'), chosen=shuffle(pool).slice(0,count);
+  let items;
+  if (sel.modo==='letras'){
+    items = chosen.map(e=>{
+      const chars=[...e.word.toUpperCase()];
+      const idx=chars.map((ch,i)=>i).filter(i=>i>0 && /\p{L}/u.test(chars[i]));
+      const k=Math.max(1, Math.round(idx.length*0.4));
+      const hide=new Set(shuffle(idx).slice(0,k));
+      return { type:'letras', chars, hide:[...hide], clue: sel.pista==='si' ? capFirst(e.clue) : '' };
+    });
+  } else items = chosen.map(e=>({ type:'definicion', clue:capFirst(e.clue)+'.', answer:e.word }));
+  const top = (sel.modo==='definicion' && sel.banco==='si' && items.length) ? { type:'banco', words: shuffle(chosen.map(e=>e.word)) } : null;
+  return { kind:'blocks', cols: sel.modo==='letras'?2:1, items, top,
+    warn: poolWarn(pool,count,1, sel.modo==='definicion'?' con pista':'') };
+};
+
+GEN.vf = function(sel,count,ctx){
+  const pool=shuffle(bankPool(ctx.bank,true)), chosen=pool.slice(0,count), extra=pool.slice(count);
+  const low = s => s.charAt(0).toLowerCase()+s.slice(1);
+  // cerca de la mitad son falsas; cada pista se usa una sola vez
+  let F = shuffle(chosen.map((_,i)=>i)).slice(0, Math.round(chosen.length*(0.35+Math.random()*0.25)));
+  if (F.length===1 && !extra.length) F = chosen.length>=2 ? F.concat(chosen.findIndex((_,i)=>i!==F[0])) : [];
+  const wrongFrom = {};
+  if (F.length===1) wrongFrom[F[0]] = extra[0];
+  else F.forEach((fi,k)=> wrongFrom[fi] = chosen[F[(k+1)%F.length]]);
+  const items = chosen.map((e,i)=>{
+    const o = wrongFrom[i];
+    return o ? { type:'vf', text:`${capFirst(e.word)}: ${low(o.clue)}.`, ok:false, fix:`Corresponde a: ${capFirst(o.word)}.`, corregir: sel.corregir==='si' }
+             : { type:'vf', text:`${capFirst(e.word)}: ${low(e.clue)}.`, ok:true, corregir: sel.corregir==='si' };
+  });
+  return { kind:'blocks', cols:1, items, warn: poolWarn(pool,count,2,' con pista') };
+};
+
+GEN.ordenar = function(sel,count,ctx){
+  const pool=bankPool(ctx.bank, sel.pista==='si').filter(e=>e.key.length>=3 && new Set(e.key).size>1);
+  const chosen=shuffle(pool).slice(0,count);
+  const items = chosen.map(e=>{
+    let mix; let g=0;
+    do { mix=shuffle([...e.key]); g++; } while (mix.join('')===e.key && g<20);
+    return { type:'anagrama', mix, answer:e.word.toUpperCase(), clue: sel.pista==='si' ? capFirst(e.clue)+'.' : '' };
+  });
+  return { kind:'blocks', cols: sel.pista==='si'?1:2, items, warn: poolWarn(pool,count,1, sel.pista==='si'?' con pista':'') };
+};
+
+/* ---------- Numeración ---------- */
+GEN.numeracion = function(sel,count){
+  const out=[], seen=new Set(); let g=0;
+  const combos=shuffle(cartesian(sel.tipo, sel.cifras)); let i=0;
+  while (out.length<count && g<count*50){
+    g++;
+    const [tipo,d]=combos[i%combos.length];
+    const [lo,hi]=rangeD(d); let it;
+    if (tipo==='creciente' || tipo==='decreciente'){
+      const set=new Set(); while (set.size<5) set.add(rnd(lo,hi));
+      const nums=shuffle([...set]);
+      const sorted=[...nums].sort((a,b)=> tipo==='creciente'?a-b:b-a);
+      it={ type:'ordenarNum', tipo, nums, sorted, key:tipo+nums.join() };
+    } else if (tipo==='antpos'){
+      const n=rnd(Math.max(lo,1)+1, hi-1);
+      it={ type:'antpos', n, key:'ap'+n };
+    } else {
+      const steps = d<=2 ? [2,5,10] : d===3 ? [2,5,10,100] : [10,100,1000];
+      const st=pick(steps), down = Math.random()<.3, len=6;
+      const start = down ? rnd(lo+st*len, hi) : rnd(lo, Math.max(lo, hi-st*len));
+      const seq=Array.from({length:len},(_,k)=> down ? start-k*st : start+k*st);
+      if (seq.some(x=>x<0 || String(x).length!==d)) continue;
+      const blanks=new Set(shuffle([2,3,4,5]).slice(0, rnd(2,3)));
+      it={ type:'serie', seq, blanks:[...blanks], key:'s'+seq[0]+'-'+st+down };
+    }
+    if (seen.has(it.key)) continue;
+    seen.add(it.key); i++;
+    it.diff = ['antpos','creciente','decreciente','serie'].indexOf(tipo)*10 + d;
+    out.push(it);
+  }
+  return out;  // lista: se ordena como las operaciones
+};
+
+/* ---------- Letras de problemas ---------- */
+const NOMBRES=['Sofía','Mateo','Valentina','Thiago','Martina','Benjamín','Emma','Joaquín','Isabella','Santiago','Agustina','Facundo','Lucía','Bruno','Catalina','Felipe','Julieta','Lautaro'];
+const fmtN = n => n>=10000 ? n.toLocaleString('es-UY') : String(n);
+// cada plantilla: (N, nombre) => { t:texto, calc:[pasos], res, resp }
+const PROB = {
+  suma: [
+    (N,A)=>{ const a=rnd(N*.2,N*.55|0), b=rnd(N*.1,N-a-1); return { t:`${A} juntó ${a} figuritas y su hermano le regaló ${b} más. ¿Cuántas figuritas tiene ahora?`, calc:[`${a} + ${b} = ${a+b}`], resp:`Ahora tiene ${a+b} figuritas.` }; },
+    (N,A)=>{ const a=rnd(N*.2,N*.5|0), b=rnd(N*.2,N-a-1); return { t:`En una escuela hay ${a} niñas y ${b} varones. ¿Cuántos alumnos hay en total?`, calc:[`${a} + ${b} = ${a+b}`], resp:`En total hay ${a+b} alumnos.` }; },
+    (N,A)=>{ const a=rnd(N*.15,N*.5|0), b=rnd(N*.15,N-a-1); return { t:`El lunes la cantina vendió ${a} tortas fritas y el martes vendió ${b}. ¿Cuántas tortas fritas vendió entre los dos días?`, calc:[`${a} + ${b} = ${a+b}`], resp:`Vendió ${a+b} tortas fritas.` }; },
+    (N,A)=>{ const a=rnd(N*.2,N*.5|0), b=rnd(N*.2,N-a-1); return { t:`${A} recorrió ${a} metros en bicicleta a la mañana y ${b} metros a la tarde. ¿Cuántos metros recorrió en el día?`, calc:[`${a} + ${b} = ${a+b}`], resp:`Recorrió ${a+b} metros.` }; },
+    (N,A)=>{ const a=rnd(N*.3,N*.6|0), b=rnd(N*.1,N-a-1); return { t:`La biblioteca de la escuela tenía ${a} libros y recibió una donación de ${b} libros. ¿Cuántos libros tiene ahora?`, calc:[`${a} + ${b} = ${a+b}`], resp:`Ahora tiene ${a+b} libros.` }; },
+    (N,A)=>{ const a=rnd(N*.3,N*.6|0), b=rnd(N*.1,N-a-1); return { t:`${A} compró una mochila de $${a} y una cartuchera de $${b}. ¿Cuánto gastó?`, calc:[`${a} + ${b} = ${a+b}`], resp:`Gastó $${a+b}.` }; },
+  ],
+  resta: [
+    (N,A)=>{ const a=rnd(N*.4,N-1), b=rnd(N*.1,a-1); return { t:`${A} tenía $${a} y gastó $${b} en la feria. ¿Cuánto dinero le quedó?`, calc:[`${a} - ${b} = ${a-b}`], resp:`Le quedaron $${a-b}.` }; },
+    (N,A)=>{ const a=rnd(Math.min(N*.4,80),Math.min(N-1,90)), b=rnd(Math.max(2,a*.2|0),a-1); return { t:`En un ómnibus viajaban ${a} pasajeros. En una parada bajaron ${b}. ¿Cuántos pasajeros quedaron?`, calc:[`${a} - ${b} = ${a-b}`], resp:`Quedaron ${a-b} pasajeros.` }; },
+    (N,A)=>{ const a=rnd(N*.4,N-1), b=rnd(N*.1,a-1); return { t:`Un libro tiene ${a} páginas. ${A} ya leyó ${b}. ¿Cuántas páginas le faltan leer?`, calc:[`${a} - ${b} = ${a-b}`], resp:`Le faltan leer ${a-b} páginas.` }; },
+    (N,A)=>{ const a=rnd(N*.5,N-1), b=rnd(N*.2,a-1); return { t:`Una panadería horneó ${a} bizcochos y vendió ${b}. ¿Cuántos bizcochos le quedaron?`, calc:[`${a} - ${b} = ${a-b}`], resp:`Le quedaron ${a-b} bizcochos.` }; },
+    (N,A)=>{ const a=rnd(N*.4,N-1), b=rnd(N*.1,a-1); return { t:`${A} quiere comprar una pelota que cuesta $${a}. Ya ahorró $${b}. ¿Cuánto dinero le falta?`, calc:[`${a} - ${b} = ${a-b}`], resp:`Le faltan $${a-b}.` }; },
+    (N,A)=>{ const a=rnd(N*.5,N-1), b=rnd(N*.2,a-1); return { t:`En el estadio hay lugar para ${a} personas y ya entraron ${b}. ¿Cuántos lugares quedan libres?`, calc:[`${a} - ${b} = ${a-b}`], resp:`Quedan ${a-b} lugares libres.` }; },
+  ],
+  mult: [
+    (N,A)=>{ const f=rnd(3,9), b=rnd(Math.max(2,N*.02|0),Math.max(3,N/f*.9|0)); return { t:`En cada caja hay ${b} alfajores. ¿Cuántos alfajores hay en ${f} cajas?`, calc:[`${b} × ${f} = ${b*f}`], resp:`Hay ${b*f} alfajores.` }; },
+    (N,A)=>{ const f=rnd(3,9), b=rnd(Math.max(2,N*.02|0),Math.max(3,N/f*.9|0)); return { t:`Una entrada al cine cuesta $${b}. ¿Cuánto pagan ${f} amigos en total?`, calc:[`${b} × ${f} = ${b*f}`], resp:`Pagan $${b*f}.` }; },
+    (N,A)=>{ const f=rnd(3,9), b=rnd(Math.max(2,N*.01|0),Math.min(12,Math.max(3,N/f|0))); return { t:`Cada paquete trae ${b} figuritas. ${A} compró ${f} paquetes. ¿Cuántas figuritas tiene?`, calc:[`${b} × ${f} = ${b*f}`], resp:`Tiene ${b*f} figuritas.` }; },
+    (N,A)=>{ const f=rnd(2,9), b=rnd(Math.max(2,N*.02|0),Math.max(3,N/f*.9|0)); return { t:`${A} ahorra $${b} por semana. ¿Cuánto ahorra en ${f} semanas?`, calc:[`${b} × ${f} = ${b*f}`], resp:`Ahorra $${b*f}.` }; },
+    (N,A)=>{ const f=rnd(3,9), b=rnd(Math.max(2,Math.min(N*.03,40)|0),Math.min(45,Math.max(3,N/f*.9|0))); return { t:`Un ómnibus lleva ${b} pasajeros. ¿Cuántos pasajeros llevan ${f} ómnibus llenos?`, calc:[`${b} × ${f} = ${b*f}`], resp:`Llevan ${b*f} pasajeros.` }; },
+  ],
+  div: [
+    (N,A)=>{ const d=rnd(2,9), q=rnd(Math.max(2,N*.02/d|0)+1,Math.max(3,N/d*.9|0)); return { t:`La escuela recibió ${q*d} lápices y los reparte en partes iguales entre ${d} clases. ¿Cuántos lápices le tocan a cada clase?`, calc:[`${q*d} ÷ ${d} = ${q}`], resp:`A cada clase le tocan ${q} lápices.` }; },
+    (N,A)=>{ const d=rnd(4,9), q=rnd(Math.max(2,N*.02/d|0)+1,Math.max(3,N/d*.9|0)); return { t:`${A} tiene ${q*d} figuritas y las pega en páginas de ${d} figuritas cada una. ¿Cuántas páginas completa?`, calc:[`${q*d} ÷ ${d} = ${q}`], resp:`Completa ${q} páginas.` }; },
+    (N,A)=>{ const d=rnd(2,9), q=rnd(Math.max(2,N*.02/d|0)+1,Math.max(3,N/d*.9|0)); return { t:`${d} amigos pagaron $${q*d} por una pizza, en partes iguales. ¿Cuánto pagó cada uno?`, calc:[`${q*d} ÷ ${d} = ${q}`], resp:`Cada uno pagó $${q}.` }; },
+    (N,A)=>{ const d=rnd(3,8), q=rnd(Math.max(2,N*.02/d|0)+1,Math.max(3,N/d*.9|0)), r=rnd(1,d-1), a=q*d+r;
+      if (a>=N) return null;
+      return { t:`Hay ${a} caramelos para repartir en partes iguales entre ${d} niños. ¿Cuántos caramelos le tocan a cada uno? ¿Cuántos sobran?`, calc:[`${a} ÷ ${d} = ${q}  (resto ${r})`], resp:`A cada niño le tocan ${q} caramelos y sobran ${r}.` }; },
+    (N,A)=>{ const d=rnd(6,15), q=rnd(2,Math.max(3,Math.min(30,N/d*.9|0))), r=rnd(1,d-1), a=q*d+r;
+      if (a>=N) return null;
+      return { t:`Para una excursión van ${a} personas en camionetas de ${d} lugares. ¿Cuántas camionetas se necesitan para que vayan todos?`, calc:[`${a} ÷ ${d} = ${q}  (resto ${r})`, `${q} + 1 = ${q+1}`], resp:`Se necesitan ${q+1} camionetas.` }; },
+  ],
+  comb: [
+    (N,A)=>{ const a=rnd(N*.5,N-1), b=rnd(N*.1,a*.4|0), c=rnd(N*.05,Math.max(N*.05+1,a-b-1)|0); if (b+c>=a) return null;
+      return { t:`${A} tenía $${a}. Gastó $${b} en la feria y $${c} en el almacén. ¿Cuánto dinero le quedó?`, calc:[`${b} + ${c} = ${b+c}`, `${a} - ${b+c} = ${a-b-c}`], resp:`Le quedaron $${a-b-c}.` }; },
+    (N,A)=>{ const f=rnd(2,6), p=rnd(Math.max(2,N*.02|0),Math.max(3,N*.15|0)), cost=f*p; const bills=[10,20,50,100,200,500,1000,2000].filter(x=>x>cost && x<=N*1.5);
+      if (!bills.length) return null; const bill=bills[0];
+      return { t:`${A} compró ${f} alfajores de $${p} cada uno y pagó con un billete de $${bill}. ¿Cuánto le dieron de vuelto?`, calc:[`${p} × ${f} = ${cost}`, `${bill} - ${cost} = ${bill-cost}`], resp:`Le dieron $${bill-cost} de vuelto.` }; },
+    (N,A)=>{ const a=rnd(20,Math.min(N-1,60)), b=rnd(3,a-5), c=rnd(2,Math.min(30,N-(a-b)-1)); if (c<1) return null;
+      return { t:`En un ómnibus viajaban ${a} personas. En una parada bajaron ${b} y subieron ${c}. ¿Cuántas personas viajan ahora?`, calc:[`${a} - ${b} = ${a-b}`, `${a-b} + ${c} = ${a-b+c}`], resp:`Ahora viajan ${a-b+c} personas.` }; },
+    (N,A)=>{ const f=rnd(2,6), b=rnd(6,Math.max(7,Math.min(48,N/f*.9|0))), tot=f*b, c=rnd(1,Math.max(1,tot*.4|0));
+      return { t:`Cada caja trae ${b} galletitas. ${A} compró ${f} cajas y ya se comieron ${c} galletitas. ¿Cuántas galletitas quedan?`, calc:[`${b} × ${f} = ${tot}`, `${tot} - ${c} = ${tot-c}`], resp:`Quedan ${tot-c} galletitas.` }; },
+    (N,A)=>{ const d=rnd(2,6), q1=rnd(Math.max(2,N*.05/d|0),Math.max(3,N*.4/d|0)), q2=rnd(Math.max(2,N*.05/d|0),Math.max(3,N*.4/d|0)), a=q1*d, b=q2*d;
+      if (a+b>=N) return null;
+      return { t:`Una clase juntó $${a} en la feria y $${b} en una rifa. Reparten todo el dinero en partes iguales entre ${d} paseos. ¿Cuánto dinero hay para cada paseo?`, calc:[`${a} + ${b} = ${a+b}`, `${a+b} ÷ ${d} = ${(a+b)/d}`], resp:`Hay $${(a+b)/d} para cada paseo.` }; },
+  ],
+};
+GEN.problemas = function(sel,count){
+  const N=Number(sel.hasta), ops=sel.op, out=[], seen=new Set(), names=shuffle([...NOMBRES]);
+  const pools={}; ops.forEach(o=> pools[o]=shuffle(PROB[o].map((_,i)=>i)));
+  let k=0, g=0;
+  while (out.length<count && g<count*60){
+    g++;
+    const op=ops[k%ops.length], pool=pools[op];
+    if (!pool.length) pools[op]=pool.concat(shuffle(PROB[op].map((_,i)=>i)));
+    const ti=pools[op].shift();
+    const p=PROB[op][ti](N, names[out.length%names.length]);
+    if (!p || seen.has(op+ti+p.t)) continue;
+    // todos los números del enunciado deben respetar el tope elegido
+    const nums=(p.t.match(/\d+/g)||[]).map(Number);
+    if (nums.some(n=>n<=0 || n>N*1.5) || nums.some(n=>!Number.isInteger(n))) continue;
+    seen.add(op+ti+p.t); k++;
+    out.push({ type:'problema', full:true, text:p.t, calc:p.calc, resp:p.resp, modo:sel.espacio, diff:['suma','resta','mult','div','comb'].indexOf(op) });
+  }
+  return out;
+};
+
+/* ---------- Números en palabras ---------- */
+const U=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho','diecinueve',
+  'veinte','veintiuno','veintidós','veintitrés','veinticuatro','veinticinco','veintiséis','veintisiete','veintiocho','veintinueve'];
+const DEC=['','','','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+const CEN=['','ciento','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos'];
+function menos100(n){ if (n<30) return U[n]; const d=Math.floor(n/10), u=n%10; return DEC[d]+(u?' y '+U[u]:''); }
+function menos1000(n){ if (n===100) return 'cien'; const c=Math.floor(n/100), r=n%100; return [c?CEN[c]:'', r?menos100(r):''].filter(Boolean).join(' '); }
+function numLetras(n){
+  if (n===0) return 'cero';
+  const miles=Math.floor(n/1000), r=n%1000; let out='';
+  if (miles===1) out='mil';
+  else if (miles>1){ const w=menos1000(miles); out=(w.endsWith('veintiuno') ? w.replace(/veintiuno$/,'veintiún') : w.replace(/uno$/,'un'))+' mil'; }
+  if (r) out+=(out?' ':'')+menos1000(r);
+  return out;
+}
+const B = (ans,w)=>({ b:String(ans), w });          // espacio para completar en una oración
+
+/* ---------- Cálculo mental ---------- */
+GEN.mental = function(sel,count){
+  const adv = sel.nivel==='avanzado', out=[], seen=new Set(); let g=0, i=0;
+  const tipos=shuffle([...sel.tipo]);
+  while (out.length<count && g<count*80){
+    g++; const t=tipos[i%tipos.length]; let parts, key;
+    if (t==='tablas'){
+      const a=pick(sel.tablas.length?sel.tablas:[2,3,4,5]), b=rnd(1,10);
+      if (Math.random()<.7){ parts=[`${a} × ${b} =`, B(a*b,14)]; key=`${a}x${b}`; }
+      else { parts=[`${a} ×`, B(b,12), `= ${a*b}`]; key=`${a}x?${b}`; }
+    } else if (t==='dobles'){
+      const hi=adv?500:50;
+      if (Math.random()<.5){ const n=rnd(adv?20:2,hi); parts=[`El doble de ${n} es`, B(2*n,16)]; key='d'+n; }
+      else { const n=rnd(adv?20:2,hi)*2; parts=[`La mitad de ${n} es`, B(n/2,16)]; key='m'+n; }
+    } else if (t==='complementos'){
+      const opts = adv ? [100,1000] : [10,100], T=pick(opts);
+      const a = T===10 ? rnd(1,9) : T===100 ? (adv?rnd(1,99):rnd(1,19)*5) : rnd(1,99)*10;
+      parts=[`${a} +`, B(T-a,14), `= ${T}`]; key=`c${a}-${T}`;
+    } else {
+      const n = adv ? rnd(100,9899) : rnd(11,989);
+      const ops = adv ? [[10,'Diez más que'],[-10,'Diez menos que'],[100,'Cien más que'],[-100,'Cien menos que'],[1000,'Mil más que']]
+                      : [[10,'Diez más que'],[-10,'Diez menos que'],[1,'Uno más que'],[-1,'Uno menos que']];
+      const [d,txt]=pick(ops); if (n+d<0) continue;
+      parts=[`${txt} ${n}:`, B(n+d,16)]; key=`z${n}${d}`;
+    }
+    if (seen.has(key)) continue; seen.add(key); i++;
+    out.push({ type:'fill', parts, diff:['tablas','complementos','dobles','diezmas'].indexOf(t) });
+  }
+  return out;
+};
+
+/* ---------- Escribir números ---------- */
+GEN.escribir = function(sel,count){
+  const out=[], seen=new Set(); let g=0, i=0; const tipos=shuffle([...sel.tipo]);
+  while (out.length<count && g<count*60){
+    g++; const t=tipos[i%tipos.length], [lo,hi]=rangeD(pick(sel.cifras)), n=rnd(Math.max(lo,1),hi);
+    if (seen.has(t+n)) continue;
+    const digits=String(n).split('').map((d,k,a)=> Number(d)*10**(a.length-1-k)).filter(v=>v>0);
+    if ((t==='descomponer'||t==='componer') && digits.length<2) continue;
+    let it;
+    if (t==='aPalabras') it={ type:'fill', full:true, parts:[{t:String(n), bold:true}, '=', B(numLetras(n),'rest')] };
+    else if (t==='aNumero') it={ type:'fill', full:true, parts:[capFirst(numLetras(n))+' =', B(n,26)] };
+    else if (t==='descomponer'){ const parts=[{t:String(n), bold:true}, '=']; digits.forEach((v,k)=>{ if (k) parts.push('+'); parts.push(B(v,14)); }); it={ type:'fill', parts }; }
+    else it={ type:'fill', parts:[digits.join(' + ')+' =', B(n,18)] };
+    seen.add(t+n); i++; it.diff=['descomponer','componer','aNumero','aPalabras'].indexOf(t); out.push(it);
+  }
+  return out;
+};
+
+/* ---------- Dinero uruguayo ---------- */
+const DENOM=[2000,1000,500,200,100,50,20,10,5,2,1];
+const BILLETES=new Set([2000,1000,500,200,100,50,20]);
+function cambio(v){ const out=[]; for (const d of DENOM) while (v>=d){ out.push(d); v-=d; } return out; }
+const COSAS=[[0,'un alfajor'],[0,'un helado'],[0,'un lápiz'],[0,'una goma'],[60,'un cuaderno'],[100,'una caja de lápices'],[150,'un libro'],[200,'una pelota'],[250,'una entrada al cine'],[500,'una mochila'],[600,'un juego de mesa'],[700,'una remera'],[1200,'unos championes'],[1500,'una campera']];
+const cosaPara = p => { const ok=COSAS.filter(([min])=>min<=p && (p<300 ? true : min>=p*0.3)); return pick(ok.length?ok:COSAS)[1]; };
+GEN.dinero = function(sel,count){
+  const N=Number(sel.hasta), out=[]; let g=0, i=0; const tipos=shuffle([...sel.tipo]);
+  const maxPiece = N<=100?50 : N<=1000?500 : 2000;
+  while (out.length<count && g<count*60){
+    g++; const t=tipos[i%tipos.length]; let it;
+    if (t==='contar'){
+      const pool=DENOM.filter(d=>d<=maxPiece && d>=(N>=1000?5:1)), k=rnd(3,6), money=[];
+      let tot=0; for (let j=0;j<k;j++){ const d=pick(pool); if (tot+d>N) continue; money.push(d); tot+=d; }
+      if (money.length<3) continue;
+      money.sort((a,b)=>b-a);
+      it={ type:'dinero', mode:'contar', money, text:'¿Cuánto dinero hay?', ans:'$'+tot };
+    } else if (t==='vuelto'){
+      const p=rnd(Math.max(5,N*.05|0), N*.9|0), bills=[20,50,100,200,500,1000,2000].filter(b=>b>p);
+      if (!bills.length) continue;
+      const bill=bills[Math.random()<.75?0:Math.min(1,bills.length-1)];
+      it={ type:'dinero', mode:'vuelto', money:[bill], text:`${capFirst(cosaPara(p))} cuesta $${p}. Pagás con este billete. ¿Cuánto te dan de vuelto?`, ans:'$'+(bill-p) };
+    } else {
+      const p=rnd(Math.max(8,N*.1|0), N-1);
+      it={ type:'dinero', mode:'pagar', money:[], text:`Pagá $${p} justo, usando la menor cantidad de billetes y monedas. Escribí cuáles usás.`, ans:cambio(p).map(v=>'$'+v).join(' + ') };
+    }
+    i++; it.full=true; it.diff=['contar','vuelto','pagar'].indexOf(t); out.push(it);
+  }
+  return out;
+};
+
+/* ---------- Hora y calendario ---------- */
+const DIAS=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','setiembre','octubre','noviembre','diciembre'];
+const DIASMES=[31,28,31,30,31,30,31,31,30,31,30,31];
+const hhmm=(h,m)=>`${h}:${String(m).padStart(2,'0')}`;
+function minutosTxt(t){ const h=Math.floor(t/60), m=t%60; return [h?`${h} h`:'', m?`${m} min`:''].filter(Boolean).join(' '); }
+GEN.hora = function(sel,count){
+  const out=[], seen=new Set(); let g=0, i=0; const tipos=shuffle([...sel.tipo]);
+  const stepM = sel.precision==='media'?30 : sel.precision==='cuarto'?15 : 5;
+  while (out.length<count && g<count*60){
+    g++; const t=tipos[i%tipos.length]; let it, key;
+    if (t==='leer' || t==='dibujar'){
+      const h=rnd(1,12), m=rnd(0,60/stepM-1)*stepM; key=t+h+'-'+m;
+      it={ type:'reloj', mode:t, h, m, label:hhmm(h,m) };
+    } else if (t==='cuanto'){
+      const recreo=Math.random()<.5, h=recreo?rnd(8,15):rnd(9,20), m=rnd(0,11)*5;
+      if (recreo){
+        const d=rnd(1,16)*5+(Math.random()<.4?60:0), e=h*60+m+d; if (e>=24*60) continue;
+        it={ type:'fill', full:true, parts:[`Son las ${hhmm(h,m)}. El recreo es a las ${hhmm(Math.floor(e/60),e%60)}. ¿Cuánto falta?`, B(minutosTxt(d),30)] };
+      } else {
+        const d=rnd(4,12)*15, e=h*60+m+d; if (e>=24*60) continue;
+        it={ type:'fill', full:true, parts:[`La película empieza a las ${hhmm(h,m)} y dura ${minutosTxt(d)}. ¿A qué hora termina?`, B(hhmm(Math.floor(e/60),e%60),24)] };
+      }
+      key=it.parts[0];
+    } else {
+      const f=rnd(0,4);
+      if (f===0){ const d=rnd(0,6), k=rnd(2,9); it={ type:'fill', full:true, parts:[`Si hoy es ${DIAS[d]}, dentro de ${k} días será`, B(DIAS[(d+k)%7],28)] }; }
+      else if (f===1){ const d=rnd(0,6); it={ type:'fill', full:true, parts:[`Si hoy es ${DIAS[d]}, ayer fue`, B(DIAS[(d+6)%7],28), 'y mañana será', B(DIAS[(d+1)%7],28)] }; }
+      else if (f===2){ const m=rnd(0,11); it={ type:'fill', full:true, parts:[`El mes que viene después de ${MESES[m]} es`, B(MESES[(m+1)%12],28)] }; }
+      else if (f===3){ let m=rnd(0,11); if (m===1) m=0; it={ type:'fill', full:true, parts:[`¿Cuántos días tiene ${MESES[m]}?`, B(DIASMES[m],14)] }; }
+      else { const k=rnd(2,6); it={ type:'fill', full:true, parts:[`¿Cuántos días hay en ${k} semanas?`, B(k*7,14)] }; }
+      key=JSON.stringify(it.parts);
+    }
+    if (seen.has(key)) continue; seen.add(key); i++;
+    it.diff=['leer','dibujar','cuanto','calendario'].indexOf(t); out.push(it);
+  }
+  return out;
+};
+
+/* ---------- Comprensión lectora (las preguntas las arma la IA en la app) ---------- */
+GEN.comprension = function(sel,count,ctx){
+  const c=ctx.comp||{};
+  const items=[];
+  (c.texto||'').split(/\n\s*\n|\n/).map(p=>p.trim()).filter(Boolean).forEach(p=> items.push({ type:'texto', full:true, text:p }));
+  (c.preguntas||[]).slice(0,count).forEach(q=>{
+    if (q.tipo==='vf') items.push({ type:'vf', text:q.enunciado, ok:!!q.verdadero, fix: q.correccion?('Correcto: '+q.correccion):'', corregir:false, full:true });
+    else if (q.tipo==='completar') items.push({ type:'fill', full:true, parts: splitBlank(q.enunciado, q.respuesta) });
+    else if (q.tipo==='vocabulario') items.push({ type:'fill', full:true, parts:[{t:capFirst(q.palabra)+':', bold:true}, B(q.respuesta||'', 'rest')] });
+    else items.push({ type:'abierta', full:true, text:q.enunciado, ans:q.respuesta||'', lines: 2 });
+  });
+  return { kind:'blocks', cols:1, items, numberFrom: items[0]&&items[0].type==='texto' ? 1 : 0,
+    warn: !(c.texto||'').trim() ? (sampleFn ? 'Pegá un texto y tocá "Armar preguntas".' : 'Pegá un texto para imprimirlo.') : (!(c.preguntas||[]).length && sampleFn ? 'Tocá "Armar preguntas" para que Claude prepare las actividades.' : '') };
+};
+function splitBlank(sentence, ans){
+  const s=String(sentence||''), m=s.split(/_{2,}/);
+  if (m.length>=2) return [m[0].trim(), B(ans||'',30), m.slice(1).join(' ').trim()].filter(p=>p!=='');
+  return [s, B(ans||'',30)];
+}
+
+function toSopaWord(w){
+  return w.toUpperCase().replace(/Ñ/g,'\u0001').normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/\u0001/g,'Ñ').replace(/[^A-ZÑ]/g,'');
+}
+const LETTERS='AAAAAAABBCCCDDDEEEEEEEFGGHIIIIIJLLLLMMMNNNNÑOOOOOOPPQRRRRRSSSSSTTTTUUUUVYZ';
+const randomLetter=()=>LETTERS[Math.floor(Math.random()*LETTERS.length)];
+const DIRV = { h:[0,1], v:[1,0], d:[1,1] };
+
+/* Arma una sopa: ubica cada palabra/número una sola vez y rellena el resto.
+   makeItems() devuelve [{key,...}]; con rev=true algunas se escriben al revés. */
+function buildSopa(size, dirKeys, rev, fill, makeItems, want){
+  const dirs=dirKeys.map(k=>DIRV[k]); let best=null;
+  for (let attempt=0; attempt<30; attempt++){
+    const items=makeItems().sort((a,b)=>b.key.length-a.key.length);
+    const grid=Array.from({length:size},()=>Array(size).fill(null));
+    const lock=Array.from({length:size},()=>Array(size).fill(false));
+    const placed=[];
+    for (const it of items){
+      const s=it.key; let ok=false;
+      for (let t=0;t<400 && !ok;t++){
+        const [dr,dc]=pick(dirs), back = rev && Math.random()<.4;
+        const r0=rnd(0,size-1-dr*(s.length-1)), c0=rnd(0,size-1-dc*(s.length-1));
+        let cells=[...s].map((_,k)=>[r0+dr*k, c0+dc*k]);
+        if (back) cells.reverse();
+        // se permite cruzar otra palabra si la letra coincide
+        if (cells.every(([r,c],k)=> grid[r][c]===null || grid[r][c]===s[k]) &&
+            cells.some(([r,c])=>grid[r][c]===null)){
+          cells.forEach(([r,c],k)=>{ grid[r][c]=s[k]; lock[r][c]=true; });
+          placed.push({ ...it, cells }); ok=true;
+        }
+      }
+    }
+    for (let r=0;r<size;r++) for (let c=0;c<size;c++) if (grid[r][c]===null) grid[r][c]=fill();
+    const clean=fixDuplicates(grid, lock, placed, dirs, size, rev, fill);
+    const res={ grid, items:placed, clean };
+    if (clean && placed.length>=want){ best=res; break; }
+    if (!best || (clean && !best.clean) || placed.length>best.items.length) best=res;
+  }
+  best.items.sort(()=>Math.random()-.5);
+  return best;
+}
+
+/* Revisa que cada elemento aparezca exactamente una vez; si aparece de más, cambia una casilla libre. */
+function fixDuplicates(grid, lock, placed, dirs, size, rev, fill){
+  const cellKey = cells => cells.map(c=>c.join(',')).sort().join(';');
+  placed.forEach(p=> p._k = cellKey(p.cells));
+  for (let iter=0; iter<8000; iter++){
+    let bad=null;
+    outer:
+    for (const p of placed){
+      const pats=[p.key]; if (rev) pats.push([...p.key].reverse().join(''));
+      const L=p.key.length;
+      for (const pat of pats) for (const [dr,dc] of dirs) for (let r=0;r+dr*(L-1)<size;r++) for (let c=0;c+dc*(L-1)<size;c++){
+        let match=true;
+        for (let k=0;k<L;k++) if (grid[r+dr*k][c+dc*k]!==pat[k]){ match=false; break; }
+        if (!match) continue;
+        const cells=[]; for (let k=0;k<L;k++) cells.push([r+dr*k, c+dc*k]);
+        if (cellKey(cells)!==p._k){ bad=cells; break outer; }
+      }
+    }
+    if (!bad) return true;
+    const free=bad.filter(([r,c])=>!lock[r][c]);
+    if (!free.length) return false;
+    const [r,c]=pick(free); let v, g=0;
+    do { v=fill(); g++; } while (v===grid[r][c] && g<50);
+    grid[r][c]=v;
+  }
+  return false;
+}
+
+/* =========================================================
+   CATÁLOGO: área → actividades. Sin "ready" = "Pronto".
+   ========================================================= */
+const CATALOG = [
+  { id:'mate', name:'Matemática', icon:'mate', desc:'Operaciones', items:[
+      { id:'sumas', name:'Sumas', ready:true },
+      { id:'restas', name:'Restas', ready:true },
+      { id:'mult', name:'Multiplicación', ready:true },
+      { id:'div', name:'División', ready:true },
+      { id:'numeracion', name:'Numeración', ready:true },
+      { id:'problemas', name:'Problemas', ready:true },
+      { id:'mental', name:'Cálculo mental', ready:true },
+      { id:'escribir', name:'Escribir números', ready:true },
+      { id:'dinero', name:'Dinero', ready:true },
+      { id:'hora', name:'Hora y calendario', ready:true } ] },
+  { id:'sopas', name:'Sopas', icon:'sopas', desc:'Letras y números', items:[
+      { id:'sopaL', name:'Sopa de letras', ready:true },
+      { id:'sopaN', name:'Sopa de números', ready:true } ] },
+  { id:'cruci', name:'Crucigramas', icon:'cruci', desc:'Palabras y pistas', items:[
+      { id:'crucigrama', name:'Crucigrama', ready:true } ] },
+  { id:'repaso', name:'Repaso', icon:'repaso', desc:'Actividades generales', items:[
+      { id:'unir', name:'Unir con flechas', ready:true },
+      { id:'completar', name:'Completar', ready:true },
+      { id:'vf', name:'Verdadero o falso', ready:true },
+      { id:'ordenar', name:'Ordenar letras', ready:true },
+      { id:'comprension', name:'Comprensión lectora', ready:true } ] },
+];
+
+const OPS_COUNT = { label:'Cantidad de ejercicios', options:[6,9,12,15,18,24,30,45], def:12 };
+const CIFRAS = [ {v:1,t:'1 cifra'},{v:2,t:'2 cifras'},{v:3,t:'3 cifras'},{v:4,t:'4 cifras'} ];
+const FORMATO_V = { id:'formato', label:'Formato', type:'single', options:[
+  { v:'vertical', t:'En vertical (cuenta parada)' }, { v:'linea', t:'En línea' } ], def:'vertical' };
+
+const ACTIVITIES = {
+  sumas: { title:'Sumas', consigna:'Resolvé las siguientes sumas.', count:OPS_COUNT, groups:[
+    { id:'dif', label:'Dificultad', type:'multi', options:[ {v:'sin',t:'Sin dificultad'},{v:'con',t:'Con dificultad (llevando)'} ], def:['con'] },
+    { id:'cifras', label:'Cantidad de cifras', type:'multi', options:CIFRAS, def:[2,3] },
+    { id:'sumandos', label:'Sumandos', type:'multi', options:[ {v:2,t:'2 sumandos'},{v:3,t:'3 sumandos'} ], def:[2] },
+    FORMATO_V ] },
+  restas: { title:'Restas', consigna:'Resolvé las siguientes restas.', count:OPS_COUNT, groups:[
+    { id:'dif', label:'Dificultad', type:'multi', options:[ {v:'sin',t:'Sin dificultad'},{v:'con',t:'Con dificultad (pidiendo)'} ], def:['con'] },
+    { id:'cifras', label:'Cifras del minuendo', type:'multi', options:CIFRAS, def:[2,3] },
+    FORMATO_V ] },
+  mult: { title:'Multiplicaciones', consigna:'Resolvé las siguientes multiplicaciones.', count:OPS_COUNT, groups:[
+    { id:'cifrasA', label:'Cifras del primer factor', type:'multi', options:CIFRAS, def:[2,3] },
+    { id:'cifrasB', label:'Multiplicar por', type:'multi', options:[ {v:1,t:'1 cifra'},{v:2,t:'2 cifras'} ], def:[1] },
+    FORMATO_V ] },
+  div: { title:'Divisiones', consigna:'Resolvé las siguientes divisiones.', count:{ label:'Cantidad de ejercicios', options:[4,6,8,10,12,16,20], def:8 }, groups:[
+    { id:'dividendo', label:'Cifras del dividendo', type:'multi', options:CIFRAS.slice(1), def:[2,3] },
+    { id:'divisor', label:'Dividir entre', type:'multi', options:[ {v:1,t:'1 cifra'},{v:2,t:'2 cifras'} ], def:[1] },
+    { id:'resto', label:'Resto', type:'multi', options:[ {v:'exacta',t:'Exactas (resto 0)'},{v:'con',t:'Con resto'} ], def:['exacta'] },
+    { id:'formato', label:'Formato', type:'single', options:[ {v:'galera',t:'Con galera (cuenta)'},{v:'linea',t:'En línea'} ], def:'galera' } ] },
+  sopaN: { title:'Sopa de números', consigna:'Encontrá los números escondidos y pintalos.', single:true,
+    count:{ label:'Números para encontrar', options:[6,8,10,12], def:8 }, groups:[
+    { id:'tam', label:'Tamaño de la grilla', type:'single', options:[ {v:10,t:'10 × 10'},{v:12,t:'12 × 12'},{v:15,t:'15 × 15'} ], def:12 },
+    { id:'cifras', label:'Cifras de los números', type:'multi', options:[ {v:2,t:'2 cifras'},{v:3,t:'3 cifras'},{v:4,t:'4 cifras'},{v:5,t:'5 cifras'} ], def:[3,4] },
+    { id:'dir', label:'Direcciones', type:'multi', options:[ {v:'h',t:'→ Horizontal'},{v:'v',t:'↓ Vertical'},{v:'d',t:'↘ Diagonal'} ], def:['h','v'] },
+    { id:'pista', label:'Qué se muestra', type:'single', options:[ {v:'numeros',t:'Los números'},{v:'cuentas',t:'Cuentas (buscar el resultado)'} ], def:'numeros' } ] },
+  sopaL: { title:'Sopa de letras', consigna:'Encontrá las palabras escondidas y pintalas.', single:true,
+    count:{ label:'Palabras para encontrar', options:[6,8,10,12,15], def:8 }, groups:[
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo' },
+    { id:'tam', label:'Tamaño de la grilla', type:'single', options:[ {v:10,t:'10 × 10'},{v:12,t:'12 × 12'},{v:15,t:'15 × 15'} ], def:12 },
+    { id:'dir', label:'Direcciones', type:'multi', options:[ {v:'h',t:'→ Horizontal'},{v:'v',t:'↓ Vertical'},{v:'d',t:'↘ Diagonal'},{v:'r',t:'↩ También al revés'} ], def:['h','v'] },
+    { id:'mostrar', label:'Qué se muestra', type:'single', options:[ {v:'lista',t:'La lista de palabras'},{v:'pistas',t:'Pistas (adivinar la palabra)'} ], def:'lista' } ] },
+  crucigrama: { title:'Crucigrama', consigna:'Leé las pistas y completá el crucigrama.', single:true,
+    count:{ label:'Cantidad de palabras', options:[5,6,8,10,12], def:8 }, groups:[
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo' },
+    { id:'ayuda', label:'Ayuda para el alumno', type:'single', options:[ {v:'ninguna',t:'Sin ayuda'},{v:'primera',t:'Mostrar la primera letra'},{v:'banco',t:'Lista de palabras para elegir'} ], def:'ninguna' },
+    { id:'largo', label:'Mostrar cantidad de letras en la pista', type:'single', options:[ {v:'si',t:'Sí'},{v:'no',t:'No'} ], def:'si' } ] },
+  numeracion: { title:'Numeración', consigna:'Resolvé las siguientes actividades.', count:{ label:'Cantidad de ejercicios', options:[6,8,10,12,16,20], def:10 }, groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'antpos',t:'Anterior y posterior'},{v:'creciente',t:'Ordenar de menor a mayor'},{v:'decreciente',t:'Ordenar de mayor a menor'},{v:'serie',t:'Completar series'} ], def:['antpos','creciente'] },
+    { id:'cifras', label:'Cantidad de cifras', type:'multi', options:[ {v:2,t:'2 cifras'},{v:3,t:'3 cifras'},{v:4,t:'4 cifras'},{v:5,t:'5 cifras'} ], def:[3] } ] },
+  problemas: { title:'Situaciones problemáticas', consigna:'Leé cada problema, resolvelo y escribí la respuesta.',
+    count:{ label:'Cantidad de problemas', options:[2,3,4,5,6,8], def:4 }, groups:[
+    { id:'op', label:'Operaciones', type:'multi', options:[ {v:'suma',t:'Suma'},{v:'resta',t:'Resta'},{v:'mult',t:'Multiplicación'},{v:'div',t:'División'},{v:'comb',t:'Combinados (2 pasos)'} ], def:['suma','resta'] },
+    { id:'hasta', label:'Números', type:'single', options:[ {v:100,t:'Hasta 100'},{v:1000,t:'Hasta 1.000'},{v:10000,t:'Hasta 10.000'} ], def:1000 },
+    { id:'espacio', label:'Espacio para resolver', type:'single', options:[ {v:'completo',t:'Datos, cálculo y respuesta'},{v:'simple',t:'Cálculo y respuesta'} ], def:'completo' } ] },
+  mental: { title:'Cálculo mental', consigna:'Resolvé mentalmente y escribí el resultado.', count:{ label:'Cantidad de cálculos', options:[10,15,20,30,40], def:20 }, groups:[
+    { id:'tipo', label:'Qué practicar', type:'multi', options:[ {v:'tablas',t:'Tablas'},{v:'dobles',t:'Dobles y mitades'},{v:'complementos',t:'Complementos a 10, 100 o 1.000'},{v:'diezmas',t:'Diez más, diez menos'} ], def:['tablas','dobles'] },
+    { id:'tablas', label:'Tablas', type:'multi', options:[2,3,4,5,6,7,8,9,10].map(v=>({v,t:'Del '+v})), def:[2,3,4,5], showIf:s=>s.tipo.includes('tablas') },
+    { id:'nivel', label:'Nivel', type:'single', options:[ {v:'basico',t:'Básico'},{v:'avanzado',t:'Avanzado'} ], def:'basico' } ] },
+  escribir: { title:'Escribir números', consigna:'Completá.', count:{ label:'Cantidad de ejercicios', options:[6,8,10,12,15], def:8 }, groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'aPalabras',t:'Del número a la palabra'},{v:'aNumero',t:'De la palabra al número'},{v:'descomponer',t:'Descomponer (345 = 300 + 40 + 5)'},{v:'componer',t:'Componer (300 + 40 + 5 = 345)'} ], def:['aPalabras','descomponer'] },
+    { id:'cifras', label:'Cantidad de cifras', type:'multi', options:[ {v:2,t:'2 cifras'},{v:3,t:'3 cifras'},{v:4,t:'4 cifras'},{v:5,t:'5 cifras'} ], def:[3] } ] },
+  dinero: { title:'Dinero', consigna:'Resolvé con billetes y monedas uruguayos.', count:{ label:'Cantidad de ejercicios', options:[3,4,5,6,8], def:5 }, groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'contar',t:'Contar dinero'},{v:'vuelto',t:'Calcular el vuelto'},{v:'pagar',t:'Pagar justo'} ], def:['contar','vuelto'] },
+    { id:'hasta', label:'Montos', type:'single', options:[ {v:100,t:'Hasta $100'},{v:1000,t:'Hasta $1.000'},{v:5000,t:'Hasta $5.000'} ], def:1000 } ] },
+  hora: { title:'La hora y el calendario', consigna:'Resolvé.', cols:3, count:{ label:'Cantidad de ejercicios', options:[6,8,9,12,15], def:9 }, groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'leer',t:'Leer el reloj'},{v:'dibujar',t:'Dibujar las agujas'},{v:'cuanto',t:'¿Cuánto falta? ¿A qué hora termina?'},{v:'calendario',t:'Días y meses'} ], def:['leer','dibujar'] },
+    { id:'precision', label:'Horas', type:'single', options:[ {v:'media',t:'En punto y media'},{v:'cuarto',t:'Con cuartos'},{v:'5',t:'Cada 5 minutos'} ], def:'cuarto' } ] },
+  comprension: { title:'Comprensión lectora', consigna:'Leé el texto con atención y respondé.', single:true,
+    count:{ label:'Cantidad de preguntas', options:[4,5,6,8,10], def:6 }, groups:[
+    { id:'comp', label:'Texto', type:'comp' },
+    { id:'tipos', label:'Tipos de pregunta', type:'multi', options:[ {v:'abierta',t:'Preguntas para responder'},{v:'vf',t:'Verdadero o falso'},{v:'completar',t:'Completar oraciones'},{v:'vocabulario',t:'Vocabulario'} ], def:['abierta','vf','completar'] },
+    { id:'grado', label:'Para alumnos de', type:'single', options:[ {v:'1º y 2º',t:'1º y 2º'},{v:'3º y 4º',t:'3º y 4º'},{v:'5º y 6º',t:'5º y 6º'} ], def:'3º y 4º' } ] },
+  unir: { title:'Unir con flechas', consigna:'Uní cada palabra con su definición.', single:true,
+    count:{ label:'Cantidad de palabras', options:[4,5,6,7,8,10], def:6 }, groups:[
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo' },
+    { id:'lado', label:'A la izquierda van', type:'single', options:[ {v:'izq-palabra',t:'Las palabras'},{v:'izq-pista',t:'Las definiciones'} ], def:'izq-palabra' } ] },
+  completar: { title:'Completar', consigna:'Completá con la palabra que corresponde.', single:true,
+    count:{ label:'Cantidad de palabras', options:[5,6,8,10,12], def:8 }, groups:[
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo' },
+    { id:'modo', label:'Qué completan', type:'single', options:[ {v:'definicion',t:'La palabra según la definición'},{v:'letras',t:'Las letras que faltan'} ], def:'definicion' },
+    { id:'banco', label:'Lista de palabras arriba', type:'single', options:[ {v:'si',t:'Sí'},{v:'no',t:'No'} ], def:'si', showIf:s=>s.modo==='definicion' },
+    { id:'pista', label:'Mostrar la definición como ayuda', type:'single', options:[ {v:'si',t:'Sí'},{v:'no',t:'No'} ], def:'si', showIf:s=>s.modo==='letras' } ] },
+  vf: { title:'Verdadero o falso', consigna:'Marcá V si es verdadero o F si es falso.', single:true,
+    count:{ label:'Cantidad de oraciones', options:[5,6,8,10,12], def:8 }, groups:[
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo' },
+    { id:'corregir', label:'Renglón para corregir las falsas', type:'single', options:[ {v:'si',t:'Sí'},{v:'no',t:'No'} ], def:'no' } ] },
+  ordenar: { title:'Ordenar letras', consigna:'Ordená las letras y descubrí la palabra.', single:true,
+    count:{ label:'Cantidad de palabras', options:[5,6,8,10,12], def:8 }, groups:[
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo' },
+    { id:'pista', label:'Mostrar la definición como ayuda', type:'single', options:[ {v:'si',t:'Sí'},{v:'no',t:'No'} ], def:'si' } ] },
+};
+
+const DESC = {
+  sumas:'Cuentas de sumar, con o sin llevar.', restas:'Cuentas de restar, con o sin pedir.',
+  mult:'Multiplicaciones por una o dos cifras.', div:'Divisiones exactas o con resto, con galera.',
+  numeracion:'Anterior y posterior, ordenar números y completar series.',
+  problemas:'Letras de problemas con espacio para datos, cálculo y respuesta.',
+  mental:'Tablas, dobles y mitades, complementos y diez más o diez menos.',
+  escribir:'Pasar de número a palabras y al revés, y descomponer.',
+  dinero:'Contar billetes y monedas uruguayos, dar vuelto y pagar justo.',
+  hora:'Leer y dibujar relojes, calcular cuánto falta, días y meses.',
+  sopaN:'Grilla con números escondidos, o con cuentas para resolver y buscar.',
+  sopaL:'Grilla con las palabras de un tema.', crucigrama:'Crucigrama armado con las palabras y pistas de un tema.',
+  unir:'Dos columnas para unir cada palabra con su definición.',
+  completar:'Escribir la palabra que corresponde a cada definición, o las letras que faltan.',
+  vf:'Oraciones sobre un tema para marcar verdadero o falso.',
+  ordenar:'Letras desordenadas para descubrir cada palabra.',
+  comprension:'Pegás un texto corto (cuento, noticia o texto informativo) para imprimirlo.',
+};
+const NOTAS = {
+  sumas:'Practicamos sumas. Si hay que llevar, empezá siempre por las unidades.',
+  restas:'Practicamos restas. Si arriba hay menos, se pide a la columna de al lado.',
+  mult:'Practicamos multiplicaciones. Repasar las tablas en voz alta ayuda mucho.',
+  div:'Practicamos divisiones. Para controlar: cociente × divisor + resto = dividendo.',
+  numeracion:'Practicamos el orden de los números. Leerlos en voz alta ayuda.',
+  problemas:'Leé cada problema dos veces y marcá los datos antes de hacer la cuenta.',
+  sopaN:'Buscamos números escondidos. Pueden estar en todas las direcciones indicadas.',
+  sopaL:'Repasamos palabras del tema. Después pueden usarlas para escribir oraciones.',
+  crucigrama:'Repasamos el tema. Si una palabra no sale, prueben con las que se cruzan.',
+  unir:'Repasamos lo trabajado en clase sobre el tema.',
+  completar:'Repasamos lo trabajado en clase sobre el tema.',
+  vf:'Repasamos lo trabajado en clase. Si es falsa, piensen por qué.',
+  ordenar:'Repasamos palabras del tema. Fíjense en la primera letra.',
+  mental:'Practicamos cálculo mental. Que lo resuelva sin escribir la cuenta.',
+  escribir:'Practicamos cómo se leen y se escriben los números.',
+  dinero:'Practicamos con dinero. Si tienen monedas en casa, pueden usarlas.',
+  hora:'Practicamos la hora. Si hay un reloj de agujas en casa, mírenlo juntos.',
+  comprension:'Leé el texto dos veces antes de responder.',
+};
+
+/* ================= Estado ================= */
+const state = { area:'mate', activity:'sumas', per:{}, data:null, view:'student' };
+const $ = id => document.getElementById(id);
+const cur = () => state.per[state.activity];
+
+/* ================= Bancos de temas ================= */
+let userBanks = [];
+function loadBanks(){ try{ userBanks = JSON.parse(localStorage.getItem('hojas-temas')||'[]') || []; }catch(e){ userBanks=[]; } }
+function saveBanks(){ try{ localStorage.setItem('hojas-temas', JSON.stringify(userBanks)); }catch(e){ flash('No se pudieron guardar los temas en este navegador.','err'); } }
+const allBanks = () => [...BUILTIN_BANKS, ...userBanks];
+const findBank = id => allBanks().find(b=>b.id===id) || BUILTIN_BANKS[0];
+const parseEntries = txt => txt.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
+  const m = l.match(/^(.+?)\s*(?:\s[-–—]\s|:)\s*(.+)$/);
+  return m ? { word:m[1].trim(), clue:m[2].trim() } : { word:l, clue:'' };
+});
+const entriesToText = es => es.map(e=> e.clue ? `${e.word} - ${e.clue}` : e.word).join('\n');
+
+function bankGroupUI(g, P){
+  const wrap=document.createElement('div');
+  const bank=findBank(P.sel[g.id]);
+  const opt = b => `<option value="${b.id}" ${b.id===bank.id?'selected':''}>${esc(b.name)} (${b.entries.length})</option>`;
+  wrap.innerHTML = `
+    <select id="bankSel" class="bank-sel">
+      <optgroup label="Temas incluidos">${BUILTIN_BANKS.map(opt).join('')}</optgroup>
+      ${userBanks.length?`<optgroup label="Mis temas">${userBanks.map(opt).join('')}</optgroup>`:''}
+    </select>
+    <div class="bank-btns">
+      <button type="button" class="mini" id="bankEdit">${bank.builtin?'Ver o copiar':'Editar'}</button>
+      <button type="button" class="mini" id="bankNew">Nuevo tema</button>
+      ${bank.builtin?'':'<button type="button" class="mini danger" id="bankDel">Borrar</button>'}
+    </div>
+    <div id="bankEditor" class="bank-editor" hidden></div>
+    <details class="bank-backup"><summary>Copia de seguridad de mis temas</summary>
+      <p>Tus temas quedan guardados en este navegador. Guardá una copia para pasarlos a otro dispositivo o no perderlos.</p>
+      <div class="bank-btns">
+        <button type="button" class="mini" id="bankExport">Guardar copia</button>
+        <label class="mini file">Cargar copia<input type="file" id="bankImport" accept=".json,application/json" hidden></label>
+      </div>
+    </details>`;
+  wrap.querySelector('#bankSel').onchange = e=>{ P.sel[g.id]=e.target.value; renderOptions(); regenerate(); };
+  wrap.querySelector('#bankEdit').onclick = ()=> openEditor(wrap, g, P, bank);
+  wrap.querySelector('#bankNew').onclick = ()=> openEditor(wrap, g, P, null);
+  const del = wrap.querySelector('#bankDel');
+  if (del) del.onclick = ()=>{
+    if (!del.dataset.sure){ del.dataset.sure='1'; del.textContent='¿Seguro? Tocá de nuevo'; return; }
+    userBanks = userBanks.filter(b=>b.id!==bank.id); saveBanks();
+    P.sel[g.id]=BUILTIN_BANKS[0].id; renderOptions(); regenerate(); flash('Tema borrado.','ok');
+  };
+  wrap.querySelector('#bankExport').onclick = exportBanks;
+  wrap.querySelector('#bankImport').onchange = e=> importBanks(e.target.files[0], g, P);
+  return wrap;
+}
+function openEditor(wrap, g, P, bank){
+  const ed = wrap.querySelector('#bankEditor'); ed.hidden=false;
+  const copy = bank && bank.builtin;
+  ed.innerHTML = `
+    ${copy?'<p class="note">Este tema viene incluido. Si lo cambiás, se guarda como una copia tuya.</p>':''}
+    <label class="field">Nombre del tema<input type="text" id="edName" maxlength="40" value="${bank?esc(bank.name)+(copy?' (mío)':''):''}"></label>
+    <label class="field">Palabras <span class="hint">· una por renglón; si querés, agregá la pista después de un guion</span>
+      <textarea id="edWords" rows="9" placeholder="estómago - órgano donde se mezclan los alimentos&#10;esófago - tubo que lleva el alimento al estómago&#10;boca">${bank?esc(entriesToText(bank.entries)):''}</textarea></label>
+    <div class="bank-btns">
+      <button type="button" class="mini primary" id="edSave">Guardar tema</button>
+      <button type="button" class="mini" id="edCancel">Cancelar</button>
+    </div>`;
+  ed.querySelector('#edCancel').onclick = ()=>{ ed.hidden=true; ed.innerHTML=''; };
+  ed.querySelector('#edSave').onclick = ()=>{
+    const name = ed.querySelector('#edName').value.trim();
+    const entries = parseEntries(ed.querySelector('#edWords').value);
+    if (!name){ flash('Poné un nombre al tema.','err'); return; }
+    if (entries.length<3){ flash('Escribí al menos 3 palabras.','err'); return; }
+    let id;
+    if (bank && !bank.builtin){ Object.assign(bank,{name,entries}); id=bank.id; }
+    else { id='u-'+Date.now().toString(36); userBanks.push({ id, name, entries }); }
+    saveBanks(); P.sel[g.id]=id; renderOptions(); regenerate(); flash('Tema guardado.','ok');
+  };
+  ed.querySelector('#edName').focus();
+}
+async function exportBanks(){
+  if (!userBanks.length){ flash('Todavía no creaste temas propios.','err'); return; }
+  const data = JSON.stringify({ app:'hojas-de-actividades', version:1, temas:userBanks }, null, 2);
+  if (downloads){
+    try{ await downloads.save({ filename:'mis_temas.json', data }); flash('Copia guardada.','ok'); }
+    catch(err){ if (!(err && err.code==='declined')) flash('No se pudo guardar la copia.','err'); }
+  } else fallbackDownload(new Blob([data],{type:'application/json'}),'mis_temas.json');
+}
+function importBanks(file, g, P){
+  if (!file) return;
+  const fr = new FileReader();
+  fr.onload = ()=>{
+    try{
+      const d = JSON.parse(fr.result), list = Array.isArray(d) ? d : d.temas;
+      if (!Array.isArray(list)) throw 0;
+      let n=0;
+      list.forEach(b=>{
+        if (!b || !b.name || !Array.isArray(b.entries)) return;
+        const entries = b.entries.filter(e=>e && e.word).map(e=>({ word:String(e.word), clue:String(e.clue||'') }));
+        const ex = userBanks.find(u=>u.id===b.id);
+        if (ex) Object.assign(ex,{ name:String(b.name), entries });
+        else userBanks.push({ id: b.id && String(b.id).startsWith('u-') ? b.id : 'u-'+Date.now().toString(36)+n, name:String(b.name), entries });
+        n++;
+      });
+      saveBanks(); renderOptions(); flash(`${n} tema(s) cargado(s).`,'ok');
+    }catch(e){ flash('Ese archivo no es una copia de temas válida.','err'); }
+  };
+  fr.readAsText(file);
+}
+
+/* ================= Comprensión lectora (Claude arma las preguntas) ================= */
+let sampleFn=null, compCtl=null;
+async function initSample(){
+  try{ if (window.claude && typeof window.claude.use==='function') sampleFn=await window.claude.use('sample'); }catch(e){ sampleFn=null; }
+  syncCompUI();
+}
+function syncCompUI(){
+  const go=document.getElementById('compGo'), note=document.getElementById('compNote'); if (!go) return;
+  if (!sampleFn){ go.hidden=true; note.textContent='Acá las preguntas no se arman solas: pegá el texto para imprimirlo y agregá tus preguntas a mano. (Con Claude, en el artefacto original, sí se arman automáticamente.)'; note.className='comp-note'; }
+  else go.hidden=false;
+}
+function compUI(P){
+  if (!P.comp) P.comp={ texto:'', preguntas:[] };
+  const wrap=document.createElement('div');
+  wrap.innerHTML=`
+    <textarea id="compText" class="comp-text" rows="8" maxlength="3500" placeholder="Pegá acá un cuento, una noticia o un texto informativo corto."></textarea>
+    <div class="bank-btns"><button type="button" class="btn primary" id="compGo">Armar preguntas con Claude</button>
+      <button type="button" class="mini" id="compStop" hidden>Detener</button></div>
+    <p class="comp-note" id="compNote"></p>`;
+  const ta=wrap.querySelector('#compText'); ta.value=P.comp.texto||'';
+  let tmo; ta.addEventListener('input',()=>{ P.comp.texto=ta.value; clearTimeout(tmo); tmo=setTimeout(()=>{ regenerate(); },500); });
+  wrap.querySelector('#compGo').onclick=()=>armarPreguntas(P);
+  wrap.querySelector('#compStop').onclick=()=>{ compCtl && compCtl.abort(); };
+  setTimeout(()=>{ syncCompUI(); if (sampleFn && (P.comp.preguntas||[]).length) $('compNote').textContent=`${P.comp.preguntas.length} preguntas listas. Podés pedir otras con el mismo botón.`; },0);
+  return wrap;
+}
+async function armarPreguntas(P){
+  const texto=(P.comp.texto||'').trim(), note=$('compNote'), go=$('compGo'), stop=$('compStop');
+  if (texto.length<80){ note.textContent='Pegá un texto un poco más largo (al menos un párrafo).'; note.className='comp-note err'; return; }
+  if (!sampleFn){ syncCompUI(); return; }
+  const tiposTxt={abierta:'"abierta" (pregunta para responder con sus palabras)', vf:'"vf" (afirmación verdadera o falsa)', completar:'"completar" (oración con una palabra que falta)', vocabulario:'"vocabulario" (significado de una palabra del texto)'};
+  const n=P.count, tipos=P.sel.tipos.map(t=>tiposTxt[t]).join(', ');
+  const prompt=`Sos docente de primaria en Uruguay. Leé el TEXTO y armá exactamente ${n} actividades de comprensión lectora para alumnos de ${P.sel.grado} año.
+Usá solo estos tipos y repartí la cantidad entre ellos: ${tipos}.
+Escribí en español del Uruguay (voseo: "respondé", "leé"), con oraciones cortas y claras. Todas las respuestas tienen que poder encontrarse o inferirse del texto. Si hay preguntas abiertas, incluí al menos una que pida inferir algo. En verdadero o falso, mezclá verdaderas y falsas.
+Respondé SOLO con un arreglo JSON, sin texto antes ni después. Cada elemento es uno de estos objetos:
+{"tipo":"abierta","enunciado":"¿pregunta?","respuesta":"respuesta esperada breve"}
+{"tipo":"vf","enunciado":"afirmación sobre el texto","verdadero":true,"correccion":"si es falsa, cómo es en realidad; si es verdadera, cadena vacía"}
+{"tipo":"completar","enunciado":"oración tomada o adaptada del texto con ____ donde va la palabra","respuesta":"palabra que falta"}
+{"tipo":"vocabulario","palabra":"palabra del texto","respuesta":"significado sencillo, según cómo se usa en el texto"}
+
+TEXTO:
+<<<
+${texto.slice(0,3500)}
+>>>`;
+  compCtl=new AbortController(); go.disabled=true; stop.hidden=false;
+  note.textContent='Claude Haiku está leyendo el texto y armando las preguntas…'; note.className='comp-note';
+  try{
+    const arr=await sampleFn.json(prompt,{ signal:compCtl.signal, cache:false, model:'claude-haiku-5-5', modelTier:'quick' });
+    const ok=(Array.isArray(arr)?arr:[]).filter(q=>q && typeof q==='object' && ['abierta','vf','completar','vocabulario'].includes(q.tipo)
+      && (q.tipo==='vocabulario' ? q.palabra : q.enunciado)).map(q=>({ tipo:q.tipo, enunciado:String(q.enunciado||''), respuesta:String(q.respuesta||''),
+        palabra:String(q.palabra||''), verdadero:q.verdadero===true, correccion:String(q.correccion||'') }));
+    if (!ok.length) throw { code:'invalid_json' };
+    P.comp.preguntas=ok; regenerate();
+    note.textContent=`${ok.length} preguntas listas. Revisalas en la vista previa; si querés otras, tocá el botón de nuevo.`; note.className='comp-note ok';
+  }catch(e){
+    const msg={ cancelled:'Se detuvo. Podés volver a intentarlo.', not_granted:'Para usar esta función hay que permitir que la app consulte a Claude.',
+      rate_limited:'Se hicieron muchos pedidos seguidos. Esperá un rato y probá de nuevo.', invalid_json:'Claude no devolvió las preguntas en el formato esperado. Probá de nuevo.',
+      refused:'Claude no pudo trabajar con ese texto. Probá con otro.', session_expired:'Tu sesión venció: volvé a iniciar sesión en Claude.' }[e&&e.code]
+      || 'No se pudieron armar las preguntas. Probá de nuevo en un momento.';
+    note.textContent=msg; note.className='comp-note err';
+    if (e && (e.code==='not_granted' || e.code==='sampling_disabled')){ sampleFn=null; syncCompUI(); }
+  }finally{ go.disabled=false; stop.hidden=true; }
+}
+
+function ensurePer(id){
+  const A = ACTIVITIES[id];
+  if (state.per[id]){
+    // opciones guardadas de una versión anterior: completar lo que falte y descartar valores que ya no existen
+    const P=state.per[id]; P.sel=P.sel||{};
+    A.groups.forEach(g=>{
+      if (!g.options) return;
+      const valid=g.options.map(o=>o.v), def=Array.isArray(g.def)?[...g.def]:g.def;
+      if (g.type==='multi'){ const v=(Array.isArray(P.sel[g.id])?P.sel[g.id]:[]).filter(x=>valid.includes(x)); P.sel[g.id]=v.length?v:def; }
+      else if (!valid.includes(P.sel[g.id])) P.sel[g.id]=def;
+    });
+    A.groups.filter(g=>g.type==='bank').forEach(g=>{ if (!P.sel[g.id]) P.sel[g.id]=g.def; });
+    if (typeof P.title!=='string') P.title=A.title;
+    if (typeof P.consigna!=='string') P.consigna=A.consigna;
+    if (!A.count.options.includes(P.count)) P.count=A.count.def;
+    return P;
+  }
+  const sel={};
+  A.groups.forEach(g=> sel[g.id] = Array.isArray(g.def) ? [...g.def] : g.def);
+  return state.per[id] = { sel, title:A.title, consigna:A.consigna, count:A.count.def, nota:NOTAS[id]||'' };
+}
+function loadSaved(){
+  try{
+    const s = JSON.parse(localStorage.getItem('hojas-v2') || 'null');
+    if (!s) return;
+    if (s.per) state.per = s.per;
+    if (s.activity && ACTIVITIES[s.activity]){ state.activity=s.activity; state.area = CATALOG.find(a=>a.items.some(i=>i.id===s.activity)).id; }
+    if (s.order) $('order').value = s.order;
+    if (typeof s.withKey==='boolean') $('withKey').checked = s.withKey;
+    if (typeof s.upper==='boolean') OPT.upper=s.upper;
+    if ([1,1.2,1.4].includes(s.scale)) OPT.scale=s.scale;
+    OPT.tarea=!!s.tarea; OPT.media=!!s.media; if ([1,2,3,4].includes(s.versions)) OPT.versions=s.versions;
+  }catch(e){}
+}
+function save(){
+  try{ localStorage.setItem('hojas-v2', JSON.stringify({ per:state.per, activity:state.activity, order:$('order').value, withKey:$('withKey').checked, upper:OPT.upper, scale:OPT.scale, tarea:OPT.tarea, media:OPT.media, versions:OPT.versions })); }catch(e){}
+}
+
+/* ================= Menús ================= */
+const ICONS={
+  mate:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 4v6M4 7h6M14 7h6M5 15l4 4M9 15l-4 4M14 15h6M14 19h6"/></svg>',
+  sopas:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg>',
+  cruci:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9h12v6H3zM9 3h6v18H9z"/></svg>',
+  repaso:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 7 2 2 4-4M4 16l2 2 4-4M14 7h6M14 16h6"/></svg>',
+};
+function renderAreas(){
+  const box=$('areas'); box.innerHTML='';
+  document.body.dataset.area=state.area;
+  CATALOG.forEach(a=>{
+    const b=document.createElement('button'); b.type='button';
+    b.className='area'+(a.id===state.area?' sel':''); b.dataset.a=a.id;
+    b.setAttribute('role','tab'); b.setAttribute('aria-selected', a.id===state.area);
+    b.innerHTML=`<span class="ic" aria-hidden="true">${ICONS[a.icon]}</span><b>${a.name}</b><small>${a.desc}</small>`;
+    b.onclick=()=>{ state.area=a.id; renderAreas(); renderItems(); };
+    box.appendChild(b);
+  });
+}
+function renderItems(){
+  const area=CATALOG.find(a=>a.id===state.area), box=$('items'); box.innerHTML='';
+  area.items.forEach(it=>{
+    const b=document.createElement('button'); b.type='button';
+    b.className='item'+(it.id===state.activity?' sel':'');
+    b.innerHTML = it.name + (it.ready?'':'<span class="soon">Pronto</span>');
+    if (!it.ready) b.disabled=true;
+    else b.onclick=()=>selectActivity(it.id);
+    box.appendChild(b);
+  });
+}
+function selectActivity(id){
+  state.previewCombo=false;
+  state.activity=id; ensurePer(id);
+  renderItems(); renderOptions(); renderSheetFields(); regenerate();
+  $('actDesc').textContent=DESC[id]||'';
+  $('regenTxt').textContent = ['sopaN','sopaL','crucigrama','unir','completar','vf','ordenar'].includes(id) ? 'Mezclar de nuevo' : 'Cambiar los ejercicios';
+  $('regen').hidden = id==='comprension';
+}
+function renderOptions(){
+  const A=ACTIVITIES[state.activity], P=cur(), box=$('opts'); box.innerHTML='';
+  A.groups.forEach(g=>{
+    if (P.sel[g.id]===undefined) P.sel[g.id] = Array.isArray(g.def)?[...g.def]:g.def;
+    if (g.showIf && !g.showIf(P.sel)) return;
+    const wrap=document.createElement('div'); wrap.className='group';
+    wrap.innerHTML=`<h4>${g.label} ${g.type==='multi'?'<span class="hint">· podés marcar varias</span>':''}</h4>`;
+    if (g.type==='comp'){ wrap.appendChild(compUI(P)); box.appendChild(wrap); return; }
+    if (g.type==='bank'){
+      if (!allBanks().some(b=>b.id===P.sel[g.id])) P.sel[g.id]=BUILTIN_BANKS[0].id;
+      wrap.appendChild(bankGroupUI(g,P)); box.appendChild(wrap); return;
+    }
+    const opts=document.createElement('div'); opts.className='opts';
+    g.options.forEach(o=>{
+      const lab=document.createElement('label'); lab.className='opt';
+      const inp=document.createElement('input');
+      inp.type = g.type==='multi'?'checkbox':'radio'; inp.name='g_'+g.id;
+      inp.checked = g.type==='multi' ? P.sel[g.id].includes(o.v) : P.sel[g.id]===o.v;
+      inp.onchange=()=>{
+        if (g.type==='multi'){
+          const arr=P.sel[g.id];
+          if (inp.checked){ if(!arr.includes(o.v)) arr.push(o.v); }
+          else {
+            if (arr.length===1){ inp.checked=true; flash(`Tiene que quedar al menos una opción en "${g.label}".`,'err'); return; }
+            arr.splice(arr.indexOf(o.v),1);
+          }
+        } else P.sel[g.id]=o.v;
+        if (A.groups.some(x=>x.showIf)) renderOptions();
+        regenerate();
+      };
+      const sp=document.createElement('span'); sp.textContent=o.t;
+      lab.append(inp,sp); opts.appendChild(lab);
+    });
+    wrap.appendChild(opts); box.appendChild(wrap);
+  });
+}
+function renderSheetFields(){
+  const A=ACTIVITIES[state.activity], P=cur();
+  if (P.nota===undefined) P.nota=NOTAS[state.activity]||'';
+  $('title').value=P.title; $('consigna').value=P.consigna; $('nota').value=P.nota;
+  $('countLabel').textContent=A.count.label;
+  $('count').innerHTML = A.count.options.map(n=>`<option ${n==P.count?'selected':''}>${n}</option>`).join('');
+  $('orderField').style.display = A.single ? 'none' : '';
+}
+
+/* ================= Diseño de la hoja (mm, A4) =================
+   Lista de elementos que se dibuja igual en la vista previa (SVG)
+   y en el PDF (jsPDF).                                              */
+const PAGE_W=210, PAGE_H=297, RED='#c0392b', S=6.5, RS=8.5, F=18;
+let M=15;
+let W=PAGE_W, H=PAGE_H;          // se achican al agrandar la letra (la hoja se escala)
+let SH=null;                      // hoja que se está dibujando: {activity,title,consigna,sel,data}
+const OPT={ upper:false, scale:1, tarea:false, media:false, versions:1 };
+
+function header(els, isKey, pageNo, total){
+  const P=SH, title=P.title.trim()||'Actividades';
+  const ttl = isKey?'Respuestas · '+title:title;
+  els.push({t:'text', x:W/2, y:22, s:Math.min(20, 20*(W-2*M)/measure(ttl,20)), str:ttl, b:true, a:'center'});
+  if (P.version){
+    const lab='Versión '+P.version, tw=measure(lab,9)+7;
+    els.push({t:'rect', x:M, y:6.2, w:tw, h:6.6, r:3.3, stroke:'#16223F', lw:.5, fill:'#ffffff'});
+    els.push({t:'text', x:M+tw/2, y:10.9, s:9, str:lab, a:'center', b:true});
+  }
+  if (!isKey){
+    if (OPT.tarea){
+      const tw=measure('TAREA DOMICILIARIA',8)+6;
+      els.push({t:'rect', x:W-M-tw, y:6.5, w:tw, h:6, r:3, fill:'#16223F'});
+      els.push({t:'text', x:W-M-tw/2, y:10.7, s:8, str:'TAREA DOMICILIARIA', a:'center', b:true, c:'#ffffff'});
+    }
+    const lab = OPT.tarea ? 'Entregar el:' : 'Fecha:';
+    els.push({t:'text', x:M, y:35, s:12, str:'Nombre:'});
+    const fw=measure(lab,12)+2, fx=W-M-Math.max(58, fw+30), nw=measure('Nombre:',12)+2;
+    els.push({t:'line', x1:M+nw, y1:35.8, x2:fx-8, y2:35.8, w:.3, c:'#555'});
+    els.push({t:'text', x:fx, y:35, s:12, str:lab});
+    els.push({t:'line', x1:fx+fw, y1:35.8, x2:W-M, y2:35.8, w:.3, c:'#555'});
+    if (P.consigna.trim()) wrapText(P.consigna.trim(),12,W-2*M).forEach((ln,j)=> els.push({t:'text', x:M, y:46+j*5, s:12, str:ln}));
+  } else els.push({t:'text', x:W/2, y:31, s:11, str:'Para el docente', a:'center', c:'#777'});
+  const ry=headerTop(isKey)-6;
+  els.push({t:'line', x1:M, y1:ry, x2:W-M, y2:ry, w:.4, c:'#bbb'});
+  if (total>1) els.push({t:'text', x:W/2, y:H-4, s:8, str:`Página ${pageNo} de ${total}`, a:'center', c:'#888'});
+  if (OPT.tarea && !isKey) footer(els);
+}
+/* Dónde empieza el contenido: la consigna larga ocupa más de un renglón */
+function headerTop(isKey){
+  const c=(SH.consigna||'').trim();
+  if (isKey || !c) return 56;
+  return 56 + (wrapText(c,12,W-2*M).length-1)*5;
+}
+function scaleEl(e,f){
+  const o={...e};
+  if (o.t==='text'){ o.x*=f; o.y*=f; o.s*=f; }
+  else if (o.t==='line'){ o.x1*=f; o.y1*=f; o.x2*=f; o.y2*=f; o.w=(o.w||.3)*Math.sqrt(f); }
+  else if (o.t==='rect'){ o.x*=f; o.y*=f; o.w*=f; o.h*=f; o.r=(o.r||0)*f; o.lw=(o.lw||.3)*Math.sqrt(f); }
+  return o;
+}
+/* Dibuja una lista (pistas, palabras) y, si no entra en el alto disponible, la achica hasta que entre */
+function fitDraw(els, build, y, avail){
+  const W0=W, M0=M; let f=1, obj=build();
+  for (let i=0; i<8 && obj.h*f>avail && f>.45; i++){ f=Math.max(.45, f*Math.max(.7, avail/(obj.h*f))*.98); W=W0/f; M=M0/f; obj=build(); }
+  const tmp=[]; obj.draw(tmp, y/f); W=W0; M=M0;
+  tmp.forEach(e=>els.push(scaleEl(e,f)));
+}
+const contentEnd = () => H - (OPT.tarea && (SH.nota||'').trim() ? 23 : 13);
+function footer(els){
+  const nota=(SH.nota||'').trim();
+  if (!nota) return;
+  const y0=H-21;
+  els.push({t:'line', x1:M, y1:y0, x2:W-M, y2:y0, w:.25, c:'#bbb'});
+  els.push({t:'text', x:M, y:y0+5, s:9, b:true, str:'Para la familia:'});
+  wrapText(nota,9,W-2*M).slice(0,2).forEach((ln,j)=> els.push({t:'text', x:M, y:y0+9.3+j*3.8, s:9, str:ln, c:'#333'}));
+}
+
+const HW={'0':.556,'1':.556,'2':.556,'3':.556,'4':.556,'5':.556,'6':.556,'7':.556,'8':.556,'9':.556,'+':.584,'-':.333,'×':.584,'÷':.584,'=':.584,' ':.278};
+function measure(str,size){
+  const t = OPT.upper ? String(str).toUpperCase() : String(str);
+  return [...t].reduce((w,ch)=> w + (HW[ch] || (/[A-ZÁÉÍÓÚÑÜ]/.test(ch)?.69 : /[a-záéíóúñü]/.test(ch)?.52 : /[.,;:!¡¿?'"()]/.test(ch)?.3 : .556)),0)*size*0.3528;
+}
+const textW=measure;
+const digitsRow=(els,num,rightX,y,opts={})=> String(num).split('').reverse().forEach((dg,k)=>
+  els.push({t:'text', x:rightX-k*S, y, s:F, str:dg, f:'courier', a:'center', ...opts}));
+
+/* Cuenta parada: suma, resta, multiplicación */
+function vertHeight(ex){ return 13 + (ex.rows.length-1)*RS + 3.2 + ex.space*RS + 7; }
+function cellVert(els, ex, idx, cx, cy, cellW, isKey){
+  const rightX = cx + cellW - 12;
+  els.push({t:'text', x:cx+2, y:cy+5, s:10, str:(idx+1)+')', c:'#888'});
+  const maxLen=Math.max(...ex.rows.map(a=>String(a).length));
+  ex.rows.forEach((a,j)=>{
+    const y=cy+13+j*RS; digitsRow(els,a,rightX,y);
+    if (j===ex.rows.length-1) els.push({t:'text', x:rightX-maxLen*S, y, s:F, str:ex.sign, f:'courier', a:'center'});
+  });
+  const lineY=cy+13+(ex.rows.length-1)*RS+3.2;
+  const resLen=String(ex.result).length, width=Math.max(maxLen+1,resLen);
+  els.push({t:'line', x1:rightX-(width-.5)*S-1, y1:lineY, x2:rightX+S/2+1, y2:lineY, w:.5, c:'#222'});
+  if (ex.midLine){
+    const y2=lineY+(ex.space-1)*RS+3.2;
+    els.push({t:'line', x1:rightX-(width-.5)*S-1, y1:y2, x2:rightX+S/2+1, y2:y2, w:.3, c:'#999'});
+  }
+  if (isKey) digitsRow(els, ex.result, rightX, lineY+ex.space*RS, {c:RED, b:true});
+}
+
+/* División con galera (método uruguayo) */
+function divHeight(ex){ return 24 + String(ex.q).length*12; }
+function cellDiv(els, ex, idx, cx, cy, cellW, isKey){
+  els.push({t:'text', x:cx+1, y:cy+5, s:10, str:(idx+1)+')', c:'#888'});
+  const x0=cx+10, y=cy+13, dl=String(ex.dividend).length;
+  String(ex.dividend).split('').forEach((dg,k)=> els.push({t:'text', x:x0+k*S, y, s:F, str:dg, f:'courier', a:'center'}));
+  const xv = x0+(dl-1)*S+S/2+3;
+  const qx = xv+3+S/2, wide=Math.max(String(ex.divisor).length, String(ex.q).length);
+  String(ex.divisor).split('').forEach((dg,k)=> els.push({t:'text', x:qx+k*S, y, s:F, str:dg, f:'courier', a:'center'}));
+  els.push({t:'line', x1:xv, y1:y-6.5, x2:xv, y2:y+11, w:.5, c:'#222'});
+  els.push({t:'line', x1:xv, y1:y+2.5, x2:qx+(wide-1)*S+S/2+3, y2:y+2.5, w:.5, c:'#222'});
+  if (isKey){
+    String(ex.q).split('').forEach((dg,k)=> els.push({t:'text', x:qx+k*S, y:y+10, s:F, str:dg, f:'courier', a:'center', c:RED, b:true}));
+    els.push({t:'text', x:qx-S/2, y:y+19, s:11, str:'resto: '+ex.r, c:RED, b:true});
+  }
+}
+
+/* En línea */
+function cellLinea(els, ex, idx, cx, cy, cellW, isKey){
+  const FS=15;
+  els.push({t:'text', x:cx, y:cy+8, s:10, str:(idx+1)+')', c:'#888'});
+  els.push({t:'text', x:cx+8, y:cy+8, s:FS, str:ex.expr});
+  const start=cx+8+textW(ex.expr,FS)+2.5;
+  const end = ex.resto ? start+18 : cx+cellW-6;
+  els.push({t:'line', x1:start, y1:cy+9, x2:end, y2:cy+9, w:.3, c:'#444'});
+  if (isKey) els.push({t:'text', x:start+2, y:cy+8, s:FS, str:ex.ans, c:RED, b:true});
+  if (ex.resto){
+    els.push({t:'text', x:end+3, y:cy+8, s:11, str:'resto'});
+    els.push({t:'line', x1:end+14, y1:cy+9, x2:cx+cellW-6, y2:cy+9, w:.3, c:'#444'});
+    if (isKey) els.push({t:'text', x:end+16, y:cy+8, s:FS, str:ex.ansR, c:RED, b:true});
+  }
+}
+
+function layoutOps(exs, isKey){
+  const fmt=SH.sel.formato, startY=headerTop(isKey), endY=contentEnd();
+  let cols, hOf, draw;
+  if (fmt==='linea'){
+    const need=ex=> 8+measure(ex.expr,15)+2.5+(ex.resto ? 18+3+14+measure(ex.ansR,15)+8 : measure(ex.ans,15)+8);
+    cols = (W>=160 && Math.max(...exs.map(need)) <= (W-2*M)/2) ? 2 : 1; hOf=()=>15; draw=cellLinea; }
+  else if (exs[0] && exs[0].kind==='div'){ cols=W>=160?2:1; hOf=divHeight; draw=cellDiv; }
+  else { cols=W>=140?3:2; hOf=vertHeight; draw=cellVert; }
+  const cellW=(W-2*M)/cols;
+  // filas con altura propia (la del ejercicio más alto de la fila)
+  const rows=[];
+  for (let i=0;i<exs.length;i+=cols) rows.push(exs.slice(i,i+cols).map((ex,k)=>({ex, idx:i+k})));
+  const pageRows=[[]]; let y=startY;
+  rows.forEach(r=>{
+    const h=Math.max(...r.map(o=>hOf(o.ex)));
+    if (y+h>endY && pageRows[pageRows.length-1].length){ pageRows.push([]); y=startY; }
+    pageRows[pageRows.length-1].push({r, y}); y+=h;
+  });
+  return pageRows.map((pr,p)=>{
+    const els=[]; header(els,isKey,p+1,pageRows.length);
+    pr.forEach(({r,y})=> r.forEach((o,k)=> draw(els, o.ex, o.idx, M+k*cellW, y, cellW, isKey)));
+    return els;
+  });
+}
+
+/* Sopas (letras y números) */
+function wrapText(str, size, maxW){
+  const words=String(str).split(/\s+/), lines=[]; let line='';
+  words.forEach(w=>{ const t=line?line+' '+w:w; if (measure(t,size)>maxW && line){ lines.push(line); line=w; } else line=t; });
+  if (line) lines.push(line); return lines;
+}
+function sopaList(d, isKey){
+  const n=d.items.length, TL=wrapText(d.listTitle,12,W-2*M), tOff=(TL.length-1)*5;
+  const title=(els,y)=> TL.forEach((ln,j)=> els.push({t:'text', x:M, y:y+j*5, s:12, b:true, str:ln}));
+  if (d.mode==='pistas'){
+    const availW=W-2*M-8-50;
+    const blocks=d.items.map(it=>({ it, lines:wrapText(it.label,11,availW) }));
+    const h=10+tOff+blocks.reduce((t,b)=>t+b.lines.length*4.8+4.5,0);
+    return { h, draw(els,y){
+      title(els,y); let cy=y+9+tOff;
+      blocks.forEach((b,k)=>{
+        els.push({t:'text', x:M, y:cy, s:11, b:true, str:(k+1)+'.'});
+        b.lines.forEach((ln,j)=> els.push({t:'text', x:M+7, y:cy+j*4.8, s:11, str:ln}));
+        els.push({t:'line', x1:W-M-46, y1:cy+.8, x2:W-M, y2:cy+.8, w:.3, c:'#444'});
+        if (isKey) els.push({t:'text', x:W-M-44, y:cy, s:11, str:b.it.answer, c:RED, b:true});
+        cy+=b.lines.length*4.8+4.5;
+      });
+    }};
+  }
+  let cols = d.mode==='cuentas'?3 : (d.items.every(it=>/^\d+$/.test(it.label))?4:3);
+  const widest=Math.max(...d.items.map(it=>measure(it.label+(d.mode==='cuentas'?' =':''),13))) + (d.mode==='cuentas'?32:9);
+  while (cols>1 && widest>(W-2*M)/cols) cols--;
+  const cw=(W-2*M)/cols, h=10+tOff+Math.ceil(n/cols)*9;
+  return { h, draw(els,y){
+    title(els,y);
+    d.items.forEach((it,k)=>{
+      const cx=M+(k%cols)*cw, cy=y+9+tOff+Math.floor(k/cols)*9;
+      els.push({t:'rect', x:cx, y:cy-3.8, w:4, h:4, stroke:'#444', lw:.3});
+      if (d.mode==='cuentas'){
+        const expr=it.label+' =';
+        els.push({t:'text', x:cx+6.5, y:cy, s:13, str:expr});
+        const st=cx+6.5+textW(expr,13)+2;
+        els.push({t:'line', x1:st, y1:cy+.8, x2:cx+cw-5, y2:cy+.8, w:.3, c:'#444'});
+        if (isKey) els.push({t:'text', x:st+1.5, y:cy, s:13, str:it.answer, c:RED, b:true});
+      } else els.push({t:'text', x:cx+6.5, y:cy, s:12, str:it.label});
+    });
+  }};
+}
+function sopaGrid(els, d, cell, isKey, y0){
+  const gw=cell*d.size, x0=(W-gw)/2;
+  const hl=new Set(); if (isKey) d.items.forEach(it=>it.cells.forEach(([r,c])=>hl.add(r+','+c)));
+  for (let r=0;r<d.size;r++) for (let c=0;c<d.size;c++){
+    const on=hl.has(r+','+c);
+    if (on) els.push({t:'rect', x:x0+c*cell+.6, y:y0+r*cell+.6, w:cell-1.2, h:cell-1.2, r:1.5, fill:'#f6cfc9'});
+    els.push({t:'text', x:x0+c*cell+cell/2, y:y0+r*cell+cell*.7, s:cell*.52/0.3528, str:d.grid[r][c], f:'courier', a:'center', b:on, c:on?RED:'#111'});
+  }
+  for (let i=0;i<=d.size;i++){
+    const edge=(i===0||i===d.size), w=edge?.6:.2, col=edge?'#222':'#aaa';
+    els.push({t:'line', x1:x0, y1:y0+i*cell, x2:x0+gw, y2:y0+i*cell, w, c:col});
+    els.push({t:'line', x1:x0+i*cell, y1:y0, x2:x0+i*cell, y2:y0+gw, w, c:col});
+  }
+  return y0+gw;
+}
+function layoutSopa(d, isKey){
+  const y0=headerTop(isKey), endY=contentEnd(), list=sopaList(d,isKey);
+  const full=Math.min(12, (W-40)/d.size);
+  const fit=Math.min(full, (endY-y0-list.h-8)/d.size);
+  if (fit>=(W<160?6.2:7.5)){
+    const els=[]; header(els,isKey,1,1);
+    const yb=sopaGrid(els,d,fit,isKey,y0); list.draw(els,yb+8);
+    return [els];
+  }
+  const p1=[], p2=[]; header(p1,isKey,1,2); header(p2,isKey,2,2);
+  sopaGrid(p1,d,Math.min(full,(endY-y0)/d.size),isKey,y0); fitDraw(p2, ()=>sopaList(d,isKey), y0+4, endY-y0-4);
+  return [p1,p2];
+}
+
+/* Crucigrama */
+function cruciClues(d, isKey){
+  const colW=(W-2*M-8)/2, FS=10.5, LH=4.4;
+  const showLen = SH.sel.largo!=='no';
+  const mk = dir => d.words.filter(w=>w.dir===dir).sort((a,b)=>a.num-b.num)
+    .map(w=>({ num:w.num, lines:wrapText(w.clue + (showLen?` (${w.key.length})`:''), FS, colW-7) }));
+  const H_=mk('h'), V_=mk('v');
+  const colH = list => 7 + list.reduce((t,it)=>t+it.lines.length*LH+1.8,0);
+  let banco=null, bancoH=0;
+  if (d.ayuda==='banco'){
+    banco=wrapText(d.bancoWords.join('   ·   '), 11, W-2*M);
+    bancoH=9+banco.length*5;
+  }
+  const h=Math.max(colH(H_),colH(V_))+4+bancoH;
+  return { h, draw(els,y){
+    [[H_,'Horizontales →',M],[V_,'Verticales ↓',M+colW+8]].forEach(([list,title,x])=>{
+      els.push({t:'text', x, y, s:12, b:true, str:title.replace(/ [→↓]/,'')});
+      let cy=y+7;
+      list.forEach(it=>{
+        els.push({t:'text', x, y:cy, s:FS, b:true, str:it.num+'.'});
+        it.lines.forEach((ln,j)=> els.push({t:'text', x:x+7, y:cy+j*LH, s:FS, str:ln}));
+        cy+=it.lines.length*LH+1.8;
+      });
+    });
+    if (banco){
+      let by=y+Math.max(colH(H_),colH(V_))+6;
+      els.push({t:'text', x:M, y:by, s:11, b:true, str:'Palabras para usar:'});
+      banco.forEach((ln,j)=> els.push({t:'text', x:M, y:by+6+j*5, s:11, str:ln}));
+    }
+  }};
+}
+function cruciGrid(els, d, cell, isKey, y0){
+  const gw=cell*d.cols, x0=(W-gw)/2;
+  const firsts=new Set(d.words.map(w=>w.r+','+w.c));
+  const nums={}; d.words.forEach(w=> nums[w.r+','+w.c]=w.num);
+  for (let r=0;r<d.rows;r++) for (let c=0;c<d.cols;c++){
+    const L=d.grid[r][c]; if (!L) continue;
+    const x=x0+c*cell, y=y0+r*cell;
+    els.push({t:'rect', x, y, w:cell, h:cell, fill:'#ffffff', stroke:'#333', lw:.35});
+    const n=nums[r+','+c];
+    if (n) els.push({t:'text', x:x+.7, y:y+cell*.3, s:Math.max(5.5,cell*.3/0.3528), str:String(n), c:'#333'});
+    if (isKey) els.push({t:'text', x:x+cell/2, y:y+cell*.78, s:cell*.55/0.3528, str:L, a:'center', b:true, c:RED});
+    else if (d.ayuda==='primera' && firsts.has(r+','+c)) els.push({t:'text', x:x+cell/2, y:y+cell*.78, s:cell*.55/0.3528, str:L, a:'center', c:'#999'});
+  }
+  return y0+cell*d.rows;
+}
+function layoutCruci(d, isKey){
+  const y0=headerTop(isKey), endY=contentEnd();
+  if (!d.words.length){ const els=[]; header(els,isKey,1,1); return [els]; }
+  const clues=cruciClues(d,isKey);
+  const full=Math.min(11, (W-30)/d.cols, (endY-y0)/d.rows);
+  const fit=Math.min(full, (endY-y0-clues.h-8)/d.rows);
+  if (fit>=(W<160?5.6:6.5)){
+    const els=[]; header(els,isKey,1,1);
+    const yb=cruciGrid(els,d,fit,isKey,y0); clues.draw(els,yb+9);
+    return [els];
+  }
+  const p1=[],p2=[]; header(p1,isKey,1,2); header(p2,isKey,2,2);
+  cruciGrid(p1,d,full,isKey,y0); fitDraw(p2, ()=>cruciClues(d,isKey), y0+4, endY-y0-4);
+  return [p1,p2];
+}
+
+/* ================= Bloques (repaso y numeración) ================= */
+const FSB=11.5, LHB=5;
+const numLabel=(els,idx,x,y)=> els.push({t:'text', x, y, s:FSB, b:true, str:(idx+1)+'.'});
+const BLOCKS = {
+  banco:{ h:(it,w)=>12+wrapText(it.words.join('   ·   '),12,w-10).length*5.5,
+    draw(els,it,idx,x,y,w){ const lines=wrapText(it.words.join('   ·   '),12,w-10);
+      els.push({t:'rect', x, y, w, h:8+lines.length*5.5, r:2.5, stroke:'#999', lw:.4});
+      lines.forEach((ln,j)=> els.push({t:'text', x:x+w/2, y:y+6.5+j*5.5, s:12, str:ln, a:'center', b:true})); } },
+  definicion:{ h:(it,w)=> w<110 ? wrapText(it.clue,FSB,w-8).length*LHB+13 : wrapText(it.clue,FSB,w-62).length*LHB+6,
+    draw(els,it,idx,x,y,w,isKey){ numLabel(els,idx,x,y+4);
+      const narrow=w<110, L=wrapText(it.clue,FSB,narrow?w-8:w-62);
+      L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln}));
+      const lx=narrow?x+8:x+w-50, ly=narrow? y+4+L.length*LHB+3 : y+4.8;
+      els.push({t:'line', x1:lx, y1:ly, x2:narrow?x+8+50:x+w, y2:ly, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:lx+2, y:ly-.8, s:FSB, str:it.answer, c:RED, b:true}); } },
+  letras:{ h:(it,w)=>13+(it.clue?wrapText(it.clue,10,w-10).length*4.3:0)+3,
+    draw(els,it,idx,x,y,w,isKey){ numLabel(els,idx,x,y+7);
+      const sp=Math.min(7,(w-12)/it.chars.length), hide=new Set(it.hide);
+      it.chars.forEach((ch,k)=>{ const cx=x+10+k*sp+sp/2; if (ch===' ') return;
+        if (hide.has(k)){ els.push({t:'line', x1:cx-sp*.38, y1:y+8, x2:cx+sp*.38, y2:y+8, w:.4, c:'#333'});
+          if (isKey) els.push({t:'text', x:cx, y:y+7, s:15, str:ch, f:'courier', a:'center', c:RED, b:true}); }
+        else els.push({t:'text', x:cx, y:y+7, s:15, str:ch, f:'courier', a:'center', b:true}); });
+      if (it.clue) wrapText(it.clue,10,w-10).forEach((ln,j)=>els.push({t:'text', x:x+10, y:y+13.5+j*4.3, s:10, str:ln, c:'#666'})); } },
+  vf:{ h:(it,w)=>wrapText(it.text,FSB,w-32).length*LHB+5+(it.corregir?8:0),
+    draw(els,it,idx,x,y,w,isKey){ numLabel(els,idx,x,y+4); const L=wrapText(it.text,FSB,w-32);
+      L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln}));
+      [['V',true],['F',false]].forEach(([t,v],k)=>{ const bx=x+w-17+k*9;
+        const mark = isKey && it.ok===v;
+        els.push({t:'rect', x:bx, y:y-.5, w:7, h:7, r:1, stroke: mark?RED:'#444', lw: mark?.8:.3, fill: mark?'#f6cfc9':undefined});
+        els.push({t:'text', x:bx+3.5, y:y+4.6, s:11, str:t, a:'center', b:true, c: mark?RED:'#111'}); });
+      if (it.corregir){ const ly=y+L.length*LHB+5;
+        els.push({t:'line', x1:x+8, y1:ly, x2:x+w-22, y2:ly, w:.3, c:'#888'});
+        if (isKey && !it.ok) els.push({t:'text', x:x+9, y:ly-1, s:10.5, str:it.fix, c:RED, b:true}); } } },
+  anagrama:{ h:(it,w)=>(it.clue?wrapText(it.clue,FSB,w-10).length*LHB+1:0)+16,
+    draw(els,it,idx,x,y,w,isKey){ numLabel(els,idx,x,y+4); let cy=y;
+      if (it.clue){ const L=wrapText(it.clue,FSB,w-10); L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln})); cy+=L.length*LHB+1; }
+      const bs=Math.min(7.5,(w-12)/it.mix.length);
+      it.mix.forEach((ch,k)=>{ const bx=x+8+k*bs;
+        els.push({t:'rect', x:bx, y:cy+1, w:bs-1, h:bs-1, r:1, stroke:'#666', lw:.3, fill:'#f4f4f4'});
+        els.push({t:'text', x:bx+(bs-1)/2, y:cy+1+(bs-1)*.75, s:Math.min(14,(bs-1)*.65/0.3528), str:ch, f:'courier', a:'center', b:true}); });
+      const ly=cy+15;
+      els.push({t:'line', x1:x+8, y1:ly, x2:x+Math.min(w,95), y2:ly, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:x+10, y:ly-1, s:FSB, str:it.answer, c:RED, b:true}); } },
+  unir:{ h(it,w){ return unirRows(it,w).reduce((t,r)=>t+r.h,0)+2; },
+    draw(els,it,idx,x,y,w,isKey){ const rows=unirRows(it,w), lw=w*(it.wideLeft?.43:.27), gap=w*.17;
+      const lx=x+lw+2, rx=lx+gap; let cy=y; const ys=[];
+      rows.forEach(r=>{ ys.push(cy);
+        r.L.forEach((ln,j)=>els.push({t:'text', x, y:cy+4+j*4.6, s:11, str:ln}));
+        r.R.forEach((ln,j)=>els.push({t:'text', x:rx+4, y:cy+4+j*4.6, s:11, str:ln}));
+        els.push({t:'rect', x:lx-1.2, y:cy+1.9, w:2.4, h:2.4, r:1.2, fill:'#222'});
+        els.push({t:'rect', x:rx-1.2, y:cy+1.9, w:2.4, h:2.4, r:1.2, fill:'#222'});
+        cy+=r.h; });
+      if (isKey) it.match.forEach((ri,li)=> els.push({t:'line', x1:lx, y1:ys[li]+3.1, x2:rx, y2:ys[ri]+3.1, w:.6, c:RED})); } },
+  ordenarNum:{ full:true, h:()=>23,
+    draw(els,it,idx,x,y,w,isKey){ numLabel(els,idx,x,y+4);
+      els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str: it.tipo==='creciente'?'Ordená de menor a mayor:':'Ordená de mayor a menor:'});
+      const cw=(w-8)/5;
+      it.nums.forEach((n,k)=> els.push({t:'text', x:x+8+cw*k+cw/2, y:y+11, s:14, str:String(n), a:'center'}));
+      const sign = it.tipo==='creciente'?'<':'>';
+      it.sorted.forEach((n,k)=>{ const cx=x+8+cw*k;
+        els.push({t:'line', x1:cx+3, y1:y+20, x2:cx+cw-6, y2:y+20, w:.3, c:'#444'});
+        if (k<4) els.push({t:'text', x:cx+cw-1.5, y:y+19.5, s:13, str:sign, a:'center', b:true});
+        if (isKey) els.push({t:'text', x:cx+(cw-3)/2, y:y+19, s:12, str:String(n), a:'center', c:RED, b:true}); }); } },
+  antpos:{ h:()=>13,
+    draw(els,it,idx,x,y,w,isKey){ numLabel(els,idx,x,y+6);
+      const mid=x+8+(w-8)/2, half=Math.min(30,(w-8)/2-12);
+      els.push({t:'line', x1:mid-12-half, y1:y+7, x2:mid-12, y2:y+7, w:.3, c:'#444'});
+      els.push({t:'rect', x:mid-10, y:y-.5, w:20, h:9, r:2, stroke:'#666', lw:.3, fill:'#f4f4f4'});
+      els.push({t:'text', x:mid, y:y+6, s:13, str:String(it.n), a:'center', b:true});
+      els.push({t:'line', x1:mid+12, y1:y+7, x2:mid+12+half, y2:y+7, w:.3, c:'#444'});
+      if (isKey){ els.push({t:'text', x:mid-12-half/2, y:y+6, s:12, str:String(it.n-1), a:'center', c:RED, b:true});
+                  els.push({t:'text', x:mid+12+half/2, y:y+6, s:12, str:String(it.n+1), a:'center', c:RED, b:true}); } } },
+  serie:{ full:true, h:()=>13,
+    draw(els,it,idx,x,y,w,isKey){ numLabel(els,idx,x,y+6);
+      const cw=(w-10)/it.seq.length, bl=new Set(it.blanks);
+      it.seq.forEach((n,k)=>{ const cx=x+10+cw*k;
+        if (bl.has(k)){ els.push({t:'line', x1:cx+2, y1:y+7, x2:cx+cw-6, y2:y+7, w:.3, c:'#444'});
+          if (isKey) els.push({t:'text', x:cx+(cw-4)/2, y:y+6, s:12, str:String(n), a:'center', c:RED, b:true}); }
+        else els.push({t:'text', x:cx+(cw-4)/2, y:y+6, s:13, str:String(n), a:'center'});
+        if (k<it.seq.length-1) els.push({t:'text', x:cx+cw-2.5, y:y+6, s:13, str:',', a:'center'}); }); } },
+};
+BLOCKS.problema = { full:true,
+  h(it,w){ return wrapText(it.text,FSB,w-8).length*LHB + 2 + (it.modo==='completo'?25:22) + 11; },
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    const L=wrapText(it.text,FSB,w-8);
+    L.forEach((ln,j)=> els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln}));
+    const by=y+L.length*LHB+1.5, bh=it.modo==='completo'?25:22, bx=x+8, bw=w-8;
+    let cx=bx, cw=bw;
+    if (it.modo==='completo'){
+      const dw=bw*.3;
+      els.push({t:'rect', x:bx, y:by, w:dw, h:bh, r:2, stroke:'#9aa3b5', lw:.3});
+      els.push({t:'text', x:bx+2.5, y:by+4.5, s:8.5, str:'Datos', c:'#6b7488', b:true});
+      cx=bx+dw+4; cw=bw-dw-4;
+    }
+    els.push({t:'rect', x:cx, y:by, w:cw, h:bh, r:2, stroke:'#9aa3b5', lw:.3});
+    els.push({t:'text', x:cx+2.5, y:by+4.5, s:8.5, str:'Cálculo', c:'#6b7488', b:true});
+    if (isKey) it.calc.forEach((c,j)=> els.push({t:'text', x:cx+4, y:by+11+j*6, s:12, str:c, c:RED, b:true}));
+    const ry=by+bh+7.5, rl=measure('Respuesta:',FSB)+2;
+    els.push({t:'text', x:bx, y:ry, s:FSB, b:true, str:'Respuesta:'});
+    els.push({t:'line', x1:bx+rl, y1:ry+.8, x2:x+w, y2:ry+.8, w:.3, c:'#444'});
+    if (isKey) els.push({t:'text', x:bx+rl+1.5, y:ry, s:Math.min(FSB, FSB*(x+w-bx-rl-3)/measure(it.resp,FSB)), str:it.resp, c:RED, b:true});
+  } };
+/* Oración con espacios para completar: arma renglones y ubica cada espacio */
+function fillLines(parts, w, size){
+  const toks=[];
+  parts.forEach(p=>{
+    if (typeof p==='string') p.split(/\s+/).filter(Boolean).forEach(t=>toks.push({t}));
+    else if (p.b!==undefined) toks.push({blank:true, ans:p.b, w:p.w});
+    else String(p.t).split(/\s+/).forEach(t=>toks.push({t, bold:p.bold}));
+  });
+  const lines=[[]]; let x=0; const sp=measure(' ',size);
+  toks.forEach(k=>{
+    let tw = k.blank ? (k.w==='rest' ? Math.max(40, w-x-sp) : k.w) : measure(k.t,size);
+    if (x>0 && x+sp+tw>w){ lines.push([]); x=0; if (k.blank && k.w==='rest') tw=w; }
+    if (x>0) x+=sp + (k.blank?1.5:0);
+    lines[lines.length-1].push({...k, x, tw}); x+=tw + (k.blank?1.5:0);
+  });
+  // las palabras seguidas se dibujan como un solo texto (espaciado natural)
+  return lines.map(ln=>{ const out=[];
+    ln.forEach(k=>{ const last=out[out.length-1];
+      if (!k.blank && last && !last.blank && !!last.bold===!!k.bold) last.t+=' '+k.t; else out.push({...k}); });
+    return out; });
+}
+BLOCKS.fill = {
+  h(it,w){ return fillLines(it.parts,w-8,FSB).length*6.6+4; },
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4.5);
+    fillLines(it.parts,w-8,FSB).forEach((ln,j)=>{ const by=y+4.5+j*6.6;
+      ln.forEach(k=>{ const kx=x+8+k.x;
+        if (!k.blank){ els.push({t:'text', x:kx, y:by, s:FSB, str:k.t, b:!!k.bold}); return; }
+        els.push({t:'line', x1:kx, y1:by+.9, x2:kx+k.tw, y2:by+.9, w:.3, c:'#444'});
+        if (isKey){ const fs=Math.min(FSB, FSB*(k.tw-2)/Math.max(1,measure(k.ans,FSB)));
+          els.push({t:'text', x:kx+k.tw/2, y:by, s:fs, str:k.ans, a:'center', c:RED, b:true}); }
+      });
+    });
+  } };
+const BILL_W=25, BILL_H=12.5, COIN_D=11.5;
+function moneyRows(money,w){
+  const rows=[[]]; let x=0;
+  money.forEach(v=>{ const mw=BILLETES.has(v)?BILL_W:COIN_D; if (x+mw>w && x>0){ rows.push([]); x=0; } rows[rows.length-1].push({v,x,mw}); x+=mw+3; });
+  return rows;
+}
+BLOCKS.dinero = { full:true,
+  h(it,w){ const tl=wrapText(it.text,FSB,w-8).length, mr=it.money.length?moneyRows(it.money,w-8).length:0;
+    return tl*LHB + (mr? mr*(BILL_H+3)+3 : 0) + (it.mode==='pagar'?24:12) + 2; },
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    const L=wrapText(it.text,FSB,w-8); L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln}));
+    let cy=y+L.length*LHB+1.5;
+    if (it.money.length){
+      moneyRows(it.money,w-8).forEach(row=>{
+        row.forEach(m=>{ const mx=x+8+m.x;
+          if (BILLETES.has(m.v)){
+            els.push({t:'rect', x:mx, y:cy, w:BILL_W, h:BILL_H, r:1.2, stroke:'#2b3a55', lw:.45, fill:'#eef2f8'});
+            els.push({t:'rect', x:mx+1.4, y:cy+1.4, w:BILL_W-2.8, h:BILL_H-2.8, r:.8, stroke:'#9aa7bf', lw:.25});
+            els.push({t:'text', x:mx+BILL_W/2, y:cy+BILL_H/2+1.6, s:12, str:'$'+m.v, a:'center', b:true});
+          } else {
+            const off=(BILL_H-COIN_D)/2;
+            els.push({t:'rect', x:mx, y:cy+off, w:COIN_D, h:COIN_D, r:COIN_D/2, stroke:'#5b4a1f', lw:.45, fill:'#f5efdc'});
+            els.push({t:'text', x:mx+COIN_D/2, y:cy+off+COIN_D/2+1.3, s:9, str:'$'+m.v, a:'center', b:true});
+          }
+        });
+        cy+=BILL_H+3;
+      });
+      cy+=1;
+    }
+    if (it.mode==='pagar'){
+      els.push({t:'rect', x:x+8, y:cy+1, w:w-8, h:13, r:2, stroke:'#9aa3b5', lw:.3});
+      if (isKey) els.push({t:'text', x:x+11, y:cy+9, s:11, str:it.ans, c:RED, b:true});
+      cy+=15;
+    }
+    if (it.mode!=='pagar'){
+      const ry=cy+6, rl=measure('Respuesta:',FSB)+2;
+      els.push({t:'text', x:x+8, y:ry, s:FSB, b:true, str:'Respuesta:'});
+      els.push({t:'line', x1:x+8+rl, y1:ry+.8, x2:x+8+rl+40, y2:ry+.8, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:x+8+rl+2, y:ry, s:FSB, str:it.ans, c:RED, b:true});
+    }
+  } };
+function clockHands(els, cx, cy, r, h, m, col, wmul=1){
+  const ah=((h%12)+m/60)*Math.PI/6, am=m*Math.PI/30;
+  els.push({t:'line', x1:cx, y1:cy, x2:cx+r*.5*Math.sin(ah), y2:cy-r*.5*Math.cos(ah), w:1.1*wmul, c:col});
+  els.push({t:'line', x1:cx, y1:cy, x2:cx+r*.78*Math.sin(am), y2:cy-r*.78*Math.cos(am), w:.7*wmul, c:col});
+}
+BLOCKS.reloj = {
+  h(it,w){ const r=Math.min(15,w/2-7); return 2*r+17; },
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    const r=Math.min(15,w/2-7), cx=x+w/2, cy=y+r+2;
+    els.push({t:'rect', x:cx-r, y:cy-r, w:2*r, h:2*r, r, stroke:'#222', lw:.6, fill:'#ffffff'});
+    for (let k=0;k<60;k++){ const a=k*Math.PI/30, big=k%5===0, r1=r-(big?1.8:.9);
+      els.push({t:'line', x1:cx+r1*Math.sin(a), y1:cy-r1*Math.cos(a), x2:cx+(r-.3)*Math.sin(a), y2:cy-(r-.3)*Math.cos(a), w:big?.35:.15, c:'#333'}); }
+    for (let k=1;k<=12;k++){ const a=k*Math.PI/6, rr=r-4.4;
+      els.push({t:'text', x:cx+rr*Math.sin(a), y:cy-rr*Math.cos(a)+1.2, s:Math.max(6,r*.5), str:String(k), a:'center', b:true}); }
+    if (it.mode==='leer') clockHands(els,cx,cy,r,it.h,it.m,'#111');
+    else if (isKey) clockHands(els,cx,cy,r,it.h,it.m,RED);
+    els.push({t:'rect', x:cx-.9, y:cy-.9, w:1.8, h:1.8, r:.9, fill:'#111'});
+    const ly=cy+r+8;
+    if (it.mode==='leer'){
+      els.push({t:'line', x1:cx-14, y1:ly+.8, x2:cx+14, y2:ly+.8, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:cx, y:ly, s:12, str:it.label, a:'center', c:RED, b:true});
+    } else els.push({t:'text', x:cx, y:ly, s:13, str:it.label, a:'center', b:true});
+  } };
+BLOCKS.texto = { full:true,
+  h(it,w){ return wrapText(it.text,12,w).length*5.6+3; },
+  draw(els,it,idx,x,y,w){ wrapText(it.text,12,w).forEach((ln,j)=> els.push({t:'text', x, y:y+4.5+j*5.6, s:12, str:ln})); } };
+BLOCKS.abierta = { full:true,
+  h(it,w){ return wrapText(it.text,FSB,w-8).length*LHB + (it.lines||2)*8.5 + 2; },
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    const L=wrapText(it.text,FSB,w-8); L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln, b:true}));
+    const n=it.lines||2, y0=y+L.length*LHB+1;
+    for (let k=0;k<n;k++) els.push({t:'line', x1:x+8, y1:y0+(k+1)*8.5, x2:x+w, y2:y0+(k+1)*8.5, w:.25, c:'#888'});
+    if (isKey) wrapText(it.ans,10.5,w-10).slice(0,n).forEach((ln,j)=> els.push({t:'text', x:x+9, y:y0+(j+1)*8.5-1.2, s:10.5, str:ln, c:RED, b:true}));
+  } };
+function unirRows(it,w){
+  const lw=w*(it.wideLeft?.43:.27), rw=w-lw-2-w*.17-4;
+  return it.left.map((t,i)=>{ const L=wrapText(t,11,lw-3), R=wrapText(it.right[i],11,rw);
+    return { L, R, h:Math.max(L.length,R.length)*4.6+6 }; });
+}
+function layoutBlocks(d, isKey){
+  const startY=headerTop(isKey), endY=contentEnd(), cols=W>=160?(d.cols||1):((d.cols||1)>1 && d.items.some(it=>(it.type==='fill'||it.type==='reloj') && !it.full) ? 2 : 1), cw=(W-2*M-(cols-1)*8)/cols, fullW=W-2*M;
+  const rows=[]; let curRow=[];
+  let num=0;
+  d.items.forEach((it,i)=>{
+    const o={it, idx: it.type==='texto' ? -1 : num++};
+    if (cols===1 || it.full || BLOCKS[it.type].full){ if (curRow.length){ rows.push(curRow); curRow=[]; } rows.push([o]); }
+    else { curRow.push(o); if (curRow.length===cols){ rows.push(curRow); curRow=[]; } }
+  });
+  if (curRow.length) rows.push(curRow);
+  const pages=[[]]; let y=startY;
+  if (d.top){ const h=BLOCKS[d.top.type].h(d.top,fullW); pages[0].push({top:true,y,h}); y+=h+6; }
+  rows.forEach(r=>{
+    const single = r.length===1 && (cols===1 || r[0].it.full || BLOCKS[r[0].it.type].full);
+    const w = single ? fullW : cw;
+    let h = Math.max(...r.map(o=>BLOCKS[o.it.type].h(o.it,w))) + 4, f=1;
+    // un bloque más alto que la hoja se achica hasta que entre
+    const avail=endY-startY;
+    if (r.length===1 && h>avail){
+      const B=BLOCKS[r[0].it.type];
+      for (let i=0;i<8 && h>avail && f>.45;i++){ f=Math.max(.45, f*Math.max(.7, avail/h)*.98); h=(B.h(r[0].it,w/f)+4)*f; }
+    }
+    if (y+h>endY && pages[pages.length-1].length){ pages.push([]); y=startY; }
+    pages[pages.length-1].push({r,y,w,f}); y+=h;
+  });
+  return pages.map((pg,p)=>{
+    const els=[]; header(els,isKey,p+1,pages.length);
+    pg.forEach(e=>{
+      if (e.top) return BLOCKS[d.top.type].draw(els,d.top,0,M,e.y,fullW,isKey);
+      if (e.f<1){ const tmp=[], o=e.r[0]; BLOCKS[o.it.type].draw(tmp,o.it,o.idx,M/e.f,e.y/e.f,e.w/e.f,isKey); tmp.forEach(x=>els.push(scaleEl(x,e.f))); return; }
+      e.r.forEach((o,k)=> BLOCKS[o.it.type].draw(els,o.it,o.idx,M+k*(cw+8),e.y,e.w,isKey));
+    });
+    return els;
+  });
+}
+
+function snapshot(){
+  const P=cur();
+  return JSON.parse(JSON.stringify({ activity:state.activity, title:P.title, consigna:P.consigna, nota:P.nota, sel:P.sel, data:state.data,
+    variants: (state.variants && state.variants.length>1) ? state.variants : null }));
+}
+/* Dibuja una hoja: con letra más grande se arma sobre una hoja "más chica" y después se escala a A4 */
+function renderSheet(snap, isKey, pw=PAGE_W, ph=PAGE_H){
+  const k=OPT.scale; SH=snap; W=pw/k; H=ph/k;
+  const d=snap.data;
+  let pages;
+  try{
+    pages = d.kind==='blocks' ? layoutBlocks(d,isKey) : d.kind==='sopa' ? layoutSopa(d,isKey) : d.kind==='cruci' ? layoutCruci(d,isKey) : layoutOps(d.list,isKey);
+  } finally { W=PAGE_W; H=PAGE_H; M=15; }
+  return pages.map(els=>els.map(e=>{
+    const o=scaleEl(e,k);
+    if (o.t==='text' && OPT.upper) o.str=String(o.str).toUpperCase();
+    return o;
+  }));
+}
+/* Páginas listas para mostrar o imprimir: {w,h,els}. Media hoja = A4 apaisada con dos copias. */
+const LETRAS_V='ABCDEF';
+function sheetPages(snap, isKey){
+  if (snap.variants && snap.variants.length>1)
+    return snap.variants.flatMap((v,i)=> sheetPagesOne({ ...snap, data:v, variants:null, version:LETRAS_V[i] }, isKey));
+  return sheetPagesOne(snap, isKey);
+}
+function sheetPagesOne(snap, isKey){
+  if (OPT.media && !isKey){
+    return renderSheet(snap,false,PAGE_H/2,PAGE_W).map(els=>{
+      const half=PAGE_H/2, shifted=els.map(e=>{ const o={...e};
+        if (o.t==='line'){ o.x1+=half; o.x2+=half; } else o.x+=half; return o; });
+      return { w:PAGE_H, h:PAGE_W, els:[...els, ...shifted,
+        {t:'line', x1:half, y1:3, x2:half, y2:PAGE_W-3, w:.3, c:'#9aa3b5', dash:true}] };
+    });
+  }
+  return renderSheet(snap,isKey).map(els=>({ w:PAGE_W, h:PAGE_H, els }));
+}
+const layout = isKey => sheetPages(snapshot(), isKey);
+
+/* ================= Vista previa (SVG) ================= */
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function toSVG(pg){
+  const els=pg.els;
+  const out=[`<svg viewBox="0 0 ${pg.w} ${pg.h}" xmlns="http://www.w3.org/2000/svg"><rect width="${pg.w}" height="${pg.h}" fill="#fff"/>`];
+  els.forEach(e=>{
+    if (e.t==='line') out.push(`<line x1="${e.x1}" y1="${e.y1}" x2="${e.x2}" y2="${e.y2}" stroke="${e.c||'#000'}" stroke-width="${e.w||.3}"${e.dash?' stroke-dasharray="2 1.6"':''}/>`);
+    else if (e.t==='rect') out.push(`<rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="${e.r||0}" fill="${e.fill||'none'}" stroke="${e.stroke||'none'}" stroke-width="${e.lw||.3}"/>`);
+    else {
+      const anchor=e.a==='center'?'middle':e.a==='right'?'end':'start';
+      const fam=e.f==='courier'?"'Courier New',Courier,monospace":'Helvetica,Arial,sans-serif';
+      out.push(`<text x="${e.x}" y="${e.y}" font-size="${(e.s*0.3528).toFixed(3)}" font-family="${fam}" font-weight="${e.b?700:400}" text-anchor="${anchor}" fill="${e.c||'#111'}">${esc(e.str)}</text>`);
+    }
+  });
+  out.push('</svg>'); return out.join('');
+}
+function describeData(act, d){
+  if (d.kind==='ops') return d.list.length+' ejercicios';
+  if (d.kind==='sopa') return d.items.length+(act==='sopaL'?' palabras':' números')+' para buscar';
+  if (d.kind==='cruci') return d.words.length+' palabras';
+  const its=d.items.filter(it=>it.type!=='texto');
+  if (its[0] && its[0].type==='unir') return its[0].left.length+' pares para unir';
+  if (act==='comprension') return its.length+' preguntas';
+  if (act==='problemas') return its.length+' problemas';
+  return its.length+' ejercicios';
+}
+function renderPreview(){
+  if (state.previewWeek && state.week && state.week.length){
+    $('comboBanner').hidden=false; $('bannerTxt').textContent='Estás viendo la tarea de la semana.';
+    const pages=weekPages(state.week, state.view==='key');
+    $('pages').innerHTML = pages.map(p=>`<div class="page">${toSVG(p)}</div>`).join('');
+    $('meta').textContent = `${state.week.length} días, ${weekPages(state.week,false).length} hojas`;
+    return;
+  }
+  state.previewWeek=false;
+  if (state.previewCombo && combo.length){
+    $('bannerTxt').textContent='Estás viendo la hoja combinada completa.';
+    $('comboBanner').hidden=false;
+    const pages=combo.flatMap(sn=>sheetPages(sn, state.view==='key'));
+    $('pages').innerHTML = pages.map(p=>`<div class="page">${toSVG(p)}</div>`).join('');
+    const n=combo.reduce((t,sn)=>t+sheetPages(sn,false).length,0);
+    $('meta').textContent = `${combo.length} actividades, ${n} hojas`;
+    return;
+  }
+  state.previewCombo=false; $('comboBanner').hidden=true;
+  if (!state.data) return;
+  $('pages').innerHTML = layout(state.view==='key').map(p=>`<div class="page">${toSVG(p)}</div>`).join('');
+  const n=layout(false).length, d=state.data;
+  const what = describeData(state.activity, d);
+  const nv=(state.variants||[]).length;
+  $('meta').textContent = `${n} ${n===1?'hoja':'hojas'}`;
+  const nk = $('withKey').checked ? layout(true).length : 0;
+  $('summary').textContent = `${what}${nv>1?` × ${nv} versiones`:''}. ${n} ${n===1?'hoja':'hojas'} para imprimir${nk?` y ${nk} de respuestas`:''}.`;
+}
+
+/* ================= PDF ================= */
+function hex(c){ c=(c||'#000000').replace('#',''); if(c.length===3)c=c.split('').map(x=>x+x).join(''); return [0,2,4].map(i=>parseInt(c.substr(i,2),16)); }
+function buildPDF(snaps, week){
+  const { jsPDF } = window.jspdf;
+  const all=[];
+  if (week){ all.push(...weekPages(snaps,false)); if ($('withKey').checked) all.push(...weekPages(snaps,true)); }
+  else {
+    snaps.forEach(sn=> all.push(...sheetPages(sn,false)));
+    if ($('withKey').checked) snaps.forEach(sn=> all.push(...sheetPages(sn,true)));
+  }
+  const orient=p=> p.w>p.h?'l':'p';
+  const doc=new jsPDF({unit:'mm', format:'a4', orientation:orient(all[0])});
+  all.forEach((pg,i)=>{
+    if (i) doc.addPage('a4', orient(pg));
+    pg.els.forEach(e=>{
+      if (e.t==='line'){ doc.setDrawColor(...hex(e.c)); doc.setLineWidth(e.w||.3);
+        if (e.dash) doc.setLineDashPattern([2,1.6],0);
+        doc.line(e.x1,e.y1,e.x2,e.y2);
+        if (e.dash) doc.setLineDashPattern([],0); }
+      else if (e.t==='rect'){
+        let style='';
+        if (e.fill){ doc.setFillColor(...hex(e.fill)); style+='F'; }
+        if (e.stroke){ doc.setDrawColor(...hex(e.stroke)); doc.setLineWidth(e.lw||.3); style = style ? 'FD' : 'S'; }
+        if (e.r) doc.roundedRect(e.x,e.y,e.w,e.h,e.r,e.r,style); else doc.rect(e.x,e.y,e.w,e.h,style);
+      } else {
+        doc.setFont(e.f||'helvetica', e.b?'bold':'normal'); doc.setFontSize(e.s);
+        doc.setTextColor(...hex(e.c||'#111111')); doc.text(e.str, e.x, e.y, {align:e.a||'left'});
+      }
+    });
+  });
+
+  return doc.output('blob');
+}
+
+let downloads=null;
+async function initDownloads(){
+  try{ if (window.claude && typeof window.claude.use==='function') downloads=await window.claude.use('downloads'); }catch(e){ downloads=null; }
+}
+async function doDownload(snaps, baseName, week){
+  if (!window.jspdf){ flash('No se pudo cargar el generador de PDF. Recargá la página.','err'); return; }
+  const blob=buildPDF(snaps, week);
+  const name=(baseName||'actividades').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'_')+'.pdf';
+  if (downloads){
+    try{ await downloads.save({filename:name, data:blob}); flash('PDF listo.','ok'); }
+    catch(err){
+      if (err && err.code==='declined') flash('Descarga cancelada.','');
+      else if (err && err.code==='rate_limited') flash('Esperá un momento y probá de nuevo.','err');
+      else fallbackDownload(blob,name);
+    }
+  } else fallbackDownload(blob,name);
+}
+function fallbackDownload(blob,name){
+  try{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); flash('PDF listo.','ok'); }
+  catch(e){ flash('Este navegador no permitió la descarga. Probá con otro navegador.','err'); }
+}
+
+/* ================= Varios ================= */
+let flashT;
+function flash(text,kind){ const m=$('msg'); m.textContent=text; m.className='msg '+(kind||''); clearTimeout(flashT); flashT=setTimeout(()=>{m.textContent='';},4000); }
+
+function buildData(actId, P, count){
+  const A=ACTIVITIES[actId];
+  const res=GEN[actId](P.sel, count, { bank: P.sel.tema ? findBank(P.sel.tema) : null, comp:P.comp });
+  if (!Array.isArray(res)) return res;
+  if ($('order').value==='facil') res.sort((a,b)=>a.diff-b.diff); else shuffle(res);
+  return (res[0] && res[0].type) ? { kind:'blocks', cols:A.cols||2, items:res } : { kind:'ops', list:res };
+}
+function regenerate(){
+  state.previewCombo=false; state.previewWeek=false;
+  const P=cur(), A=ACTIVITIES[state.activity];
+  P.count=parseInt($('count').value,10)||A.count.def;
+  const makeOne=()=> buildData(state.activity, P, P.count);
+  // varias versiones: misma configuración, números (o palabras) distintos
+  state.variants = Array.from({length:OPT.versions}, makeOne);
+  state.data = state.variants[0];
+  renderPreview(); save();
+  if (state.data.warn) flash(state.data.warn,'err');
+}
+
+$('regen').onclick=regenerate;
+$('download').onclick=()=>doDownload([snapshot()], cur().title.trim());
+$('count').onchange=regenerate;
+$('order').onchange=regenerate;
+$('withKey').onchange=save;
+$('title').addEventListener('input',()=>{ cur().title=$('title').value; renderPreview(); save(); });
+$('consigna').addEventListener('input',()=>{ cur().consigna=$('consigna').value; renderPreview(); save(); });
+$('tabStudent').onclick=()=>{ state.view='student'; $('tabStudent').classList.add('sel'); $('tabKey').classList.remove('sel'); renderPreview(); };
+$('tabKey').onclick=()=>{ state.view='key'; $('tabKey').classList.add('sel'); $('tabStudent').classList.remove('sel'); renderPreview(); };
+
+/* ================= Hoja combinada ================= */
+let combo=[];
+function loadCombo(){ try{ combo=JSON.parse(localStorage.getItem('hojas-combinada')||'[]')||[]; }catch(e){ combo=[]; } }
+function saveCombo(){ try{ localStorage.setItem('hojas-combinada', JSON.stringify(combo)); }catch(e){} }
+const actName = id => CATALOG.flatMap(a=>a.items).find(i=>i.id===id)?.name || id;
+function comboSummary(sn){
+  return describeData(sn.activity, sn.data) + (sn.variants ? `, ${sn.variants.length} versiones` : '');
+}
+function renderCombo(){
+  const ul=$('comboList'); ul.innerHTML='';
+  combo.forEach((sn,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<div class="row"><div class="txt"><b>${esc(sn.title||actName(sn.activity))}</b><small>${esc(actName(sn.activity))}, ${comboSummary(sn)}</small></div>
+      <button type="button" class="mini" data-a="up" ${i===0?'disabled':''} aria-label="Subir">↑</button>
+      <button type="button" class="mini" data-a="down" ${i===combo.length-1?'disabled':''} aria-label="Bajar">↓</button>
+      <button type="button" class="mini danger" data-a="del" aria-label="Quitar">✕</button></div>`;
+    li.querySelectorAll('button').forEach(b=> b.onclick=()=>{
+      const a=b.dataset.a;
+      if (a==='up') [combo[i-1],combo[i]]=[combo[i],combo[i-1]];
+      if (a==='down') [combo[i+1],combo[i]]=[combo[i],combo[i+1]];
+      if (a==='del') combo.splice(i,1);
+      saveCombo(); renderCombo(); if (state.previewCombo) renderPreview();
+    });
+    ul.appendChild(li);
+  });
+  const has=combo.length>0;
+  $('comboActions').hidden=!has; $('comboClear').hidden=!has;
+  $('comboHint').hidden=has;
+  $('comboChip').hidden=!has; $('comboCount').textContent=combo.length;
+  $('comboSub').textContent = has ? `${combo.length} ${combo.length===1?'actividad guardada':'actividades guardadas'}` : 'Varias actividades distintas en un solo PDF';
+  if (!has && state.previewCombo){ state.previewCombo=false; renderPreview(); }
+}
+$('addCombo').onclick=()=>{
+  if (!state.data) return;
+  combo.push(snapshot()); saveCombo(); renderCombo(); $('comboPanel').open=true;
+  flash(`Sumada a la hoja combinada (ya tiene ${combo.length}). Ahora elegí otra actividad en el paso 1.`,'ok');
+};
+$('comboView').onclick=()=>{ state.previewCombo=true; state.previewWeek=false; renderPreview(); window.scrollTo({top:0,behavior:'smooth'}); };
+$('comboBack').onclick=()=>{ state.previewCombo=false; state.previewWeek=false; renderPreview(); };
+$('comboDownload').onclick=()=> doDownload(combo, 'hoja_combinada');
+$('comboClear').onclick=()=>{
+  const b=$('comboClear');
+  if (!b.dataset.sure){ b.dataset.sure='1'; b.textContent='¿Seguro? Tocá de nuevo para vaciar'; setTimeout(()=>{ delete b.dataset.sure; b.textContent='Vaciar la hoja combinada'; },4000); return; }
+  delete b.dataset.sure; b.textContent='Vaciar la hoja combinada';
+  combo=[]; saveCombo(); renderCombo();
+};
+
+$('comboChip').onclick=()=>{ $('comboPanel').open=true; $('comboPanel').scrollIntoView({behavior:'smooth', block:'start'}); };
+$('withKey').addEventListener('change',()=>renderPreview());
+try{ if (!localStorage.getItem('hojas-intro')) $('intro').hidden=false; }catch(e){ $('intro').hidden=false; }
+$('introOk').onclick=()=>{ $('intro').hidden=true; try{ localStorage.setItem('hojas-intro','1'); }catch(e){} };
+$('mView').onclick=()=> $('preview').scrollIntoView({behavior:'smooth', block:'start'});
+$('mDownload').onclick=()=> state.previewWeek ? $('weekDownload').click() : state.previewCombo ? $('comboDownload').click() : $('download').click();
+
+/* ================= Tarea de la semana ================= */
+const DIAS_SEM=['Lunes','Martes','Miércoles','Jueves','Viernes'];
+const CORTA={ sumas:6, restas:6, mult:6, div:4, numeracion:6, problemas:2, mental:10, escribir:6, dinero:3, hora:6,
+  sopaN:6, sopaL:6, crucigrama:5, unir:5, completar:5, vf:5, ordenar:5 };
+let week={ dias:4, acts:['sumas','problemas','mental','sopaL','unir'], largo:'corta' };
+function loadWeek(){ try{ const w=JSON.parse(localStorage.getItem('hojas-semana')||'null'); if (w && Array.isArray(w.acts)) week={...week,...w}; }catch(e){} }
+function saveWeek(){ try{ localStorage.setItem('hojas-semana', JSON.stringify(week)); }catch(e){} }
+function renderWeekUI(){
+  const opts = CATALOG.map(a=>`<optgroup label="${a.name}">`+a.items.filter(i=>i.ready && CORTA[i.id]).map(i=>`<option value="${i.id}">${i.name}</option>`).join('')+'</optgroup>').join('');
+  $('weekDays').innerHTML = DIAS_SEM.slice(0,week.dias).map((d,i)=>`
+    <label class="week-row"><span>${d}</span>
+      <select data-i="${i}"><option value="">Sin tarea</option>${opts}</select></label>`).join('');
+  $('weekDays').querySelectorAll('select').forEach(sel=>{
+    sel.value = week.acts[sel.dataset.i] || '';
+    sel.onchange=()=>{ week.acts[sel.dataset.i]=sel.value; saveWeek(); };
+  });
+  $('weekLen').value=String(week.dias); $('weekSize').value=week.largo;
+}
+function armarSemana(){
+  const out=[];
+  for (let i=0;i<week.dias;i++){
+    const id=week.acts[i]; if (!id || !ACTIVITIES[id]) continue;
+    const P=ensurePer(id), A=ACTIVITIES[id];
+    const count = week.largo==='corta' ? CORTA[id] : (P.count||A.count.def);
+    const data=buildData(id, P, count);
+    out.push(JSON.parse(JSON.stringify({ activity:id, title:`${DIAS_SEM[i]}: ${P.title||A.title}`, consigna:P.consigna, nota:P.nota, sel:P.sel, data })));
+  }
+  return out;
+}
+/* Semana: con media hoja, dos días por A4 (lunes y martes, miércoles y jueves…) */
+function weekPages(snaps, isKey){
+  if (isKey || !OPT.media) return snaps.flatMap(sn=> renderSheet(sn,isKey).map(els=>({w:PAGE_W,h:PAGE_H,els})));
+  const halves=snaps.flatMap(sn=> renderSheet(sn,false,PAGE_H/2,PAGE_W)), half=PAGE_H/2, out=[];
+  for (let i=0;i<halves.length;i+=2){
+    const left=halves[i], right=halves[i+1]||[];
+    const shifted=right.map(e=>{ const o={...e}; if (o.t==='line'){ o.x1+=half; o.x2+=half; } else o.x+=half; return o; });
+    out.push({ w:PAGE_H, h:PAGE_W, els:[...left, ...shifted, {t:'line', x1:half, y1:3, x2:half, y2:PAGE_W-3, w:.3, c:'#9aa3b5', dash:true}] });
+  }
+  return out;
+}
+$('weekLen').onchange=()=>{ week.dias=parseInt($('weekLen').value,10); saveWeek(); renderWeekUI(); };
+$('weekSize').onchange=()=>{ week.largo=$('weekSize').value; saveWeek(); };
+$('weekBuild').onclick=()=>{
+  state.week=armarSemana();
+  const wm=$('weekMsg');
+  if (!state.week.length){ wm.textContent='Elegí al menos una actividad para algún día.'; wm.className='msg err'; return; }
+  state.previewWeek=true; state.previewCombo=false; renderPreview();
+  $('weekReady').hidden=false;
+  const warns=state.week.map(sn=>sn.data.warn).filter(Boolean);
+  if (warns.length){ wm.textContent=warns[0]; wm.className='msg err'; } else { wm.textContent='Semana armada. Revisala en la vista previa.'; wm.className='msg ok'; }
+  if (window.innerWidth<900) $('preview').scrollIntoView({behavior:'smooth'});
+};
+$('weekView').onclick=()=>{ if (!state.week) return; state.previewWeek=true; state.previewCombo=false; renderPreview(); };
+$('weekDownload').onclick=()=>{ if (!state.week || !state.week.length) return; doDownload(state.week, 'tarea_de_la_semana', true); };
+
+/* ================= Formato de tarea ================= */
+function syncTareaUI(){
+  $('notaField').hidden=!OPT.tarea;
+  const a = OPT.tarea ? 'La tarea lleva "Entregar el" y, al pie, la nota para la familia.' : '';
+  const b = OPT.media ? 'Media hoja: salen dos copias iguales por A4 para cortar al medio.' : '';
+  $('formatHelp').textContent=[a,b].filter(Boolean).join(' ');
+  $('versionsHelp').hidden = OPT.versions<2;
+}
+$('sheetType').onchange=()=>{ OPT.tarea=$('sheetType').value==='tarea'; syncTareaUI(); renderPreview(); save(); };
+$('versions').onchange=()=>{ OPT.versions=parseInt($('versions').value,10)||1; syncTareaUI(); regenerate(); };
+$('paper').onchange=()=>{ OPT.media=$('paper').value==='media'; syncTareaUI(); renderPreview(); save(); };
+$('nota').addEventListener('input',()=>{ cur().nota=$('nota').value; renderPreview(); save(); });
+
+/* ================= Letra ================= */
+$('upper').onchange=()=>{ OPT.upper=$('upper').checked; renderPreview(); save(); };
+$('scale').onchange=()=>{ OPT.scale=parseFloat($('scale').value)||1; renderPreview(); save(); };
+
+loadBanks();
+loadCombo();
+loadWeek();
+loadSaved();
+$('upper').checked=OPT.upper; $('scale').value=String(OPT.scale);
+$('versions').value=String(OPT.versions); $('sheetType').value=OPT.tarea?'tarea':'clase'; $('paper').value=OPT.media?'media':'entera'; syncTareaUI();
+ensurePer(state.activity);
+renderAreas(); selectActivity(state.activity); renderCombo(); renderWeekUI();
+initDownloads();
+initSample();
+</script>
+</body>
+</html>

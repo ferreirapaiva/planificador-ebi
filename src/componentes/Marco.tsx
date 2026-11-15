@@ -7,6 +7,7 @@ const SECCIONES: { to: string; etiqueta: string; icono: NombreIcono; activa?: (r
   { to: '/mis-planificaciones', etiqueta: 'Mis planificaciones', icono: 'carpeta' },
   { to: '/plan-anual', etiqueta: 'Plan anual', icono: 'calendario', activa: (r) => r.startsWith('/plan-anual') || r === '/nuevo-plan-anual' },
   { to: '/plan-semanal', etiqueta: 'Plan diario y semanal', icono: 'reloj', activa: (r) => r.startsWith('/plan-semanal') || r === '/nuevo-plan-semanal' },
+  { to: '/actividades', etiqueta: 'Hojas de actividades', icono: 'hoja' },
   { to: '/programas', etiqueta: 'Programas', icono: 'libro' },
 ];
 

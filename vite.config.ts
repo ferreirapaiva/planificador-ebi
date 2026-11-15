@@ -33,6 +33,8 @@ export default defineConfig({
         // Todo queda guardado en el equipo para funcionar sin conexión (incluida la generación de PDF).
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        // El generador de hojas de actividades es una página aparte: no se reemplaza por la app.
+        navigateFallbackDenylist: [/\/actividades\//],
       },
     }),
   ],
