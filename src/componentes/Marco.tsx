@@ -6,7 +6,7 @@ const enlace = ({ isActive }: { isActive: boolean }) =>
 export function Marco() {
   return (
     <div className="min-h-screen">
-      <header className="bg-blue-700 text-white">
+      <header className="no-imprimir bg-blue-700 text-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-3">
           <NavLink to="/" className="mr-auto text-lg font-bold tracking-tight">
             📘 Planificador EBI

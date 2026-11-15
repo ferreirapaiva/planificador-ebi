@@ -6,7 +6,8 @@ import { Marco } from './componentes/Marco';
 import { Inicio } from './paginas/Inicio';
 import { Programas } from './paginas/Programas';
 import { ExploradorUC } from './paginas/ExploradorUC';
-import { Proximamente } from './paginas/Proximamente';
+import { Asistente } from './paginas/Asistente';
+import { MisPlanificaciones, NuevaPlanificacion } from './paginas/MisPlanificaciones';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,8 +17,9 @@ createRoot(document.getElementById('root')!).render(
           <Route index element={<Inicio />} />
           <Route path="programas" element={<Programas />} />
           <Route path="programas/:ucId" element={<ExploradorUC />} />
-          <Route path="nueva" element={<Proximamente titulo="Nueva planificación" />} />
-          <Route path="mis-planificaciones" element={<Proximamente titulo="Mis planificaciones" />} />
+          <Route path="nueva" element={<NuevaPlanificacion />} />
+          <Route path="mis-planificaciones" element={<MisPlanificaciones />} />
+          <Route path="planificacion/:id" element={<Asistente />} />
         </Route>
       </Routes>
     </HashRouter>

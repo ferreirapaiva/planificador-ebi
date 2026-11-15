@@ -11,6 +11,24 @@ body {
   background: #f8fafc;
 }
 
+@media print {
+  .no-imprimir {
+    display: none !important;
+  }
+  body,
+  :root {
+    background: white;
+  }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+  @page {
+    size: A4;
+    margin: 1.8cm;
+  }
+}
+
 :focus-visible {
   outline: 3px solid #2563eb;
   outline-offset: 2px;
