@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Documento, ESTILOS_DOCUMENTO } from '../componentes/Documento';
-import { AreaTexto, Boton } from '../componentes/ui';
-import { descargarWord } from '../datos/exportar';
+import { AreaTexto } from '../componentes/ui';
+import { BotonesExportar } from '../componentes/BotonesExportar';
 import type { PropsPaso } from './tipos';
 
 export function PasoRevision({ plan, cambiar, irAPaso }: PropsPaso & { irAPaso: (n: number) => void }) {
@@ -40,10 +40,7 @@ export function PasoRevision({ plan, cambiar, irAPaso }: PropsPaso & { irAPaso: 
             ))}
           </ul>
         </div>
-        <div className="flex flex-col gap-2">
-          <Boton onClick={() => ref.current && descargarWord(ref.current, plan.titulo)}>⬇ Descargar Word</Boton>
-          <Boton variante="secundario" onClick={() => window.print()}>🖨 Imprimir o guardar PDF</Boton>
-        </div>
+        <BotonesExportar documento={ref} titulo={plan.titulo} />
         <AreaTexto etiqueta="Observaciones" valor={plan.notas} onCambio={(v) => cambiar({ notas: v })} filas={4} />
       </aside>
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">

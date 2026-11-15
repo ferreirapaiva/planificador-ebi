@@ -2,9 +2,9 @@ import { forwardRef, useRef } from 'react';
 import { MESES_LECTIVOS, NOMBRE_MES, type PlanAnual } from '../datos/db';
 import { buscarUC } from '../datos/consultas';
 import { diasDeClase } from '../datos/calendario';
-import { descargarWord } from '../datos/exportar';
 import { ESTILOS_DOCUMENTO, fecha } from '../componentes/Documento';
-import { AreaTexto, Boton } from '../componentes/ui';
+import { AreaTexto } from '../componentes/ui';
+import { BotonesExportar } from '../componentes/BotonesExportar';
 import type { PropsAnual } from './PasoDatosAnual';
 
 export const DocumentoAnual = forwardRef<HTMLDivElement, { plan: PlanAnual }>(function DocumentoAnual({ plan }, ref) {
@@ -126,8 +126,7 @@ export function PasoDocumentoAnual({ plan, cambiar }: PropsAnual) {
     <div className="grid gap-6 lg:grid-cols-[16rem_1fr]">
       <style>{ESTILOS_DOCUMENTO}</style>
       <aside className="no-imprimir h-fit space-y-3 lg:sticky lg:top-4">
-        <Boton onClick={() => ref.current && descargarWord(ref.current, `plan-anual-${plan.anio}-${plan.grupo}`)}>⬇ Descargar Word</Boton>
-        <Boton variante="secundario" onClick={() => window.print()}>🖨 Imprimir o guardar PDF</Boton>
+        <BotonesExportar documento={ref} titulo={`plan-anual-${plan.anio}-${plan.grupo}`} />
         <AreaTexto etiqueta="Observaciones" valor={plan.notas} onCambio={(v) => cambiar({ notas: v })} filas={4} />
       </aside>
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">
