@@ -457,7 +457,7 @@ export function EditorPlanSemanal() {
 
             <div className="space-y-3">
               {dia.bloques.length === 0 && !eligiendo && (
-                <Aviso>Empezá trayendo una clase de una de tus planificaciones, o agregá un momento libre. El horario se ordena solo por hora.</Aviso>
+                <Aviso>Empezá trayendo una clase de una de tus planificaciones, o agregá una nueva actividad. El horario se ordena solo por hora.</Aviso>
               )}
               {ordenarBloques(dia.bloques).map((b) => (
                 <EditorBloque
@@ -488,7 +488,7 @@ export function EditorPlanSemanal() {
               </Boton>
               <Boton variante="secundario" onClick={() => cambiarDia(iDia, [...dia.bloques, bloqueVacio(dia)])}>
                 <Icono nombre="nueva" tamano={18} grosor={2.4} />
-                Momento libre
+                Nueva actividad
               </Boton>
               <span className="ml-1 text-sm font-semibold text-slate-500">Rutinas:</span>
               {RUTINAS.map((r) => (
@@ -505,7 +505,7 @@ export function EditorPlanSemanal() {
                   variante="texto"
                   onClick={() => cambiarDia(iDia, plan.dias[iDia - 1].bloques.filter((b) => !b.origen).map((b) => ({ ...b, id: crypto.randomUUID() })))}
                 >
-                  Copiar las rutinas y momentos libres
+                  Copiar las rutinas y actividades
                 </Boton>
               </p>
             )}
