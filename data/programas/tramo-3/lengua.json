@@ -4,7 +4,7 @@
   "espacio": "Comunicación",
   "tramo": 3,
   "version": "v2",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "El PDF marca con color los contenidos que se abordan 'tanto desde la lectura como desde la escritura'; ese color no se puede leer del texto extraído. Verificar en las págs. 10, 11, 14 y 15 cuáles son y avisar para marcarlos.",
     "Los títulos 'Macrohabilidades' y 'Reflexión metalingüística' se cargaron como contenido estructurante; Oralidad, Lectura, Escritura, Gramática y Ortografía como ejes."

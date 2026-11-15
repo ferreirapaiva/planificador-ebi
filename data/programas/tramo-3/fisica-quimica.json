@@ -4,7 +4,7 @@
   "espacio": "Científico-Matemático",
   "tramo": 3,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "Competencias de contenidos y criterios tomadas de las tablas de las págs. 12 a 15 (verificadas visualmente contra el PDF al cargarlas)."
   ],

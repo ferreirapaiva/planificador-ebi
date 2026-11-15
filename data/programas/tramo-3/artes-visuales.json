@@ -4,7 +4,7 @@
   "espacio": "Creativo-Artístico",
   "tramo": 3,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "La tabla agrupa por competencia; cada fila tiene un tema (p. ej. 'La escultura'), su contenido y su criterio. Se cargó el tema como contenido y el contenido como subítem. Verificar los cortes (págs. 13 a 17).",
     "4.º grado: la fila 'Géneros' aparece precedida por 'Lenguajes del plano' en el PDF (pág. 16); se cargó dentro de la CE3 como en 3.º."

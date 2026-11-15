@@ -4,7 +4,7 @@
   "espacio": "Científico-Matemático",
   "tramo": 3,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "Tablas de las págs. 14 y 15 cargadas mirando el PDF: las competencias abarcan todas las filas de cada contenido estructurante.",
     "En 3.º, la última fila (Reproducción sexuada en vegetales) tiene dos criterios de logro en la misma celda; se cargaron por separado."
