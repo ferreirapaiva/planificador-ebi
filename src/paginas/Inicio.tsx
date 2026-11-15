@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 
 const OPCIONES = [
-  { to: '/nueva', icono: '✏️', titulo: 'Nueva planificación', texto: 'Armá un plan anual, una unidad, una secuencia o la clase de mañana, paso a paso.' },
+  { to: '/nueva', icono: '✏️', titulo: 'Nueva planificación', texto: 'Armá una unidad, un proyecto o una secuencia, paso a paso desde los criterios de logro.' },
+  { to: '/plan-anual', icono: '📅', titulo: 'Plan anual', texto: 'Repartí los contenidos en el año escolar y mirá qué te falta planificar.' },
   { to: '/mis-planificaciones', icono: '🗂️', titulo: 'Mis planificaciones', texto: 'Retomá, duplicá o exportá lo que ya hiciste.' },
   { to: '/programas', icono: '📚', titulo: 'Explorar programas', texto: 'Consultá contenidos, competencias y criterios de logro de 3.º y 4.º.' },
 ];
@@ -15,7 +16,7 @@ export function Inicio() {
           Planificaciones alineadas a los programas de Educación Básica Integrada — Tramo 3 (3.º y 4.º grado).
         </p>
       </section>
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {OPCIONES.map((o) => (
           <Link
             key={o.to}

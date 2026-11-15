@@ -1,4 +1,6 @@
+import { useLiveQuery } from 'dexie-react-hooks';
 import type { Contenido } from '../datos/esquema';
+import { db, NOMBRE_MES } from '../datos/db';
 import { buscarContenido, buscarCriterio, sugerirContenidos } from '../datos/consultas';
 import { Aviso, Boton, TarjetaCasilla } from '../componentes/ui';
 import { PestanasUC, type Combinacion } from './PestanasUC';
@@ -19,7 +21,24 @@ function Detalle({ c }: { c: Contenido }) {
   );
 }
 
-function ListaContenidos({ combinacion, plan, cambiar, sugeridos }: PropsPaso & { combinacion: Combinacion; sugeridos: Set<string> }) {
+/** Meses en que los planes anuales del mismo grado (y año, si la planificación tiene fecha) ubican cada contenido. */
+function useMesesDelPlanAnual(plan: PropsPaso['plan']) {
+  const planes = useLiveQuery(() => db.planesAnuales.toArray(), []) ?? [];
+  const anio = plan.desde ? Number(plan.desde.slice(0, 4)) : null;
+  const meses = new Map<string, Set<number>>();
+  planes
+    .filter((p) => p.grados.some((g) => plan.grados.includes(g)) && (!anio || p.anio === anio))
+    .forEach((p) => Object.entries(p.distribucion).forEach(([id, ms]) => ms.forEach((m) => meses.set(id, (meses.get(id) ?? new Set()).add(m)))));
+  return meses;
+}
+
+function ListaContenidos({
+  combinacion,
+  plan,
+  cambiar,
+  sugeridos,
+  meses,
+}: PropsPaso & { combinacion: Combinacion; sugeridos: Set<string>; meses: Map<string, Set<number>> }) {
   const g = combinacion.uc.grados.find((x) => x.grado === combinacion.grado);
   if (!g) return null;
   const sugeridosAqui = g.bloques.flatMap((b) => b.contenidos.map((c) => c.id)).filter((id) => sugeridos.has(id));
@@ -44,6 +63,11 @@ function ListaContenidos({ combinacion, plan, cambiar, sugeridos }: PropsPaso & 
                 <TarjetaCasilla key={c.id} marcada={plan.contenidos.includes(c.id)} destacada={sug} onCambio={(v) => cambiar({ contenidos: alternar(plan.contenidos, c.id, v) })}>
                   {sug && <span className="mr-1 rounded bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">Sugerido</span>}
                   {c.texto}
+                  {meses.has(c.id) && (
+                    <span className="ml-1 whitespace-nowrap rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800" title="Según tu plan anual">
+                      📅 {[...meses.get(c.id)!].sort((a, b) => a - b).map((m) => NOMBRE_MES[m].slice(0, 3)).join(', ')}
+                    </span>
+                  )}
                   <Detalle c={c} />
                 </TarjetaCasilla>
               );
@@ -58,6 +82,7 @@ function ListaContenidos({ combinacion, plan, cambiar, sugeridos }: PropsPaso & 
 export function PasoContenidos(props: PropsPaso) {
   const { plan } = props;
   const sugeridos = sugerirContenidos(plan.criterios);
+  const meses = useMesesDelPlanAnual(plan);
   // Criterios sin ningún contenido elegido que se les vincule.
   const sinContenido = plan.criterios.filter((id) => {
     const propios = sugerirContenidos([id]);
@@ -83,7 +108,7 @@ export function PasoContenidos(props: PropsPaso) {
           return r?.uc.id === c.uc.id && r.grado === c.grado;
         }).length}
       >
-        {(c) => <ListaContenidos key={c.clave} combinacion={c} sugeridos={sugeridos} {...props} />}
+        {(c) => <ListaContenidos key={c.clave} combinacion={c} sugeridos={sugeridos} meses={meses} {...props} />}
       </PestanasUC>
     </div>
   );

@@ -64,11 +64,46 @@ export type Planificacion = {
   modificada: number;
 };
 
+export type Periodo = { id: string; nombre: string; desde: string; hasta: string };
+export type Efemeride = { fecha: string; nombre: string };
+
+export type CalendarioEscolar = {
+  inicio: string;
+  fin: string;
+  /** Vacaciones y otros períodos sin clases (editables: verificar con el calendario oficial). */
+  sinClases: Periodo[];
+  efemerides: Efemeride[];
+};
+
+/** Meses lectivos (marzo a diciembre). */
+export const MESES_LECTIVOS = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+export const NOMBRE_MES = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+export type PlanAnual = {
+  id: string;
+  anio: number;
+  docente: string;
+  escuela: string;
+  grupo: string;
+  grados: number[];
+  ucIds: string[];
+  calendario: CalendarioEscolar;
+  /** Para cada contenido (id), los meses (3 a 12) en que se trabaja. */
+  distribucion: Record<string, number[]>;
+  fundamentacion: string;
+  notas: string;
+  paso: number;
+  creada: number;
+  modificada: number;
+};
+
 export const db = new Dexie('planificador-ebi') as Dexie & {
   planificaciones: EntityTable<Planificacion, 'id'>;
+  planesAnuales: EntityTable<PlanAnual, 'id'>;
 };
 
 db.version(1).stores({ planificaciones: 'id, modificada, tipo' });
+db.version(2).stores({ planificaciones: 'id, modificada, tipo', planesAnuales: 'id, modificada, anio' });
 
 export const nuevoId = () => crypto.randomUUID();
 

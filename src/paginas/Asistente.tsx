@@ -38,14 +38,17 @@ export function Asistente() {
   const [estado, setEstado] = useState<'guardado' | 'guardando'>('guardado');
   const temporizador = useRef<number | undefined>(undefined);
   const arriba = useRef<HTMLDivElement>(null);
+  /** Solo se guarda después de que el docente cambia algo (abrir no guarda ni pisa sus datos recordados). */
+  const editado = useRef(false);
 
   useEffect(() => {
+    editado.current = false;
     db.planificaciones.get(id!).then((p) => setPlan(p ?? null));
   }, [id]);
 
   // Guardado automático, medio segundo después del último cambio.
   useEffect(() => {
-    if (!plan) return;
+    if (!plan || !editado.current) return;
     setEstado('guardando');
     window.clearTimeout(temporizador.current);
     temporizador.current = window.setTimeout(async () => {
@@ -64,12 +67,14 @@ export function Asistente() {
       </p>
     );
 
-  const cambiar = (parcial: Partial<Planificacion>) =>
+  const cambiar = (parcial: Partial<Planificacion>) => {
+    editado.current = true;
     setPlan((p) => {
       if (!p) return p;
       const nuevo = { ...p, ...parcial, modificada: Date.now() };
       return 'ucIds' in parcial || 'grados' in parcial ? depurar(nuevo) : nuevo;
     });
+  };
   const irAPaso = (n: number) => {
     cambiar({ paso: n });
     arriba.current?.scrollIntoView({ behavior: 'smooth' });

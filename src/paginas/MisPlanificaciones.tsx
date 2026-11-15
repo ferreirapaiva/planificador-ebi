@@ -55,6 +55,51 @@ function Tarjeta({ p }: { p: Planificacion }) {
   );
 }
 
+function PlanesAnuales() {
+  const planes = useLiveQuery(() => db.planesAnuales.orderBy('modificada').reverse().toArray(), []);
+  const navegar = useNavigate();
+  if (!planes) return null;
+  return (
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-center gap-3">
+        <h2 className="mr-auto text-lg font-semibold text-slate-900">Planes anuales</h2>
+        <Link to="/nuevo-plan-anual" className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50">
+          + Nuevo plan anual
+        </Link>
+      </div>
+      {planes.length === 0 ? (
+        <p className="text-sm text-slate-600">Todavía no tenés un plan anual. Te ayuda a repartir los contenidos en el año y a ver qué te falta planificar.</p>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {planes.map((p) => {
+            const ubicados = Object.values(p.distribucion).filter((m) => m.length).length;
+            return (
+              <article key={p.id} className="flex flex-col rounded-xl border border-blue-200 bg-blue-50/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">📅 Plan anual · {p.grados.map((g) => `${g}.º`).join(' y ')}</p>
+                <Link to={`/plan-anual/${p.id}`} className="mt-1 text-lg font-semibold text-slate-900 hover:text-blue-700">
+                  {p.anio}
+                  {p.grupo && ` · ${p.grupo}`}
+                </Link>
+                <p className="text-sm text-slate-600">{p.ucIds.length} unidades curriculares · {ubicados} contenidos ubicados</p>
+                <p className="mt-auto pt-3 text-xs text-slate-400">Modificado: {cuando(p.modificada)}</p>
+                <div className="mt-2 flex gap-2">
+                  <Boton onClick={() => navegar(`/plan-anual/${p.id}`)}>Abrir</Boton>
+                  <Boton
+                    variante="peligro"
+                    onClick={async () => window.confirm(`¿Eliminar el plan anual ${p.anio}? No se puede deshacer.`) && (await db.planesAnuales.delete(p.id))}
+                  >
+                    Eliminar
+                  </Boton>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export function MisPlanificaciones() {
   const lista = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
   const [texto, setTexto] = useState('');
@@ -63,8 +108,10 @@ export function MisPlanificaciones() {
   const visibles = lista.filter((p) => !q || normalizar(`${p.titulo} ${p.ucIds.map((id) => buscarUC(id)?.nombre).join(' ')}`).includes(q));
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="mr-auto text-2xl font-bold text-slate-900">Mis planificaciones</h1>
+      <h1 className="text-2xl font-bold text-slate-900">Mis planificaciones</h1>
+      <PlanesAnuales />
+      <div className="flex flex-wrap items-center gap-3 border-t border-slate-200 pt-5">
+        <h2 className="mr-auto text-lg font-semibold text-slate-900">Unidades, proyectos y secuencias</h2>
         {lista.length > 0 && (
           <input type="search" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Buscar…" aria-label="Buscar planificación" className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm" />
         )}

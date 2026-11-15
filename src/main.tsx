@@ -7,6 +7,7 @@ import { Inicio } from './paginas/Inicio';
 import { Programas } from './paginas/Programas';
 import { ExploradorUC } from './paginas/ExploradorUC';
 import { Asistente } from './paginas/Asistente';
+import { AbrirPlanAnual, EditorPlanAnual, NuevoPlanAnual } from './paginas/EditorPlanAnual';
 import { MisPlanificaciones, NuevaPlanificacion } from './paginas/MisPlanificaciones';
 
 createRoot(document.getElementById('root')!).render(
@@ -20,6 +21,9 @@ createRoot(document.getElementById('root')!).render(
           <Route path="nueva" element={<NuevaPlanificacion />} />
           <Route path="mis-planificaciones" element={<MisPlanificaciones />} />
           <Route path="planificacion/:id" element={<Asistente />} />
+          <Route path="nuevo-plan-anual" element={<NuevoPlanAnual />} />
+          <Route path="plan-anual" element={<AbrirPlanAnual />} />
+          <Route path="plan-anual/:id" element={<EditorPlanAnual />} />
         </Route>
       </Routes>
     </HashRouter>
