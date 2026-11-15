@@ -1,0 +1,145 @@
+{
+  "id": "tierra-espacio",
+  "nombre": "Ciencias de la Tierra y el Espacio",
+  "espacio": "Científico-Matemático",
+  "tramo": 3,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "El programa agrupa los contenidos por competencia (no tiene títulos de bloque). Los títulos 'Astronomía', 'Bienes ambientales: el agua' y 'Fenómenos geológicos' los puso la app para ordenar; verificar que sean adecuados.",
+    "4.º grado: verificar en la pág. 13 que 'Las estrellas' y 'Las constelaciones' sean subítems de 'El cielo nocturno'.",
+    "4.º grado: el bloque de fenómenos geológicos tiene 4 contenidos y un solo criterio de logro (así figura en el PDF)."
+  ],
+  "fuente": { "archivo": "Ciencias de la Tierra y el Espacio - Tramo 3.pdf", "paginas": [8, 11, 12, 13, 14] },
+  "justificacion": "La unidad curricular está integrada por Geología y Astronomía; esto permite que el estudiante pueda conocer, comprender y maravillarse con su entorno entramando los saberes. Situar al estudiante en la realidad ambiental con un enfoque interdisciplinario en clave de competencia es promover el pensamiento global y local. Se hace necesario visibilizar y sensibilizar sobre cómo habitar el espacio de forma sustentable, a fin de formar individuos comprometidos con su entorno, responsables y críticos.",
+  "contenidosEstructurantes": ["Sistemas de la Tierra y el Espacio"],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Utiliza el lenguaje y el vocabulario específico, experimenta, representa a los movimientos de los astros y sus consecuencias contribuyendo al pensamiento científico para entender los fenómenos astronómicos.",
+      "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento científico", "Pensamiento computacional", "Metacognitiva", "Iniciativa y orientación a la acción", "Pensamiento creativo", "Relacionamiento con los otros", "Intrapersonal"]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Reconoce y expresa los movimientos aparentes de los astros para comprender distintos fenómenos astronómicos.",
+      "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento científico", "Pensamiento computacional", "Metacognitiva", "Iniciativa y orientación a la acción", "Pensamiento creativo", "Relacionamiento con los otros", "Intrapersonal", "Ciudadanía local, global y digital"]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Observa, reconoce, describe y representa el cielo celeste, con la finalidad de conocer instrumentos que permitan la orientación y ubicarse en el espacio con mediación.",
+      "competenciasMCN": ["Comunicación", "Pensamiento científico", "Pensamiento computacional", "Metacognitiva", "Iniciativa y orientación a la acción", "Pensamiento creativo", "Relacionamiento con los otros", "Intrapersonal", "Ciudadanía local, global y digital"]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Identifica, describe y explica las características y dinámicas de los bienes ambientales con mediación para tomar conciencia de su importancia.",
+      "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento científico", "Pensamiento computacional", "Metacognitiva", "Iniciativa y orientación a la acción", "Pensamiento creativo", "Relacionamiento con los otros", "Intrapersonal", "Ciudadanía local, global y digital"]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Observa, experimenta e inicia la reflexión y comunica los procesos observables de los fenómenos geológicos con mediación para valorar los bienes naturales.",
+      "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento científico", "Pensamiento computacional", "Metacognitiva", "Iniciativa y orientación a la acción", "Pensamiento creativo", "Relacionamiento con los otros", "Intrapersonal", "Ciudadanía local, global y digital"]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 3,
+      "fuente": { "archivo": "Ciencias de la Tierra y el Espacio - Tramo 3.pdf", "paginas": [12] },
+      "bloques": [
+        {
+          "id": "cte3-astronomia", "titulo": "Astronomía", "ceVinculadas": ["CE1", "CE2", "CE3"],
+          "contenidos": [
+            { "id": "cte3-ast-1", "texto": "Movimientos de rotación y traslación de la Tierra, las estaciones, la sombra y la altura del Sol a lo largo del año." },
+            { "id": "cte3-ast-2", "texto": "La inclinación del eje terrestre." },
+            { "id": "cte3-ast-3", "texto": "La oscilación térmica diaria." },
+            { "id": "cte3-ast-4", "texto": "La orientación con el Sol, algunas estrellas y los puntos cardinales." }
+          ]
+        },
+        {
+          "id": "cte3-agua", "titulo": "Bienes ambientales: el agua", "ceVinculadas": ["CE4"],
+          "contenidos": [
+            { "id": "cte3-agua-1", "texto": "El agua en el planeta: la circulación (ciclo hidrológico)." },
+            { "id": "cte3-agua-2", "texto": "Aguas superficiales (ríos y cuencas de Uruguay)." }
+          ]
+        },
+        {
+          "id": "cte3-geologia", "titulo": "Fenómenos geológicos", "ceVinculadas": ["CE5"],
+          "contenidos": [
+            { "id": "cte3-geo-1", "texto": "Las precipitaciones como agente erosivo." },
+            { "id": "cte3-geo-2", "texto": "Suelo: concepto, estructura y componentes (relación entre agua y suelo, porosidad, permeabilidad)." },
+            { "id": "cte3-geo-3", "texto": "Suelos agrícolas: características." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "cte3-cl-01", "ce": "CE1", "contenidos": ["cte3-ast-1"], "texto": "Utiliza el lenguaje y el vocabulario específico y representa los movimientos de rotación y traslación y sus consecuencias con la mediación del docente." },
+        { "id": "cte3-cl-02", "ce": "CE1", "contenidos": ["cte3-ast-2"], "texto": "Explora, experimenta, identifica y describe las consecuencias de la inclinación del eje terrestre con mediación." },
+        { "id": "cte3-cl-03", "ce": "CE2", "contenidos": ["cte3-ast-3"], "texto": "Reconoce y expresa los movimientos aparentes de los astros y explica la oscilación térmica con apoyo tecnológico." },
+        { "id": "cte3-cl-04", "ce": "CE3", "contenidos": ["cte3-ast-4"], "texto": "Observa, identifica, describe y representa elementos que permiten la orientación (los puntos cardinales, el sol y las estrellas), utilizando instrumentos y aplicaciones tecnológicas trabajando colaborativamente." },
+        { "id": "cte3-cl-05", "ce": "CE4", "contenidos": ["cte3-agua-1", "cte3-agua-2"], "texto": "Explora, identifica y explica las características de las aguas superficiales reconociendo a las cuencas como unidades de análisis del territorio, reflexionando sobre los problemas actuales, con mediación." },
+        { "id": "cte3-cl-06", "ce": "CE5", "contenidos": ["cte3-geo-1"], "texto": "Observa, experimenta, explica y modela procesos erosivos como consecuencia de las precipitaciones, con mediación." },
+        { "id": "cte3-cl-07", "ce": "CE5", "contenidos": ["cte3-geo-2"], "texto": "Reconoce, experimenta e inicia la reflexión sobre el suelo como un todo que tiene una estructura y componentes interrelacionados, con mediación." },
+        { "id": "cte3-cl-08", "ce": "CE5", "contenidos": ["cte3-geo-3"], "texto": "Reconoce la capacidad productiva y las características de los suelos agrícolas y su vulnerabilidad ambiental a través de diversos dispositivos y formatos." }
+      ]
+    },
+    {
+      "grado": 4,
+      "fuente": { "archivo": "Ciencias de la Tierra y el Espacio - Tramo 3.pdf", "paginas": [13] },
+      "bloques": [
+        {
+          "id": "cte4-astronomia", "titulo": "Astronomía", "ceVinculadas": ["CE1", "CE2", "CE3"],
+          "contenidos": [
+            { "id": "cte4-ast-1", "texto": "El origen del Sistema Solar." },
+            { "id": "cte4-ast-2", "texto": "La representación del sistema solar, en especial la Tierra." },
+            { "id": "cte4-ast-3", "texto": "La Luna como satélite de la Tierra." },
+            { "id": "cte4-ast-4", "texto": "El cielo nocturno", "subitems": [
+              { "id": "cte4-ast-4a", "texto": "Las estrellas: brillo y color." },
+              { "id": "cte4-ast-4b", "texto": "Las constelaciones: Orión, Escorpión, Cruz del Sur." }
+            ] }
+          ]
+        },
+        {
+          "id": "cte4-agua", "titulo": "Bienes ambientales: el agua", "ceVinculadas": ["CE4"],
+          "contenidos": [
+            { "id": "cte4-agua-1", "texto": "El ciclo hidrológico: las aguas subterráneas (acuíferos: circulación, infiltración y napas)." },
+            { "id": "cte4-agua-2", "texto": "Los acuíferos en Uruguay y América." }
+          ]
+        },
+        {
+          "id": "cte4-geologia", "titulo": "Fenómenos geológicos", "ceVinculadas": ["CE5"],
+          "contenidos": [
+            { "id": "cte4-geo-1", "texto": "Las precipitaciones como agente erosivo." },
+            { "id": "cte4-geo-2", "texto": "Suelo: concepto, estructura y componentes (relación entre agua y suelo, porosidad, permeabilidad)." },
+            { "id": "cte4-geo-3", "texto": "Suelos agrícolas: características." },
+            { "id": "cte4-geo-4", "texto": "El agua como agente erosivo." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "cte4-cl-01", "ce": "CE1", "contenidos": ["cte4-ast-1"], "texto": "Emplea y registra el uso del vocabulario sobre el origen del sistema solar mediante el trabajo colaborativo." },
+        { "id": "cte4-cl-02", "ce": "CE1", "contenidos": ["cte4-ast-2"], "texto": "Experimenta, representa y explica el sistema solar en especial la Tierra con diversos formatos y dispositivos." },
+        { "id": "cte4-cl-03", "ce": "CE2", "contenidos": ["cte4-ast-3"], "texto": "Observa, reconoce y comunica los movimientos aparentes de los astros, específicamente la Luna como satélite de la Tierra, con mediación docente." },
+        { "id": "cte4-cl-04", "ce": "CE3", "contenidos": ["cte4-ast-4"], "texto": "Observa, identifica, describe, representa y expone el cielo nocturno, utilizando los recursos tecnológicos." },
+        { "id": "cte4-cl-05", "ce": "CE4", "contenidos": ["cte4-agua-1"], "texto": "Identifica, describe y explica el ciclo hidrológico, con mediación." },
+        { "id": "cte4-cl-06", "ce": "CE4", "contenidos": ["cte4-agua-2"], "texto": "Reconoce y explica las características de los acuíferos en Uruguay y América de forma colaborativa." },
+        { "id": "cte4-cl-07", "ce": "CE5", "contenidos": ["cte4-geo-1", "cte4-geo-4"], "texto": "Observa, experimenta e inicia la reflexión acerca de las precipitaciones como agente erosivo del suelo valorando los bienes naturales, con mediación." }
+      ]
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Abordar de forma interdisciplinaria: la unidad interrelaciona aportes de la geología, la astronomía, la oceanografía y la meteorología.",
+    "Fomentar la observación, la elaboración de estrategias y la comunicación de ideas presentando resultados en equipos de trabajo.",
+    "Aproximar a la comprensión de procesos de múltiples causas en extensos períodos de tiempo, fortaleciendo la metacognición.",
+    "Proponer consignas accesibles, claras y contextualizadas, manteniendo la rigurosidad científica."
+  ],
+  "metodologiasSugeridas": [
+    "Centros de interés",
+    "Estudios de caso",
+    "Aprendizaje basado en el juego",
+    "Aprendizaje basado en proyectos",
+    "Aprendizaje basado en problemas",
+    "Aula invertida",
+    "STEAHM",
+    "Aprendizaje basado en preguntas problematizadoras"
+  ]
+}

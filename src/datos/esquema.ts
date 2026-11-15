@@ -32,25 +32,39 @@ export const Contenido: z.ZodType<Contenido> = z.lazy(() =>
   z.object({
     id: z.string(),
     texto: z.string().min(2),
+    /** Competencias propias del contenido, cuando el programa las indica por fila. */
+    ceVinculadas: z.array(CodigoCE).optional(),
+    /** "Contenidos para la profundización y contextualización", cuando el programa los indica. */
+    profundizacion: z.array(z.string()).optional(),
     subitems: z.array(Contenido).optional(),
   }),
 );
-export type Contenido = { id: string; texto: string; subitems?: Contenido[] };
+export type Contenido = { id: string; texto: string; ceVinculadas?: string[]; profundizacion?: string[]; subitems?: Contenido[] };
 
 export const BloqueContenidos = z.object({
   id: z.string(),
   titulo: z.string(), // p. ej. "Numeración racional"
-  eje: z.string(), // p. ej. "Número"
-  contenidoEstructurante: z.string(),
-  ceVinculadas: z.array(CodigoCE).min(1),
+  /** Solo en programas organizados por ejes (p. ej. Matemática: "Número"). */
+  eje: z.string().optional(),
+  contenidoEstructurante: z.string().optional(),
+  /** Competencias del bloque entero; si el programa las da por contenido, van en cada contenido. */
+  ceVinculadas: z.array(CodigoCE).default([]),
+  /** Contenidos que el programa propone abordar de forma transversal. */
+  transversal: z.boolean().optional(),
   contenidos: z.array(Contenido).min(1),
 });
 
 export const CriterioLogro = z.object({
   id: z.string(),
-  ce: CodigoCE,
+  /** Una competencia o varias, según cómo lo presente la tabla del programa. */
+  ce: z.union([CodigoCE, z.array(CodigoCE).min(1)]),
   texto: z.string().min(10),
+  /** Contenidos a los que el programa asocia directamente este criterio (ids). */
+  contenidos: z.array(z.string()).optional(),
 });
+
+/** Competencias de un criterio, siempre como lista. */
+export const cesDe = (c: { ce: string | string[] }) => (Array.isArray(c.ce) ? c.ce : [c.ce]);
 
 export const Grado = z.object({
   grado: z.number().int().min(1).max(9),
@@ -71,7 +85,7 @@ export const UnidadCurricular = z.object({
   fuente: Fuente,
   justificacion: z.string(),
   contenidosEstructurantes: z.array(z.string()).min(1),
-  ejes: z.array(z.string()).min(1),
+  ejes: z.array(z.string()).default([]),
   competenciasEspecificas: z.array(CompetenciaEspecifica).min(1),
   grados: z.array(Grado).min(1),
   orientacionesMetodologicas: z.array(z.string()),
@@ -93,21 +107,28 @@ export function chequearConsistencia(uc: UnidadCurricular): string[] {
   };
   const recorrer = (c: Contenido) => {
     registrar(c.id);
+    c.ceVinculadas?.forEach((ce) => ces.has(ce) || errores.push(`${c.id}: ${ce} no existe`));
     c.subitems?.forEach(recorrer);
   };
+  const tieneCE = (c: Contenido): boolean => !!c.ceVinculadas?.length || !!c.subitems?.some(tieneCE);
   for (const g of uc.grados) {
     for (const b of g.bloques) {
       registrar(b.id);
-      if (!uc.ejes.includes(b.eje)) errores.push(`${b.id}: eje "${b.eje}" no está en la lista de ejes`);
+      if (b.eje && !uc.ejes.includes(b.eje)) errores.push(`${b.id}: eje "${b.eje}" no está en la lista de ejes`);
+      if (uc.ejes.length && !b.eje && !b.transversal) errores.push(`${b.id}: falta el eje`);
       b.ceVinculadas.forEach((ce) => ces.has(ce) || errores.push(`${b.id}: ${ce} no existe`));
       b.contenidos.forEach(recorrer);
+      if (!b.transversal && !b.ceVinculadas.length && !b.contenidos.every(tieneCE)) {
+        errores.push(`${b.id}: hay contenidos sin competencia vinculada`);
+      }
     }
     for (const cr of g.criteriosLogro) {
       registrar(cr.id);
-      if (!ces.has(cr.ce)) errores.push(`${cr.id}: ${cr.ce} no existe`);
+      cesDe(cr).forEach((ce) => ces.has(ce) || errores.push(`${cr.id}: ${ce} no existe`));
+      cr.contenidos?.forEach((id) => ids.has(id) || errores.push(`${cr.id}: contenido ${id} no existe`));
     }
     for (const ce of ces) {
-      if (!g.criteriosLogro.some((c) => c.ce === ce)) errores.push(`${g.grado}.º grado: ${ce} no tiene criterios de logro`);
+      if (!g.criteriosLogro.some((c) => cesDe(c).includes(ce))) errores.push(`${g.grado}.º grado: ${ce} no tiene criterios de logro`);
     }
   }
   return errores;

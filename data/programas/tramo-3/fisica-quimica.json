@@ -1,0 +1,138 @@
+{
+  "id": "fisica-quimica",
+  "nombre": "Física-Química",
+  "espacio": "Científico-Matemático",
+  "tramo": 3,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "Competencias de contenidos y criterios tomadas de las tablas de las págs. 12 a 15 (verificadas visualmente contra el PDF al cargarlas)."
+  ],
+  "fuente": { "archivo": "Física Química - Tramo 3.pdf", "paginas": [8, 11, 12, 13, 14, 15, 16] },
+  "justificacion": "Los niños de este ciclo se expresan y comunican sus emociones y conocimientos a través de diferentes lenguajes, de manera integrada junto a otros. Bajo el asombro, realizan sus primeras preguntas y vivencias mediante estrategias exploratorias para comprender el mundo natural y social, estableciendo relaciones lógico-matemáticas. Por ello se explicitan ideas orientadoras para que los docentes, a través de su autonomía de centro, diseñen estrategias que habiliten el desarrollo de las competencias específicas del tramo.",
+  "contenidosEstructurantes": ["Sistemas materiales", "Energía", "Transformaciones"],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Ensaya respuestas y experimenta con una gama de opciones al poner sus ideas a prueba acerca de los sistemas materiales, para responder a distintas situaciones simples de su entorno, utilizando diferentes formas creativas, lógicas o heurísticas.",
+      "competenciasMCN": ["Comunicación", "Pensamiento científico", "Pensamiento crítico", "Pensamiento creativo", "Iniciativa y orientación a la acción"]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Identifica distintos puntos de vista y construye alternativas a situaciones concretas de sistemas materiales al relacionarse con sus pares y con la orientación del docente, e infiere la información a partir de elementos icónicos y verbales, para comunicarse a través de diferentes lenguajes, medios y tecnologías.",
+      "competenciasMCN": ["Pensamiento científico", "Pensamiento crítico", "Comunicación", "Relacionamiento con los otros", "Iniciativa y orientación a la acción"]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Formula preguntas diversas sobre los sistemas materiales y sus transformaciones, a partir de temas propuestos o de su interés focalizadas en distintos aspectos de una situación, con los que construye significados e interpretaciones más allá de los obvios relativos a objetos o situaciones concretas.",
+      "competenciasMCN": ["Pensamiento crítico", "Comunicación", "Relacionamiento con los otros", "Pensamiento creativo"]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Inicia el proceso de autorregulación del pensamiento, al vincular el conocimiento científico a evidencias concretas de fenómenos cotidianos que aborda con incipiente autonomía o mediante algoritmos con acotadas instrucciones, para expresar sus emociones, sentimientos, intereses y motivaciones propias y las de otros.",
+      "competenciasMCN": ["Metacognitiva", "Intrapersonal", "Pensamiento científico", "Relacionamiento con los otros", "Pensamiento computacional"]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Vincula conocimientos científicos a evidencias concretas con incipiente autonomía, a partir de fenómenos simples de su entorno escolar, familiar y comunitario, identificando problemas socioambientales e indagando sobre sus causas, lo que le permite cuestionar las explicaciones científicas y técnicas con base en sus ideas previas, interactuando con dispositivos tecnológicos.",
+      "competenciasMCN": ["Metacognitiva", "Intrapersonal", "Pensamiento científico", "Ciudadanía local, global y digital", "Pensamiento computacional"]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 3,
+      "fuente": { "archivo": "Física Química - Tramo 3.pdf", "paginas": [12, 14] },
+      "bloques": [
+        {
+          "id": "fq3-contenidos", "titulo": "Contenidos específicos",
+          "contenidos": [
+            { "id": "fq3-c1", "texto": "Propiedades extensivas de la materia (masa y volumen).", "ceVinculadas": ["CE1"] },
+            { "id": "fq3-c2", "texto": "Propiedades de los materiales (dilatación térmica).", "ceVinculadas": ["CE1"] },
+            { "id": "fq3-c3", "texto": "Mecanismo de transferencia de energía.", "ceVinculadas": ["CE3"] },
+            { "id": "fq3-c4", "texto": "Los cambios de estados de diferentes sustancias.", "ceVinculadas": ["CE1", "CE2"] },
+            { "id": "fq3-c5", "texto": "Las propiedades intensivas de diferentes sustancias: densidad, temperatura en los cambios de estado.", "ceVinculadas": ["CE2", "CE4", "CE5"] },
+            { "id": "fq3-c6", "texto": "Temperatura ambiente, temperatura corporal y sensación térmica.", "ceVinculadas": ["CE4"] },
+            { "id": "fq3-c7", "texto": "Interacción de la luz con diferentes materiales.", "ceVinculadas": ["CE5"] },
+            { "id": "fq3-c8", "texto": "Fuerza como interacción.", "ceVinculadas": ["CE2"] }
+          ]
+        },
+        {
+          "id": "fq3-transversales", "titulo": "Contenidos transversales", "transversal": true,
+          "contenidos": [
+            { "id": "fq3-t1", "texto": "El proceso de medición: cálculo por aproximación, mediciones, incertidumbres en las mediciones, instrumentos de medición, unidades en el sistema internacional y sus conversiones." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "fq3-cl-01", "ce": "CE1", "texto": "Reconoce e identifica las propiedades extensivas de los sistemas materiales a través de la observación y experimentación con elementos de su entorno." },
+        { "id": "fq3-cl-02", "ce": "CE1", "texto": "Establece relaciones vinculadas a la dilatación térmica de los sistemas y el intercambio energético a través de la observación y la experimentación." },
+        { "id": "fq3-cl-03", "ce": "CE1", "texto": "Identifica los cambios de estado en los sistemas materiales y las condiciones en las que se producen a partir de la observación y experimentación con elementos de su entorno." },
+        { "id": "fq3-cl-04", "ce": "CE2", "texto": "Clasifica y reconoce la interacción por contacto y a distancia entre sistemas en situaciones cotidianas." },
+        { "id": "fq3-cl-05", "ce": "CE2", "texto": "Interpreta lo que observa acerca de los diferentes estados de la materia de acuerdo a sus características macroscópicas." },
+        { "id": "fq3-cl-06", "ce": "CE3", "texto": "Indaga e identifica los cambios físicos y químicos a partir de la transferencia de energía entre sistemas materiales." },
+        { "id": "fq3-cl-07", "ce": "CE4", "texto": "Reconoce y vincula a la densidad como una propiedad de las sustancias mediante la observación macroscópica de sistemas de su entorno." },
+        { "id": "fq3-cl-08", "ce": "CE4", "texto": "Interpreta fenómenos observables referidos a la diferencia entre la sensación térmica y la temperatura, en situaciones diversas de la vida cotidiana y compara con lo que percibe mediante sus sentidos." },
+        { "id": "fq3-cl-09", "ce": "CE5", "texto": "Diseña con mediación, dispositivos con diferentes materiales poniendo a prueba sus ideas previas e indagando acerca de la interacción de la luz, en situaciones de su entorno escolar, familiar y comunitario." },
+        { "id": "fq3-cl-10", "ce": "CE5", "texto": "Identifica y relaciona problemas socioambientales, detectando sus causas y consecuencias, al estudiar las propiedades de la materia en su entorno." }
+      ]
+    },
+    {
+      "grado": 4,
+      "fuente": { "archivo": "Física Química - Tramo 3.pdf", "paginas": [13, 15] },
+      "bloques": [
+        {
+          "id": "fq4-contenidos", "titulo": "Contenidos específicos",
+          "contenidos": [
+            { "id": "fq4-c1", "texto": "El agua y sus propiedades. Tipos de agua.", "ceVinculadas": ["CE1"] },
+            { "id": "fq4-c2", "texto": "La variación de la densidad según el estado de agregación.", "ceVinculadas": ["CE3"] },
+            { "id": "fq4-c3", "texto": "Calor, temperatura y sensación térmica.", "ceVinculadas": ["CE3"] },
+            { "id": "fq4-c4", "texto": "La reflexión especular y difusa.", "ceVinculadas": ["CE5"] },
+            { "id": "fq4-c5", "texto": "Clasificación de espejos.", "ceVinculadas": ["CE2"] },
+            { "id": "fq4-c6", "texto": "La flotación y la fuerza de empuje, variación de la flotación con la densidad (en situaciones como son la flotación de barcos en mar abierto y ríos, la hidroterapia, el funcionamiento de globo aerostático, entre otros. Peso real y peso aparente).", "ceVinculadas": ["CE2"] },
+            { "id": "fq4-c7", "texto": "La fuerza elástica, la deformación, construcción del dinamómetro.", "ceVinculadas": ["CE4"] },
+            { "id": "fq4-c8", "texto": "Interacción gravitatoria.", "ceVinculadas": ["CE1"] },
+            { "id": "fq4-c9", "texto": "Diferencia entre peso y masa.", "ceVinculadas": ["CE1", "CE5"] }
+          ]
+        },
+        {
+          "id": "fq4-transversales", "titulo": "Contenidos transversales", "transversal": true,
+          "contenidos": [
+            { "id": "fq4-t1", "texto": "El proceso de medición: cálculo por aproximación, mediciones, incertidumbres en las mediciones, instrumentos de medición, unidades en el sistema internacional y sus conversiones." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "fq4-cl-01", "ce": "CE1", "texto": "Identifica y reconoce características macroscópicas y propiedades de diferentes muestras de agua a partir de la experimentación." },
+        { "id": "fq4-cl-02", "ce": "CE1", "texto": "Reconoce al peso como la interacción entre los cuerpos celestes y otros cuerpos para identificarlo como una propiedad que depende del lugar dónde se encuentre el cuerpo." },
+        { "id": "fq4-cl-03", "ce": "CE1", "texto": "Reconoce a la masa como una propiedad que se determina con la balanza." },
+        { "id": "fq4-cl-04", "ce": "CE2", "texto": "Observa e identifica características de las imágenes en diferentes espejos." },
+        { "id": "fq4-cl-05", "ce": "CE2", "texto": "Relaciona y considera los conceptos fundamentales de flotación y la fuerza de empuje, analizando y resolviendo situaciones en diferentes contextos." },
+        { "id": "fq4-cl-06", "ce": "CE3", "texto": "Reconoce que la variación de la densidad de diferentes materiales se relaciona con el estado de agregación del sistema, a partir de la observación o experimentación." },
+        { "id": "fq4-cl-07", "ce": "CE3", "texto": "Relaciona la sensación térmica y la temperatura en situaciones diversas de la vida cotidiana, logrando explicar la transferencia de calor." },
+        { "id": "fq4-cl-08", "ce": "CE4", "texto": "Manipula los materiales elásticos indagando las posibilidades que brinda para la construcción del dinamómetro, cuestionando sus ideas." },
+        { "id": "fq4-cl-09", "ce": "CE4", "texto": "Crea o modifica algoritmos mediados por el docente registrando temperaturas, mediante placas programables." },
+        { "id": "fq4-cl-10", "ce": "CE5", "texto": "Realiza de manera colaborativa experimentos o proyectos sobre la reflexión especular y difusa, demostrando habilidades de comunicación efectiva." },
+        { "id": "fq4-cl-11", "ce": "CE5", "texto": "Relaciona y establece la diferencia entre peso y masa, confrontando sus ideas y la de sus pares, mediante actividades experimentales." },
+        { "id": "fq4-cl-12", "ce": "CE5", "texto": "Identifica problemas socioambientales en un contexto acerca del agua, e indaga sobre sus causas y propone acciones para cambiar la situación." }
+      ]
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Al iniciar el tramo, realizar el diagnóstico de la situación de partida para determinar el grado de avance en las competencias específicas y planificar a partir de ello.",
+    "Las progresiones de aprendizaje por competencias guían las decisiones metodológicas; la clave es atender los criterios de logro y relacionarlos con los procesos cognitivos.",
+    "Establecer vínculos con otras unidades curriculares para favorecer el trabajo interdisciplinar.",
+    "Considerar el Diseño Universal para el Aprendizaje (DUA): múltiples formas de representación, acción-expresión y motivación.",
+    "Secuenciar actividades que, en un contexto cotidiano, abran interrogantes, consideren ideas previas, formulen hipótesis, observen, clasifiquen, controlen variables, tabulen datos, contrasten evidencias y comuniquen en diferentes soportes.",
+    "Aprovechar entornos virtuales, materiales de bajo costo, placas programables y equipos de laboratorio."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en problemas",
+    "Aprendizaje basado en proyectos",
+    "Analogías",
+    "Juegos (gamificación)",
+    "STEAM",
+    "Pregunta investigable",
+    "Trabajo colaborativo"
+  ]
+}
