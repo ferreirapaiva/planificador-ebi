@@ -1,8 +1,19 @@
 import { UnidadCurricular } from './esquema';
 import matematica from '../../data/programas/tramo-3/matematica.json';
+import fisicaQuimica from '../../data/programas/tramo-3/fisica-quimica.json';
+import biologia from '../../data/programas/tramo-3/biologia.json';
+import tierraEspacio from '../../data/programas/tramo-3/tierra-espacio.json';
+import historia from '../../data/programas/tramo-3/historia.json';
+import geografia from '../../data/programas/tramo-3/geografia.json';
+import ciudadania from '../../data/programas/tramo-3/ciudadania.json';
+import artesVisuales from '../../data/programas/tramo-3/artes-visuales.json';
+import literatura from '../../data/programas/tramo-3/literatura.json';
+import lengua from '../../data/programas/tramo-3/lengua.json';
 
 /** Programas cargados. Al sumar una UC nueva, agregarla acá. */
-export const PROGRAMAS: UnidadCurricular[] = [matematica].map((p) => UnidadCurricular.parse(p));
+export const PROGRAMAS: UnidadCurricular[] = (
+  [matematica, fisicaQuimica, biologia, tierraEspacio, historia, geografia, ciudadania, artesVisuales, literatura, lengua] as unknown[]
+).map((p) => UnidadCurricular.parse(p));
 
 export const ESPACIOS = [
   { nombre: 'Científico-Matemático', color: 'bg-sky-600', suave: 'bg-sky-50 text-sky-900 border-sky-200' },

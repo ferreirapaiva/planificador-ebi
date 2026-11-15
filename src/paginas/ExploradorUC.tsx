@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import type { Contenido, GradoUC, UnidadCurricular } from '../datos/esquema';
+import { cesDe, type Contenido, type CriterioLogro, type GradoUC, type UnidadCurricular } from '../datos/esquema';
 import { PROGRAMAS, colorEspacio, normalizar } from '../datos/programas';
 
 type Vista = number | 'comparar';
@@ -8,7 +8,27 @@ type Filtros = { eje: string | null; ce: string | null; texto: string };
 
 const coincide = (texto: string, q: string) => !q || normalizar(texto).includes(q);
 const contenidoCoincide = (c: Contenido, q: string): boolean =>
-  coincide(c.texto, q) || (c.subitems ?? []).some((s) => contenidoCoincide(s, q));
+  coincide(c.texto, q) ||
+  (c.profundizacion ?? []).some((p) => coincide(p, q)) ||
+  (c.subitems ?? []).some((s) => contenidoCoincide(s, q));
+const contenidoTieneCE = (c: Contenido, ce: string): boolean =>
+  !!c.ceVinculadas?.includes(ce) || (c.subitems ?? []).some((s) => contenidoTieneCE(s, ce));
+
+function EtiquetasCE({ ces, uc }: { ces: string[]; uc: UnidadCurricular }) {
+  return (
+    <span className="inline-flex flex-wrap gap-1 align-middle">
+      {ces.map((ce) => (
+        <span
+          key={ce}
+          title={uc.competenciasEspecificas.find((c) => c.codigo === ce)?.texto}
+          className="rounded bg-blue-100 px-1.5 py-0.5 text-xs font-bold text-blue-800"
+        >
+          {ce}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 function Chip({ activo, onClick, children, title }: { activo: boolean; onClick: () => void; children: React.ReactNode; title?: string }) {
   return (
@@ -26,31 +46,50 @@ function Chip({ activo, onClick, children, title }: { activo: boolean; onClick: 
   );
 }
 
-function ListaContenidos({ items }: { items: Contenido[] }) {
+function ListaContenidos({ items, uc }: { items: Contenido[]; uc: UnidadCurricular }) {
   return (
     <ul className="ml-5 list-disc space-y-1 text-slate-700">
       {items.map((c) => (
         <li key={c.id}>
-          {c.texto}
-          {c.subitems && <ListaContenidos items={c.subitems} />}
+          {c.texto} {c.ceVinculadas && <EtiquetasCE ces={c.ceVinculadas} uc={uc} />}
+          {c.profundizacion && (
+            <p className="text-sm text-emerald-800">
+              <span className="font-medium">Para profundizar:</span> {c.profundizacion.join(' · ')}
+            </p>
+          )}
+          {c.subitems && <ListaContenidos items={c.subitems} uc={uc} />}
         </li>
       ))}
     </ul>
   );
 }
 
+/** Agrupa criterios por su conjunto de competencias, en el orden de las CE del programa. */
+function agruparCriterios(uc: UnidadCurricular, criterios: CriterioLogro[]) {
+  const orden = (ce: string) => uc.competenciasEspecificas.findIndex((c) => c.codigo === ce);
+  const grupos = new Map<string, { ces: string[]; items: CriterioLogro[] }>();
+  for (const c of criterios) {
+    const ces = cesDe(c);
+    const clave = ces.join('|');
+    if (!grupos.has(clave)) grupos.set(clave, { ces, items: [] });
+    grupos.get(clave)!.items.push(c);
+  }
+  return [...grupos.values()].sort((a, b) => orden(a.ces[0]) - orden(b.ces[0]));
+}
+
 function PanelGrado({ uc, grado, f }: { uc: UnidadCurricular; grado: GradoUC; f: Filtros }) {
   const q = normalizar(f.texto.trim());
-  const bloques = grado.bloques.filter(
-    (b) =>
-      (!f.eje || b.eje === f.eje) &&
-      (!f.ce || b.ceVinculadas.includes(f.ce)) &&
-      (coincide(b.titulo, q) || b.contenidos.some((c) => contenidoCoincide(c, q))),
-  );
-  const criterios = grado.criteriosLogro.filter((c) => (!f.ce || c.ce === f.ce) && coincide(c.texto, q));
-  const porCE = uc.competenciasEspecificas
-    .map((ce) => ({ ce, items: criterios.filter((c) => c.ce === ce.codigo) }))
-    .filter((g) => g.items.length);
+  const bloques = grado.bloques
+    .filter((b) => !f.eje || b.eje === f.eje)
+    .map((b) => {
+      // Si el bloque no tiene competencias propias, el filtro por CE se aplica a cada contenido.
+      const porCE = !f.ce || b.ceVinculadas.includes(f.ce) ? b.contenidos : b.contenidos.filter((c) => contenidoTieneCE(c, f.ce!));
+      const visibles = coincide(b.titulo, q) ? porCE : porCE.filter((c) => contenidoCoincide(c, q));
+      return { ...b, contenidos: visibles };
+    })
+    .filter((b) => b.contenidos.length);
+  const criterios = grado.criteriosLogro.filter((c) => (!f.ce || cesDe(c).includes(f.ce)) && coincide(c.texto, q));
+  const grupos = agruparCriterios(uc, criterios);
 
   return (
     <div className="space-y-6">
@@ -61,13 +100,25 @@ function PanelGrado({ uc, grado, f }: { uc: UnidadCurricular; grado: GradoUC; f:
         {bloques.length === 0 && <p className="text-sm text-slate-500">Ningún contenido coincide con los filtros.</p>}
         <div className="space-y-3">
           {bloques.map((b) => (
-            <article key={b.id} className="rounded-xl border border-slate-200 bg-white p-4">
+            <article
+              key={b.id}
+              className={`rounded-xl border p-4 ${b.transversal ? 'border-dashed border-slate-300 bg-slate-50' : 'border-slate-200 bg-white'}`}
+            >
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <h4 className="font-semibold uppercase tracking-wide text-slate-800">{b.titulo}</h4>
-                <span className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600">Eje {b.eje}</span>
-                <span className="ml-auto text-xs text-slate-500">{b.ceVinculadas.join(' · ')}</span>
+                {b.eje && b.eje !== b.titulo && <span className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600">Eje {b.eje}</span>}
+                {b.contenidoEstructurante && b.contenidoEstructurante !== b.titulo && (
+                  <span className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600">{b.contenidoEstructurante}</span>
+                )}
+                {b.transversal && <span className="rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-800">Transversal</span>}
+                {b.ceVinculadas.length > 0 && (
+                  <span className="ml-auto">
+                    <EtiquetasCE ces={b.ceVinculadas} uc={uc} />
+                  </span>
+                )}
               </div>
-              <ListaContenidos items={b.contenidos} />
+              {b.conceptosClave && <p className="mb-2 text-xs text-slate-500">Conceptos clave: {b.conceptosClave.join(' · ')}</p>}
+              <ListaContenidos items={b.contenidos} uc={uc} />
             </article>
           ))}
         </div>
@@ -76,13 +127,13 @@ function PanelGrado({ uc, grado, f }: { uc: UnidadCurricular; grado: GradoUC; f:
         <h3 className="mb-3 text-lg font-semibold text-slate-900">
           Criterios de logro de {grado.grado}.º <span className="text-sm font-normal text-slate-500">({criterios.length})</span>
         </h3>
-        {porCE.length === 0 && <p className="text-sm text-slate-500">Ningún criterio coincide con los filtros.</p>}
+        {grupos.length === 0 && <p className="text-sm text-slate-500">Ningún criterio coincide con los filtros.</p>}
         <div className="space-y-3">
-          {porCE.map(({ ce, items }) => (
-            <article key={ce.codigo} className="rounded-xl border border-slate-200 bg-white p-4">
+          {grupos.map(({ ces, items }) => (
+            <article key={ces.join('|')} className="rounded-xl border border-slate-200 bg-white p-4">
               <h4 className="mb-2 text-sm text-slate-600">
-                <span className="mr-1 rounded bg-blue-100 px-1.5 py-0.5 font-bold text-blue-800">{ce.codigo}</span>
-                {ce.texto}
+                <EtiquetasCE ces={ces} uc={uc} />{' '}
+                {ces.length === 1 && uc.competenciasEspecificas.find((c) => c.codigo === ces[0])?.texto}
               </h4>
               <ul className="ml-5 list-disc space-y-1 text-slate-700">
                 {items.map((c) => <li key={c.id}>{c.texto}</li>)}
@@ -100,6 +151,11 @@ function PanelGrado({ uc, grado, f }: { uc: UnidadCurricular; grado: GradoUC; f:
 
 export function ExploradorUC() {
   const { ucId } = useParams();
+  // La key reinicia filtros y grado al cambiar de programa.
+  return <Explorador key={ucId} ucId={ucId} />;
+}
+
+function Explorador({ ucId }: { ucId?: string }) {
   const uc = PROGRAMAS.find((p) => p.id === ucId);
   const [vista, setVista] = useState<Vista>(3);
   const [f, setF] = useState<Filtros>({ eje: null, ce: null, texto: '' });
@@ -180,13 +236,17 @@ export function ExploradorUC() {
             className="ml-auto min-w-56 flex-1 rounded-lg border border-slate-300 px-3 py-1.5 text-sm sm:flex-none"
           />
         </div>
+        {uc.ejes.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium text-slate-600">Eje:</span>
+            <Chip activo={!f.eje} onClick={() => setF({ ...f, eje: null })}>Todos</Chip>
+            {uc.ejes.map((e) => (
+              <Chip key={e} activo={f.eje === e} onClick={() => setF({ ...f, eje: f.eje === e ? null : e })}>{e}</Chip>
+            ))}
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-slate-600">Eje:</span>
-          <Chip activo={!f.eje} onClick={() => setF({ ...f, eje: null })}>Todos</Chip>
-          {uc.ejes.map((e) => (
-            <Chip key={e} activo={f.eje === e} onClick={() => setF({ ...f, eje: f.eje === e ? null : e })}>{e}</Chip>
-          ))}
-          <span className="ml-2 text-sm font-medium text-slate-600">Competencia:</span>
+          <span className="text-sm font-medium text-slate-600">Competencia:</span>
           <Chip activo={!f.ce} onClick={() => setF({ ...f, ce: null })}>Todas</Chip>
           {uc.competenciasEspecificas.map((ce) => (
             <Chip key={ce.codigo} title={ce.texto} activo={f.ce === ce.codigo} onClick={() => setF({ ...f, ce: f.ce === ce.codigo ? null : ce.codigo })}>

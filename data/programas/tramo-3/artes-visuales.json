@@ -1,0 +1,242 @@
+{
+  "id": "artes-visuales",
+  "nombre": "Artes Visuales y Plásticas",
+  "espacio": "Creativo-Artístico",
+  "tramo": 3,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "La tabla agrupa por competencia; cada fila tiene un tema (p. ej. 'La escultura'), su contenido y su criterio. Se cargó el tema como contenido y el contenido como subítem. Verificar los cortes (págs. 13 a 17).",
+    "4.º grado: la fila 'Géneros' aparece precedida por 'Lenguajes del plano' en el PDF (pág. 16); se cargó dentro de la CE3 como en 3.º."
+  ],
+  "fuente": { "archivo": "Artes visuales y plásticas - Tramo 3.pdf", "paginas": [7, 12, 13, 14, 15, 16, 17, 18] },
+  "justificacion": "El lenguaje visual junto a la cultura de la imagen está inmerso en toda nuestra vida y constituye un medio de comunicación importante, ya que expresa con imágenes nuestro sentir y nuestra mirada frente al mundo. Sensibilizar al niño en este sistema representativo hace que desarrolle su inteligencia, su subjetividad, su imaginación, su creatividad, y pueda comunicarse con los demás. El lenguaje visual construye el pensamiento y desarrolla la inteligencia cualitativa (Eisner, 1995): frente a una hoja en blanco el niño debe tomar decisiones sobre formas, líneas, colores y materiales para expresar su idea y su intención.",
+  "contenidosEstructurantes": ["Lenguajes del espacio", "Lenguajes del plano", "Lenguaje audiovisual", "Géneros", "Elementos plásticos", "Cultura visual"],
+  "ejes": [],
+  "competenciasEspecificas": [
+    { "codigo": "CE1", "texto": "Competencia sensoperceptiva. Explora y percibe a través de los sentidos el mundo visual que lo rodea para desarrollar experiencias estéticas.", "competenciasMCN": ["Comunicación"] },
+    { "codigo": "CE2", "texto": "Competencia interpretativa. Inicia procesos interpretativos en las producciones de arte visual con ayuda del docente para establecer relaciones entre los contextos y sus manifestaciones culturales.", "competenciasMCN": ["Pensamiento crítico", "Metacognitiva", "Pensamiento científico"] },
+    { "codigo": "CE3", "texto": "Competencia productivo-creativa. Se sensibiliza frente al mundo que lo rodea a través de imágenes visuales para generar sus propias creaciones.", "competenciasMCN": ["Comunicación", "Pensamiento creativo", "Pensamiento computacional"] },
+    { "codigo": "CE4", "texto": "Competencia cultural. Identifica valores culturales en las obras de arte, relacionados con la vida de la comunidad, lo nacional y lo regional para construir su propia identidad.", "competenciasMCN": ["Comunicación", "Relacionamiento con los otros", "Ciudadanía local, global y digital", "Intrapersonal"] },
+    { "codigo": "CE5", "texto": "Competencia en el manejo de los elementos del lenguaje visual. Se expresa a través de los elementos plásticos para transformar la realidad.", "competenciasMCN": ["Pensamiento creativo", "Iniciativa y orientación a la acción"] },
+    { "codigo": "CE6", "texto": "Competencia en la práctica de artes visuales colectivas. Explora y desarrolla imágenes visuales de forma colectiva para elaborar producciones artísticas en grupo.", "competenciasMCN": ["Pensamiento creativo", "Relacionamiento con los otros"] }
+  ],
+  "grados": [
+    {
+      "grado": 3,
+      "fuente": { "archivo": "Artes visuales y plásticas - Tramo 3.pdf", "paginas": [13, 14, 15] },
+      "bloques": [
+        {
+          "id": "av3-ce1", "titulo": "Competencia sensoperceptiva", "contenidoEstructurante": "Lenguajes del espacio", "ceVinculadas": ["CE1"],
+          "contenidos": [
+            { "id": "av3-escultura", "texto": "Lenguajes del espacio: la escultura", "subitems": [
+              { "id": "av3-escultura-1", "texto": "Procedimientos en técnicas extractivas con diferentes materiales." }
+            ] }
+          ]
+        },
+        {
+          "id": "av3-ce6", "titulo": "Artes visuales colectivas", "contenidoEstructurante": "Lenguajes del espacio", "ceVinculadas": ["CE6"],
+          "contenidos": [
+            { "id": "av3-instalacion", "texto": "La instalación y la intervención", "subitems": [
+              { "id": "av3-instalacion-1", "texto": "Transformaciones del espacio interactuando con el cuerpo y el espacio." }
+            ] }
+          ]
+        },
+        {
+          "id": "av3-ce3", "titulo": "Competencia productivo-creativa", "ceVinculadas": ["CE3"],
+          "contenidos": [
+            { "id": "av3-dibujo", "texto": "Lenguajes del plano: el dibujo", "subitems": [
+              { "id": "av3-dibujo-1", "texto": "Transformación del plano aplicando diferentes elementos gráfico-plásticos." }
+            ] },
+            { "id": "av3-pintura", "texto": "La pintura", "subitems": [
+              { "id": "av3-pintura-1", "texto": "Pinturas vinílicas y acrílicas." },
+              { "id": "av3-pintura-2", "texto": "Composiciones a partir de la mancha." }
+            ] },
+            { "id": "av3-collage", "texto": "El collage", "subitems": [
+              { "id": "av3-collage-1", "texto": "Técnicas mixtas: papel y pintura." }
+            ] },
+            { "id": "av3-impresion", "texto": "Técnicas de impresión", "subitems": [
+              { "id": "av3-impresion-1", "texto": "Matrices de surco: linograbado, telgopor, cartón, yeso." }
+            ] },
+            { "id": "av3-fotografia", "texto": "Fotografía", "subitems": [
+              { "id": "av3-fotografia-1", "texto": "Equilibrio en la composición." },
+              { "id": "av3-fotografia-2", "texto": "La línea de horizonte." }
+            ] },
+            { "id": "av3-audiovisual", "texto": "Lenguaje audiovisual", "subitems": [
+              { "id": "av3-audiovisual-1", "texto": "La iluminación." },
+              { "id": "av3-audiovisual-2", "texto": "Campo, profundidad de campo y contracampo." }
+            ] },
+            { "id": "av3-generos", "texto": "Géneros", "subitems": [
+              { "id": "av3-generos-1", "texto": "Géneros pictóricos: mitológicos, religiosos y alegorías." },
+              { "id": "av3-generos-2", "texto": "Géneros cinematográficos: comedia y humor." }
+            ] }
+          ]
+        },
+        {
+          "id": "av3-ce5", "titulo": "Elementos del lenguaje visual", "contenidoEstructurante": "Elementos plásticos", "ceVinculadas": ["CE5"],
+          "contenidos": [
+            { "id": "av3-color", "texto": "Elementos plásticos: color", "subitems": [
+              { "id": "av3-color-1", "texto": "Paleta alta y paleta baja." }
+            ] },
+            { "id": "av3-punto", "texto": "Punto y línea", "subitems": [
+              { "id": "av3-punto-1", "texto": "Interacciones entre el punto, la línea y el plano." }
+            ] },
+            { "id": "av3-materia", "texto": "Materia", "subitems": [
+              { "id": "av3-materia-1", "texto": "Relaciones entre texturas táctiles y texturas visuales." }
+            ] },
+            { "id": "av3-luz", "texto": "Luz", "subitems": [
+              { "id": "av3-luz-1", "texto": "Efecto de la luz sobre los objetos: luz frontal, lateral, contraluz, cenital." }
+            ] }
+          ]
+        },
+        {
+          "id": "av3-ce2", "titulo": "Competencia interpretativa", "contenidoEstructurante": "Cultura visual", "ceVinculadas": ["CE2"],
+          "contenidos": [
+            { "id": "av3-cultura", "texto": "Cultura visual", "subitems": [
+              { "id": "av3-cultura-1", "texto": "Artistas, sus obras y contextos. La cultura cinematográfica." }
+            ] }
+          ]
+        },
+        {
+          "id": "av3-ce4", "titulo": "Competencia cultural", "ceVinculadas": ["CE4"],
+          "contenidos": [
+            { "id": "av3-apreciacion", "texto": "Apreciación, lectura, interpretación de imágenes", "subitems": [
+              { "id": "av3-apreciacion-1", "texto": "Interpretación reflexiva que permita identificar las distintas intenciones en las imágenes." }
+            ] }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "av3-cl-01", "ce": "CE1", "contenidos": ["av3-escultura"], "texto": "Indaga y explora procedimientos en técnicas extractivas de la escultura con diferentes materiales y herramientas." },
+        { "id": "av3-cl-02", "ce": "CE6", "contenidos": ["av3-instalacion"], "texto": "Explora y descubre las transformaciones del espacio de forma colectiva." },
+        { "id": "av3-cl-03", "ce": "CE3", "contenidos": ["av3-dibujo"], "texto": "Indaga y analiza transformaciones del plano aplicando diferentes elementos gráfico-plásticos." },
+        { "id": "av3-cl-04", "ce": "CE3", "contenidos": ["av3-pintura"], "texto": "Descubre posibilidades expresivas que le aporta la pintura vinílica en sus composiciones con manchas." },
+        { "id": "av3-cl-05", "ce": "CE3", "contenidos": ["av3-collage"], "texto": "Crea y analiza sus composiciones en collage con técnicas mixtas." },
+        { "id": "av3-cl-06", "ce": "CE3", "contenidos": ["av3-impresion"], "texto": "Experimenta la creación de matrices de surco en técnicas de impresión." },
+        { "id": "av3-cl-07", "ce": "CE3", "contenidos": ["av3-fotografia"], "texto": "Indaga y analiza el equilibrio en la composición fotográfica con herramientas tecnológicas." },
+        { "id": "av3-cl-08", "ce": "CE3", "contenidos": ["av3-audiovisual"], "texto": "Experimenta y analiza la iluminación y el campo en el lenguaje audiovisual con recursos tecnológicos." },
+        { "id": "av3-cl-09", "ce": "CE3", "contenidos": ["av3-generos"], "texto": "Reconoce, identifica y analiza los diferentes géneros pictóricos y cinematográficos en diferentes obras." },
+        { "id": "av3-cl-10", "ce": "CE5", "contenidos": ["av3-color"], "texto": "Identifica y comprende la diferencia entre paleta alta y baja a partir de la apreciación y la exploración plástica." },
+        { "id": "av3-cl-11", "ce": "CE5", "contenidos": ["av3-punto"], "texto": "Expresa múltiples interacciones del punto y la línea sobre el plano con diversidad de materiales." },
+        { "id": "av3-cl-12", "ce": "CE5", "contenidos": ["av3-materia"], "texto": "Explora relaciones existentes entre las texturas táctiles y las texturas visuales a través de distintas técnicas." },
+        { "id": "av3-cl-13", "ce": "CE5", "contenidos": ["av3-luz"], "texto": "Experimenta los diferentes efectos de la luz sobre los objetos con distintas intenciones expresivas." },
+        { "id": "av3-cl-14", "ce": "CE2", "contenidos": ["av3-cultura"], "texto": "Interpreta y relaciona la obra de artistas en la cultura cinematográfica a partir de diferentes visualizaciones." },
+        { "id": "av3-cl-15", "ce": "CE4", "contenidos": ["av3-apreciacion"], "texto": "Identifica las distintas intenciones en las imágenes a través de la interpretación reflexiva." }
+      ]
+    },
+    {
+      "grado": 4,
+      "fuente": { "archivo": "Artes visuales y plásticas - Tramo 3.pdf", "paginas": [15, 16, 17] },
+      "bloques": [
+        {
+          "id": "av4-ce1", "titulo": "Competencia sensoperceptiva", "contenidoEstructurante": "Lenguajes del espacio", "ceVinculadas": ["CE1"],
+          "contenidos": [
+            { "id": "av4-escultura", "texto": "Lenguajes del espacio: la escultura", "subitems": [
+              { "id": "av4-escultura-1", "texto": "Combinaciones de técnicas de modelado, ensamblaje y extractivas." }
+            ] }
+          ]
+        },
+        {
+          "id": "av4-ce6", "titulo": "Artes visuales colectivas", "contenidoEstructurante": "Lenguajes del espacio", "ceVinculadas": ["CE6"],
+          "contenidos": [
+            { "id": "av4-instalacion", "texto": "La instalación y la intervención", "subitems": [
+              { "id": "av4-instalacion-1", "texto": "Intervenciones del espacio en la escuela con distintos elementos y recursos plásticos." }
+            ] }
+          ]
+        },
+        {
+          "id": "av4-ce3", "titulo": "Competencia productivo-creativa", "ceVinculadas": ["CE3"],
+          "contenidos": [
+            { "id": "av4-dibujo", "texto": "Lenguajes del plano: el dibujo", "subitems": [
+              { "id": "av4-dibujo-1", "texto": "El dibujo de objetos y figuras humanas." }
+            ] },
+            { "id": "av4-pintura", "texto": "La pintura", "subitems": [
+              { "id": "av4-pintura-1", "texto": "Pinturas al huevo y al aceite, temple, tintas naturales y óleo." }
+            ] },
+            { "id": "av4-collage", "texto": "El collage", "subitems": [
+              { "id": "av4-collage-1", "texto": "Técnicas mixtas: papel, pintura y tela." }
+            ] },
+            { "id": "av4-impresion", "texto": "Técnicas de impresión", "subitems": [
+              { "id": "av4-impresion-1", "texto": "Matrices de relieve con diferentes materiales." }
+            ] },
+            { "id": "av4-fotografia", "texto": "Fotografía", "subitems": [
+              { "id": "av4-fotografia-1", "texto": "Las diferentes angulaciones en el encuadre." }
+            ] },
+            { "id": "av4-audiovisual", "texto": "Lenguaje audiovisual", "subitems": [
+              { "id": "av4-audiovisual-1", "texto": "Movimientos de cámara. Las angulaciones en el encuadre." }
+            ] },
+            { "id": "av4-generos", "texto": "Géneros", "subitems": [
+              { "id": "av4-generos-1", "texto": "Géneros: naturaleza muerta." },
+              { "id": "av4-generos-2", "texto": "Géneros cinematográficos: ficción y música." }
+            ] }
+          ]
+        },
+        {
+          "id": "av4-ce5", "titulo": "Elementos del lenguaje visual", "contenidoEstructurante": "Elementos plásticos", "ceVinculadas": ["CE5"],
+          "contenidos": [
+            { "id": "av4-color", "texto": "Elementos plásticos: color", "subitems": [
+              { "id": "av4-color-1", "texto": "La relatividad del color." }
+            ] },
+            { "id": "av4-punto", "texto": "Punto y línea", "subitems": [
+              { "id": "av4-punto-1", "texto": "La expresividad de la línea a partir de diferentes materiales y herramientas." }
+            ] },
+            { "id": "av4-materia", "texto": "Materia", "subitems": [
+              { "id": "av4-materia-1", "texto": "Variaciones de texturas de un mismo material." }
+            ] },
+            { "id": "av4-luz", "texto": "Luz", "subitems": [
+              { "id": "av4-luz-1", "texto": "La representación de la luz en la pintura: el claroscuro." }
+            ] }
+          ]
+        },
+        {
+          "id": "av4-ce2", "titulo": "Competencia interpretativa", "contenidoEstructurante": "Cultura visual", "ceVinculadas": ["CE2"],
+          "contenidos": [
+            { "id": "av4-cultura", "texto": "Cultura visual", "subitems": [
+              { "id": "av4-cultura-1", "texto": "Artistas, sus obras y contextos. La moda en la vestimenta." }
+            ] }
+          ]
+        },
+        {
+          "id": "av4-ce4", "titulo": "Competencia cultural", "ceVinculadas": ["CE4"],
+          "contenidos": [
+            { "id": "av4-apreciacion", "texto": "Apreciación, lectura e interpretación de imágenes", "subitems": [
+              { "id": "av4-apreciacion-1", "texto": "Confrontación de interpretaciones que amplíen posibles sentidos y significados de las imágenes." }
+            ] }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "av4-cl-01", "ce": "CE1", "contenidos": ["av4-escultura"], "texto": "Indaga, explora y analiza las distintas técnicas del modelado y ensamblaje de forma individual o colectiva." },
+        { "id": "av4-cl-02", "ce": "CE6", "contenidos": ["av4-instalacion"], "texto": "Explora posibles intervenciones del espacio en la escuela con distintos elementos y recursos plásticos de forma colectiva." },
+        { "id": "av4-cl-03", "ce": "CE3", "contenidos": ["av4-dibujo"], "texto": "Indaga, analiza y crea a partir de objetos y de la figura humana de forma individual o colectiva." },
+        { "id": "av4-cl-04", "ce": "CE3", "contenidos": ["av4-pintura"], "texto": "Elabora distintas pinturas y experimenta con ellas en diferentes soportes." },
+        { "id": "av4-cl-05", "ce": "CE3", "contenidos": ["av4-collage"], "texto": "Experimenta y crea con las técnicas mixtas en diferentes soportes." },
+        { "id": "av4-cl-06", "ce": "CE3", "contenidos": ["av4-impresion"], "texto": "Indaga, experimenta y crea con matrices de relieve, con diferentes soportes." },
+        { "id": "av4-cl-07", "ce": "CE3", "contenidos": ["av4-fotografia"], "texto": "Explora, registra y percibe, con intencionalidad, diferentes ángulos en las tomas fotográficas." },
+        { "id": "av4-cl-08", "ce": "CE3", "contenidos": ["av4-audiovisual"], "texto": "Explora, registra y percibe los movimientos de cámara, con intencionalidad, en diferentes contextos." },
+        { "id": "av4-cl-09", "ce": "CE3", "contenidos": ["av4-generos"], "texto": "Identifica, selecciona y recrea los distintos géneros en la pintura y en el cine con ayuda del docente." },
+        { "id": "av4-cl-10", "ce": "CE5", "contenidos": ["av4-color"], "texto": "Analiza la relatividad del color con diferentes experiencias." },
+        { "id": "av4-cl-11", "ce": "CE5", "contenidos": ["av4-punto"], "texto": "Analiza y descubre a partir de la experiencia, la expresividad y el significado de la línea con distintos materiales y trazos." },
+        { "id": "av4-cl-12", "ce": "CE5", "contenidos": ["av4-materia"], "texto": "Indaga diferentes texturas de un mismo material a partir de experimentos." },
+        { "id": "av4-cl-13", "ce": "CE5", "contenidos": ["av4-luz"], "texto": "Indaga y crea diferentes estrategias en la representación de la acción de la luz a través del claroscuro en las obras." },
+        { "id": "av4-cl-14", "ce": "CE2", "contenidos": ["av4-cultura"], "texto": "Interpreta y relaciona la obra de artistas en sus contextos." },
+        { "id": "av4-cl-15", "ce": "CE2", "contenidos": ["av4-cultura"], "texto": "Identifica la moda en la vestimenta con relación al consumo en la vida cotidiana." },
+        { "id": "av4-cl-16", "ce": "CE4", "contenidos": ["av4-apreciacion"], "texto": "Interpreta y da razones en la confrontación de interpretaciones ampliando los posibles sentidos y significados de las imágenes en discusiones y debates." }
+      ]
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Los contenidos pueden trabajarse de forma recursiva y contextualizada, generando secuencias didácticas significativas.",
+    "El programa abarca los lenguajes del espacio (escultura, instalación), los lenguajes del plano (dibujo, pintura, collage, impresión, fotografía) y el lenguaje audiovisual.",
+    "Los géneros de las artes visuales se tratan de forma independiente para la formación artística y estética.",
+    "Conocer los elementos plásticos (color, punto, línea, luz, materia, textura) es fundamental para analizar una obra y reflexionar en los procesos creativos.",
+    "La cultura visual es un ámbito de producción, análisis y crítica del mundo de las imágenes.",
+    "Desde lo metodológico se sigue a Eisner: dominio productivo (percepción, experiencia, materiales y técnicas), dominio crítico (apreciación desde las dimensiones experiencial, formal, simbólica, temática, material y contextual) y dominio cultural."
+  ],
+  "metodologiasSugeridas": [
+    "Dominio productivo: experimentación con materiales y técnicas",
+    "Dominio crítico: apreciación y análisis de obras",
+    "Dominio cultural: contextualización de obras y artistas",
+    "Producción artística colectiva"
+  ]
+}

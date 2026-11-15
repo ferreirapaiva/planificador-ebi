@@ -1,0 +1,129 @@
+{
+  "id": "literatura",
+  "nombre": "Literatura",
+  "espacio": "Creativo-Artístico",
+  "tramo": 3,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "La justificación del PDF de Literatura reproduce la de Artes Visuales (pág. 7); se cargó tal cual.",
+    "Las competencias de los criterios se asignaron con la misma regla de tabla que en Física-Química (la CE aparece junto al primer criterio de su grupo). Verificar en las págs. 14 y 16."
+  ],
+  "fuente": { "archivo": "Literatura - Tramo 3.pdf", "paginas": [7, 12, 13, 14, 15, 16, 17, 18] },
+  "justificacion": "El lenguaje visual junto a la cultura de la imagen está inmerso en toda nuestra vida y constituye un medio de comunicación importante, ya que expresa con imágenes nuestro sentir y nuestra mirada frente al mundo. Sensibilizar al niño en este sistema representativo hace que desarrolle su inteligencia, su subjetividad, su imaginación, su creatividad, y pueda comunicarse con los demás.",
+  "contenidosEstructurantes": ["Género narrativo", "Género poético", "Género dramático"],
+  "ejes": [],
+  "competenciasEspecificas": [
+    { "codigo": "CE1", "texto": "Reconoce y se sensibiliza ante el hecho literario para el desarrollo de su subjetividad de forma mediada durante la lectura colectiva o individual.", "competenciasMCN": ["Comunicación", "Pensamiento creativo", "Intrapersonal", "Relacionamiento con los otros"] },
+    { "codigo": "CE2", "texto": "Percibe, internaliza y comprende el sentido simbólico del vocabulario con mediación del docente para explorar las diversas posibilidades del lenguaje literario.", "competenciasMCN": ["Comunicación", "Pensamiento creativo", "Pensamiento computacional", "Metacognitiva", "Ciudadanía local, global y digital"] },
+    { "codigo": "CE3", "texto": "Selecciona y combina elementos pertenecientes a una obra literaria existente con ideas personales para la creación propia.", "competenciasMCN": ["Comunicación", "Pensamiento creativo", "Pensamiento crítico", "Pensamiento computacional", "Iniciativa y orientación a la acción"] },
+    { "codigo": "CE4", "texto": "Emplea estructuras argumentativas básicas en relación con las posibles interpretaciones de los personajes y otras situaciones planteadas por el texto literario para exponer su punto de vista y construir nuevos significados e interpretaciones.", "competenciasMCN": ["Pensamiento crítico", "Pensamiento científico", "Relacionamiento con los otros", "Ciudadanía local, global y digital"] },
+    { "codigo": "CE5", "texto": "Distingue acciones, personajes y hechos fantásticos de realistas, para elaborar de forma oral y escrita situaciones sencillas guiadas por el docente.", "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento creativo", "Iniciativa y orientación a la acción"] },
+    { "codigo": "CE6", "texto": "Identifica los indicios para clasificar la voz narrativa interna o externa de un cuento de forma mediada a través de la lectura de diversos relatos.", "competenciasMCN": ["Comunicación", "Pensamiento creativo", "Pensamiento científico", "Iniciativa y orientación a la acción"] },
+    { "codigo": "CE7", "texto": "Identifica los indicios de cada género literario para clasificar las obras con mediación docente.", "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento científico"] }
+  ],
+  "grados": [
+    {
+      "grado": 3,
+      "fuente": { "archivo": "Literatura - Tramo 3.pdf", "paginas": [13, 14] },
+      "bloques": [
+        {
+          "id": "lit3-narrativo", "titulo": "Género narrativo", "contenidoEstructurante": "Género narrativo", "ceVinculadas": ["CE1", "CE2", "CE3", "CE4", "CE6", "CE7"],
+          "contenidos": [
+            { "id": "lit3-nar-1", "texto": "Mito" },
+            { "id": "lit3-nar-2", "texto": "Leyenda" },
+            { "id": "lit3-nar-3", "texto": "Personajes fantásticos" },
+            { "id": "lit3-nar-4", "texto": "El microcuento" }
+          ]
+        },
+        {
+          "id": "lit3-poetico", "titulo": "Género poético", "contenidoEstructurante": "Género poético", "ceVinculadas": ["CE1", "CE2", "CE3", "CE7"],
+          "contenidos": [
+            { "id": "lit3-poe-1", "texto": "El refrán y su naturaleza metafórica" },
+            { "id": "lit3-poe-2", "texto": "El caligrama y el recurso literario de la personificación" }
+          ]
+        },
+        {
+          "id": "lit3-dramatico", "titulo": "Género dramático", "contenidoEstructurante": "Género dramático", "ceVinculadas": ["CE4", "CE5", "CE7"],
+          "contenidos": [
+            { "id": "lit3-dra-1", "texto": "El guion de una obra teatral" }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "lit3-cl-01", "ce": "CE1", "texto": "Distingue su opinión personal de la realidad ficcional a partir de mitos, leyendas, microcuentos, caligramas y obras teatrales a través de la oralidad y la escritura." },
+        { "id": "lit3-cl-02", "ce": "CE1", "texto": "Opina desde su subjetividad a partir de los hechos literarios presentes en mitos, leyendas, microcuentos, caligramas y obras teatrales a través de la palabra o recursos visuales." },
+        { "id": "lit3-cl-03", "ce": "CE2", "contenidos": ["lit3-poe-1", "lit3-poe-2"], "texto": "Expresa su comprensión a partir de construcciones lingüísticas y gráficas presentes en refranes y caligramas con mediación del docente." },
+        { "id": "lit3-cl-04", "ce": "CE2", "texto": "Reconoce y señala, con mediación docente, el sentido simbólico del vocabulario en diversos textos o fragmentos." },
+        { "id": "lit3-cl-05", "ce": "CE3", "texto": "Propone nuevas características, problemas o desenlaces para leyendas, personajes fantásticos, microcuentos y caligramas con mediación docente." },
+        { "id": "lit3-cl-06", "ce": "CE3", "texto": "Combina ideas presentes en leyendas, en personajes fantásticos, en microcuentos y en caligramas en la creación de textos nuevos de forma independiente." },
+        { "id": "lit3-cl-07", "ce": "CE4", "texto": "Explica las razones de sus interpretaciones sobre personajes y situaciones en mitos, leyendas, microcuentos y obras teatrales de forma oral." },
+        { "id": "lit3-cl-08", "ce": "CE5", "texto": "Reconoce los ideales que motivan las acciones de los personajes en mitos, leyendas, microcuentos y obras teatrales con andamiaje docente." },
+        { "id": "lit3-cl-09", "ce": "CE6", "contenidos": ["lit3-nar-2", "lit3-nar-4"], "texto": "Identifica en el texto las construcciones lingüísticas que expresan la voz narrativa interna o externa en microcuentos o leyendas de forma mediada." },
+        { "id": "lit3-cl-10", "ce": "CE6", "contenidos": ["lit3-nar-2", "lit3-nar-4"], "texto": "Reconoce y propone nuevas posibilidades para la voz narrativa de un microcuento o leyenda a través de la escritura." },
+        { "id": "lit3-cl-11", "ce": "CE7", "texto": "Identifica el género al que pertenece un texto literario con andamiaje docente." }
+      ]
+    },
+    {
+      "grado": 4,
+      "fuente": { "archivo": "Literatura - Tramo 3.pdf", "paginas": [15, 16] },
+      "bloques": [
+        {
+          "id": "lit4-narrativo", "titulo": "Género narrativo", "contenidoEstructurante": "Género narrativo", "ceVinculadas": ["CE1", "CE3", "CE4", "CE5", "CE6", "CE7"],
+          "contenidos": [
+            { "id": "lit4-nar-1", "texto": "Mito" },
+            { "id": "lit4-nar-2", "texto": "Leyenda" },
+            { "id": "lit4-nar-3", "texto": "Cuento" },
+            { "id": "lit4-nar-4", "texto": "Novela" }
+          ]
+        },
+        {
+          "id": "lit4-poetico", "titulo": "Género poético", "contenidoEstructurante": "Género poético", "ceVinculadas": ["CE2", "CE3", "CE4", "CE7"],
+          "contenidos": [
+            { "id": "lit4-poe-1", "texto": "El diálogo poético, presente en payadas de contrapunto y en el rap (la expresión subjetiva y la rima)" },
+            { "id": "lit4-poe-2", "texto": "La oda como expresión de subjetividad y admiración" },
+            { "id": "lit4-poe-3", "texto": "El poema visual como una creación que vincula la palabra, el espacio y la forma" }
+          ]
+        },
+        {
+          "id": "lit4-dramatico", "titulo": "Género dramático", "contenidoEstructurante": "Género dramático", "ceVinculadas": ["CE3", "CE4", "CE5", "CE7"],
+          "contenidos": [
+            { "id": "lit4-dra-1", "texto": "El guion de la obra teatral" }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "lit4-cl-01", "ce": "CE1", "texto": "Distingue los elementos subjetivos de los elementos objetivos a partir de mitos, leyendas, cuentos, novelas y obras teatrales a través de la oralidad y la escritura." },
+        { "id": "lit4-cl-02", "ce": "CE1", "texto": "Otorga sentido personal a elementos dados en mitos, leyendas, cuentos, novelas y obras teatrales a través de la oralidad y la escritura." },
+        { "id": "lit4-cl-03", "ce": "CE2", "contenidos": ["lit4-poe-1", "lit4-poe-2", "lit4-poe-3"], "texto": "Reconoce los significados simbólicos del vocabulario presente en diálogos poéticos, odas y poemas visuales a través de la oralidad." },
+        { "id": "lit4-cl-04", "ce": "CE2", "contenidos": ["lit4-poe-1", "lit4-poe-2", "lit4-poe-3"], "texto": "Crea producciones escritas simbólicas a partir de diálogos poéticos, odas y poemas visuales con la mediación del docente." },
+        { "id": "lit4-cl-05", "ce": "CE3", "texto": "Combina ideas presentes en fragmentos de leyendas, mitos, cuentos, odas y poemas visuales con ideas personales elaborando nuevos textos de forma independiente." },
+        { "id": "lit4-cl-06", "ce": "CE3", "texto": "Crea nuevos textos considerando fragmentos de leyendas, mitos, cuentos, odas y poemas visuales de forma independiente." },
+        { "id": "lit4-cl-07", "ce": "CE4", "texto": "Explica las razones de sus interpretaciones sobre personajes y situaciones en mitos, leyendas, cuentos, novelas, obras teatrales y diálogos poéticos de forma oral y escrita." },
+        { "id": "lit4-cl-08", "ce": "CE5", "texto": "Reconoce los ideales e intereses que motivan las acciones de los personajes en mitos, leyendas y obras teatrales con andamiaje docente." },
+        { "id": "lit4-cl-09", "ce": "CE6", "contenidos": ["lit4-nar-3", "lit4-nar-4"], "texto": "Identifica en el texto las construcciones lingüísticas que expresan la voz narrativa interna o externa en cuentos y novelas, de forma mediada." },
+        { "id": "lit4-cl-10", "ce": "CE6", "contenidos": ["lit4-nar-3", "lit4-nar-4"], "texto": "Propone diversas posibilidades de voz narrativa de un cuento o fragmento de una novela a través de la escritura." },
+        { "id": "lit4-cl-11", "ce": "CE7", "texto": "Identifica el género al que pertenece un texto literario con la guía docente." },
+        { "id": "lit4-cl-12", "ce": "CE7", "texto": "Reconoce y expresa singularidades de cada género a través de la mediación docente." }
+      ]
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Comprender la literatura en la escuela no como mero entretenimiento sino como experiencia imprescindible para la adquisición de competencias.",
+    "Recursos fundamentales: el proyecto Biblioteca Solidaria de la ANEP y la Biblioteca País.",
+    "Colaborar en el descubrimiento y la creación de recursos literarios como la comparación.",
+    "Usar imágenes y fragmentos literarios como disparadores para la creación personal.",
+    "Crear finales alternativos, cartas entre personajes, ponerse en el lugar del personaje.",
+    "Abordar la obra de teatro desde la lectura y desde la creación; la representación puede incluir actuación, títeres, objetos y material audiovisual.",
+    "Generar de forma colectiva textos dramáticos breves a partir de textos narrativos.",
+    "Crear poemas o textos narrativos a partir de la personificación de un elemento.",
+    "Proyectos o unidades prolongadas, lectura en varios momentos del día, relectura, respuesta creativa, lectura individual y recomendaciones mutuas (Kiefer, en Colomer)."
+  ],
+  "metodologiasSugeridas": [
+    "Proyectos o unidades prolongadas de lectura",
+    "Lectura y relectura compartida",
+    "Escritura creativa a partir de disparadores",
+    "Dramatización y títeres",
+    "Recomendaciones entre pares"
+  ]
+}
