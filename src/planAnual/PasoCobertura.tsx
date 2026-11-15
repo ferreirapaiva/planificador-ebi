@@ -40,7 +40,7 @@ function TarjetaUC({ c, soloPendientes, multigrado }: { c: CoberturaUC; soloPend
   const visibles = soloPendientes ? contenidos.filter((x) => !x.en.length) : contenidos;
   const pendientes = c.criterios.filter((x) => !x.en.length);
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-4">
+    <article className="rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4">
       <h4 className="mb-3 flex items-center gap-2 font-semibold text-slate-900">
         <span className={`h-2.5 w-2.5 rounded-full ${colorEspacio(c.uc.espacio).color}`} aria-hidden />
         {c.uc.nombre}
@@ -103,7 +103,7 @@ export function PasoCobertura({ plan }: PropsAnual) {
         <span className="ml-2 inline-flex items-center gap-1"><Semaforo estado="amarillo" /> solo en el plan anual</span>
         <span className="ml-2 inline-flex items-center gap-1"><Semaforo estado="gris" /> sin planificar</span>
       </Aviso>
-      <div className="grid gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-3">
+      <div className="grid gap-3 rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4 sm:grid-cols-3">
         <Barra etiqueta="Contenidos ubicados en el año" n={contenidos.filter((x) => x.meses.length).length} total={contenidos.length} color="bg-amber-400" />
         <Barra etiqueta="Contenidos planificados en detalle" n={contenidos.filter((x) => x.en.length).length} total={contenidos.length} color="bg-emerald-500" />
         <Barra etiqueta="Criterios de logro trabajados" n={criterios.filter((x) => x.en.length).length} total={criterios.length} color="bg-blue-500" />

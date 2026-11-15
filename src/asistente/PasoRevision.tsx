@@ -19,7 +19,7 @@ export function PasoRevision({ plan, cambiar, irAPaso }: PropsPaso & { irAPaso: 
     <div className="grid gap-6 lg:grid-cols-[16rem_1fr]">
       <style>{ESTILOS_DOCUMENTO}</style>
       <aside className="no-imprimir h-fit space-y-4 lg:sticky lg:top-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-4">
+        <div className="rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4">
           <p className="font-semibold text-slate-900">
             Completitud: {completos} de {chequeos.length}
           </p>
@@ -43,7 +43,7 @@ export function PasoRevision({ plan, cambiar, irAPaso }: PropsPaso & { irAPaso: 
         <BotonesExportar documento={ref} titulo={plan.titulo} />
         <AreaTexto etiqueta="Observaciones" valor={plan.notas} onCambio={(v) => cambiar({ notas: v })} filas={4} />
       </aside>
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">
+      <div className="rounded-[20px] border-[1.5px] border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">
         <Documento ref={ref} plan={plan} />
       </div>
     </div>

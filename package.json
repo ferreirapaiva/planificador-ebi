@@ -11,6 +11,7 @@
     "validar": "tsx scripts/validar-programas.ts"
   },
   "dependencies": {
+    "@fontsource-variable/nunito": "^5.3.0",
     "dexie": "^4.4.7",
     "dexie-react-hooks": "^4.4.0",
     "html2pdf.js": "^0.14.0",

@@ -1,4 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
+import { Icono } from '../componentes/Iconos';
 import type { Contenido } from '../datos/esquema';
 import { db, NOMBRE_MES } from '../datos/db';
 import { buscarContenido, buscarCriterio, sugerirContenidos } from '../datos/consultas';
@@ -47,7 +48,7 @@ function ListaContenidos({
     <div className="space-y-5">
       {faltan.length > 0 && (
         <Boton variante="secundario" onClick={() => cambiar({ contenidos: [...plan.contenidos, ...faltan] })}>
-          ✨ Agregar los {faltan.length} contenidos sugeridos
+          <Icono nombre="estrella" tamano={16} /> Agregar los {faltan.length} contenidos sugeridos
         </Boton>
       )}
       {g.bloques.map((b) => (
@@ -56,7 +57,7 @@ function ListaContenidos({
             {b.titulo}
             {b.transversal && ' · transversal'}
           </p>
-          <div className="grid gap-2 md:grid-cols-2">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
             {b.contenidos.map((c) => {
               const sug = sugeridos.has(c.id);
               return (
@@ -65,7 +66,7 @@ function ListaContenidos({
                   {c.texto}
                   {meses.has(c.id) && (
                     <span className="ml-1 whitespace-nowrap rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800" title="Según tu plan anual">
-                      📅 {[...meses.get(c.id)!].sort((a, b) => a - b).map((m) => NOMBRE_MES[m].slice(0, 3)).join(', ')}
+                      <Icono nombre="calendario" tamano={11} className="mr-0.5 inline align-[-1px]" />{[...meses.get(c.id)!].sort((a, b) => a - b).map((m) => NOMBRE_MES[m].slice(0, 3)).join(', ')}
                     </span>
                   )}
                   <Detalle c={c} />

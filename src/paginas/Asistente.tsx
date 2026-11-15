@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { db, guardarPerfil, TIPOS, type Planificacion } from '../datos/db';
 import { buscarContenido, buscarCriterio } from '../datos/consultas';
 import { Boton } from '../componentes/ui';
+import { Pasos } from '../componentes/Pasos';
+import { Icono } from '../componentes/Iconos';
 import { PasoDatos } from '../asistente/PasoDatos';
 import { PasoLogros } from '../asistente/PasoLogros';
 import { PasoContenidos } from '../asistente/PasoContenidos';
@@ -85,40 +87,27 @@ export function Asistente() {
 
   return (
     <div ref={arriba} className="space-y-6">
-      <header className="no-imprimir flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{TIPOS[plan.tipo].nombre}</p>
-          <h1 className="text-2xl font-bold text-slate-900">{plan.titulo || 'Nueva planificación'}</h1>
+      <header className="no-imprimir flex flex-wrap items-end justify-between gap-3">
+        <div className="flex flex-col gap-1.5">
+          <p className="m-0 text-[11px] font-extrabold tracking-[0.08em] text-blue-600 uppercase">
+            {TIPOS[plan.tipo].nombre} · {plan.grados.map((g) => `${g}.º`).join(' y ')}
+            {plan.grupo && ` · ${plan.grupo}`}
+          </p>
+          <h1 className="m-0 text-[30px] font-extrabold tracking-tight text-slate-900">{plan.titulo || 'Nueva planificación'}</h1>
         </div>
-        <span className={`rounded-full px-3 py-1 text-xs ${estado === 'guardado' ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}`} aria-live="polite">
-          {estado === 'guardado' ? '✔ Guardado en este equipo' : 'Guardando…'}
+        <span
+          className={`inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] font-extrabold ${estado === 'guardado' ? 'bg-menta-50 text-menta-700' : 'bg-slate-100 text-slate-500'}`}
+          aria-live="polite"
+        >
+          {estado === 'guardado' ? <Icono nombre="check" tamano={16} grosor={2.6} /> : null}
+          {estado === 'guardado' ? 'Guardado en este equipo' : 'Guardando…'}
         </span>
       </header>
 
-      <nav aria-label="Pasos" className="no-imprimir">
-        <ol className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-          {PASOS.map((p, i) => (
-            <li key={p.titulo}>
-              <button
-                type="button"
-                onClick={() => (i === 0 || plan.ucIds.length > 0) && irAPaso(i)}
-                aria-current={i === paso ? 'step' : undefined}
-                className={`w-full rounded-lg border-t-4 px-2 py-2 text-left text-xs transition ${
-                  i === paso ? 'border-blue-600 bg-white shadow-sm' : i < paso ? 'border-emerald-500 bg-white/60' : 'border-slate-200 bg-white/40'
-                }`}
-              >
-                <span className="block font-semibold text-slate-900">
-                  {i + 1}. {p.titulo}
-                </span>
-                <span className="hidden text-slate-500 md:block">{p.pregunta}</span>
-              </button>
-            </li>
-          ))}
-        </ol>
-      </nav>
+      <Pasos pasos={PASOS} actual={paso} onIr={irAPaso} puedeIr={(i) => i === 0 || plan.ucIds.length > 0} />
 
-      <section className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4 sm:p-6 print:border-0 print:bg-white print:p-0">
-        <h2 className="no-imprimir mb-4 text-xl font-semibold text-slate-900">{PASOS[paso].pregunta}</h2>
+      <section className="rounded-[28px] bg-white p-5 shadow-suave sm:p-7 print:rounded-none print:p-0 print:shadow-none">
+        <h2 className="no-imprimir mb-5 text-[26px] font-extrabold tracking-tight text-slate-900">{PASOS[paso].pregunta}</h2>
         {paso === 0 && <PasoDatos {...props} />}
         {paso === 1 && <PasoLogros {...props} />}
         {paso === 2 && <PasoContenidos {...props} />}
@@ -129,12 +118,14 @@ export function Asistente() {
 
       <footer className="no-imprimir flex flex-wrap items-center justify-between gap-2">
         <Boton variante="secundario" onClick={() => (paso === 0 ? navegar('/mis-planificaciones') : irAPaso(paso - 1))}>
-          ← {paso === 0 ? 'Mis planificaciones' : 'Anterior'}
+          <Icono nombre="atras" tamano={18} grosor={2.4} />
+          {paso === 0 ? 'Mis planificaciones' : 'Anterior'}
         </Boton>
-        {!puedeAvanzar && <span className="text-sm text-amber-700">Elegí al menos una unidad curricular para seguir.</span>}
+        {!puedeAvanzar && <span className="text-sm font-semibold text-amarillo-800">Elegí al menos una unidad curricular para seguir.</span>}
         {paso < PASOS.length - 1 && (
           <Boton disabled={!puedeAvanzar} onClick={() => irAPaso(paso + 1)}>
-            Siguiente: {PASOS[paso + 1].titulo} →
+            Siguiente: {PASOS[paso + 1].titulo}
+            <Icono nombre="flecha" tamano={18} grosor={2.4} />
           </Boton>
         )}
       </footer>

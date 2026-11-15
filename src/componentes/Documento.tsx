@@ -190,8 +190,8 @@ export const Documento = forwardRef<HTMLDivElement, { plan: Planificacion }>(fun
 /** Estilos del documento: se usan en pantalla, al imprimir y dentro del archivo de Word. */
 export const ESTILOS_DOCUMENTO = `
 .documento { font-family: Calibri, Arial, sans-serif; color: #1f2937; font-size: 11pt; line-height: 1.45; }
-.documento h1 { font-size: 20pt; margin: 0 0 8pt; color: #1e3a8a; }
-.documento h2 { font-size: 13pt; margin: 16pt 0 6pt; padding-bottom: 3pt; border-bottom: 2px solid #1d4ed8; color: #1e3a8a; }
+.documento h1 { font-size: 20pt; margin: 0 0 8pt; color: #3B2DB8; }
+.documento h2 { font-size: 13pt; margin: 16pt 0 6pt; padding-bottom: 3pt; border-bottom: 2px solid #5B4BF5; color: #3B2DB8; }
 .documento h3 { font-size: 11pt; margin: 10pt 0 4pt; }
 .documento h4 { font-size: 10.5pt; margin: 6pt 0 2pt; color: #374151; }
 .documento p { margin: 0 0 5pt; }
@@ -200,9 +200,9 @@ export const ESTILOS_DOCUMENTO = `
 .documento .doc-tipo { text-transform: uppercase; letter-spacing: .08em; font-size: 9pt; color: #6b7280; margin: 0; }
 .documento .doc-ce { color: #6b7280; font-size: 9.5pt; font-weight: normal; }
 .documento table { border-collapse: collapse; width: 100%; margin-bottom: 8pt; }
-.documento .doc-datos th { text-align: left; width: 32%; background: #eff6ff; }
+.documento .doc-datos th { text-align: left; width: 32%; background: #EEEBFF; }
 .documento th, .documento td { border: 1px solid #cbd5e1; padding: 4pt 6pt; vertical-align: top; font-size: 10pt; }
-.documento .doc-tabla th { background: #eff6ff; }
-.documento .doc-clase { margin-bottom: 8pt; padding-left: 8pt; border-left: 3px solid #bfdbfe; }
+.documento .doc-tabla th { background: #EEEBFF; }
+.documento .doc-clase { margin-bottom: 8pt; padding-left: 8pt; border-left: 3px solid #DCD6FF; }
 .documento .doc-pie { margin-top: 18pt; font-size: 8.5pt; color: #9ca3af; }
 `;

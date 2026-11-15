@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+const CAMPO = 'mt-1 w-full min-h-11 rounded-[14px] border-[1.5px] border-slate-200 bg-white px-3.5 py-2 text-[15px] text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none';
+
 export function Campo({
   etiqueta,
   ayuda,
@@ -17,14 +19,8 @@ export function Campo({
 }) {
   return (
     <label className="block">
-      <span className="text-sm font-medium text-slate-700">{etiqueta}</span>
-      <input
-        type={tipo}
-        value={valor}
-        placeholder={placeholder}
-        onChange={(e) => onCambio(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 focus:border-blue-500"
-      />
+      <span className="text-sm font-bold text-slate-700">{etiqueta}</span>
+      <input type={tipo} value={valor} placeholder={placeholder} onChange={(e) => onCambio(e.target.value)} className={CAMPO} />
       {ayuda && <span className="mt-1 block text-xs text-slate-500">{ayuda}</span>}
     </label>
   );
@@ -47,14 +43,8 @@ export function AreaTexto({
 }) {
   return (
     <label className="block">
-      <span className="text-sm font-medium text-slate-700">{etiqueta}</span>
-      <textarea
-        rows={filas}
-        value={valor}
-        placeholder={placeholder}
-        onChange={(e) => onCambio(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 focus:border-blue-500"
-      />
+      <span className="text-sm font-bold text-slate-700">{etiqueta}</span>
+      <textarea rows={filas} value={valor} placeholder={placeholder} onChange={(e) => onCambio(e.target.value)} className={CAMPO} />
       {ayuda && <span className="mt-1 block text-xs text-slate-500">{ayuda}</span>}
     </label>
   );
@@ -74,12 +64,16 @@ export function TarjetaCasilla({
 }) {
   return (
     <label
-      className={`flex cursor-pointer gap-3 rounded-lg border p-3 transition ${
-        marcada ? 'border-blue-500 bg-blue-50' : destacada ? 'border-emerald-300 bg-emerald-50/50 hover:border-emerald-400' : 'border-slate-200 bg-white hover:border-slate-300'
+      className={`flex cursor-pointer gap-3.5 rounded-[20px] px-[18px] py-4 transition ${
+        marcada
+          ? 'border-2 border-blue-600 bg-blue-100 shadow-suave'
+          : destacada
+            ? 'border-[1.5px] border-menta-500/60 bg-menta-50 hover:border-menta-500'
+            : 'border-[1.5px] border-slate-200 bg-white hover:border-blue-300'
       }`}
     >
-      <input type="checkbox" checked={marcada} onChange={(e) => onCambio(e.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-blue-600" />
-      <span className="text-sm text-slate-800">{children}</span>
+      <input type="checkbox" checked={marcada} onChange={(e) => onCambio(e.target.checked)} className="mt-0.5 h-[22px] w-[22px] shrink-0 accent-blue-600" />
+      <span className={`text-[15px] leading-relaxed text-slate-900 ${marcada ? 'font-semibold' : ''}`}>{children}</span>
     </label>
   );
 }
@@ -98,13 +92,13 @@ export function Boton({
   title?: string;
 }) {
   const estilos = {
-    primario: 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300',
-    secundario: 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-50',
-    peligro: 'border border-red-200 bg-white text-red-700 hover:bg-red-50',
-    texto: 'text-blue-700 hover:underline',
+    primario: 'min-h-11 rounded-full bg-blue-600 px-5 text-white shadow-[0_8px_20px_rgb(91_75_245/0.28)] hover:bg-blue-700 disabled:bg-blue-300 disabled:shadow-none',
+    secundario: 'min-h-11 rounded-full border-[1.5px] border-slate-200 bg-white px-5 text-slate-900 hover:border-blue-300 hover:bg-blue-50 disabled:opacity-50',
+    peligro: 'min-h-11 rounded-full border-[1.5px] border-red-200 bg-white px-5 text-red-700 hover:bg-red-50',
+    texto: 'rounded-lg px-1 text-blue-700 hover:underline',
   }[variante];
   return (
-    <button type="button" onClick={onClick} disabled={disabled} title={title} className={`rounded-lg px-4 py-2 text-sm font-medium ${estilos}`}>
+    <button type="button" onClick={onClick} disabled={disabled} title={title} className={`inline-flex items-center justify-center gap-2 text-sm font-extrabold transition ${estilos}`}>
       {children}
     </button>
   );
@@ -112,11 +106,11 @@ export function Boton({
 
 export function Aviso({ children, tono = 'info' }: { children: ReactNode; tono?: 'info' | 'exito' | 'alerta' }) {
   const estilos = {
-    info: 'border-blue-200 bg-blue-50 text-blue-900',
-    exito: 'border-emerald-200 bg-emerald-50 text-emerald-900',
-    alerta: 'border-amber-300 bg-amber-50 text-amber-900',
+    info: 'bg-blue-100 text-blue-900',
+    exito: 'bg-menta-50 text-menta-700',
+    alerta: 'bg-amarillo-50 text-amarillo-800',
   }[tono];
-  return <div className={`rounded-xl border p-3 text-sm ${estilos}`}>{children}</div>;
+  return <div className={`rounded-[18px] px-4 py-3 text-sm leading-relaxed ${estilos}`}>{children}</div>;
 }
 
 export function Pildora({ children, activa, onClick }: { children: ReactNode; activa: boolean; onClick: () => void }) {
@@ -125,8 +119,8 @@ export function Pildora({ children, activa, onClick }: { children: ReactNode; ac
       type="button"
       aria-pressed={activa}
       onClick={onClick}
-      className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
-        activa ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-300 bg-white text-slate-700 hover:border-blue-400'
+      className={`inline-flex min-h-9 items-center rounded-full px-3.5 text-sm font-bold transition ${
+        activa ? 'bg-slate-900 text-white' : 'border-[1.5px] border-slate-200 bg-white text-slate-700 hover:border-blue-400'
       }`}
     >
       {children}

@@ -1,11 +1,12 @@
+import type { NombreIcono } from '../componentes/Iconos';
 import Dexie, { type EntityTable } from 'dexie';
 
 export type TipoPlanificacion = 'unidad' | 'proyecto' | 'secuencia';
 
-export const TIPOS: Record<TipoPlanificacion, { nombre: string; descripcion: string; icono: string }> = {
-  unidad: { nombre: 'Unidad didáctica', descripcion: 'Un tema de una o más áreas durante algunas semanas.', icono: '📗' },
-  proyecto: { nombre: 'Proyecto', descripcion: 'Parte de una pregunta o problema y termina en un producto final. Ideal para integrar áreas.', icono: '🚀' },
-  secuencia: { nombre: 'Secuencia didáctica', descripcion: 'Una serie de clases encadenadas para lograr criterios concretos.', icono: '📝' },
+export const TIPOS: Record<TipoPlanificacion, { nombre: string; descripcion: string; icono: NombreIcono }> = {
+  unidad: { nombre: 'Unidad didáctica', descripcion: 'Un tema de una o más áreas durante algunas semanas.', icono: 'libro' },
+  proyecto: { nombre: 'Proyecto', descripcion: 'Parte de una pregunta o problema y termina en un producto final. Ideal para integrar áreas.', icono: 'objetivo' },
+  secuencia: { nombre: 'Secuencia didáctica', descripcion: 'Una serie de clases encadenadas para lograr criterios concretos.', icono: 'grafico' },
 };
 
 export const NIVELES_POR_DEFECTO = ['En inicio', 'En proceso', 'Logrado', 'Destacado'];

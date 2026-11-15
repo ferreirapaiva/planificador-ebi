@@ -4,6 +4,8 @@ import { calendarioPorDefecto } from '../datos/calendario';
 import { db, guardarPerfil, leerPerfil, type PlanAnual } from '../datos/db';
 import { planAnualVacio } from '../datos/planAnual';
 import { Boton } from '../componentes/ui';
+import { Pasos } from '../componentes/Pasos';
+import { Icono } from '../componentes/Iconos';
 import { PasoDatosAnual } from '../planAnual/PasoDatosAnual';
 import { PasoDistribucion } from '../planAnual/PasoDistribucion';
 import { PasoCobertura } from '../planAnual/PasoCobertura';
@@ -97,7 +99,7 @@ export function EditorPlanAnual() {
       <header className="no-imprimir flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Plan anual</p>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-[30px] font-extrabold tracking-tight text-slate-900">
             {plan.anio} · {plan.grados.map((g) => `${g}.º`).join(' y ')}
             {plan.grupo && ` · ${plan.grupo}`}
           </h1>
@@ -107,30 +109,10 @@ export function EditorPlanAnual() {
         </span>
       </header>
 
-      <nav aria-label="Pasos" className="no-imprimir">
-        <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {PASOS.map((p, i) => (
-            <li key={p.titulo}>
-              <button
-                type="button"
-                onClick={() => irAPaso(i)}
-                aria-current={i === paso ? 'step' : undefined}
-                className={`w-full rounded-lg border-t-4 px-2 py-2 text-left text-xs transition ${
-                  i === paso ? 'border-blue-600 bg-white shadow-sm' : i < paso ? 'border-emerald-500 bg-white/60' : 'border-slate-200 bg-white/40'
-                }`}
-              >
-                <span className="block font-semibold text-slate-900">
-                  {i + 1}. {p.titulo}
-                </span>
-                <span className="hidden text-slate-500 md:block">{p.pregunta}</span>
-              </button>
-            </li>
-          ))}
-        </ol>
-      </nav>
+      <Pasos pasos={PASOS} actual={paso} onIr={irAPaso} />
 
-      <section className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4 sm:p-6 print:border-0 print:bg-white print:p-0">
-        <h2 className="no-imprimir mb-4 text-xl font-semibold text-slate-900">{PASOS[paso].pregunta}</h2>
+      <section className="rounded-[28px] bg-white p-5 shadow-suave sm:p-7 print:rounded-none print:p-0 print:shadow-none">
+        <h2 className="no-imprimir mb-5 text-[26px] font-extrabold tracking-tight text-slate-900">{PASOS[paso].pregunta}</h2>
         {paso === 0 && <PasoDatosAnual {...props} />}
         {paso === 1 && <PasoDistribucion {...props} />}
         {paso === 2 && <PasoCobertura {...props} />}
@@ -139,9 +121,15 @@ export function EditorPlanAnual() {
 
       <footer className="no-imprimir flex flex-wrap items-center justify-between gap-2">
         <Boton variante="secundario" onClick={() => (paso === 0 ? navegar('/mis-planificaciones') : irAPaso(paso - 1))}>
-          ← {paso === 0 ? 'Mis planificaciones' : 'Anterior'}
+          <Icono nombre="atras" tamano={18} grosor={2.4} />
+          {paso === 0 ? 'Mis planificaciones' : 'Anterior'}
         </Boton>
-        {paso < PASOS.length - 1 && <Boton onClick={() => irAPaso(paso + 1)}>Siguiente: {PASOS[paso + 1].titulo} →</Boton>}
+        {paso < PASOS.length - 1 && (
+          <Boton onClick={() => irAPaso(paso + 1)}>
+            Siguiente: {PASOS[paso + 1].titulo}
+            <Icono nombre="flecha" tamano={18} grosor={2.4} />
+          </Boton>
+        )}
       </footer>
     </div>
   );

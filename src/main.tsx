@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import '@fontsource-variable/nunito';
 import './index.css';
 import { Marco } from './componentes/Marco';
 import { ConfirmarProvider } from './componentes/Confirmar';

@@ -37,24 +37,24 @@ export function ConfirmarProvider({ children }: { children: ReactNode }) {
             aria-modal="true"
             aria-labelledby="confirmar-titulo"
             aria-describedby="confirmar-mensaje"
-            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+            className="w-full max-w-md rounded-[28px] bg-white p-7 shadow-elevada"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 id="confirmar-titulo" className="text-lg font-semibold text-slate-900">{pedido.titulo}</h2>
+            <h2 id="confirmar-titulo" className="text-[21px] font-extrabold text-slate-900">{pedido.titulo}</h2>
             {pedido.mensaje && <p id="confirmar-mensaje" className="mt-2 text-sm text-slate-600">{pedido.mensaje}</p>}
             <div className="mt-6 flex justify-end gap-2">
               <button
                 ref={botonCancelar}
                 type="button"
                 onClick={() => responder(false)}
-                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="min-h-11 rounded-full border-[1.5px] border-slate-200 bg-white px-5 text-sm font-extrabold text-slate-900 hover:bg-slate-50"
               >
                 Cancelar
               </button>
               <button
                 type="button"
                 onClick={() => responder(true)}
-                className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${pedido.peligro ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+                className={`min-h-11 rounded-full px-5 text-sm font-extrabold text-white ${pedido.peligro ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'}`}
               >
                 {pedido.aceptar ?? 'Aceptar'}
               </button>

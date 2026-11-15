@@ -33,7 +33,7 @@ function crearInstrumento(tipo: Instrumento['tipo'], criterios: string[]): Instr
 function EditorInstrumento({ ins, onCambio, onBorrar }: { ins: Instrumento; onCambio: (i: Instrumento) => void; onBorrar: () => void }) {
   const esRubrica = ins.tipo === 'rubrica';
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <div className="rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4">
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <input
           value={ins.titulo}

@@ -5,7 +5,7 @@ export function Programas() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Programas — Tramo 3</h1>
+        <h1 className="text-[30px] font-extrabold tracking-tight text-slate-900">Programas — Tramo 3</h1>
         <p className="text-slate-600">Elegí una unidad curricular para ver sus contenidos y criterios de logro.</p>
       </div>
       {ESPACIOS.map((esp) => (
@@ -17,7 +17,7 @@ export function Programas() {
             {UC_TRAMO_3.filter((u) => u.espacio === esp.nombre).map((u) => {
               const cargada = PROGRAMAS.find((p) => p.id === u.id);
               return cargada ? (
-                <Link key={u.id} to={`/programas/${u.id}`} className={`rounded-xl border p-4 font-medium hover:shadow-md ${esp.suave}`}>
+                <Link key={u.id} to={`/programas/${u.id}`} className={`rounded-[20px] border p-4 font-bold transition hover:-translate-y-0.5 hover:shadow-suave ${esp.suave}`}>
                   {u.nombre}
                   <span className="mt-1 block text-xs font-normal opacity-75">
                     {cargada.grados.map((g) => `${g.grado}.º`).join(' y ')} · {cargada.revisado ? 'revisado' : 'en revisión'}

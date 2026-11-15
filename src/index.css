@@ -1,14 +1,61 @@
 @import "tailwindcss";
 
+/*
+ * Identidad visual del Planificador EBI (propuesta aprobada):
+ * violeta como color principal, acentos coral, menta y amarillo,
+ * grises con tono "tinta" y tipografía Nunito.
+ * Los azules y grises de Tailwind se redefinen para que toda la app tome la paleta.
+ */
+@theme {
+  --font-sans: "Nunito Variable", "Nunito", system-ui, "Segoe UI", sans-serif;
+
+  --color-blue-50: #f4f2ff;
+  --color-blue-100: #eeebff;
+  --color-blue-200: #dcd6ff;
+  --color-blue-300: #bdb3ff;
+  --color-blue-400: #8f82fa;
+  --color-blue-500: #7062f7;
+  --color-blue-600: #5b4bf5;
+  --color-blue-700: #4a3bdb;
+  --color-blue-800: #3b2db8;
+  --color-blue-900: #2a208a;
+  --color-blue-950: #1b1840;
+
+  --color-slate-50: #f6f5fb;
+  --color-slate-100: #efeef7;
+  --color-slate-200: #e7e5f3;
+  --color-slate-300: #d3d0e6;
+  --color-slate-400: #a6a2c2;
+  --color-slate-500: #6b6890;
+  --color-slate-600: #5f5c84;
+  --color-slate-700: #45426a;
+  --color-slate-800: #2e2b55;
+  --color-slate-900: #1b1840;
+  --color-slate-950: #110f2b;
+
+  --color-coral-50: #ffede7;
+  --color-coral-500: #ff7a59;
+  --color-coral-700: #c2410c;
+  --color-menta-50: #e1f8f1;
+  --color-menta-500: #1fbf9a;
+  --color-menta-700: #0b6e57;
+  --color-amarillo-50: #fff6dc;
+  --color-amarillo-400: #ffc93c;
+  --color-amarillo-800: #7a5300;
+
+  --shadow-suave: 0 4px 16px rgb(59 45 184 / 0.08);
+  --shadow-elevada: 0 16px 40px rgb(59 45 184 / 0.18);
+}
+
 :root {
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  color: #1f2937;
-  background: #f8fafc;
+  font-family: var(--font-sans);
+  color: var(--color-slate-900);
+  background: var(--color-slate-50);
 }
 
 body {
   margin: 0;
-  background: #f8fafc;
+  background: var(--color-slate-50);
 }
 
 @media print {
@@ -30,6 +77,6 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-blue-600);
   outline-offset: 2px;
 }

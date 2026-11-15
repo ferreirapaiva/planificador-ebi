@@ -1,4 +1,5 @@
 import { diasDeClase, efemeridesDelMes, periodosDelMes } from '../datos/calendario';
+import { Icono } from '../componentes/Iconos';
 import { MESES_LECTIVOS, NOMBRE_MES } from '../datos/db';
 import { buscarContenido } from '../datos/consultas';
 import { PestanasUC, type Combinacion } from '../asistente/PestanasUC';
@@ -26,7 +27,7 @@ function ResumenMeses({ plan }: PropsAnual) {
               ))}
               {efem.length > 0 && (
                 <p className="mt-1 text-slate-500" title={efem.map((e) => `${e.fecha.slice(8)}: ${e.nombre}`).join('\n')}>
-                  📅 {efem.length} efeméride{efem.length > 1 ? 's' : ''}
+                  <Icono nombre="calendario" tamano={12} className="mr-1 inline align-[-1px]" />{efem.length} efeméride{efem.length > 1 ? 's' : ''}
                 </p>
               )}
             </div>
@@ -78,7 +79,7 @@ function ListaDistribucion({ plan, cambiar, combinacion }: PropsAnual & { combin
       {g.bloques.map((b) => {
         const ids = b.contenidos.map((c) => c.id);
         return (
-          <div key={b.id} className="rounded-xl border border-slate-200 bg-white">
+          <div key={b.id} className="rounded-[20px] border-[1.5px] border-slate-200 bg-white">
             <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 p-3">
               <p className="mr-auto text-sm font-semibold uppercase tracking-wide text-slate-700">
                 {b.titulo}

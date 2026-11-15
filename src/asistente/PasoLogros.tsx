@@ -55,7 +55,7 @@ function ListaCriterios({ combinacion, plan, cambiar }: PropsPaso & { combinacio
       {[...grupos.entries()].map(([k, items]) => (
         <div key={k}>
           <p className="mb-2 text-xs font-bold text-blue-800">{k}</p>
-          <div className="grid gap-2 md:grid-cols-2">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
             {items.map((c) => (
               <TarjetaCasilla key={c.id} marcada={plan.criterios.includes(c.id)} onCambio={(v) => cambiar({ criterios: alternar(plan.criterios, c.id, v) })}>
                 {c.texto}
@@ -73,7 +73,7 @@ export function PasoLogros(props: PropsPaso) {
   const { plan } = props;
   const mov = competenciasMovilizadas(plan.criterios);
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_18rem]">
+    <div className="grid gap-6 xl:grid-cols-[1fr_20rem]">
       <div>
         <Aviso>
           Empezamos por el final: elegí los <strong>criterios de logro</strong> que querés que tus estudiantes alcancen. En el paso siguiente
@@ -88,31 +88,37 @@ export function PasoLogros(props: PropsPaso) {
           </PestanasUC>
         </div>
       </div>
-      <aside className="h-fit space-y-3 rounded-xl border border-slate-200 bg-white p-4 lg:sticky lg:top-4">
-        <p className="font-semibold text-slate-900">Lo que vas a movilizar</p>
-        <p className="text-sm text-slate-600">{plan.criterios.length} criterio(s) de logro elegidos.</p>
+      <aside className="flex h-fit flex-col gap-4 rounded-[28px] bg-slate-900 p-6 text-white xl:sticky xl:top-6">
+        <p className="m-0 text-[19px] font-extrabold">Lo que vas a movilizar</p>
+        <p className="m-0 flex items-baseline gap-2.5">
+          <span className="text-[52px] leading-none font-black text-amarillo-400">{plan.criterios.length}</span>
+          <span className="text-[15px] font-bold text-slate-200">criterio{plan.criterios.length === 1 ? '' : 's'} de logro elegido{plan.criterios.length === 1 ? '' : 's'}</span>
+        </p>
         {mov.especificas.length > 0 && (
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Competencias específicas</p>
-            <ul className="mt-1 space-y-1 text-sm">
+          <div className="flex flex-col gap-2.5">
+            <p className="m-0 text-[11px] font-extrabold tracking-[0.08em] text-blue-200 uppercase">Competencias específicas</p>
+            <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
               {mov.especificas.map((e) => (
-                <li key={e.uc.id + e.codigo} title={e.texto}>
-                  <span className="font-bold text-blue-800">{e.codigo}</span> <span className="text-slate-500">· {e.uc.nombre}</span>
+                <li key={e.uc.id + e.codigo} title={e.texto} className="rounded-[10px] bg-white/10 px-2.5 py-1.5 text-[13px] font-bold">
+                  <span className="text-amarillo-400">{e.codigo}</span> {e.uc.nombre}
                 </li>
               ))}
             </ul>
           </div>
         )}
         {mov.generales.length > 0 && (
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Competencias generales del MCN</p>
-            <div className="mt-1 flex flex-wrap gap-1">
-              {mov.generales.map((g) => (
-                <span key={g} className="rounded-full bg-violet-100 px-2 py-0.5 text-xs text-violet-800">{g}</span>
+          <div className="flex flex-col gap-2.5">
+            <p className="m-0 text-[11px] font-extrabold tracking-[0.08em] text-blue-200 uppercase">Competencias generales del MCN</p>
+            <div className="flex flex-wrap gap-2">
+              {mov.generales.map((g, i) => (
+                <span key={g} className={`rounded-full px-3 py-1.5 text-[13px] font-bold ${i < 3 ? 'bg-blue-600' : 'bg-white/10'}`}>
+                  {g}
+                </span>
               ))}
             </div>
           </div>
         )}
+        {plan.criterios.length === 0 && <p className="m-0 text-sm text-slate-300">Marcá criterios para ver qué competencias se movilizan.</p>}
       </aside>
     </div>
   );

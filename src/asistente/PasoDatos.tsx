@@ -2,6 +2,7 @@ import { TIPOS, type TipoPlanificacion } from '../datos/db';
 import { ESPACIOS, PROGRAMAS } from '../datos/programas';
 import { Aviso, Campo, Pildora, TarjetaCasilla } from '../componentes/ui';
 import { alternar, type PropsPaso } from './tipos';
+import { Icono } from '../componentes/Iconos';
 
 export function PasoDatos({ plan, cambiar }: PropsPaso) {
   const multigrado = plan.grados.length > 1;
@@ -16,12 +17,14 @@ export function PasoDatos({ plan, cambiar }: PropsPaso) {
               type="button"
               aria-pressed={plan.tipo === t}
               onClick={() => cambiar({ tipo: t })}
-              className={`rounded-xl border p-4 text-left transition ${
-                plan.tipo === t ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-200' : 'border-slate-200 bg-white hover:border-blue-300'
+              className={`flex flex-col items-start gap-1.5 rounded-[20px] p-[18px] text-left transition ${
+                plan.tipo === t ? 'border-2 border-blue-600 bg-blue-100 shadow-suave' : 'border-[1.5px] border-slate-200 bg-white hover:border-blue-300'
               }`}
             >
-              <span className="text-2xl" aria-hidden>{TIPOS[t].icono}</span>
-              <span className="mt-1 block font-semibold text-slate-900">{TIPOS[t].nombre}</span>
+              <span className={`mb-1 flex h-11 w-11 items-center justify-center rounded-[14px] ${plan.tipo === t ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-700'}`}>
+                <Icono nombre={TIPOS[t].icono} tamano={22} grosor={2.2} />
+              </span>
+              <span className="block text-[17px] font-extrabold text-slate-900">{TIPOS[t].nombre}</span>
               <span className="text-sm text-slate-600">{TIPOS[t].descripcion}</span>
             </button>
           ))}

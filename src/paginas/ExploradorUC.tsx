@@ -94,7 +94,7 @@ function PanelGrado({ uc, grado, f }: { uc: UnidadCurricular; grado: GradoUC; f:
   return (
     <div className="space-y-6">
       <section>
-        <h3 className="mb-3 text-lg font-semibold text-slate-900">
+        <h3 className="mb-3 text-[21px] font-extrabold text-slate-900">
           Contenidos específicos de {grado.grado}.º <span className="text-sm font-normal text-slate-500">({bloques.length})</span>
         </h3>
         {bloques.length === 0 && <p className="text-sm text-slate-500">Ningún contenido coincide con los filtros.</p>}
@@ -124,13 +124,13 @@ function PanelGrado({ uc, grado, f }: { uc: UnidadCurricular; grado: GradoUC; f:
         </div>
       </section>
       <section>
-        <h3 className="mb-3 text-lg font-semibold text-slate-900">
+        <h3 className="mb-3 text-[21px] font-extrabold text-slate-900">
           Criterios de logro de {grado.grado}.º <span className="text-sm font-normal text-slate-500">({criterios.length})</span>
         </h3>
         {grupos.length === 0 && <p className="text-sm text-slate-500">Ningún criterio coincide con los filtros.</p>}
         <div className="space-y-3">
           {grupos.map(({ ces, items }) => (
-            <article key={ces.join('|')} className="rounded-xl border border-slate-200 bg-white p-4">
+            <article key={ces.join('|')} className="rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4">
               <h4 className="mb-2 text-sm text-slate-600">
                 <EtiquetasCE ces={ces} uc={uc} />{' '}
                 {ces.length === 1 && uc.competenciasEspecificas.find((c) => c.codigo === ces[0])?.texto}
@@ -195,7 +195,7 @@ function Explorador({ ucId }: { ucId?: string }) {
         </div>
       )}
 
-      <section className="rounded-xl border border-slate-200 bg-white">
+      <section className="rounded-[20px] border-[1.5px] border-slate-200 bg-white">
         <button
           type="button"
           onClick={() => setVerCE(!verCE)}
@@ -220,7 +220,7 @@ function Explorador({ ucId }: { ucId?: string }) {
         )}
       </section>
 
-      <div className="sticky top-0 z-10 space-y-3 rounded-xl border border-slate-200 bg-white/95 p-4 shadow-sm backdrop-blur">
+      <div className="sticky top-0 z-10 space-y-3 rounded-[20px] border-[1.5px] border-slate-200 bg-white/95 p-4 shadow-sm backdrop-blur">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-medium text-slate-600">Grado:</span>
           {grados.map((g) => (

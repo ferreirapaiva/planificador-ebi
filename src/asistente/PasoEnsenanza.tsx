@@ -33,7 +33,7 @@ function EditorClase({
   const [abierta, setAbierta] = useState(numero === total);
   const set = (k: keyof Clase) => (v: string) => onCambio({ ...clase, [k]: v });
   return (
-    <div className="rounded-xl border border-slate-200 bg-white">
+    <div className="rounded-[20px] border-[1.5px] border-slate-200 bg-white">
       <div className="flex items-center gap-2 p-3">
         <button type="button" onClick={() => setAbierta(!abierta)} aria-expanded={abierta} className="flex flex-1 items-center gap-2 text-left font-semibold text-slate-900">
           <span aria-hidden>{abierta ? '▾' : '▸'}</span>

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, leerPerfil, nuevoId, planificacionVacia, TIPOS, type Planificacion } from '../datos/db';
 import { buscarUC } from '../datos/consultas';
 import { normalizar } from '../datos/programas';
 import { Boton } from '../componentes/ui';
 import { useConfirmar } from '../componentes/Confirmar';
+import { Icono } from '../componentes/Iconos';
 import { descargarRespaldo, restaurarRespaldo } from '../datos/respaldo';
 
 const cuando = (ms: number) =>
@@ -43,11 +44,14 @@ function Tarjeta({ p }: { p: Planificacion }) {
     if (ok) await db.planificaciones.delete(p.id);
   };
   return (
-    <article className="flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        {TIPOS[p.tipo].icono} {TIPOS[p.tipo].nombre} · {p.grados.map((g) => `${g}.º`).join(' y ')}
+    <article className="flex flex-col rounded-[24px] bg-white p-5 shadow-suave">
+      <p className="m-0 flex items-center gap-2 text-[11px] font-extrabold tracking-[0.08em] text-blue-600 uppercase">
+        <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-blue-100 text-blue-700">
+          <Icono nombre={TIPOS[p.tipo].icono} tamano={18} />
+        </span>
+        {TIPOS[p.tipo].nombre} · {p.grados.map((g) => `${g}.º`).join(' y ')}
       </p>
-      <Link to={`/planificacion/${p.id}`} className="mt-1 text-lg font-semibold text-slate-900 hover:text-blue-700">
+      <Link to={`/planificacion/${p.id}`} className="mt-2 text-lg font-extrabold text-slate-900 hover:text-blue-700">
         {p.titulo || 'Sin título'}
       </Link>
       <p className="mt-1 text-sm text-slate-600">{p.ucIds.map((id) => buscarUC(id)?.nombre).join(', ') || 'Sin unidades curriculares'}</p>
@@ -72,9 +76,13 @@ function PlanesAnuales() {
   return (
     <section className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
-        <h2 className="mr-auto text-lg font-semibold text-slate-900">Planes anuales</h2>
-        <Link to="/nuevo-plan-anual" className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50">
-          + Nuevo plan anual
+        <h2 className="mr-auto text-[21px] font-extrabold text-slate-900">Planes anuales</h2>
+        <Link
+          to="/nuevo-plan-anual"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border-[1.5px] border-slate-200 bg-white px-5 text-sm font-extrabold text-slate-900 hover:border-blue-300 hover:bg-blue-50"
+        >
+          <Icono nombre="nueva" tamano={18} grosor={2.4} />
+          Nuevo plan anual
         </Link>
       </div>
       {planes.length === 0 ? (
@@ -84,9 +92,14 @@ function PlanesAnuales() {
           {planes.map((p) => {
             const ubicados = Object.values(p.distribucion).filter((m) => m.length).length;
             return (
-              <article key={p.id} className="flex flex-col rounded-xl border border-blue-200 bg-blue-50/40 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">📅 Plan anual · {p.grados.map((g) => `${g}.º`).join(' y ')}</p>
-                <Link to={`/plan-anual/${p.id}`} className="mt-1 text-lg font-semibold text-slate-900 hover:text-blue-700">
+              <article key={p.id} className="flex flex-col rounded-[24px] bg-gradient-to-br from-blue-100 to-coral-50 p-5">
+                <p className="m-0 flex items-center gap-2 text-[11px] font-extrabold tracking-[0.08em] text-coral-700 uppercase">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-white text-coral-700">
+                    <Icono nombre="calendario" tamano={18} />
+                  </span>
+                  Plan anual · {p.grados.map((g) => `${g}.º`).join(' y ')}
+                </p>
+                <Link to={`/plan-anual/${p.id}`} className="mt-1 text-[21px] font-extrabold text-slate-900 hover:text-blue-700">
                   {p.anio}
                   {p.grupo && ` · ${p.grupo}`}
                 </Link>
@@ -122,7 +135,7 @@ function Respaldo() {
   const entrada = useRef<HTMLInputElement>(null);
   const [mensaje, setMensaje] = useState<{ texto: string; error?: boolean } | null>(null);
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4">
+    <section id="copia" className="scroll-mt-24 rounded-[24px] bg-white p-5 shadow-suave">
       <h2 className="font-semibold text-slate-900">Copia de seguridad</h2>
       <p className="mt-1 text-sm text-slate-600">
         Tus planificaciones se guardan solo en este navegador y en este equipo. Descargá una copia de vez en cuando y guardala en tu
@@ -135,9 +148,10 @@ function Respaldo() {
             setMensaje({ texto: `Copia descargada: ${n.planificaciones} planificaciones y ${n.planesAnuales} planes anuales.` });
           }}
         >
-          ⬇ Descargar copia
+          <Icono nombre="descargar" tamano={18} grosor={2.4} />
+          Descargar copia
         </Boton>
-        <Boton variante="secundario" onClick={() => entrada.current?.click()}>⬆ Restaurar desde una copia</Boton>
+        <Boton variante="secundario" onClick={() => entrada.current?.click()}>Restaurar desde una copia</Boton>
         <input
           ref={entrada}
           type="file"
@@ -165,25 +179,30 @@ function Respaldo() {
 export function MisPlanificaciones() {
   const lista = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
   const [texto, setTexto] = useState('');
+  const { hash } = useLocation();
+  // El enlace "Descargar copia" de la barra lateral lleva a la sección de copia de seguridad.
+  useEffect(() => {
+    if (hash === '#copia' && lista) document.getElementById('copia')?.scrollIntoView({ behavior: 'smooth' });
+  }, [hash, lista]);
   if (!lista) return <p className="text-slate-500">Cargando…</p>;
   const q = normalizar(texto.trim());
   const visibles = lista.filter((p) => !q || normalizar(`${p.titulo} ${p.ucIds.map((id) => buscarUC(id)?.nombre).join(' ')}`).includes(q));
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-bold text-slate-900">Mis planificaciones</h1>
+      <h1 className="text-[30px] font-extrabold tracking-tight text-slate-900">Mis planificaciones</h1>
       <PlanesAnuales />
       <div className="flex flex-wrap items-center gap-3 border-t border-slate-200 pt-5">
-        <h2 className="mr-auto text-lg font-semibold text-slate-900">Unidades, proyectos y secuencias</h2>
+        <h2 className="mr-auto text-[21px] font-extrabold text-slate-900">Unidades, proyectos y secuencias</h2>
         {lista.length > 0 && (
           <input type="search" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Buscar…" aria-label="Buscar planificación" className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm" />
         )}
-        <Link to="/nueva" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+        <Link to="/nueva" className="inline-flex min-h-11 items-center rounded-full bg-blue-600 px-5 text-sm font-extrabold text-white shadow-[0_8px_20px_rgb(91_75_245/0.28)] hover:bg-blue-700">
           + Nueva planificación
         </Link>
       </div>
       {lista.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <p className="text-lg font-semibold text-slate-900">Todavía no tenés planificaciones</p>
+          <p className="text-[21px] font-extrabold text-slate-900">Todavía no tenés planificaciones</p>
           <p className="mt-1 text-slate-600">Creá la primera: el asistente te guía paso a paso desde los criterios de logro del programa.</p>
           <Link to="/nueva" className="mt-4 inline-block rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">
             Empezar
