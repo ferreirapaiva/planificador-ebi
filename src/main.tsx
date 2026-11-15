@@ -11,6 +11,7 @@ import { ExploradorUC } from './paginas/ExploradorUC';
 import { Asistente } from './paginas/Asistente';
 import { AbrirPlanAnual, EditorPlanAnual, NuevoPlanAnual } from './paginas/EditorPlanAnual';
 import { MisPlanificaciones, NuevaPlanificacion } from './paginas/MisPlanificaciones';
+import { EditorPlanSemanal, NuevoPlanSemanal, PlanesSemanales } from './paginas/PlanSemanal';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -27,6 +28,9 @@ createRoot(document.getElementById('root')!).render(
           <Route path="nuevo-plan-anual" element={<NuevoPlanAnual />} />
           <Route path="plan-anual" element={<AbrirPlanAnual />} />
           <Route path="plan-anual/:id" element={<EditorPlanAnual />} />
+          <Route path="plan-semanal" element={<PlanesSemanales />} />
+          <Route path="plan-semanal/:id" element={<EditorPlanSemanal />} />
+          <Route path="nuevo-plan-semanal" element={<NuevoPlanSemanal />} />
         </Route>
       </Routes>
     </HashRouter>

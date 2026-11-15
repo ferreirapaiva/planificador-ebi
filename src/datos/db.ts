@@ -98,13 +98,45 @@ export type PlanAnual = {
   modificada: number;
 };
 
+/** Un momento del horario: una clase de una secuencia, un área o una rutina (recreo, comedor…). */
+export type BloqueHorario = {
+  id: string;
+  inicio: string;
+  fin: string;
+  area: string;
+  actividad: string;
+  detalle: string;
+  materiales: string;
+  /** Si se trajo de una planificación: de dónde viene (el texto se copia y se puede cambiar). */
+  origen?: { planificacionId: string; claseId: string; titulo: string };
+};
+
+export type DiaPlan = { fecha: string; bloques: BloqueHorario[] };
+
+export type PlanSemanal = {
+  id: string;
+  alcance: 'dia' | 'semana';
+  /** Día elegido, o el lunes de la semana. */
+  fecha: string;
+  docente: string;
+  escuela: string;
+  grupo: string;
+  dias: DiaPlan[];
+  materiales: string;
+  notas: string;
+  creada: number;
+  modificada: number;
+};
+
 export const db = new Dexie('planificador-ebi') as Dexie & {
   planificaciones: EntityTable<Planificacion, 'id'>;
   planesAnuales: EntityTable<PlanAnual, 'id'>;
+  planesSemanales: EntityTable<PlanSemanal, 'id'>;
 };
 
 db.version(1).stores({ planificaciones: 'id, modificada, tipo' });
 db.version(2).stores({ planificaciones: 'id, modificada, tipo', planesAnuales: 'id, modificada, anio' });
+db.version(3).stores({ planificaciones: 'id, modificada, tipo', planesAnuales: 'id, modificada, anio', planesSemanales: 'id, modificada, fecha' });
 
 export const nuevoId = () => crypto.randomUUID();
 

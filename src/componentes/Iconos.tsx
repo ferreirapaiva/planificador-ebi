@@ -32,6 +32,12 @@ const TRAZOS = {
       <path d="M7 15l4-4 3 3 5-6" />
     </>
   ),
+  reloj: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
   descargar: <path d="M12 4v12M6 10l6 6 6-6M5 20h14" />,
 };
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { claseVacia, type Clase } from '../datos/db';
 import { buscarUC } from '../datos/consultas';
 import { AreaTexto, Aviso, Boton, Campo, Pildora } from '../componentes/ui';
@@ -123,6 +124,12 @@ export function PasoEnsenanza({ plan, cambiar }: PropsPaso) {
         </div>
         {plan.clases.length === 0 && (
           <Aviso>Agregá las clases o actividades de tu propuesta. Cada una tiene inicio, desarrollo y cierre.</Aviso>
+        )}
+        {plan.clases.length > 0 && (
+          <p className="text-sm text-slate-600">
+            Poné fecha a las clases y después ubicalas en tu horario desde{' '}
+            <Link to="/plan-semanal" className="font-bold text-blue-700 underline">Plan diario y semanal</Link>.
+          </p>
         )}
         {plan.clases.map((c, i) => (
           <EditorClase

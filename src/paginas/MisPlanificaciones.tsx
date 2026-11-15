@@ -8,6 +8,7 @@ import { Boton } from '../componentes/ui';
 import { useConfirmar } from '../componentes/Confirmar';
 import { Icono } from '../componentes/Iconos';
 import { descargarRespaldo, restaurarRespaldo } from '../datos/respaldo';
+import { ListaPlanesSemanales } from './PlanSemanal';
 
 const cuando = (ms: number) =>
   new Date(ms).toLocaleDateString('es-UY', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -145,7 +146,7 @@ function Respaldo() {
         <Boton
           onClick={async () => {
             const n = await descargarRespaldo();
-            setMensaje({ texto: `Copia descargada: ${n.planificaciones} planificaciones y ${n.planesAnuales} planes anuales.` });
+            setMensaje({ texto: `Copia descargada: ${n.planificaciones} planificaciones, ${n.planesAnuales} planes anuales y ${n.planesSemanales} planes del día o la semana.` });
           }}
         >
           <Icono nombre="descargar" tamano={18} grosor={2.4} />
@@ -215,6 +216,13 @@ export function MisPlanificaciones() {
           ))}
         </div>
       )}
+      <section className="space-y-3 border-t border-slate-200 pt-5">
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="mr-auto text-[21px] font-extrabold text-slate-900">Planes del día y de la semana</h2>
+          <Link to="/plan-semanal" className="text-[15px] font-extrabold text-blue-700 hover:text-blue-900">Ver todos →</Link>
+        </div>
+        <ListaPlanesSemanales limite={3} />
+      </section>
       <Respaldo />
     </div>
   );
