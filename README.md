@@ -2,6 +2,12 @@
 
 App web para crear planificaciones docentes a partir de los programas de Educación Básica Integrada (Uruguay). Ver el plan completo en [PLAN_DE_DESARROLLO.md](PLAN_DE_DESARROLLO.md).
 
+**Usar la app:** https://ferreirapaiva.github.io/planificador-ebi/ — se puede instalar (Chrome/Edge: “Instalar”) y funciona sin conexión. Las planificaciones se guardan en cada navegador; usá la copia de seguridad de “Mis planificaciones” para respaldarlas o pasarlas a otro equipo.
+
+**Publicar cambios:** cada `git push` a `main` vuelve a publicar la app automáticamente (GitHub Actions → GitHub Pages).
+
+Los PDF de los programas (`PROGRAMAS/`) no se suben al repositorio: son documentos de ANEP y quedan solo en el equipo.
+
 ## Comandos
 
 | Comando | Qué hace |
