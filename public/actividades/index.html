@@ -33,6 +33,33 @@
   /* Dentro del Planificador, la barra de la app ya muestra el título */
   .embebido .top{display:none}
   .embebido main{padding-top:8px}
+  /* Dentro del Planificador: mismo lenguaje visual que el resto de las pantallas
+     (fondo liso, tarjetas redondeadas con sombra suave, pestañas en píldora). */
+  .embebido body, body.embebido, .embebido{background:transparent}
+  .embebido body{background:transparent; background-image:none}
+  .embebido main{max-width:none; padding:0 0 16px; gap:24px}
+  .embebido .panel{border:none; border-radius:28px; box-shadow:0 4px 16px rgb(59 45 184 / .08); padding:22px 22px 24px}
+  .embebido .panel h2{font-weight:800; font-size:1.15rem}
+  .embebido .folders{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; padding:0}
+  .embebido .area{flex:1 1 auto; min-width:0; min-height:0; justify-content:center; white-space:nowrap; flex-direction:row; align-items:center; gap:8px; padding:9px 14px;
+    border-radius:999px; background:#fff; border:1.5px solid var(--line); box-shadow:none}
+  .embebido .area:hover{transform:none; border-color:var(--ac)}
+  .embebido .area .ic{width:26px; height:26px; border-radius:999px; flex:none}
+  .embebido .area .ic svg{width:15px; height:15px}
+  .embebido .area b{font-size:.9rem; font-weight:800; letter-spacing:0}
+  .embebido .area.sel{min-height:0; background:var(--ac); border-color:var(--ac); color:#fff}
+  .embebido .panel.activity{border:none; border-radius:28px; margin-top:0; padding-top:22px}
+  .embebido .item, .embebido .opt span{border-width:1.5px; border-radius:999px}
+  .embebido .opt span{padding:7px 14px}
+  .embebido label.field input[type=text], .embebido label.field select, .embebido .bank-sel{border-width:1.5px; border-radius:14px}
+  .embebido .group{border-top-color:var(--line)}
+  .embebido .preview{background:#EEEBFF; border-radius:28px; padding:20px; top:0}
+  .embebido .tabs{border-radius:999px}
+  .embebido .tabs button{border-radius:999px; font-weight:800}
+  .embebido .intro{background:#fff; color:var(--ink); border-radius:28px; padding:18px 22px; box-shadow:0 4px 16px rgb(59 45 184 / .08); border-left:6px solid #5B4BF5}
+  .embebido .intro p{color:var(--muted)}
+  .embebido .intro .mini{border-radius:999px}
+  .embebido .btn.ghost{border-width:1.5px}
   body[data-area="sopas"]{ --c:var(--sopas); --c-soft:var(--sopas-soft); }
   body[data-area="cruci"]{ --c:var(--cruci); --c-soft:var(--cruci-soft); }
   body[data-area="repaso"]{ --c:var(--repaso); --c-soft:var(--repaso-soft); }
@@ -2477,6 +2504,13 @@ ensurePer(state.activity);
 renderAreas(); selectActivity(state.activity); renderCombo(); renderWeekUI();
 initDownloads();
 initSample();
+</script>
+<script>
+/* Avisa al Planificador la altura del contenido para que el marco no tenga scroll propio. */
+if (window.self !== window.top) {
+  var avisar = function(){ try { parent.postMessage({ tipo: 'hojas-altura', alto: document.documentElement.scrollHeight }, '*'); } catch(e){} };
+  window.addEventListener('load', function(){ avisar(); if (window.ResizeObserver) new ResizeObserver(avisar).observe(document.body); });
+}
 </script>
 </body>
 </html>
