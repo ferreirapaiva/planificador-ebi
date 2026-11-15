@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Icono } from '../componentes/Iconos';
 
 /**
@@ -6,6 +7,15 @@ import { Icono } from '../componentes/Iconos';
  * Guarda sus opciones y temas propios en este navegador.
  */
 export function HojasActividades() {
+  // En pantallas grandes el marco crece con el contenido (sin scroll propio).
+  const [alto, setAlto] = useState<number | null>(null);
+  useEffect(() => {
+    const alRecibir = (e: MessageEvent) => {
+      if (e.data?.tipo === 'hojas-altura' && typeof e.data.alto === 'number') setAlto(e.data.alto);
+    };
+    window.addEventListener('message', alRecibir);
+    return () => window.removeEventListener('message', alRecibir);
+  }, []);
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-end gap-3">
@@ -26,7 +36,8 @@ export function HojasActividades() {
       <iframe
         src="actividades/index.html"
         title="Generador de hojas de actividades"
-        className="h-[calc(100dvh-15rem)] min-h-[34rem] w-full rounded-[28px] border-0 bg-white shadow-suave lg:h-[calc(100dvh-11rem)]"
+        style={alto ? ({ '--alto': `${alto}px` } as React.CSSProperties) : undefined}
+        className="h-[calc(100dvh-15rem)] min-h-[34rem] w-full border-0 bg-transparent lg:h-[var(--alto,calc(100dvh-11rem))]"
       />
     </div>
   );
