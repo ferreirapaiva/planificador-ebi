@@ -4,10 +4,12 @@ import { ESPACIOS, PROGRAMAS } from '../datos/programas';
 import { AreaTexto, Aviso, Boton, Campo, Pildora, TarjetaCasilla } from '../componentes/ui';
 import { fecha } from '../componentes/Documento';
 import { alternar } from '../asistente/tipos';
+import { useConfirmar } from '../componentes/Confirmar';
 
 export type PropsAnual = { plan: PlanAnual; cambiar: (p: Partial<PlanAnual>) => void };
 
 export function PasoDatosAnual({ plan, cambiar }: PropsAnual) {
+  const confirmar = useConfirmar();
   const cal = plan.calendario;
   const setCal = (c: Partial<PlanAnual['calendario']>) => cambiar({ calendario: { ...cal, ...c } });
   const multigrado = plan.grados.length > 1;
@@ -59,7 +61,14 @@ export function PasoDatosAnual({ plan, cambiar }: PropsAnual) {
           <h3 className="font-semibold text-slate-900">Calendario escolar {plan.anio}</h3>
           <Boton
             variante="secundario"
-            onClick={() => window.confirm('¿Reemplazar el calendario por las fechas sugeridas para este año?') && cambiar({ calendario: calendarioPorDefecto(plan.anio) })}
+            onClick={async () => {
+              const ok = await confirmar({
+                titulo: '¿Restablecer las fechas sugeridas?',
+                mensaje: `Se reemplaza el calendario ${plan.anio} (inicio, fin, períodos sin clases y efemérides) por el sugerido. Los cambios que hiciste se pierden.`,
+                aceptar: 'Restablecer',
+              });
+              if (ok) cambiar({ calendario: calendarioPorDefecto(plan.anio) });
+            }}
           >
             Restablecer fechas sugeridas
           </Boton>

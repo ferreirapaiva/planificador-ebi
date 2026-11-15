@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import { Marco } from './componentes/Marco';
+import { ConfirmarProvider } from './componentes/Confirmar';
 import { Inicio } from './paginas/Inicio';
 import { Programas } from './paginas/Programas';
 import { ExploradorUC } from './paginas/ExploradorUC';
@@ -12,6 +13,7 @@ import { MisPlanificaciones, NuevaPlanificacion } from './paginas/MisPlanificaci
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <ConfirmarProvider>
     <HashRouter>
       <Routes>
         <Route element={<Marco />}>
@@ -27,5 +29,6 @@ createRoot(document.getElementById('root')!).render(
         </Route>
       </Routes>
     </HashRouter>
+    </ConfirmarProvider>
   </StrictMode>,
 );

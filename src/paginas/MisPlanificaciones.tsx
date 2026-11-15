@@ -5,6 +5,7 @@ import { db, leerPerfil, nuevoId, planificacionVacia, TIPOS, type Planificacion 
 import { buscarUC } from '../datos/consultas';
 import { normalizar } from '../datos/programas';
 import { Boton } from '../componentes/ui';
+import { useConfirmar } from '../componentes/Confirmar';
 
 const cuando = (ms: number) =>
   new Date(ms).toLocaleDateString('es-UY', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -24,6 +25,7 @@ export function NuevaPlanificacion() {
 
 function Tarjeta({ p }: { p: Planificacion }) {
   const navegar = useNavigate();
+  const confirmar = useConfirmar();
   const duplicar = async () => {
     const ahora = Date.now();
     const copia: Planificacion = { ...structuredClone(p), id: nuevoId(), titulo: `${p.titulo || 'Sin título'} (copia)`, creada: ahora, modificada: ahora, paso: 0 };
@@ -31,7 +33,13 @@ function Tarjeta({ p }: { p: Planificacion }) {
     navegar(`/planificacion/${copia.id}`);
   };
   const borrar = async () => {
-    if (window.confirm(`¿Eliminar «${p.titulo || 'Sin título'}»? No se puede deshacer.`)) await db.planificaciones.delete(p.id);
+    const ok = await confirmar({
+      titulo: `¿Eliminar «${p.titulo || 'Sin título'}»?`,
+      mensaje: 'Se borra de este equipo y no se puede deshacer.',
+      aceptar: 'Eliminar',
+      peligro: true,
+    });
+    if (ok) await db.planificaciones.delete(p.id);
   };
   return (
     <article className="flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -58,6 +66,7 @@ function Tarjeta({ p }: { p: Planificacion }) {
 function PlanesAnuales() {
   const planes = useLiveQuery(() => db.planesAnuales.orderBy('modificada').reverse().toArray(), []);
   const navegar = useNavigate();
+  const confirmar = useConfirmar();
   if (!planes) return null;
   return (
     <section className="space-y-3">
@@ -86,7 +95,15 @@ function PlanesAnuales() {
                   <Boton onClick={() => navegar(`/plan-anual/${p.id}`)}>Abrir</Boton>
                   <Boton
                     variante="peligro"
-                    onClick={async () => window.confirm(`¿Eliminar el plan anual ${p.anio}? No se puede deshacer.`) && (await db.planesAnuales.delete(p.id))}
+                    onClick={async () => {
+                      const ok = await confirmar({
+                        titulo: `¿Eliminar el plan anual ${p.anio}${p.grupo ? ` de ${p.grupo}` : ''}?`,
+                        mensaje: 'Se borra de este equipo y no se puede deshacer. Tus unidades, proyectos y secuencias no se borran.',
+                        aceptar: 'Eliminar',
+                        peligro: true,
+                      });
+                      if (ok) await db.planesAnuales.delete(p.id);
+                    }}
                   >
                     Eliminar
                   </Boton>
