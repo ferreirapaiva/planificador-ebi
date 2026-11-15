@@ -20,6 +20,10 @@ App web para crear planificaciones docentes a partir de los programas de Educaci
 - `src/datos/esquema.ts` — modelo de datos y validaciones.
 - `src/paginas/` — pantallas de la app.
 
+## Revisar un programa contra el PDF
+
+Con `npm run dev` abierto, entrar a http://localhost:5173/herramientas/ver-pdf.html para ver cualquier página de los PDF de `PROGRAMAS/` y compararla con la app. Cada programa muestra en la app un aviso amarillo con lo que conviene verificar (`notasRevision` en su JSON).
+
 ## Cargar un programa nuevo
 
 1. `npm run extraer` y abrir el `.txt` correspondiente en `data/raw/`.
