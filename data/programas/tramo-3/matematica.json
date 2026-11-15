@@ -4,9 +4,9 @@
   "espacio": "Científico-Matemático",
   "tramo": 3,
   "version": "v2",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
-    "Verificar en el PDF (pág. 12 y 15) a qué eje pertenece el bloque 'Magnitudes y medidas': la extracción lo ubica junto a 'Introducción al álgebra' en el eje Variable.",
+    "Revisado contra el PDF el 2026-11-14: 'Magnitudes y medidas' pertenece al eje Variable (confirmado).",
     "En 4.º grado el criterio 'Reconoce y genera fracciones equivalentes en contextos de situaciones problemas' aparece dos veces bajo CE2 en el PDF; se cargó una sola vez."
   ],
   "fuente": { "archivo": "Matemática_v2 - Tramo 3.pdf", "paginas": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] },
