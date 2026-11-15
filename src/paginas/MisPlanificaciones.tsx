@@ -6,6 +6,7 @@ import { buscarUC } from '../datos/consultas';
 import { normalizar } from '../datos/programas';
 import { Boton } from '../componentes/ui';
 import { useConfirmar } from '../componentes/Confirmar';
+import { descargarRespaldo, restaurarRespaldo } from '../datos/respaldo';
 
 const cuando = (ms: number) =>
   new Date(ms).toLocaleDateString('es-UY', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -117,6 +118,50 @@ function PlanesAnuales() {
   );
 }
 
+function Respaldo() {
+  const entrada = useRef<HTMLInputElement>(null);
+  const [mensaje, setMensaje] = useState<{ texto: string; error?: boolean } | null>(null);
+  return (
+    <section className="rounded-xl border border-slate-200 bg-white p-4">
+      <h2 className="font-semibold text-slate-900">Copia de seguridad</h2>
+      <p className="mt-1 text-sm text-slate-600">
+        Tus planificaciones se guardan solo en este navegador y en este equipo. Descargá una copia de vez en cuando y guardala en tu
+        computadora, un pendrive o tu correo. Con ese archivo podés recuperarlas o pasarlas a otro equipo.
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Boton
+          onClick={async () => {
+            const n = await descargarRespaldo();
+            setMensaje({ texto: `Copia descargada: ${n.planificaciones} planificaciones y ${n.planesAnuales} planes anuales.` });
+          }}
+        >
+          ⬇ Descargar copia
+        </Boton>
+        <Boton variante="secundario" onClick={() => entrada.current?.click()}>⬆ Restaurar desde una copia</Boton>
+        <input
+          ref={entrada}
+          type="file"
+          accept=".json,application/json"
+          className="hidden"
+          aria-label="Elegir archivo de copia de seguridad"
+          onChange={async (e) => {
+            const archivo = e.target.files?.[0];
+            e.target.value = '';
+            if (!archivo) return;
+            try {
+              const r = await restaurarRespaldo(archivo);
+              setMensaje({ texto: `Listo: ${r.agregadas} agregadas y ${r.actualizadas} actualizadas. No se borró nada.` });
+            } catch (err) {
+              setMensaje({ texto: (err as Error).message, error: true });
+            }
+          }}
+        />
+      </div>
+      {mensaje && <p className={`mt-2 text-sm ${mensaje.error ? 'text-red-700' : 'text-emerald-700'}`} role="status">{mensaje.texto}</p>}
+    </section>
+  );
+}
+
 export function MisPlanificaciones() {
   const lista = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
   const [texto, setTexto] = useState('');
@@ -151,7 +196,7 @@ export function MisPlanificaciones() {
           ))}
         </div>
       )}
-      <p className="text-xs text-slate-500">Las planificaciones se guardan en este navegador y en este equipo.</p>
+      <Respaldo />
     </div>
   );
 }
