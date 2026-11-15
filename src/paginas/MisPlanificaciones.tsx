@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, leerPerfil, nuevoId, planificacionVacia, TIPOS, type Planificacion } from '../datos/db';
+import { borrarBorradoresVacios, db, leerPerfil, nuevoId, planificacionVacia, TIPOS, type Planificacion } from '../datos/db';
 import { buscarUC } from '../datos/consultas';
 import { normalizar } from '../datos/programas';
 import { Boton } from '../componentes/ui';
@@ -181,6 +181,10 @@ export function MisPlanificaciones() {
   const lista = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
   const [texto, setTexto] = useState('');
   const { hash } = useLocation();
+  // Borradores vacíos que quedaron de tocar «Nueva planificación» sin escribir nada.
+  useEffect(() => {
+    borrarBorradoresVacios();
+  }, []);
   // El enlace "Descargar copia" de la barra lateral lleva a la sección de copia de seguridad.
   useEffect(() => {
     if (hash === '#copia' && lista) document.getElementById('copia')?.scrollIntoView({ behavior: 'smooth' });

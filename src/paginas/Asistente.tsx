@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { db, guardarPerfil, TIPOS, type Planificacion } from '../datos/db';
+import { db, estaVacia, guardarPerfil, TIPOS, type Planificacion } from '../datos/db';
 import { buscarContenido, buscarCriterio } from '../datos/consultas';
 import { Boton } from '../componentes/ui';
 import { Pasos } from '../componentes/Pasos';
@@ -20,6 +20,9 @@ const PASOS = [
   { titulo: 'Enseñanza', pregunta: '¿Cómo lo voy a enseñar?' },
   { titulo: 'Revisión', pregunta: 'Revisá, descargá o imprimí' },
 ];
+
+/** Planificaciones abiertas ahora en esta pestaña (para no borrar un borrador mientras se usa). */
+const abiertas = new Set<string>();
 
 /** Quita criterios y contenidos que ya no corresponden a las UC o grados elegidos. */
 function depurar(p: Planificacion): Planificacion {
@@ -49,17 +52,38 @@ export function Asistente() {
   }, [id]);
 
   // Guardado automático, medio segundo después del último cambio.
+  const pendiente = useRef<Planificacion | null>(null);
   useEffect(() => {
     if (!plan || !editado.current) return;
     setEstado('guardando');
+    pendiente.current = plan;
     window.clearTimeout(temporizador.current);
     temporizador.current = window.setTimeout(async () => {
+      pendiente.current = null;
       await db.planificaciones.put(plan);
       guardarPerfil(plan);
       setEstado('guardado');
     }, 500);
-    return () => window.clearTimeout(temporizador.current);
   }, [plan]);
+
+  // Al salir: se guarda lo que estaba por guardarse y, si el borrador quedó vacío, se borra solo.
+  useEffect(() => {
+    abiertas.add(id!);
+    return () => {
+      abiertas.delete(id!);
+      window.clearTimeout(temporizador.current);
+      const ultimo = pendiente.current;
+      pendiente.current = null;
+      // Se espera un instante: en desarrollo React desmonta y vuelve a montar la misma pantalla.
+      window.setTimeout(async () => {
+        if (abiertas.has(id!)) return;
+        const p = ultimo ?? (await db.planificaciones.get(id!));
+        if (!p) return;
+        if (estaVacia(p)) await db.planificaciones.delete(p.id);
+        else if (ultimo) await db.planificaciones.put(ultimo);
+      }, 0);
+    };
+  }, [id]);
 
   if (plan === undefined) return <p className="text-slate-500">Cargando…</p>;
   if (plan === null)

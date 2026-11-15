@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, leerPerfil, NOMBRE_MES, TIPOS, type Planificacion } from '../datos/db';
+import { borrarBorradoresVacios, db, leerPerfil, NOMBRE_MES, TIPOS, type Planificacion } from '../datos/db';
 import { buscarUC } from '../datos/consultas';
 import { calendarioPorDefecto } from '../datos/calendario';
 import { cobertura, porcentaje } from '../datos/planAnual';
@@ -25,6 +26,9 @@ const ACCESOS: { to: string; titulo: string; texto: string; icono: NombreIcono; 
 const TARJETA = 'rounded-[28px] bg-white shadow-suave';
 
 export function Inicio() {
+  useEffect(() => {
+    borrarBorradoresVacios();
+  }, []);
   const planificaciones = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []) ?? [];
   const planAnual = useLiveQuery(() => db.planesAnuales.orderBy('modificada').last(), []);
   const perfil = leerPerfil();

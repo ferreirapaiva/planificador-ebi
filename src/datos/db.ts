@@ -190,3 +190,24 @@ export function guardarPerfil(p: Pick<Planificacion, 'docente' | 'escuela' | 'gr
     /* sin almacenamiento disponible: no es grave */
   }
 }
+
+/**
+ * Una planificación está vacía si el docente todavía no escribió ni eligió nada propio
+ * (los datos recordados —docente, escuela, grupo— y el tipo o grado no cuentan).
+ */
+export function estaVacia(p: Planificacion) {
+  const textos = [p.titulo, p.evidencias, p.preguntaGuia, p.productoFinal, p.recursos, p.diversidad, p.notas, p.desde, p.hasta];
+  const listas = [p.ucIds, p.criterios, p.contenidos, p.clases, p.instrumentos, p.metodologias];
+  return textos.every((t) => !t?.trim()) && listas.every((l) => !l?.length);
+}
+
+/**
+ * Borra los borradores vacíos que quedaron de tocar "Nueva planificación" y salir sin escribir nada.
+ * Respeta los que se tocaron en los últimos minutos (pueden estar abiertos en otra pestaña).
+ */
+export async function borrarBorradoresVacios(minutos = 10) {
+  const limite = Date.now() - minutos * 60_000;
+  const ids = (await db.planificaciones.toArray()).filter((p) => p.modificada < limite && estaVacia(p)).map((p) => p.id);
+  if (ids.length) await db.planificaciones.bulkDelete(ids);
+  return ids.length;
+}
