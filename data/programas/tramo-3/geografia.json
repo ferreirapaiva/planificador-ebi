@@ -1,0 +1,215 @@
+{
+  "id": "geografia",
+  "nombre": "Geografía",
+  "espacio": "Ciencias Sociales y Humanidades",
+  "tramo": 3,
+  "version": "v2",
+  "revisado": false,
+  "notasRevision": [
+    "Los 6 conceptos estructurantes de la tabla (Lenguaje cartográfico, Bienes comunes ambientales, etc.) se cargaron como ejes. Los títulos en negrita del PDF se cargaron como contenido con subítems.",
+    "3.º grado, 'La población': en el PDF 'Organizaciones de la sociedad: voluntariado…' aparece debajo del título en negrita 'Los movimientos migratorios internos'; se cargó como subítem de ese título. Verificar (pág. 13).",
+    "4.º grado: verificar en la pág. 14 si 'El Uruguay en las Américas' es un título (negrita) como en 3.º.",
+    "La justificación del PDF de Geografía repite el texto de Historia (pág. 7); se cargó tal cual."
+  ],
+  "fuente": { "archivo": "Geografía_v2 - Tramo 3.pdf", "paginas": [3, 7, 11, 12, 13, 14, 15, 16, 17] },
+  "justificacion": "El aprendizaje de la Historia requiere conocer la naturaleza y origen del conocimiento en relación con las formas de enseñarlo. Como disciplina, ha contribuido a la conformación de identidades políticas y sociales y a la formación de ciudadanos críticos en el ejercicio de derechos y obligaciones. Los procesos históricos están en permanente reconstrucción a través de múltiples interpretaciones, teorías, hallazgos y tecnología, lo que acerca a los estudiantes al pensamiento científico, reflexivo y crítico.",
+  "contenidosEstructurantes": [
+    "El rol del Estado democrático",
+    "Construcción del concepto de ciudadanía",
+    "Ciudadanía y convivencia en los grupos humanos",
+    "Sociedades y sus interrelaciones históricas",
+    "Democracia",
+    "Los derechos humanos como construcción: logros y tensiones",
+    "Los niños, niñas, adolescentes y jóvenes como sujetos de derecho",
+    "Diversidad cultural: las manifestaciones culturales como signo de identidad",
+    "La violencia y sus distintas manifestaciones",
+    "Cultura y patrimonio"
+  ],
+  "ejes": ["Lenguaje cartográfico", "Bienes comunes ambientales", "Actividades productivas", "Los territorios", "La población", "Las tecnologías"],
+  "competenciasEspecificas": [
+    { "codigo": "CE1", "texto": "Participa y comienza a reflexionar en situaciones de convivencia cotidianas con los bienes comunes ambientales de su entorno para el disfrute y conservación de acuerdo con sus intereses y motivaciones.", "competenciasMCN": ["Pensamiento creativo", "Pensamiento científico", "Intrapersonal", "Ciudadanía local, global y digital"] },
+    { "codigo": "CE2", "texto": "Identifica y analiza a través del lenguaje cartográfico convencional y social el espacio local y regional, empleando diferentes herramientas para la interpretación geográfica del territorio.", "competenciasMCN": ["Comunicación", "Pensamiento creativo", "Pensamiento crítico", "Pensamiento científico", "Pensamiento computacional", "Relacionamiento con los otros", "Intrapersonal", "Ciudadanía local, global y digital"] },
+    { "codigo": "CE3", "texto": "Experimenta y comunica sobre los bienes naturales y culturales del entorno local y regional y sus usos, cuidados y disfrute para interactuar con el ambiente de forma armónica.", "competenciasMCN": ["Comunicación", "Relacionamiento con los otros", "Iniciativa y orientación a la acción", "Ciudadanía local, global y digital", "Metacognitiva", "Pensamiento computacional", "Pensamiento científico"] },
+    { "codigo": "CE4", "texto": "Representa y explica las características de los diferentes territorios con la mediación del docente para comprender su dinámica.", "competenciasMCN": ["Pensamiento científico", "Ciudadanía local, global y digital", "Intrapersonal", "Relacionamiento con los otros", "Metacognitiva", "Pensamiento creativo", "Pensamiento computacional", "Iniciativa y orientación a la acción", "Comunicación", "Pensamiento crítico"] },
+    { "codigo": "CE5", "texto": "Propone preguntas y respuestas alternativas, reconoce problemas y oportunidades socioambientales y busca sus causas y consecuencias con la combinación de ideas propias y de otras personas.", "competenciasMCN": ["Comunicación", "Iniciativa y orientación a la acción", "Pensamiento científico", "Pensamiento crítico", "Pensamiento creativo", "Metacognitiva", "Ciudadanía local, global y digital", "Relacionamiento con los otros", "Pensamiento computacional"] },
+    { "codigo": "CE6", "texto": "Indaga, identifica y comienza a reflexionar sobre la influencia del uso de la tecnología en las actividades productivas con mediación, para reconocer el impacto ambiental.", "competenciasMCN": ["Comunicación", "Pensamiento computacional", "Pensamiento científico", "Ciudadanía local, global y digital", "Pensamiento creativo", "Iniciativa y orientación a la acción", "Pensamiento crítico", "Metacognitiva", "Relacionamiento con los otros"] },
+    { "codigo": "CE7", "texto": "Identifica y comunica opiniones sobre la población en actividades colaborativas, mediadas por el docente, para conocer y valorar su composición y diversidad.", "competenciasMCN": ["Relacionamiento con los otros", "Comunicación", "Intrapersonal", "Iniciativa y orientación a la acción", "Pensamiento creativo", "Metacognitiva", "Pensamiento crítico", "Ciudadanía local, global y digital", "Pensamiento computacional", "Pensamiento científico"] }
+  ],
+  "grados": [
+    {
+      "grado": 3,
+      "fuente": { "archivo": "Geografía_v2 - Tramo 3.pdf", "paginas": [12, 13, 14] },
+      "bloques": [
+        {
+          "id": "geo3-cartografia", "titulo": "Lenguaje cartográfico", "eje": "Lenguaje cartográfico", "ceVinculadas": ["CE2"],
+          "conceptosClave": ["Coordenadas", "Referencias", "Escala", "Convencional", "Digital", "Social"],
+          "contenidos": [
+            { "id": "geo3-car-1", "texto": "El Uruguay en la Cuenca del Plata", "subitems": [
+              { "id": "geo3-car-1a", "texto": "El lenguaje cartográfico en los mapas (convencional y social) y el globo terráqueo: los símbolos, los puntos cardinales y las referencias." },
+              { "id": "geo3-car-1b", "texto": "El Uruguay a través de la cartografía convencional y social." },
+              { "id": "geo3-car-1c", "texto": "Los límites departamentales y nacionales." }
+            ] }
+          ]
+        },
+        {
+          "id": "geo3-bienes", "titulo": "Bienes comunes ambientales", "eje": "Bienes comunes ambientales", "ceVinculadas": ["CE1", "CE3"],
+          "conceptosClave": ["Agua", "Suelo", "Subsuelo", "Flora", "Fauna", "Preservación", "Conflictos", "Impactos"],
+          "contenidos": [
+            { "id": "geo3-bie-1", "texto": "La protección y valoración de los bienes edáficos e hídricos", "subitems": [
+              { "id": "geo3-bie-1a", "texto": "La erosión de los suelos en relación con las prácticas agrícolas y ganaderas intensivas y extensivas con o sin el uso de agrotóxicos." },
+              { "id": "geo3-bie-1b", "texto": "Los bienes ambientales del subsuelo: agua, oro, hierro, rocas ornamentales." },
+              { "id": "geo3-bie-1c", "texto": "Las acciones de preservación, cuidado y disfrute ambiental (suelo, agua, flora y fauna)." }
+            ] }
+          ]
+        },
+        {
+          "id": "geo3-productivas", "titulo": "Actividades productivas", "eje": "Actividades productivas", "ceVinculadas": ["CE5"],
+          "conceptosClave": ["Sustentabilidad", "Circuitos espaciales de producción", "Soberanía alimentaria", "Comercio", "Responsabilidades"],
+          "contenidos": [
+            { "id": "geo3-pro-1", "texto": "Las actividades productivas e industriales en el ámbito nacional y en la Cuenca." },
+            { "id": "geo3-pro-2", "texto": "Circuito espacial de producción: las transformaciones de la materia prima en productos manufacturados." },
+            { "id": "geo3-pro-3", "texto": "Los factores ambientales que influyen en la producción agrícola y ganadera según la disponibilidad del agua y el destino de la producción (subsistencia y comercio)." },
+            { "id": "geo3-pro-4", "texto": "Los proyectos cooperativos para la agricultura familiar agroecológica y la construcción de un fin común." }
+          ]
+        },
+        {
+          "id": "geo3-territorios", "titulo": "Los territorios", "eje": "Los territorios", "ceVinculadas": ["CE4"],
+          "conceptosClave": ["Cambio climático", "Ambientes", "Elementos y factores del clima", "Ciudades", "Ruralidades"],
+          "contenidos": [
+            { "id": "geo3-ter-1", "texto": "La organización de los territorios en ciudades, acciones, desafíos y oportunidades." },
+            { "id": "geo3-ter-2", "texto": "Los vínculos urbano-rurales en nuestro país y diferentes criterios de determinación." },
+            { "id": "geo3-ter-3", "texto": "Los elementos del tiempo atmosférico y sus características en Uruguay." }
+          ]
+        },
+        {
+          "id": "geo3-poblacion", "titulo": "La población", "eje": "La población", "ceVinculadas": ["CE7"],
+          "conceptosClave": ["Dinámica", "Volumen", "Estructura", "Distribución", "Migración", "Diversidad", "Organizaciones sociales", "Sujeto social"],
+          "contenidos": [
+            { "id": "geo3-pob-1", "texto": "La población en el Uruguay", "subitems": [
+              { "id": "geo3-pob-1a", "texto": "La composición y estructura." },
+              { "id": "geo3-pob-1b", "texto": "Sectores de ocupación en la población local y del país." },
+              { "id": "geo3-pob-1c", "texto": "Tipos de trabajos y roles en la diversidad de la población local." }
+            ] },
+            { "id": "geo3-pob-2", "texto": "Los movimientos migratorios internos", "subitems": [
+              { "id": "geo3-pob-2a", "texto": "Organizaciones de la sociedad: voluntariado con diversos objetivos y necesidades." }
+            ] }
+          ]
+        },
+        {
+          "id": "geo3-tecnologias", "titulo": "Las tecnologías", "eje": "Las tecnologías", "ceVinculadas": ["CE6"],
+          "conceptosClave": ["Impacto ambiental", "Acceso", "Democratización"],
+          "contenidos": [
+            { "id": "geo3-tec-1", "texto": "Las tecnologías en la transformación de las actividades agrícolas intensivas y extensivas nacionales." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "geo3-cl-01", "ce": "CE2", "contenidos": ["geo3-car-1"], "texto": "Identifica y analiza a través del lenguaje cartográfico convencional y de creación colaborativa el espacio local, empleando diferentes herramientas y materiales." },
+        { "id": "geo3-cl-02", "ce": "CE1", "contenidos": ["geo3-bie-1"], "texto": "Participa y comienza a reflexionar sobre situaciones de interacción con los bienes comunes ambientales edáficos e hídricos en espacios de convivencia cotidiana." },
+        { "id": "geo3-cl-03", "ce": "CE3", "contenidos": ["geo3-bie-1c"], "texto": "Experimenta y comunica sobre el suelo, el agua, flora y fauna en situaciones de disfrute y cuidado del entorno local a través de diferentes soportes y dispositivos con mediación." },
+        { "id": "geo3-cl-04", "ce": "CE5", "texto": "Propone preguntas y respuestas, reconoce problemas y oportunidades socioambientales en su entorno y la región, con la combinación de ideas propias y de otras personas con mediación docente." },
+        { "id": "geo3-cl-05", "ce": "CE4", "contenidos": ["geo3-ter-1", "geo3-ter-2"], "texto": "Representa y explica las características de las organizaciones territoriales (urbano-rural) a través de diversos soportes, dispositivos y modelaciones." },
+        { "id": "geo3-cl-06", "ce": "CE4", "contenidos": ["geo3-ter-3"], "texto": "Identifica, experimenta y explica los elementos del tiempo atmosférico a través de diversos soportes y dispositivos." },
+        { "id": "geo3-cl-07", "ce": "CE7", "contenidos": ["geo3-pob-1"], "texto": "Identifica y comunica opiniones sobre la diversidad de la población uruguaya, su composición y estructura a través de salidas de campo y diferentes formatos y soportes." },
+        { "id": "geo3-cl-08", "ce": "CE6", "contenidos": ["geo3-tec-1"], "texto": "Indaga, identifica y comienza a reflexionar sobre la influencia del uso de la tecnología en las actividades productivas agrícolas intensivas y extensivas con mediación." }
+      ]
+    },
+    {
+      "grado": 4,
+      "fuente": { "archivo": "Geografía_v2 - Tramo 3.pdf", "paginas": [14, 15, 16] },
+      "bloques": [
+        {
+          "id": "geo4-cartografia", "titulo": "Lenguaje cartográfico", "eje": "Lenguaje cartográfico", "ceVinculadas": ["CE2"],
+          "conceptosClave": ["Coordenadas", "Referencias", "Escala", "Convencional", "Digital", "Social"],
+          "contenidos": [
+            { "id": "geo4-car-1", "texto": "El Uruguay en las Américas", "subitems": [
+              { "id": "geo4-car-1a", "texto": "El lenguaje en diferentes representaciones cartográficas: escalas, coordenadas geográficas." },
+              { "id": "geo4-car-1b", "texto": "Otras representaciones espaciales: las fotos aéreas, imágenes satelitales y cartografía social (creación colaborativa)." }
+            ] }
+          ]
+        },
+        {
+          "id": "geo4-bienes", "titulo": "Bienes comunes ambientales", "eje": "Bienes comunes ambientales", "ceVinculadas": ["CE1", "CE3"],
+          "conceptosClave": ["Agua", "Suelo", "Subsuelo", "Flora", "Fauna", "Preservación", "Conflictos", "Impactos"],
+          "contenidos": [
+            { "id": "geo4-bie-1", "texto": "Las aguas superficiales: cuencas hidrográficas de América. La hidrovía Paraguay-Paraná-Uruguay." },
+            { "id": "geo4-bie-2", "texto": "Las aguas subterráneas: protección e impacto ambiental." },
+            { "id": "geo4-bie-3", "texto": "El Acuífero Guaraní y las aguas termales." },
+            { "id": "geo4-bie-4", "texto": "Las áreas protegidas y las reservas en el Uruguay." },
+            { "id": "geo4-bie-5", "texto": "Normativa vigente, conciencia social y los derechos de la naturaleza." }
+          ]
+        },
+        {
+          "id": "geo4-productivas", "titulo": "Actividades productivas", "eje": "Actividades productivas", "ceVinculadas": ["CE5"],
+          "conceptosClave": ["Sustentabilidad", "Circuitos espaciales de producción", "Soberanía alimentaria", "Comercio", "Responsabilidades"],
+          "contenidos": [
+            { "id": "geo4-pro-1", "texto": "Las actividades productivas en América." },
+            { "id": "geo4-pro-2", "texto": "Circuitos espaciales de producción (CEP)." },
+            { "id": "geo4-pro-3", "texto": "La forestación en el Uruguay y sus impactos ambientales." },
+            { "id": "geo4-pro-4", "texto": "El turismo como industria nacional: desafíos y oportunidades." },
+            { "id": "geo4-pro-5", "texto": "El comercio en el Uruguay: balanza comercial, comercio formal e informal, legal e ilegal." },
+            { "id": "geo4-pro-6", "texto": "Diferentes impactos ambientales y las responsabilidades por uso del suelo, agua, aire, flora y fauna." },
+            { "id": "geo4-pro-7", "texto": "Justicia y conflicto ambiental en la producción, distribución y consumo de bienes entre los diferentes grupos sociales locales, nacionales y americanos." }
+          ]
+        },
+        {
+          "id": "geo4-territorios", "titulo": "Los territorios", "eje": "Los territorios", "ceVinculadas": ["CE4"],
+          "conceptosClave": ["Cambio climático", "Ambientes", "Elementos y factores del clima", "Ciudades", "Ruralidades"],
+          "contenidos": [
+            { "id": "geo4-ter-1", "texto": "La organización de los territorios en países y regiones según diferentes criterios: acciones, desafíos y oportunidades." },
+            { "id": "geo4-ter-2", "texto": "El paisaje en Uruguay, las características y situación de los pastizales." },
+            { "id": "geo4-ter-3", "texto": "Las relaciones entre el relieve, el clima, la fauna, la flora con la actividad económica, cultural y patrimonial del territorio nacional." }
+          ]
+        },
+        {
+          "id": "geo4-poblacion", "titulo": "La población", "eje": "La población", "ceVinculadas": ["CE7"],
+          "conceptosClave": ["Dinámica", "Volumen", "Estructura", "Distribución", "Migración", "Diversidad", "Organizaciones sociales", "Sujeto social"],
+          "contenidos": [
+            { "id": "geo4-pob-1", "texto": "Las distintas formas de urbanización, de ruralidad y neorruralidad, los impactos ambientales." },
+            { "id": "geo4-pob-2", "texto": "La polarización social, económica y cultural de la población uruguaya y la migrante." },
+            { "id": "geo4-pob-3", "texto": "Acceso y estabilidad en el trabajo en la diversidad de la población local y regional. Multiempleo." },
+            { "id": "geo4-pob-4", "texto": "Organizaciones de la sociedad civil: comisiones, fundaciones, mutuales y asociaciones con diversos objetivos y necesidades." }
+          ]
+        },
+        {
+          "id": "geo4-tecnologias", "titulo": "Las tecnologías", "eje": "Las tecnologías", "ceVinculadas": ["CE6"],
+          "conceptosClave": ["Impacto ambiental", "Acceso", "Democratización"],
+          "contenidos": [
+            { "id": "geo4-tec-1", "texto": "El acceso diferenciado a las innovaciones tecnológicas y su incidencia en el mundo laboral." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "geo4-cl-01", "ce": "CE2", "contenidos": ["geo4-car-1"], "texto": "Identifica y analiza a través del lenguaje cartográfico convencional y en creación colaborativa el espacio regional, empleando diferentes herramientas y materiales." },
+        { "id": "geo4-cl-02", "ce": "CE1", "contenidos": ["geo4-bie-1"], "texto": "Participa y comienza a reflexionar sobre las cuencas hidrográficas americanas y su potencial como medio de comunicación y transporte, de manera colaborativa y con diferentes materiales y soportes." },
+        { "id": "geo4-cl-03", "ce": "CE1", "contenidos": ["geo4-bie-2", "geo4-bie-3"], "texto": "Participa y comienza a reflexionar sobre las aguas subterráneas en situaciones de disfrute y valoración del entorno local." },
+        { "id": "geo4-cl-04", "ce": "CE3", "contenidos": ["geo4-bie-4"], "texto": "Experimenta, participa y comunica sobre las áreas protegidas y las reservas en situaciones de disfrute y valoración del entorno local." },
+        { "id": "geo4-cl-05", "ce": "CE5", "contenidos": ["geo4-pro-2"], "texto": "Propone preguntas y reconoce problemas en relación con los diferentes circuitos espaciales de producción de manera colaborativa con la combinación de ideas propias y de otras personas." },
+        { "id": "geo4-cl-06", "ce": "CE5", "contenidos": ["geo4-pro-6"], "texto": "Propone preguntas y respuestas alternativas, reconoce problemas y oportunidades del uso del suelo, agua, aire, flora y fauna en salidas de campo o con diferentes herramientas y soportes." },
+        { "id": "geo4-cl-07", "ce": "CE4", "contenidos": ["geo4-ter-1"], "texto": "Representa y explica las diferentes organizaciones territoriales con diferentes herramientas y soportes." },
+        { "id": "geo4-cl-08", "ce": "CE4", "contenidos": ["geo4-ter-2"], "texto": "Representa, explica y valora el paisaje uruguayo y el pastizal a través de salidas de campo o diferentes herramientas y soportes." },
+        { "id": "geo4-cl-09", "ce": "CE4", "contenidos": ["geo4-ter-3"], "texto": "Representa y explica las relaciones entre elementos naturales y las acciones antrópicas en salidas de campo o diferentes herramientas y soportes." },
+        { "id": "geo4-cl-10", "ce": "CE7", "contenidos": ["geo4-pob-1", "geo4-pob-2"], "texto": "Identifica, comienza a reflexionar y comunica opiniones sobre la diversidad de la población y las diferentes formas de urbanización de manera colaborativa." },
+        { "id": "geo4-cl-11", "ce": "CE7", "contenidos": ["geo4-pob-4"], "texto": "Participa, comienza a reflexionar y comunica las características de otros modelos de organización social de manera colaborativa." },
+        { "id": "geo4-cl-12", "ce": "CE6", "contenidos": ["geo4-tec-1"], "texto": "Indaga, identifica y comienza a reflexionar sobre la influencia del uso de la tecnología en el mundo laboral utilizando los recursos disponibles." }
+      ]
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "La salida de campo es la metodología activa esencial en muchas de las propuestas de Geografía.",
+    "Se destaca la cartografía social como metodología participativa de creación colaborativa.",
+    "Se valoran como estrategias de enseñanza: salida de campo, casos de estudio, método de indagación, resolución de problemas, aprendizaje basado en proyectos y aprendizaje basado en juegos."
+  ],
+  "metodologiasSugeridas": [
+    "Salidas de campo",
+    "Cartografía social",
+    "Estudio de caso",
+    "Método de indagación",
+    "Resolución de problemas",
+    "Aprendizaje basado en proyectos",
+    "Aprendizaje basado en juegos",
+    "Aprendizaje basado en la huerta escolar",
+    "Aula invertida",
+    "Gamificación"
+  ]
+}

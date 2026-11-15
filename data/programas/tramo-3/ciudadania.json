@@ -1,0 +1,144 @@
+{
+  "id": "ciudadania",
+  "nombre": "Formación para la Ciudadanía",
+  "espacio": "Ciencias Sociales y Humanidades",
+  "tramo": 3,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "Cada fila de la tabla trae varios criterios de logro en la misma celda; se separaron por oración. Verificar los cortes (págs. 12 a 17).",
+    "La justificación del PDF reproduce la de Historia (pág. 7); se cargó tal cual.",
+    "El programa no asigna criterios de logro a todas las competencias en cada grado (ver avisos de la validación)."
+  ],
+  "fuente": { "archivo": "Formación para la Ciudadanía - Tramo 3.pdf", "paginas": [3, 7, 11, 12, 13, 14, 15, 16, 17, 18] },
+  "justificacion": "El aprendizaje de la Historia requiere conocer la naturaleza y origen del conocimiento en relación con las formas de enseñarlo. Como disciplina, ha contribuido a la conformación de identidades políticas y sociales y a la formación de ciudadanos críticos en el ejercicio de derechos y obligaciones. Los procesos históricos están en permanente reconstrucción a través de múltiples interpretaciones, teorías, hallazgos y tecnología, lo que acerca a los estudiantes al pensamiento científico, reflexivo y crítico.",
+  "contenidosEstructurantes": [
+    "El rol del Estado democrático",
+    "Construcción del concepto de ciudadanía",
+    "Ciudadanía y convivencia en los grupos humanos",
+    "Sociedades y sus interrelaciones históricas",
+    "Democracia",
+    "Los derechos humanos como construcción: logros y tensiones",
+    "Los niños, niñas, adolescentes y jóvenes como sujetos de derecho",
+    "Diversidad cultural: las manifestaciones culturales como signo de identidad",
+    "La violencia y sus distintas manifestaciones",
+    "Cultura y patrimonio"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    { "codigo": "CE1", "texto": "Se expresa y desarrolla estrategias de comunicación contextualizadas, para referirse a temáticas vinculadas a fenómenos sociales.", "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento científico"] },
+    { "codigo": "CE2", "texto": "Indaga con la guía del docente e identifica y propone posibles soluciones ante diversas situaciones del entorno social, para reconocerlo y transformarlo; a través de formas creativas, mostrándose sensible ante sus propias creaciones y la de los otros.", "competenciasMCN": ["Pensamiento creativo", "Pensamiento científico", "Pensamiento crítico"] },
+    { "codigo": "CE3", "texto": "Comienza a reconocer problemas sociales, identificando diferentes puntos de vista, construyendo nuevas alternativas a situaciones concretas; para diferenciar emociones de argumentos.", "competenciasMCN": ["Pensamiento crítico", "Pensamiento científico", "Intrapersonal"] },
+    { "codigo": "CE4", "texto": "Comienza a reflexionar acerca del uso de Internet y las redes sociales, con relación al manejo de los datos personales para resolver problemas de la vida cotidiana.", "competenciasMCN": ["Pensamiento computacional", "Ciudadanía local, global y digital"] },
+    { "codigo": "CE5", "texto": "Reconoce y utiliza los recursos disponibles para el acceso a la información, que le permitan comprender los distintos fenómenos sociales.", "competenciasMCN": ["Pensamiento computacional", "Pensamiento científico", "Metacognitiva", "Intrapersonal"] },
+    { "codigo": "CE6", "texto": "Comienza a reconocer sus emociones y sentimientos en la construcción de su identidad, en vínculo con las demás personas, para explorar su entorno y transformarlo.", "competenciasMCN": ["Intrapersonal", "Relacionamiento con los otros"] },
+    { "codigo": "CE7", "texto": "Identifica problemas vinculados con la realidad social y posibles alternativas de resolución, para llevar adelante un proyecto de manera colaborativa.", "competenciasMCN": ["Pensamiento científico", "Iniciativa y orientación a la acción", "Relacionamiento con los otros"] },
+    { "codigo": "CE8", "texto": "Comienza a internalizar habilidades sociales que le permiten interactuar con los otros, para participar en actividades colectivas de su comunidad.", "competenciasMCN": ["Relacionamiento con los otros", "Intrapersonal"] },
+    { "codigo": "CE8.1", "texto": "Reconoce estereotipos y prejuicios que obstaculizan el desarrollo pleno de la persona y de los demás, para interactuar en su entorno.", "competenciasMCN": ["Relacionamiento con los otros", "Intrapersonal"] },
+    { "codigo": "CE9", "texto": "Identifica derechos y responsabilidades y reconoce su implicancia para la vida democrática.", "competenciasMCN": ["Ciudadanía local, global y digital", "Pensamiento crítico", "Iniciativa y orientación a la acción"] },
+    { "codigo": "CE10", "texto": "Reconoce y valora la diversidad en sus prácticas cotidianas para la vida en sociedad.", "competenciasMCN": ["Ciudadanía local, global y digital", "Pensamiento crítico", "Iniciativa y orientación a la acción"] },
+    { "codigo": "CE10.1", "texto": "Promueve iniciativas para mejorar su entorno escolar y comunitario, de forma democrática, valorando la opinión del otro y el respeto mutuo.", "competenciasMCN": ["Ciudadanía local, global y digital", "Relacionamiento con los otros", "Pensamiento crítico", "Iniciativa y orientación a la acción"] }
+  ],
+  "grados": [
+    {
+      "grado": 3,
+      "fuente": { "archivo": "Formación para la Ciudadanía - Tramo 3.pdf", "paginas": [12, 13, 14] },
+      "bloques": [
+        {
+          "id": "ciu3-contenidos", "titulo": "Contenidos específicos",
+          "contenidos": [
+            { "id": "ciu3-c1", "texto": "El niño como sujeto de derechos. Deberes y responsabilidades en la familia.", "ceVinculadas": ["CE1", "CE10.1"] },
+            { "id": "ciu3-c2", "texto": "El valor del trabajo para la vida humana en el marco de los derechos humanos. Igualdad y no discriminación.", "ceVinculadas": ["CE8.1"] },
+            { "id": "ciu3-c3", "texto": "El valor de la norma frente al conflicto de intereses. El consenso, el disenso. El acuerdo.", "ceVinculadas": ["CE7"] },
+            { "id": "ciu3-c4", "texto": "La democracia como forma de vida. La participación democrática en diferentes grupos de pertenencia. La participación como construcción de ciudadanía. El uso crítico de la información digital.", "ceVinculadas": ["CE1", "CE4", "CE5", "CE7"] },
+            { "id": "ciu3-c5", "texto": "La relación entre identidad y etnia en la construcción de la identidad nacional.", "ceVinculadas": ["CE8.1", "CE10"], "subitems": [
+              { "id": "ciu3-c5a", "texto": "La diversidad de creencias y sus orígenes: indígena, afro, europea y asiática." }
+            ] },
+            { "id": "ciu3-c6", "texto": "Ciudadanos que transitan. Principales normas y señales de tránsito dirigidas al ciudadano como peatón y como usuario de transporte colectivo.", "ceVinculadas": ["CE8", "CE10.1"] },
+            { "id": "ciu3-c7", "texto": "Migración. Diferentes situaciones que enfrentan los migrantes en el lugar de destino; marco legal. Ley 18250 en Uruguay. La Convención en tus manos. Adaptación para infancias.", "ceVinculadas": ["CE3", "CE8.1"] },
+            { "id": "ciu3-c8", "texto": "La actitud violenta como respuesta a otra actitud violenta.", "ceVinculadas": ["CE6", "CE7"] },
+            { "id": "ciu3-c9", "texto": "Los roles de género en diferentes culturas.", "ceVinculadas": ["CE8.1"] }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "ciu3-cl-01", "ce": ["CE1", "CE10.1"], "contenidos": ["ciu3-c1"], "texto": "Reconoce que es un sujeto de derechos, expresa sus deberes y responsabilidades en la familia desarrollando estrategias de comunicación." },
+        { "id": "ciu3-cl-02", "ce": ["CE1", "CE10.1"], "contenidos": ["ciu3-c1"], "texto": "Promueve y participa como sujeto de derechos de iniciativas que contribuyen a la mejora del entorno escolar y comunitario." },
+        { "id": "ciu3-cl-03", "ce": "CE8.1", "contenidos": ["ciu3-c2"], "texto": "Reconoce y valora el trabajo como un derecho humano que contribuye al desarrollo pleno de la persona y de la sociedad, a través de actividades mediadas." },
+        { "id": "ciu3-cl-04", "ce": "CE8.1", "contenidos": ["ciu3-c2"], "texto": "Identifica estereotipos y prejuicios, valorando la igualdad y la no discriminación, por medio de la interacción con su entorno." },
+        { "id": "ciu3-cl-05", "ce": "CE7", "contenidos": ["ciu3-c3"], "texto": "Identifica problemas vinculados con la realidad social y posibles alternativas reconociendo el valor de la norma, del consenso y el acuerdo, por medio de la participación en proyectos colectivos." },
+        { "id": "ciu3-cl-06", "ce": ["CE1", "CE4", "CE5", "CE7"], "contenidos": ["ciu3-c4"], "texto": "Reconoce la democracia como una forma de vida y participa en instancias que contribuyan a la construcción de ciudadanía, a través de la interacción con otros." },
+        { "id": "ciu3-cl-07", "ce": ["CE1", "CE4", "CE5", "CE7"], "contenidos": ["ciu3-c4"], "texto": "Inicia la reflexión sobre el uso crítico de la información digital y el impacto en su vida cotidiana." },
+        { "id": "ciu3-cl-08", "ce": ["CE1", "CE4", "CE5", "CE7"], "contenidos": ["ciu3-c4"], "texto": "Reconoce y hace un uso crítico de la información digital, que le permite comprender los fenómenos sociales, a través de la indagación y la mediación." },
+        { "id": "ciu3-cl-09", "ce": ["CE1", "CE4", "CE5", "CE7"], "contenidos": ["ciu3-c4"], "texto": "Reconoce la importancia de la participación democrática y de los grupos de pertenencia y se involucra en proyectos colaborativos que la sustenten." },
+        { "id": "ciu3-cl-10", "ce": ["CE8.1", "CE10"], "contenidos": ["ciu3-c5"], "texto": "Identifica la relación entre identidad y etnia y su incidencia en la construcción de la identidad nacional, reconociendo los estereotipos y prejuicios que interfieren en el desarrollo pleno de la persona y de los demás." },
+        { "id": "ciu3-cl-11", "ce": ["CE8.1", "CE10"], "contenidos": ["ciu3-c5"], "texto": "Reconoce y valora la diversidad de creencias y sus orígenes a través de la interacción con otros y de la construcción de identidad." },
+        { "id": "ciu3-cl-12", "ce": ["CE8", "CE10.1"], "contenidos": ["ciu3-c6"], "texto": "Identifica y comienza a internalizar como ciudadano las principales normas y señales de tránsito que lo involucran; para ello interactúa con otros y participa de actividades colectivas en su comunidad." },
+        { "id": "ciu3-cl-13", "ce": ["CE8", "CE10.1"], "contenidos": ["ciu3-c6"], "texto": "Reconoce y participa como ciudadano de iniciativas para mejorar su entorno, lo hace a través de la interacción con otros, valorando la opinión del otro, promoviendo el respeto." },
+        { "id": "ciu3-cl-14", "ce": ["CE3", "CE8.1"], "contenidos": ["ciu3-c7"], "texto": "Identifica las problemáticas sociales que afectan a los migrantes, reconoce diferentes puntos de vista distinguiendo emociones de argumentos y participa en actividades que contemplen y valoren a esta población." },
+        { "id": "ciu3-cl-15", "ce": ["CE3", "CE8.1"], "contenidos": ["ciu3-c7"], "texto": "Reconoce estereotipos y prejuicios que limitan el desarrollo pleno de los migrantes, indaga sobre la normativa en nuestro país que los ampara e inicia la reflexión por medio de la interacción con otros." },
+        { "id": "ciu3-cl-16", "ce": ["CE6", "CE7"], "contenidos": ["ciu3-c8"], "texto": "Reconoce la violencia y su incidencia en sus emociones y sentimientos, y participa en actividades colaborativas que tienen por finalidad concientizar y transformar su entorno." },
+        { "id": "ciu3-cl-17", "ce": ["CE6", "CE7"], "contenidos": ["ciu3-c8"], "texto": "Identifica la violencia como un fenómeno social problemático y plantea posibles alternativas de resolución en su entorno escolar, por medio de actividades colaborativas." },
+        { "id": "ciu3-cl-18", "ce": "CE8.1", "contenidos": ["ciu3-c9"], "texto": "Indaga e identifica sobre los roles de género en diferentes culturas, reconociendo estereotipos y prejuicios, haciendo uso de diferentes formatos y dispositivos." }
+      ]
+    },
+    {
+      "grado": 4,
+      "fuente": { "archivo": "Formación para la Ciudadanía - Tramo 3.pdf", "paginas": [15, 16, 17] },
+      "bloques": [
+        {
+          "id": "ciu4-contenidos", "titulo": "Contenidos específicos",
+          "contenidos": [
+            { "id": "ciu4-c1", "texto": "El derecho a la integridad física y moral. El derecho a la intimidad. Lo íntimo, lo público, lo privado.", "ceVinculadas": ["CE8.1", "CE4"] },
+            { "id": "ciu4-c2", "texto": "La mediación como forma de resolución de conflictos.", "ceVinculadas": ["CE2", "CE3"] },
+            { "id": "ciu4-c3", "texto": "La democracia como forma de gobierno. Gobierno nacional y departamental. Principales competencias y relaciones.", "ceVinculadas": ["CE9", "CE8", "CE10.1"] },
+            { "id": "ciu4-c4", "texto": "El cuidado, el respeto y la solidaridad como valores del ciudadano frente al tránsito.", "ceVinculadas": ["CE10.1"] },
+            { "id": "ciu4-c5", "texto": "Migración. Los migrantes y su lucha por la igualdad de derechos en el mundo del trabajo.", "ceVinculadas": ["CE3"] },
+            { "id": "ciu4-c6", "texto": "La construcción de ciudadanía en los entornos digitales. Desafíos y oportunidades.", "ceVinculadas": ["CE4"] },
+            { "id": "ciu4-c7", "texto": "Las actitudes violentas en espectáculos públicos.", "ceVinculadas": ["CE7", "CE8", "CE10.1"] }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "ciu4-cl-01", "ce": ["CE8.1", "CE4"], "contenidos": ["ciu4-c1"], "texto": "Identifica estereotipos y reconoce prejuicios que limitan el desarrollo y la expresión propia y de los otros frente a situaciones que considera injustas." },
+        { "id": "ciu4-cl-02", "ce": ["CE8.1", "CE4"], "contenidos": ["ciu4-c1"], "texto": "Desarrolla conductas de autocuidado y de cuidado hacia las demás personas, que comparten su entorno." },
+        { "id": "ciu4-cl-03", "ce": ["CE8.1", "CE4"], "contenidos": ["ciu4-c1"], "texto": "Identifica con mediación del adulto, los riesgos que implica el uso de los datos personales en dispositivos, Internet y redes." },
+        { "id": "ciu4-cl-04", "ce": ["CE8.1", "CE4"], "contenidos": ["ciu4-c1"], "texto": "Reconoce situaciones de la vida cotidiana, donde la tecnología impacta frente a los derechos de las personas." },
+        { "id": "ciu4-cl-05", "ce": ["CE2", "CE3"], "contenidos": ["ciu4-c2"], "texto": "Resuelve sencillas situaciones de su entorno escolar, donde utiliza la mediación como alternativa de resolución." },
+        { "id": "ciu4-cl-06", "ce": ["CE2", "CE3"], "contenidos": ["ciu4-c2"], "texto": "Explora y propone soluciones para la resolución de conflictos de su entorno inmediato." },
+        { "id": "ciu4-cl-07", "ce": ["CE2", "CE3"], "contenidos": ["ciu4-c2"], "texto": "Reconoce e integra diversos puntos de vista en la resolución de conflictos." },
+        { "id": "ciu4-cl-08", "ce": ["CE9", "CE8", "CE10.1"], "contenidos": ["ciu4-c3"], "texto": "Ejemplifica en forma concreta acerca de la diferencia entre Gobierno nacional y local." },
+        { "id": "ciu4-cl-09", "ce": ["CE9", "CE8", "CE10.1"], "contenidos": ["ciu4-c3"], "texto": "Identifica los órganos de gobierno departamental presentes en su localidad o lo más cercano al lugar donde vive." },
+        { "id": "ciu4-cl-10", "ce": ["CE9", "CE8", "CE10.1"], "contenidos": ["ciu4-c3"], "texto": "Reconoce las funciones que le competen a los órganos de gobierno nacional y departamental." },
+        { "id": "ciu4-cl-11", "ce": ["CE9", "CE8", "CE10.1"], "contenidos": ["ciu4-c3"], "texto": "Participa activamente en actividades colectivas que implican un beneficio para su comunidad." },
+        { "id": "ciu4-cl-12", "ce": ["CE9", "CE8", "CE10.1"], "contenidos": ["ciu4-c3"], "texto": "Se involucra en proyectos colaborativos para mejorar su entorno, reconociéndose como sujeto con derechos y responsabilidades." },
+        { "id": "ciu4-cl-13", "ce": "CE10.1", "contenidos": ["ciu4-c4"], "texto": "Participa de forma respetuosa en diferentes situaciones como transeúnte." },
+        { "id": "ciu4-cl-14", "ce": "CE10.1", "contenidos": ["ciu4-c4"], "texto": "Colabora con otras personas cuando presentan dificultades para manejarse en el tránsito." },
+        { "id": "ciu4-cl-15", "ce": "CE3", "contenidos": ["ciu4-c5"], "texto": "Identifica diferentes situaciones que viven los migrantes a partir de historias de vida." },
+        { "id": "ciu4-cl-16", "ce": "CE3", "contenidos": ["ciu4-c5"], "texto": "Reconoce situaciones de desigualdad frente al mundo laboral a partir de estudios de casos." },
+        { "id": "ciu4-cl-17", "ce": "CE4", "contenidos": ["ciu4-c6"], "texto": "Analiza el contexto y la fiabilidad de la información que se encuentra en Internet, con la mediación de un adulto." },
+        { "id": "ciu4-cl-18", "ce": "CE4", "contenidos": ["ciu4-c6"], "texto": "Distingue formas seguras o no seguras del manejo de los datos personales en Internet." },
+        { "id": "ciu4-cl-19", "ce": ["CE7", "CE8", "CE10.1"], "contenidos": ["ciu4-c7"], "texto": "Construye alternativas en la resolución de conflictos, vinculados a la violencia en los espectáculos públicos." },
+        { "id": "ciu4-cl-20", "ce": ["CE7", "CE8", "CE10.1"], "contenidos": ["ciu4-c7"], "texto": "Desarrolla hábitos de convivencia saludables en situaciones de su vida cotidiana." },
+        { "id": "ciu4-cl-21", "ce": ["CE7", "CE8", "CE10.1"], "contenidos": ["ciu4-c7"], "texto": "Participa en instancias y procesos de toma de decisiones democráticas en el ámbito escolar y en su comunidad." }
+      ]
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Situar al estudiante en el centro de los procesos de aprendizaje para lograr aprendizajes significativos.",
+    "Trabajar por centros de interés de los estudiantes, a partir de problemas de la realidad social en escenarios reales.",
+    "Partir de situaciones auténticas que orienten a la acción y de un clima de aula de participación auténtica, confianza y respeto hacia opiniones divergentes.",
+    "Evaluación formativa, contextualizada y continua a lo largo de la trayectoria."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en proyectos",
+    "Aprendizaje basado en problemas",
+    "Aula invertida",
+    "Trabajo colaborativo/cooperativo",
+    "Análisis de caso",
+    "Debate",
+    "Trabajos de indagación",
+    "Gamificación",
+    "Problematización"
+  ]
+}

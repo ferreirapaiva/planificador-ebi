@@ -17,7 +17,7 @@ export const COMPETENCIAS_MCN = [
 export const CompetenciaMCN = z.enum(COMPETENCIAS_MCN);
 export type CompetenciaMCN = z.infer<typeof CompetenciaMCN>;
 
-const CodigoCE = z.string().regex(/^CE\d+$/, 'Código de competencia específica inválido (ej.: CE1)');
+const CodigoCE = z.string().regex(/^CE\d+(\.\d+)?$/, 'Código de competencia específica inválido (ej.: CE1 o CE8.1)');
 
 /** Dónde está el dato en el PDF original, para poder verificarlo. */
 const Fuente = z.object({ archivo: z.string(), paginas: z.array(z.number().int().positive()) });
@@ -47,6 +47,8 @@ export const BloqueContenidos = z.object({
   /** Solo en programas organizados por ejes (p. ej. Matemática: "Número"). */
   eje: z.string().optional(),
   contenidoEstructurante: z.string().optional(),
+  /** Conceptos clave que el programa indica para el bloque (p. ej. Geografía: "Coordenadas", "Escala"). */
+  conceptosClave: z.array(z.string()).optional(),
   /** Competencias del bloque entero; si el programa las da por contenido, van en cada contenido. */
   ceVinculadas: z.array(CodigoCE).default([]),
   /** Contenidos que el programa propone abordar de forma transversal. */
@@ -127,9 +129,18 @@ export function chequearConsistencia(uc: UnidadCurricular): string[] {
       cesDe(cr).forEach((ce) => ces.has(ce) || errores.push(`${cr.id}: ${ce} no existe`));
       cr.contenidos?.forEach((id) => ids.has(id) || errores.push(`${cr.id}: contenido ${id} no existe`));
     }
-    for (const ce of ces) {
-      if (!g.criteriosLogro.some((c) => cesDe(c).includes(ce))) errores.push(`${g.grado}.º grado: ${ce} no tiene criterios de logro`);
-    }
   }
   return errores;
+}
+
+/** Situaciones llamativas pero posibles en un programa (no impiden cargarlo). */
+export function avisos(uc: UnidadCurricular): string[] {
+  const salida: string[] = [];
+  for (const g of uc.grados) {
+    const sinCriterios = uc.competenciasEspecificas
+      .map((c) => c.codigo)
+      .filter((ce) => !g.criteriosLogro.some((c) => cesDe(c).includes(ce)));
+    if (sinCriterios.length) salida.push(`${g.grado}.º grado: sin criterios de logro para ${sinCriterios.join(', ')}`);
+  }
+  return salida;
 }

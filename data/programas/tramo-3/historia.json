@@ -1,0 +1,123 @@
+{
+  "id": "historia",
+  "nombre": "Historia",
+  "espacio": "Ciencias Sociales y Humanidades",
+  "tramo": 3,
+  "version": "v2",
+  "revisado": false,
+  "notasRevision": [
+    "4.º grado, criterio 5.1: en el PDF (pág. 15) aparece junto al texto de la CE4, pero su numeración (5.x) y su contenido corresponden a la CE5. Se cargó como CE5; verificar.",
+    "Los contenidos estructurantes son los del espacio Ciencias Sociales y Humanidades (pág. 3); el programa no los asigna a cada contenido."
+  ],
+  "fuente": { "archivo": "Historia_v2 - Tramo 3.pdf", "paginas": [3, 7, 8, 11, 12, 13, 14, 15, 16, 17] },
+  "justificacion": "El aprendizaje de la historia requiere conocer la naturaleza y origen del conocimiento en relación con las formas de enseñarlo. Como disciplina, ha contribuido a la conformación de identidades políticas y sociales y a la formación de ciudadanos críticos en el ejercicio de derechos y obligaciones. Los procesos históricos están en permanente reconstrucción a través de múltiples interpretaciones, teorías, hallazgos y tecnología, lo que acerca a los estudiantes al pensamiento científico, reflexivo y crítico. Por eso es imprescindible acercar la metodología de la investigación histórica como simulación, a partir de las fuentes históricas.",
+  "contenidosEstructurantes": [
+    "El rol del Estado democrático",
+    "Construcción del concepto de ciudadanía",
+    "Ciudadanía y convivencia en los grupos humanos",
+    "Sociedades y sus interrelaciones históricas",
+    "Democracia",
+    "Los derechos humanos como construcción: logros y tensiones",
+    "Los niños, niñas, adolescentes y jóvenes como sujetos de derecho",
+    "Diversidad cultural: las manifestaciones culturales como signo de identidad",
+    "La violencia y sus distintas manifestaciones",
+    "Cultura y patrimonio"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    { "codigo": "CE1", "texto": "Elabora con la guía del docente argumentos pertinentes a la temática histórica, la situación y el interlocutor para el desarrollo de una oralidad fluida.", "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Metacognitiva"] },
+    { "codigo": "CE2", "texto": "Construye explicaciones sencillas sobre los fenómenos y sujetos sociales que observa, para comprender la sociedad en la que vive.", "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Metacognitiva"] },
+    { "codigo": "CE3", "texto": "Explica las manifestaciones culturales de los grupos sociales para desarrollar la sensibilidad y su punto de vista personal.", "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Ciudadanía local, global y digital"] },
+    { "codigo": "CE4", "texto": "Participa y propone en proyectos de indagación sobre temáticas contextualizadas para resolver situaciones problema de la comunidad.", "competenciasMCN": ["Ciudadanía local, global y digital", "Comunicación", "Pensamiento crítico", "Pensamiento creativo", "Relacionamiento con los otros", "Metacognitiva", "Intrapersonal", "Iniciativa y orientación a la acción"] },
+    { "codigo": "CE5", "texto": "Selecciona herramientas digitales para interpretar y organizar información en su contexto histórico.", "competenciasMCN": ["Pensamiento computacional", "Pensamiento científico", "Pensamiento crítico"] },
+    { "codigo": "CE6", "texto": "Construye el proceso de escritura en historia a partir de la curiosidad e intereses para su apropiación.", "competenciasMCN": ["Comunicación", "Pensamiento crítico", "Pensamiento creativo", "Intrapersonal", "Relacionamiento con los otros"] }
+  ],
+  "grados": [
+    {
+      "grado": 3,
+      "fuente": { "archivo": "Historia_v2 - Tramo 3.pdf", "paginas": [12, 13] },
+      "bloques": [
+        {
+          "id": "his3-contenidos", "titulo": "Contenidos específicos", "ceVinculadas": ["CE1", "CE2", "CE3", "CE4", "CE5", "CE6"],
+          "contenidos": [
+            { "id": "his3-c1", "texto": "América en el mundo: ubicación espaciotemporal. Generalidades culturales del período pre ibérico, americano y regional. Mapas históricos y líneas de tiempo." },
+            { "id": "his3-c2", "texto": "Manifestaciones culturales y artísticas: por ejemplo, nazca, olmeca, tolteca, guaraní, querandí, etc." },
+            { "id": "his3-c3", "texto": "Los pueblos de América antes de los viajes de exploración y expansión europea: diversidad y desarrollos, tensiones y conflictos. Estructura política y organización económico-social. Teotihuacan, Tiahuanaco, Chimú o Wari. Realizaciones artísticas. Estudio de caso (por ejemplo: mayas, incas, aztecas o guaraníes)." },
+            { "id": "his3-c4", "texto": "Innovaciones e intereses que posibilitaron los viajes de exploración y expansión europea de los siglos XV y XVI. Protagonistas individuales y colectivos de la península ibérica. Estudio de algún o algunos ejemplos, a través de cartas de viajeros, crónicas, cronistas y uso de mapas." },
+            { "id": "his3-c5", "texto": "Descubrimiento, conquista y colonización: estudio de caso. Perspectivas y revisiones académicas sobre su alcance y efectos. Consecuencias políticas, sanitarias, comerciales, alimenticias y culturales de la formación de la América española y portuguesa y la lucha entre ambos imperios." }
+          ]
+        },
+        {
+          "id": "his3-conceptos", "titulo": "Algunos conceptos para tratar", "transversal": true,
+          "contenidos": [
+            { "id": "his3-k1", "texto": "Sociedad, organización política, cultura, exploración, descubrimiento, renacimiento, humanismo, conquista, aculturación, transculturación, colonización, esclavitud, producción, innovaciones e invenciones, capitalismo comercial, reino de Indias, bienes patrimoniales." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "his3-cl-1.1", "ce": "CE1", "texto": "Construye argumentos con la guía del docente desde la oralidad sobre procesos históricos regionales." },
+        { "id": "his3-cl-1.2", "ce": "CE1", "texto": "Ensaya argumentos a partir de relatos tomados del estudio de las diversas fuentes históricas." },
+        { "id": "his3-cl-2.1", "ce": "CE2", "texto": "Construye explicaciones sencillas sobre fenómenos sociales recuperando fuentes históricas en su contexto de actuación." },
+        { "id": "his3-cl-2.2", "ce": "CE2", "texto": "Propone explicaciones sobre las acciones de los sujetos sociales en su contexto histórico." },
+        { "id": "his3-cl-3.1", "ce": "CE3", "texto": "Reconoce las distintas manifestaciones culturales de las sociedades de cada uno de los períodos históricos." },
+        { "id": "his3-cl-3.2", "ce": "CE3", "texto": "Explica y relaciona las manifestaciones culturales con el entorno en el que se asientan las distintas sociedades." },
+        { "id": "his3-cl-4.1", "ce": "CE4", "texto": "Participa en proyectos de indagación histórica propuestos por el docente que fomentan su interés en temáticas de las comunidades del pasado y el presente." },
+        { "id": "his3-cl-5.1", "ce": "CE5", "texto": "Reconoce y selecciona herramientas digitales pertinentes, interpretando datos e información histórica sobre las sociedades en estudio." },
+        { "id": "his3-cl-6.1", "ce": "CE6", "texto": "Expresa a través de la escritura de manera simple un hecho histórico que despierta su curiosidad." },
+        { "id": "his3-cl-6.2", "ce": "CE6", "texto": "Utiliza vocabulario específico en la escritura referida a hechos históricos según cada período, tomando en cuenta sus intereses." }
+      ]
+    },
+    {
+      "grado": 4,
+      "fuente": { "archivo": "Historia_v2 - Tramo 3.pdf", "paginas": [14, 15] },
+      "bloques": [
+        {
+          "id": "his4-contenidos", "titulo": "Contenidos específicos", "ceVinculadas": ["CE1", "CE2", "CE3", "CE4", "CE5", "CE6"],
+          "contenidos": [
+            { "id": "his4-c1", "texto": "La colonización europea en el continente americano a partir de los siglos XVI y XVII y la formación social, cultural y económica resultante (producciones, comercio, etc.)." },
+            { "id": "his4-c2", "texto": "Unidades administrativas y formas de organización política (virreinatos, gobernaciones, etc.) de España en América. Las ciudades hispanoamericanas y sus vínculos con el medio rural. Los cabildos seculares: funciones e importancia para el gobierno local." },
+            { "id": "his4-c3", "texto": "España y Portugal en el Río de la Plata. La Banda Oriental: «pradera, frontera y puerto». Estudio de casos: primeros asentamientos españoles y portugueses (Colonia, Montevideo, Maldonado, etc.). Evolución y desarrollo social, político y económico hasta 1808. Protagonistas individuales y sociales: formas de vida en el campo y la ciudad. El gaucho." },
+            { "id": "his4-c4", "texto": "Las Nuevas Ideas y las revoluciones políticas, sociales y tecnológico-industriales en la Europa del siglo XVIII. Contenido e importancia de la Declaración de Derechos del Hombre y del Ciudadano de 1789. Repercusiones ideológicas, políticas, económicas y sociales de los cambios europeos y la independencia norteamericana en Hispanoamérica y el Virreinato del Río de la Plata, hasta 1808. El movimiento juntista." }
+          ]
+        },
+        {
+          "id": "his4-conceptos", "titulo": "Algunos conceptos para tratar", "transversal": true,
+          "contenidos": [
+            { "id": "his4-k1", "texto": "Colonización, aculturación, transculturación, monarquía, Ilustración, liberalismo, ciudadanía, república, revolución industrial, independencia, ciencia, tecnología, estamentos, clases sociales, la frontera como espacio en construcción, bienes patrimoniales." }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        { "id": "his4-cl-1.1", "ce": "CE1", "texto": "Elabora con la guía del docente argumentos acordes a las situaciones e interlocutores sobre los distintos períodos históricos." },
+        { "id": "his4-cl-1.2", "ce": "CE1", "texto": "Elabora argumentos a partir de diversas fuentes históricas." },
+        { "id": "his4-cl-1.3", "ce": "CE1", "texto": "Ensaya opiniones argumentadas a partir de temáticas de su interés." },
+        { "id": "his4-cl-2.1", "ce": "CE2", "texto": "Construye explicaciones sobre sujetos sociales y fenómenos del período histórico estudiado." },
+        { "id": "his4-cl-2.2", "ce": "CE2", "texto": "Construye explicaciones a partir de preguntas problema que surgen de las fuentes históricas." },
+        { "id": "his4-cl-3.1", "ce": "CE3", "texto": "Reconoce las diversas manifestaciones culturales, los vínculos entre ellas y con el medio geográfico." },
+        { "id": "his4-cl-3.2", "ce": "CE3", "texto": "Explica las diversas fuentes testimoniales como expresión de las culturas locales." },
+        { "id": "his4-cl-4.1", "ce": "CE4", "texto": "Propone y participa en proyectos de indagación con la guía del docente sobre temáticas de su interés y relacionadas con la historia de la comunidad." },
+        { "id": "his4-cl-5.1", "ce": "CE5", "texto": "Reconoce y selecciona herramientas digitales con la guía del docente organizando e interpretando la información histórica." },
+        { "id": "his4-cl-6.1", "ce": "CE6", "texto": "Produce narraciones escritas de temas históricos en sus contextos y que le son significativos." },
+        { "id": "his4-cl-6.2", "ce": "CE6", "texto": "Introduce y construye vocabulario específico en su producción escrita acerca de hechos históricos de los distintos períodos." }
+      ]
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Seleccionar estrategias diversas, adecuadas al grupo y al contexto, que desarrollen procesos cognitivos como describir, clasificar, analizar y argumentar.",
+    "Elaborar miniglosarios con los estudiantes para una comprensión profunda de los conceptos y sus relaciones.",
+    "Construir el conocimiento histórico mediante la indagación, el descubrimiento, la pregunta, la problematización de casos de estudio y la simulación del trabajo del historiador.",
+    "En 3.º y 4.º, usar temas disparadores, relatos fantásticos, la imaginación y múltiples recursos: libros digitales, juegos, escritura cooperativa, trabajo de campo.",
+    "Introducir la pregunta investigable, la formulación de supuestos, el análisis de fuentes y su credibilidad, la causalidad y la explicación histórica.",
+    "Evaluación continua y formativa, con criterios claros y compartidos, autoevaluación y coevaluación."
+  ],
+  "metodologiasSugeridas": [
+    "Proyectos de indagación",
+    "Estudio de caso",
+    "Simulación del trabajo del historiador",
+    "Análisis de fuentes históricas",
+    "Pregunta investigable",
+    "Trabajo de campo",
+    "Juegos",
+    "Escritura cooperativa"
+  ]
+}

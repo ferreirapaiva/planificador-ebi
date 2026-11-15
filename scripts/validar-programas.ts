@@ -1,7 +1,7 @@
 // Valida todos los JSON de data/programas contra el esquema. Uso: npm run validar
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { UnidadCurricular, chequearConsistencia } from '../src/datos/esquema.ts';
+import { UnidadCurricular, avisos, chequearConsistencia } from '../src/datos/esquema.ts';
 
 const raiz = path.resolve('data/programas');
 let fallas = 0;
@@ -24,6 +24,7 @@ for (const tramo of await readdir(raiz)) {
     }
     const n = r.data.grados.map((g) => `${g.grado}.º: ${g.bloques.length} bloques, ${g.criteriosLogro.length} criterios`).join(' · ');
     console.log(`✔ ${nombre} (${n})${r.data.revisado ? '' : ' — pendiente de revisión humana'}`);
+    avisos(r.data).forEach((a) => console.log(`   ⚠ ${a}`));
   }
 }
 process.exit(fallas ? 1 : 0);
