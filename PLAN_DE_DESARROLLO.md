@@ -229,3 +229,11 @@ Las planificaciones guardan **referencias** a los ítems del programa + la versi
 2. Inicializar git y el proyecto base.
 3. Construir el pipeline de Fase 1 empezando por **Matemática** (la estructura ya está analizada) y validarlo antes de seguir con las otras 9 UC.
 4. Bocetos de pantallas y prueba rápida con docentes.
+
+## 11. Futuras actualizaciones (ideas pendientes)
+
+Anotadas por la docente; todavía no están desarrolladas.
+
+- [ ] **Modo oscuro.** Opción para cambiar entre tema claro y oscuro (idealmente siguiendo la preferencia del equipo), aplicada a toda la app, incluida la pantalla de Hojas de actividades.
+- [ ] **Plan diario y semanal dentro de «Nueva planificación».** Hoy es una entrada aparte en el menú lateral. Pasarlo a ser una opción más al crear una planificación, junto a las demás (secuencia, unidad, proyecto, plan anual).
+- [ ] **Menú «Cómo funciona».** Una sección nueva que explique todo lo que se puede hacer con la app: programas, nueva planificación, plan anual, plan diario y semanal, hojas de actividades, copia de seguridad y uso sin conexión.
