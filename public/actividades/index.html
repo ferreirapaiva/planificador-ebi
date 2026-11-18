@@ -26,6 +26,7 @@
     --cruci:#13926F; --cruci-soft:#E3F8F1;
     --repaso:#E5552F; --repaso-soft:#FFEDE6;
     --lengua:#2F6FD6; --lengua-soft:#E4EEFC;
+    --ciencias:#B83280; --ciencias-soft:#FBE7F3;
     --c:var(--mate); --c-soft:var(--mate-soft);
     --ok:#13926F; --err:#C42F40;
     --display:'Nunito Variable', Nunito, system-ui, sans-serif;
@@ -43,7 +44,6 @@
   .embebido .panel h2{font-weight:800; font-size:1.15rem}
   .embebido .folders{display:grid; grid-template-columns:repeat(6,1fr); gap:8px; padding:0}
   .embebido .area{grid-column:span 2}
-  .embebido .area:nth-child(n+4){grid-column:span 3}
   .embebido .area{flex:1 1 auto; min-width:0; min-height:0; justify-content:center; white-space:nowrap; flex-direction:row; align-items:center; gap:8px; padding:9px 14px;
     border-radius:999px; background:#fff; border:1.5px solid var(--line); box-shadow:none}
   .embebido .area:hover{transform:none; border-color:var(--ac)}
@@ -67,6 +67,7 @@
   body[data-area="cruci"]{ --c:var(--cruci); --c-soft:var(--cruci-soft); }
   body[data-area="repaso"]{ --c:var(--repaso); --c-soft:var(--repaso-soft); }
   body[data-area="lengua"]{ --c:var(--lengua); --c-soft:var(--lengua-soft); }
+  body[data-area="ciencias"]{ --c:var(--ciencias); --c-soft:var(--ciencias-soft); }
 
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -108,6 +109,7 @@
   .area[data-a="cruci"]{--ac:var(--cruci); --as:var(--cruci-soft)}
   .area[data-a="repaso"]{--ac:var(--repaso); --as:var(--repaso-soft)}
   .area[data-a="lengua"]{--ac:var(--lengua); --as:var(--lengua-soft)}
+  .area[data-a="ciencias"]{--ac:var(--ciencias); --as:var(--ciencias-soft)}
   .area:hover{transform:translateY(-2px)}
   .area .ic{width:30px; height:30px; border-radius:9px; display:grid; place-items:center; background:var(--ac); color:#fff}
   .area .ic svg{width:18px; height:18px}
@@ -2753,7 +2755,7 @@ BLOCKS.secuencia = { full:true,
   h:(it,w)=> 8 + it.frases.reduce((t,f)=> t+Math.max(10, wrapText(f,FSB,w-26).length*LHB+5),0),
   draw(els,it,idx,x,y,w,isKey){
     numLabel(els,idx,x,y+5);
-    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:'Numerá las oraciones del 1 al 4 para ordenar la historia.'});
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:it.titulo || ('Numerá las oraciones del 1 al '+it.frases.length+' para ordenar la historia.')});
     let cy=y+8;
     it.frases.forEach((f,k)=>{
       const L=wrapText(f,FSB,w-26), hh=Math.max(10,L.length*LHB+5);
@@ -2992,6 +2994,354 @@ Object.assign(NOTAS, {
   clases:'Repasamos sustantivos, adjetivos y verbos. Recordá: el verbo dice qué hace o qué pasa.',
   verbos:'Practicamos los verbos. Fijate en el final de cada palabra para saber cuándo ocurre la acción.',
   ahorcado:'Jugamos al ahorcado con palabras del tema. Se puede jugar en parejas.',
+});
+
+/* =========================================================
+   CIENCIAS (naturales y sociales): esquemas para rotular, cadenas alimentarias,
+   líneas de tiempo, mapas mudos y nuevos temas para las actividades de palabras.
+   Los mapas usan datos de Natural Earth (dominio público), simplificados.
+   ========================================================= */
+
+/* ---------- Temas nuevos (se suman a los de sopas, crucigramas, unir, completar, etc.) ---------- */
+BUILTIN_BANKS.push(...[
+  { id:'b-plantas', name:'Las plantas', builtin:true, entries:[
+    ['raíz','Parte de la planta que absorbe agua y sales del suelo.'],['tallo','Sostiene la planta y lleva el agua hacia las hojas.'],
+    ['hoja','Parte verde donde la planta fabrica su alimento.'],['flor','Parte de la planta donde se forman las semillas.'],
+    ['fruto','Protege a las semillas.'],['semilla','De ella puede nacer una nueva planta.'],
+    ['fotosíntesis','Proceso por el cual las plantas fabrican su alimento con la luz.'],['clorofila','Sustancia verde de las hojas que capta la luz.'],
+    ['polen','Polvillo de las flores que permite formar semillas.'],['germinación','Proceso en que la semilla comienza a crecer.'],
+    ['pétalo','Parte colorida de la flor.'],['polinización','Traslado del polen de una flor a otra.'] ] },
+  { id:'b-agua', name:'El ciclo del agua', builtin:true, entries:[
+    ['evaporación','El agua líquida se transforma en vapor por el calor del Sol.'],['condensación','El vapor de agua se enfría y forma gotitas.'],
+    ['precipitación','Agua que cae de las nubes como lluvia, nieve o granizo.'],['escurrimiento','Agua que corre por la superficie hacia los ríos y el mar.'],
+    ['infiltración','Agua que se filtra a través del suelo.'],['nube','Conjunto de gotitas de agua suspendidas en el aire.'],
+    ['vapor','Agua en estado gaseoso.'],['lluvia','Gotas de agua que caen de las nubes.'],['río','Corriente de agua que desemboca en el mar o en otro río.'],
+    ['mar','Gran masa de agua salada.'],['glaciar','Gran masa de hielo en las montañas.'],['napa','Agua que se acumula bajo la tierra.'] ] },
+  { id:'b-materia', name:'Estados de la materia', builtin:true, entries:[
+    ['sólido','Tiene forma y volumen propios.'],['líquido','Tiene volumen propio, pero toma la forma del recipiente.'],
+    ['gaseoso','No tiene forma ni volumen propios.'],['fusión','Paso de sólido a líquido.'],['solidificación','Paso de líquido a sólido.'],
+    ['condensación','Paso de gas a líquido.'],['sublimación','Paso directo de sólido a gas.'],['ebullición','Cuando un líquido hierve y pasa a gas.'],
+    ['materia','Todo lo que tiene masa y ocupa lugar.'],['masa','Cantidad de materia de un cuerpo.'],['volumen','Espacio que ocupa un cuerpo.'],
+    ['hielo','Agua en estado sólido.'] ] },
+  { id:'b-respiratorio', name:'Sistema respiratorio', builtin:true, entries:[
+    ['nariz','Por aquí entra el aire; tiene pelitos que lo limpian.'],['faringe','Conducto que comunica la nariz y la boca con la laringe.'],
+    ['laringe','Órgano donde están las cuerdas vocales.'],['tráquea','Tubo que lleva el aire hacia los pulmones.'],
+    ['bronquios','Dos tubos que llevan el aire a cada pulmón.'],['pulmones','Órganos donde el oxígeno pasa a la sangre.'],
+    ['alvéolos','Pequeñas bolsitas de aire dentro de los pulmones.'],['diafragma','Músculo que ayuda a inspirar y espirar.'],
+    ['oxígeno','Gas del aire que necesitamos para vivir.'],['inspiración','Entrada de aire a los pulmones.'],['espiración','Salida de aire de los pulmones.'] ] },
+  { id:'b-circulatorio', name:'Sistema circulatorio', builtin:true, entries:[
+    ['corazón','Órgano que bombea la sangre.'],['sangre','Líquido rojo que lleva oxígeno y nutrientes.'],
+    ['arterias','Vasos que llevan la sangre desde el corazón.'],['venas','Vasos que llevan la sangre de vuelta al corazón.'],
+    ['capilares','Vasos muy finitos donde la sangre intercambia sustancias.'],['glóbulos rojos','Células de la sangre que transportan oxígeno.'],
+    ['plaquetas','Células de la sangre que ayudan a coagular.'],['plasma','Parte líquida de la sangre.'],['pulso','Latido que se siente en la muñeca.'],
+    ['aurícula','Cavidad superior del corazón.'],['ventrículo','Cavidad inferior del corazón.'],['circulación','Recorrido de la sangre por el cuerpo.'] ] },
+  { id:'b-patrios', name:'Símbolos y próceres de Uruguay', builtin:true, entries:[
+    ['Artigas','Héroe nacional; fue el Jefe de los Orientales.'],['Lavalleja','Jefe de los Treinta y Tres Orientales.'],
+    ['Rivera','Primer presidente constitucional del Uruguay.'],['bandera','Símbolo patrio con franjas azules y blancas y un sol.'],
+    ['escudo','Símbolo patrio con un sol, una balanza, un cerro, un caballo y un buey.'],['himno','Canción patria que empieza con "Orientales, la Patria o la tumba".'],
+    ['Constitución','Ley fundamental del país; la primera se juró en 1830.'],['Cabildo','Antiguo edificio histórico frente a la Plaza Matriz, en Montevideo.'],
+    ['Piedra Alta','Lugar de Florida donde se declaró la Independencia en 1825.'],['Agraciada','Playa donde desembarcaron los Treinta y Tres Orientales.'],
+    ['independencia','Libertad de un país para gobernarse a sí mismo.'],['Montevideo','Capital del Uruguay.'] ] },
+  { id:'b-departamentos', name:'Departamentos de Uruguay', builtin:true, entries:[
+    ['Artigas','Departamento ubicado más al norte del país.'],['Rocha','Departamento de la costa atlántica con Cabo Polonio y Punta del Diablo.'],
+    ['Maldonado','Departamento donde está Punta del Este.'],['Colonia','Su capital es Patrimonio de la Humanidad.'],
+    ['Salto','Tiene termas y una gran represa sobre el río Uruguay.'],['Paysandú','Departamento del litoral con un puente internacional a Colón (Argentina).'],
+    ['Rivera','Limita con la ciudad brasileña de Santana do Livramento.'],['Florida','Allí está la Piedra Alta, donde se declaró la Independencia.'],
+    ['Durazno','Departamento ubicado en el centro del país.'],['Tacuarembó','Allí se realiza la fiesta de la Patria Gaucha.'],
+    ['Treinta y Tres','Su nombre recuerda a los patriotas de la Cruzada Libertadora de 1825.'],['Río Negro','Su capital es Fray Bentos.'],
+    ['Soriano','Su capital es Mercedes.'],['Cerro Largo','Su capital es Melo.'],['Lavalleja','Su capital es Minas.'],['Flores','Su capital es Trinidad.'],
+    ['San José','Su capital es San José de Mayo.'],['Canelones','Departamento vecino de Montevideo, al norte y al este.'] ] },
+].map(b=>({ ...b, entries:b.entries.map(([word,clue])=>({word,clue})) })));
+
+/* ---------- Dibujo de esquemas (en coordenadas propias del dibujo) ---------- */
+const elipse=(cx,cy,rx,ry,rot,n=20)=> Array.from({length:n},(_,k)=>{ const t=2*Math.PI*k/n, x=rx*Math.cos(t), y=ry*Math.sin(t);
+  return [cx+x*Math.cos(rot)-y*Math.sin(rot), cy+x*Math.sin(rot)+y*Math.cos(rot)]; });
+function dibujo(T, els){
+  const E={
+    line:(x1,y1,x2,y2,w=.5,c='#333')=>{ const a=T(x1,y1), b=T(x2,y2); els.push({t:'line', x1:a[0], y1:a[1], x2:b[0], y2:b[1], w, c}); },
+    poly:(pts,close,w=.5,c='#333')=>{ for (let i=0;i<pts.length-(close?0:1);i++){ const p=pts[i], q=pts[(i+1)%pts.length]; E.line(p[0],p[1],q[0],q[1],w,c); } },
+    circle:(cx,cy,r,fill,w=.5,c='#333')=>{ const a=T(cx,cy), r2=T(cx+r,cy)[0]-a[0]; els.push({t:'rect', x:a[0]-r2, y:a[1]-r2, w:2*r2, h:2*r2, r:r2, stroke:c, lw:w, fill}); },
+    flecha:(x1,y1,x2,y2,w=.7,c='#333')=>{ E.line(x1,y1,x2,y2,w,c); const a=Math.atan2(y2-y1,x2-x1), L=4;
+      [Math.PI*.82,-Math.PI*.82].forEach(d=> E.line(x2,y2,x2+L*Math.cos(a+d),y2+L*Math.sin(a+d),w,c)); },
+  };
+  return E;
+}
+const DIAGRAMAS={
+  planta:{ dw:80, dh:100, titulo:'Rotulá las partes de la planta.',
+    build(E){
+      E.line(0,72,80,72,.9);
+      E.line(40,72,40,26,1.6,'#2e7d32');
+      [[40,58,-1],[40,46,1]].forEach(([ax,ay,d])=>{ const ang=Math.atan2(-Math.sin(Math.PI/6), d*Math.cos(Math.PI/6)), rx=11, cx=ax+Math.cos(ang)*rx, cy=ay+Math.sin(ang)*rx;
+        E.poly(elipse(cx,cy,rx,4.5,ang),true,.6,'#2e7d32'); E.line(ax,ay,ax+Math.cos(ang)*2*rx,ay+Math.sin(ang)*2*rx,.35,'#2e7d32'); });
+      for (let k=0;k<6;k++){ const a=k*Math.PI/3; E.circle(40+7*Math.cos(a),20+7*Math.sin(a),4.5,'#ffd6e8',.5,'#c2185b'); }
+      E.circle(40,20,3.6,'#ffc93c',.5,'#b8860b');
+      [[40,72,40,97],[40,76,28,90],[40,76,52,90],[40,84,32,96],[40,84,48,96]].forEach(l=>E.line(...l,.8,'#6d4c41'));
+    },
+    partes:[ {n:'flor',x:46,y:15,lado:'r'},{n:'hoja',x:52,y:39,lado:'r'},{n:'tallo',x:40,y:64,lado:'l'},{n:'suelo',x:14,y:72,lado:'l'},{n:'raíz',x:40,y:92,lado:'r'} ] },
+  agua:{ dw:140, dh:92, titulo:'Rotulá el ciclo del agua.',
+    build(E){
+      E.circle(14,14,7,'#ffc93c',.5,'#b8860b');
+      for (let k=0;k<8;k++){ const a=k*Math.PI/4; E.line(14+9*Math.cos(a),14+9*Math.sin(a),14+13*Math.cos(a),14+13*Math.sin(a),.5,'#b8860b'); }
+      [[86,18,7],[97,13,9],[109,18,7]].forEach(([x,y,r])=>E.circle(x,y,r,'#ffffff',.6,'#555'));
+      [90,97,104,111].forEach(x=>{ E.line(x,31,x-2,38,.5,'#1976d2'); E.line(x+2,40,x,47,.5,'#1976d2'); });
+      E.poly([[96,72],[122,46],[140,72]],false,.9,'#6d4c41'); E.poly([[117,51],[120,54],[122,51],[125,54],[127,51]],false,.5,'#90a4ae');
+      E.line(0,72,92,72,.8,'#1976d2');
+      for (let r=0;r<2;r++){ const pts=[]; for (let x=0;x<=92;x+=6) pts.push([x,78+r*8+((x/6)%2?1.4:-1.4)]); E.poly(pts,false,.5,'#1976d2'); }
+      E.flecha(40,70,40,40,.8,'#d84315'); E.flecha(56,70,56,48,.8,'#d84315');
+      E.flecha(64,36,82,26,.8,'#555'); E.flecha(100,40,100,58,.8,'#1976d2'); E.flecha(112,52,102,62,.8,'#1976d2');
+    },
+    partes:[ {n:'Sol',x:14,y:14,lado:'l'},{n:'condensación',x:73,y:31,lado:'l'},{n:'evaporación',x:40,y:52,lado:'l'},{n:'Mar',x:20,y:80,lado:'l'},
+             {n:'Nube',x:113,y:11,lado:'r'},{n:'precipitación',x:100,y:48,lado:'r'},{n:'escurrimiento',x:107,y:57,lado:'r'} ] },
+  solar:{ dw:150, dh:38, titulo:'Escribí el nombre de cada planeta, empezando por el más cercano al Sol.', lista:true,
+    planetas:[['Mercurio',38,1.6],['Venus',48,3],['Tierra',59,3.2],['Marte',70,2.2],['Júpiter',87,8],['Saturno',108,6.5],['Urano',125,4.6],['Neptuno',141,4.4]],
+    build(E,D,num){
+      E.circle(16,18,14,'#ffd54f',.6,'#b8860b');
+      D.planetas.forEach(([n,x,r],k)=>{ E.circle(x,17,r,'#ffffff',.6,'#333');
+        if (n==='Saturno') E.poly(elipse(x,17,r*1.7,r*.35,-.3),true,.4,'#333');
+        num(k+1,x,32); });
+    },
+    partes:null },
+};
+function diagLayout(it,w){
+  const D=DIAGRAMAS[it.diag], bank = it.banco ? 8+wrapText(it.words.join('   ·   '),12,w-18).length*5.5+4 : 0;
+  if (D.lista){ const sc=(w-12)/D.dw; return { D, sc, bank, h: 9 + bank + D.dh*sc + 4 + 2*9 + 3 }; }
+  const sc=Math.min((w*.5)/D.dw, 110/D.dh); return { D, sc, bank, h: 9 + bank + D.dh*sc + 6 };
+}
+BLOCKS.esquema = { full:true,
+  h:(it,w)=> diagLayout(it,w).h,
+  draw(els,it,idx,x,y,w,isKey){
+    const {D,sc,bank}=diagLayout(it,w);
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:D.titulo}); numLabel(els,idx,x,y+4);
+    let cy=y+8;
+    if (it.banco){
+      const lines=wrapText(it.words.join('   ·   '),12,w-18), bh=8+lines.length*5.5;
+      els.push({t:'rect', x:x+8, y:cy, w:w-8, h:bh, r:2.5, stroke:'#999', lw:.4});
+      lines.forEach((ln,j)=> els.push({t:'text', x:x+8+(w-8)/2, y:cy+6.5+j*5.5, s:12, str:ln, a:'center', b:true}));
+      cy+=bh+4;
+    }
+    if (D.lista){
+      const ox=x+6, T=(px,py)=>[ox+px*sc, cy+py*sc], E=dibujo(T,els);
+      D.build(E,D,(n,px,py)=>{ const p=T(px,py); els.push({t:'text', x:p[0], y:p[1], s:9, str:String(n), a:'center', b:true}); });
+      const sp=T(16,36); els.push({t:'text', x:sp[0], y:sp[1], s:8.5, str:'Sol', a:'center', b:true});
+      const gy=cy+D.dh*sc+8, cw=(w-8)/4;
+      D.planetas.forEach(([n],k)=>{ const col=k%4, row=Math.floor(k/4), lx=x+8+col*cw, ly=gy+row*9+4;
+        els.push({t:'text', x:lx, y:ly, s:FSB, b:true, str:(k+1)+'.'});
+        els.push({t:'line', x1:lx+7, y1:ly+.8, x2:lx+cw-4, y2:ly+.8, w:.3, c:'#444'});
+        if (isKey) els.push({t:'text', x:lx+8, y:ly, s:FSB, str:n, c:RED, b:true}); });
+      return;
+    }
+    const dw=D.dw*sc, ox=x+8+(w-8-dw)/2, T=(px,py)=>[ox+px*sc, cy+py*sc], E=dibujo(T,els);
+    D.build(E,D);
+    const lw=(ox-(x+8))-8;
+    ['l','r'].forEach(side=>{
+      const ps=D.partes.filter(p=>p.lado===side).map(p=>({...p, sy:T(p.x,p.y)[1], sx:T(p.x,p.y)[0]})).sort((a,b)=>a.sy-b.sy);
+      let last=-1e9; ps.forEach(p=>{ p.ly=Math.max(p.sy, last+11); last=p.ly; });
+      const over=ps.length? ps[ps.length-1].ly-(cy+D.dh*sc) : 0; if (over>0) ps.forEach(p=>p.ly-=over);
+      ps.forEach(p=>{
+        const ax= side==='l' ? x+8+lw : ox+dw+8;
+        els.push({t:'line', x1:p.sx, y1:p.sy, x2:ax, y2:p.ly, w:.3, c:'#777'});
+        els.push({t:'rect', x:p.sx-.6, y:p.sy-.6, w:1.2, h:1.2, r:.6, fill:'#333'});
+        const lx= side==='l' ? x+8 : ox+dw+8;
+        els.push({t:'line', x1:lx, y1:p.ly, x2:lx+lw, y2:p.ly, w:.35, c:'#444'});
+        if (isKey) els.push({t:'text', x:lx+lw/2, y:p.ly-1.2, s:Math.min(11, 11*(lw-2)/Math.max(1,measure(p.n,11))), str:p.n, a:'center', c:RED, b:true});
+      });
+    });
+  } };
+GEN.esquemas = function(sel,count){
+  const ds=shuffle([...sel.diagramas]).slice(0,count), items=[];
+  ds.forEach(id=>{ const D=DIAGRAMAS[id], words= D.lista ? D.planetas.map(p=>p[0]) : D.partes.map(p=>p.n);
+    items.push({ type:'esquema', diag:id, banco: sel.banco==='si', words:shuffle([...words]) }); });
+  return { kind:'blocks', cols:1, items };
+};
+
+/* ---------- Cadenas alimentarias ---------- */
+const CADENAS=[
+  ['Pasto','Saltamontes','Rana','Culebra','Águila'], ['Pasto','Vaca','Ser humano'], ['Algas','Anchoíta','Lobo marino','Orca'],
+  ['Trigo','Ratón','Lechuza'], ['Hojas','Oruga','Hornero','Gavilán'], ['Pasto','Conejo','Zorro'], ['Algas','Mojarra','Dorado','Ser humano'],
+];
+const ROLES=['productor','consumidor primario','consumidor secundario','consumidor terciario','consumidor cuaternario'];
+GEN.cadenas = function(sel,count){
+  const out=[], cad=shuffle([...CADENAS]); let k=0;
+  while (out.length<count){
+    const ch=cad[k++%cad.length], n=ch.length, h=Math.min(Number(sel.huecos), n-1);
+    const hide=shuffle(ch.map((_,i)=>i)).slice(0,h).sort((a,b)=>a-b);
+    out.push({ type:'cadena', orgs:ch, hide, roles: sel.roles==='si', words: shuffle(hide.map(i=>ch[i])) });
+    if (k>40) break;
+  }
+  return { kind:'blocks', cols:1, items:out };
+};
+BLOCKS.cadena = { full:true,
+  h:(it,w)=> 9 + (it.words.length? 8+wrapText(it.words.join('   ·   '),12,w-18).length*5.5+4 : 0) + 14 + (it.roles?8:0) + 4,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:'Completá la cadena alimentaria. Las flechas indican quién se come a quién.'});
+    let cy=y+8;
+    if (it.words.length){
+      const lines=wrapText(it.words.join('   ·   '),12,w-18), bh=8+lines.length*5.5;
+      els.push({t:'rect', x:x+8, y:cy, w:w-8, h:bh, r:2.5, stroke:'#999', lw:.4});
+      lines.forEach((ln,j)=> els.push({t:'text', x:x+8+(w-8)/2, y:cy+6.5+j*5.5, s:12, str:ln, a:'center', b:true}));
+      cy+=bh+4;
+    }
+    const n=it.orgs.length, gap=9, bw=(w-8-(n-1)*gap)/n, hide=new Set(it.hide);
+    it.orgs.forEach((o,k)=>{ const bx=x+8+k*(bw+gap), oc=hide.has(k);
+      els.push({t:'rect', x:bx, y:cy, w:bw, h:13, r:3, stroke:'#444', lw:.45, fill: oc?'#ffffff':CLARO});
+      if (!oc) els.push({t:'text', x:bx+bw/2, y:cy+8.2, s:Math.min(11, 11*(bw-3)/Math.max(1,measure(o,11))), str:o, a:'center', b:true});
+      else if (isKey) els.push({t:'text', x:bx+bw/2, y:cy+8.2, s:Math.min(11, 11*(bw-3)/Math.max(1,measure(o,11))), str:o, a:'center', b:true, c:RED});
+      if (k<n-1){ const ax=bx+bw+1.2, bx2=bx+bw+gap-1.2;
+        els.push({t:'line', x1:ax, y1:cy+6.5, x2:bx2, y2:cy+6.5, w:.7, c:'#333'});
+        els.push({t:'line', x1:bx2, y1:cy+6.5, x2:bx2-2.4, y2:cy+4.9, w:.7, c:'#333'}); els.push({t:'line', x1:bx2, y1:cy+6.5, x2:bx2-2.4, y2:cy+8.1, w:.7, c:'#333'}); }
+      if (it.roles) els.push({t:'text', x:bx+bw/2, y:cy+18, s:Math.min(8.5, 8.5*((k===0||k===n-1)?bw:bw+gap-2)/Math.max(1,measure(ROLES[k],8.5))), str:ROLES[k], a:'center', c:'#6b7488'});
+    });
+  } };
+
+/* ---------- Líneas de tiempo ---------- */
+const HECHOS={
+  uruguay:[[1516,'Juan Díaz de Solís llega al Río de la Plata.'],[1680,'Los portugueses fundan Colonia del Sacramento.'],[1726,'Se funda la ciudad de Montevideo.'],
+    [1813,'Artigas presenta las Instrucciones del Año XIII.'],[1825,'Se declara la Independencia en la Piedra Alta, en Florida.'],[1828,'Se firma la Convención Preliminar de Paz: nace el Estado Oriental.'],
+    [1830,'Se jura la primera Constitución del Uruguay.'],[1930,'Uruguay organiza y gana el primer Mundial de Fútbol.'],[1950,'Uruguay gana el Mundial de Brasil, el "Maracanazo".'],
+    [1985,'Vuelve la democracia al Uruguay.']],
+  inventos:[[1492,'Cristóbal Colón llega a América.'],[1609,'Galileo usa el telescopio para observar el cielo.'],[1796,'Edward Jenner crea la primera vacuna.'],
+    [1876,'Graham Bell inventa el teléfono.'],[1879,'Thomas Edison perfecciona la lamparita eléctrica.'],[1903,'Los hermanos Wright realizan el primer vuelo en avión.'],
+    [1928,'Alexander Fleming descubre la penicilina.'],[1957,'Se lanza el primer satélite artificial, el Sputnik.'],[1961,'Yuri Gagarin es el primer ser humano en el espacio.'],
+    [1969,'El ser humano llega a la Luna.']],
+};
+const TITULO_TL={ uruguay:'Historia de Uruguay', inventos:'Inventos y descubrimientos' };
+GEN.lineas = function(sel,count){
+  const n=Math.min(count,HECHOS[sel.tema].length), ev=shuffle([...HECHOS[sel.tema]]).slice(0,n).sort((a,b)=>a[0]-b[0]), ord=shuffle(ev.map((_,i)=>i));
+  const items=[];
+  if (sel.modo==='ordenar'){
+    const frases=ord.map(i=> sel.anios==='si' ? `${ev[i][0]}: ${ev[i][1]}` : ev[i][1]);
+    items.push({ type:'secuencia', frases, orden:ord.map(i=>i+1), titulo:`Numerá los hechos del 1 al ${n}, del más antiguo al más reciente.` });
+  } else items.push({ type:'lineaTiempo', ev, ord });
+  return { kind:'blocks', cols:1, items };
+};
+BLOCKS.lineaTiempo = { full:true,
+  h:(it,w)=> 46 + listaH(it,(w-16)/2-4),
+  draw(els,it,idx,x,y,w,isKey){
+    const n=it.ev.length, ax=x+8, aw=w-8, ay=y+22;
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:'Escribí la letra de cada hecho debajo del año que le corresponde.'}); numLabel(els,idx,x,y+4);
+    els.push({t:'line', x1:ax, y1:ay, x2:ax+aw-2, y2:ay, w:1, c:'#333'});
+    els.push({t:'line', x1:ax+aw-2, y1:ay, x2:ax+aw-5, y2:ay-2, w:1, c:'#333'}); els.push({t:'line', x1:ax+aw-2, y1:ay, x2:ax+aw-5, y2:ay+2, w:1, c:'#333'});
+    it.ev.forEach(([yr,txt],k)=>{ const cx=ax+(aw-10)*(k+.5)/n;
+      els.push({t:'line', x1:cx, y1:ay-3, x2:cx, y2:ay+3, w:.8, c:'#333'});
+      els.push({t:'text', x:cx, y:ay-6, s:12, str:String(yr), a:'center', b:true});
+      els.push({t:'rect', x:cx-7, y:ay+6, w:14, h:10, r:2, stroke:'#444', lw:.45});
+      if (isKey) els.push({t:'text', x:cx, y:ay+13.2, s:13, str:'ABCDEFGHIJ'[it.ord.indexOf(k)], a:'center', b:true, c:RED}); });
+    const cw=(w-16)/2-4; let py=ay+24;
+    const col=[0,0]; const half=Math.ceil(n/2); let yy=[py,py];
+    it.ord.forEach((evIdx,pos)=>{ const c=pos<half?0:1, L=wrapText(it.ev[evIdx][1],11,cw-8), lx=x+8+c*(cw+8);
+      els.push({t:'text', x:lx, y:yy[c], s:11, b:true, str:'ABCDEFGHIJ'[pos]+'.'});
+      L.forEach((ln,j)=> els.push({t:'text', x:lx+7, y:yy[c]+j*4.8, s:11, str:ln})); yy[c]+=L.length*4.8+3; });
+  } };
+function listaH(it,cw){ const half=Math.ceil(it.ord.length/2), hs=it.ord.map(i=> wrapText(it.ev[i][1],11,cw-8).length*4.8+3);
+  return Math.max(hs.slice(0,half).reduce((a,b)=>a+b,0), hs.slice(half).reduce((a,b)=>a+b,0)) + 6; }
+
+/* ---------- Mapas mudos ---------- */
+const MAPAS={"uruguay":[{"n":"Artigas","c":"Artigas","lp":[-5692,-3063],"r":[[-5760,-3019,-5757,-3026,-5754,-3027,-5744,-3027,-5740,-3030,-5735,-3027,-5730,-3029,-5727,-3028,-5725,-3029,-5718,-3027,-5713,-3015,-5708,-3011,-5683,-3010,-5664,-3023,-5663,-3028,-5658,-3030,-5642,-3042,-5639,-3048,-5622,-3058,-5608,-3075,-5601,-3080,-5599,-3086,-5602,-3093,-5602,-3107,-5618,-3094,-5642,-3089,-5645,-3089,-5648,-3094,-5655,-3098,-5661,-3099,-5670,-3105,-5678,-3106,-5693,-3104,-5707,-3108,-5716,-3105,-5724,-3099,-5748,-3088,-5757,-3086,-5771,-3076,-5776,-3075,-5780,-3079,-5789,-3055,-5785,-3049,-5765,-3033,-5762,-3026,-5764,-3019,-5760,-3019]]},{"n":"Canelones","c":"Canelones","lp":[-5591,-3454],"r":[[-5537,-3480,-5551,-3480,-5569,-3476,-5579,-3477,-5589,-3480,-5604,-3489,-5605,-3485,-5604,-3477,-5608,-3477,-5614,-3472,-5622,-3476,-5629,-3471,-5636,-3473,-5646,-3466,-5647,-3459,-5640,-3453,-5640,-3443,-5636,-3436,-5629,-3435,-5621,-3438,-5615,-3437,-5610,-3430,-5600,-3424,-5588,-3427,-5574,-3422,-5562,-3421,-5558,-3433,-5553,-3440,-5554,-3450,-5548,-3458,-5546,-3465,-5542,-3469,-5542,-3473,-5537,-3480]]},{"n":"Cerro Largo","c":"Melo","lp":[-5420,-3233],"r":[[-5447,-3166,-5415,-3191,-5407,-3188,-5401,-3193,-5391,-3196,-5386,-3202,-5376,-3206,-5372,-3216,-5366,-3225,-5364,-3236,-5356,-3245,-5342,-3256,-5319,-3265,-5312,-3271,-5311,-3274,-5318,-3280,-5333,-3278,-5339,-3279,-5350,-3275,-5384,-3277,-5396,-3271,-5403,-3275,-5402,-3279,-5405,-3280,-5412,-3276,-5433,-3272,-5441,-3275,-5449,-3275,-5451,-3278,-5456,-3279,-5460,-3282,-5468,-3281,-5488,-3286,-5502,-3295,-5501,-3302,-5516,-3302,-5529,-3294,-5532,-3289,-5532,-3283,-5534,-3278,-5531,-3275,-5534,-3268,-5530,-3256,-5533,-3249,-5524,-3246,-5511,-3249,-5504,-3247,-5484,-3231,-5480,-3224,-5481,-3219,-5476,-3210,-5469,-3213,-5459,-3211,-5457,-3208,-5458,-3206,-5454,-3202,-5459,-3199,-5450,-3182,-5452,-3173,-5447,-3166]]},{"n":"Colonia","c":"Colonia del Sacramento","lp":[-5748,-3417],"r":[[-5717,-3445,-5737,-3443,-5744,-3444,-5747,-3443,-5754,-3445,-5759,-3443,-5776,-3447,-5786,-3447,-5785,-3445,-5790,-3442,-5790,-3438,-5802,-3425,-5805,-3424,-5808,-3419,-5821,-3415,-5823,-3409,-5832,-3399,-5839,-3394,-5842,-3388,-5828,-3384,-5817,-3378,-5804,-3380,-5799,-3386,-5785,-3386,-5779,-3390,-5765,-3394,-5739,-3390,-5729,-3395,-5708,-3396,-5705,-3403,-5699,-3408,-5694,-3415,-5710,-3423,-5710,-3427,-5707,-3430,-5710,-3439,-5717,-3445]]},{"n":"Durazno","c":"Durazno","lp":[-5574,-3300],"r":[[-5547,-3243,-5543,-3247,-5533,-3249,-5531,-3253,-5530,-3257,-5534,-3268,-5531,-3275,-5534,-3278,-5532,-3283,-5532,-3288,-5530,-3292,-5516,-3302,-5501,-3302,-5511,-3312,-5525,-3320,-5533,-3321,-5562,-3336,-5571,-3336,-5586,-3344,-5593,-3342,-5602,-3343,-5610,-3349,-5624,-3348,-5628,-3343,-5635,-3343,-5641,-3340,-5642,-3348,-5653,-3350,-5657,-3341,-5667,-3330,-5683,-3327,-5688,-3319,-5704,-3318,-5713,-3312,-5713,-3308,-5718,-3307,-5708,-3301,-5697,-3303,-5699,-3299,-5693,-3299,-5693,-3296,-5687,-3299,-5686,-3294,-5682,-3293,-5680,-3288,-5669,-3284,-5664,-3286,-5658,-3284,-5647,-3283,-5641,-3286,-5636,-3281,-5622,-3282,-5617,-3273,-5601,-3270,-5590,-3260,-5583,-3263,-5579,-3261,-5577,-3252,-5569,-3255,-5565,-3250,-5552,-3250,-5547,-3243]]},{"n":"Flores","c":"Trinidad","lp":[-5683,-3363],"r":[[-5713,-3312,-5704,-3318,-5687,-3320,-5683,-3327,-5667,-3330,-5657,-3341,-5642,-3375,-5644,-3389,-5646,-3390,-5660,-3385,-5666,-3389,-5676,-3391,-5687,-3398,-5708,-3396,-5719,-3375,-5716,-3361,-5726,-3355,-5730,-3343,-5735,-3338,-5713,-3312]]},{"n":"Florida","c":"Florida","lp":[-5590,-3386],"r":[[-5526,-3321,-5511,-3312,-5509,-3326,-5515,-3334,-5511,-3340,-5511,-3344,-5514,-3347,-5520,-3350,-5524,-3358,-5532,-3361,-5533,-3365,-5529,-3372,-5534,-3387,-5539,-3391,-5545,-3402,-5553,-3408,-5556,-3415,-5562,-3421,-5574,-3422,-5586,-3427,-5600,-3424,-5610,-3430,-5615,-3437,-5621,-3438,-5628,-3435,-5635,-3436,-5637,-3437,-5640,-3443,-5647,-3436,-5642,-3431,-5642,-3423,-5645,-3417,-5641,-3410,-5646,-3390,-5643,-3386,-5642,-3376,-5653,-3350,-5642,-3348,-5641,-3340,-5635,-3343,-5628,-3343,-5624,-3348,-5609,-3349,-5603,-3344,-5583,-3343,-5571,-3336,-5562,-3336,-5530,-3320,-5526,-3321]]},{"n":"Lavalleja","c":"Minas","lp":[-5485,-3374],"r":[[-5562,-3421,-5553,-3408,-5546,-3403,-5539,-3391,-5534,-3387,-5529,-3372,-5533,-3365,-5532,-3361,-5524,-3358,-5520,-3350,-5513,-3347,-5511,-3343,-5512,-3338,-5508,-3336,-5500,-3334,-5491,-3337,-5483,-3334,-5471,-3340,-5449,-3345,-5444,-3343,-5441,-3339,-5435,-3336,-5430,-3335,-5423,-3342,-5413,-3347,-5421,-3349,-5423,-3355,-5437,-3364,-5438,-3374,-5442,-3380,-5442,-3386,-5452,-3395,-5457,-3404,-5466,-3406,-5471,-3409,-5478,-3419,-5478,-3426,-5481,-3429,-5484,-3439,-5489,-3442,-5500,-3445,-5508,-3451,-5517,-3452,-5531,-3461,-5547,-3462,-5548,-3458,-5554,-3450,-5553,-3440,-5558,-3433,-5562,-3421]]},{"n":"Maldonado","c":"Maldonado","lp":[-5483,-3465],"r":[[-5453,-3481,-5496,-3497,-5496,-3494,-5503,-3492,-5506,-3489,-5526,-3490,-5537,-3480,-5542,-3473,-5542,-3469,-5547,-3462,-5531,-3461,-5517,-3452,-5508,-3451,-5500,-3445,-5484,-3439,-5481,-3429,-5478,-3426,-5478,-3419,-5471,-3409,-5466,-3406,-5457,-3404,-5454,-3397,-5448,-3393,-5446,-3410,-5449,-3420,-5449,-3439,-5453,-3440,-5454,-3442,-5450,-3455,-5453,-3463,-5452,-3475,-5453,-3481]]},{"n":"Montevideo","c":"Montevideo","lp":[-5615,-3483],"r":[[-5604,-3489,-5611,-3490,-5616,-3494,-5621,-3491,-5621,-3488,-5626,-3491,-5631,-3491,-5642,-3483,-5636,-3480,-5636,-3473,-5633,-3472,-5629,-3472,-5622,-3476,-5614,-3472,-5608,-3477,-5604,-3478,-5605,-3483,-5604,-3489]]},{"n":"Paysandú","c":"Paysandú","lp":[-5764,-3206],"r":[[-5820,-3245,-5810,-3228,-5819,-3215,-5815,-3202,-5816,-3194,-5820,-3189,-5815,-3184,-5805,-3180,-5798,-3160,-5799,-3155,-5804,-3151,-5796,-3150,-5794,-3148,-5786,-3148,-5779,-3152,-5775,-3158,-5760,-3161,-5748,-3167,-5737,-3169,-5733,-3174,-5717,-3180,-5706,-3181,-5700,-3179,-5694,-3181,-5683,-3179,-5664,-3185,-5649,-3187,-5645,-3186,-5639,-3177,-5632,-3175,-5628,-3179,-5628,-3186,-5624,-3191,-5629,-3194,-5629,-3204,-5636,-3223,-5649,-3233,-5656,-3249,-5667,-3243,-5690,-3241,-5704,-3236,-5709,-3239,-5718,-3239,-5727,-3244,-5747,-3245,-5754,-3249,-5758,-3254,-5776,-3256,-5778,-3260,-5781,-3261,-5800,-3258,-5801,-3255,-5809,-3249,-5819,-3249,-5820,-3245]]},{"n":"Rivera","c":"Rivera","lp":[-5531,-3153],"r":[[-5582,-3104,-5576,-3101,-5573,-3095,-5565,-3094,-5565,-3086,-5559,-3085,-5537,-3104,-5534,-3113,-5529,-3115,-5524,-3124,-5509,-3133,-5503,-3127,-5497,-3134,-5485,-3143,-5460,-3146,-5450,-3157,-5447,-3166,-5452,-3173,-5450,-3184,-5459,-3199,-5454,-3202,-5458,-3206,-5457,-3209,-5465,-3212,-5488,-3188,-5495,-3185,-5538,-3180,-5563,-3180,-5566,-3171,-5565,-3164,-5567,-3158,-5579,-3151,-5583,-3138,-5606,-3126,-5612,-3126,-5616,-3130,-5619,-3127,-5616,-3123,-5606,-3120,-5601,-3108,-5586,-3108,-5582,-3104]]},{"n":"Rocha","c":"Rocha","lp":[-5394,-3386],"r":[[-5352,-3312,-5354,-3324,-5351,-3339,-5354,-3365,-5351,-3369,-5346,-3369,-5341,-3374,-5338,-3374,-5347,-3383,-5353,-3405,-5371,-3420,-5378,-3434,-5376,-3439,-5397,-3449,-5412,-3461,-5415,-3467,-5426,-3469,-5423,-3466,-5425,-3463,-5424,-3459,-5433,-3456,-5428,-3458,-5434,-3463,-5434,-3465,-5429,-3466,-5429,-3470,-5453,-3481,-5452,-3475,-5453,-3463,-5450,-3455,-5454,-3442,-5453,-3440,-5449,-3439,-5449,-3420,-5446,-3410,-5448,-3393,-5442,-3386,-5442,-3380,-5438,-3374,-5438,-3365,-5423,-3355,-5421,-3349,-5414,-3348,-5401,-3341,-5396,-3335,-5381,-3325,-5377,-3319,-5352,-3312]]},{"n":"Río Negro","c":"Fray Bentos","lp":[-5728,-3275],"r":[[-5839,-3342,-5842,-3339,-5835,-3331,-5837,-3315,-5835,-3312,-5814,-3310,-5808,-3305,-5806,-3295,-5806,-3288,-5813,-3280,-5814,-3267,-5819,-3249,-5810,-3249,-5801,-3255,-5800,-3258,-5780,-3261,-5776,-3256,-5758,-3254,-5754,-3249,-5747,-3245,-5727,-3244,-5718,-3239,-5709,-3239,-5704,-3236,-5690,-3241,-5667,-3243,-5656,-3249,-5667,-3284,-5678,-3287,-5682,-3293,-5686,-3294,-5687,-3299,-5693,-3296,-5693,-3299,-5699,-3299,-5697,-3303,-5708,-3301,-5717,-3305,-5717,-3307,-5713,-3308,-5713,-3312,-5722,-3316,-5724,-3312,-5728,-3315,-5730,-3310,-5737,-3307,-5743,-3310,-5745,-3305,-5753,-3302,-5761,-3305,-5765,-3309,-5785,-3304,-5795,-3309,-5797,-3313,-5806,-3314,-5803,-3321,-5804,-3325,-5808,-3322,-5812,-3323,-5814,-3331,-5822,-3331,-5830,-3338,-5839,-3342]]},{"n":"Salto","c":"Salto","lp":[-5691,-3144],"r":[[-5782,-3091,-5780,-3087,-5780,-3079,-5775,-3075,-5770,-3076,-5757,-3086,-5748,-3088,-5724,-3099,-5716,-3105,-5707,-3108,-5693,-3104,-5678,-3106,-5670,-3105,-5661,-3099,-5655,-3098,-5648,-3094,-5645,-3089,-5642,-3089,-5618,-3094,-5601,-3108,-5606,-3120,-5618,-3125,-5619,-3127,-5616,-3130,-5618,-3139,-5632,-3152,-5635,-3160,-5633,-3164,-5632,-3175,-5639,-3177,-5646,-3186,-5650,-3187,-5683,-3179,-5694,-3181,-5700,-3179,-5706,-3181,-5718,-3179,-5733,-3174,-5737,-3169,-5748,-3167,-5760,-3161,-5775,-3158,-5779,-3152,-5786,-3148,-5791,-3147,-5795,-3148,-5796,-3150,-5805,-3150,-5808,-3148,-5806,-3144,-5799,-3140,-5797,-3131,-5791,-3124,-5791,-3117,-5786,-3106,-5786,-3101,-5791,-3095,-5789,-3092,-5782,-3091]]},{"n":"San José","c":"San José de Mayo","lp":[-5678,-3438],"r":[[-5636,-3479,-5645,-3476,-5656,-3477,-5665,-3472,-5687,-3467,-5710,-3448,-5717,-3445,-5710,-3439,-5707,-3430,-5710,-3427,-5710,-3423,-5694,-3415,-5699,-3408,-5705,-3403,-5708,-3396,-5687,-3398,-5676,-3391,-5666,-3389,-5660,-3385,-5646,-3390,-5641,-3410,-5645,-3417,-5642,-3423,-5642,-3431,-5647,-3436,-5640,-3443,-5640,-3452,-5647,-3460,-5646,-3466,-5636,-3473,-5636,-3479]]},{"n":"Soriano","c":"Mercedes","lp":[-5774,-3350],"r":[[-5842,-3388,-5843,-3378,-5844,-3355,-5839,-3347,-5839,-3342,-5830,-3338,-5822,-3331,-5814,-3331,-5812,-3323,-5808,-3322,-5804,-3325,-5803,-3321,-5805,-3319,-5805,-3313,-5797,-3313,-5795,-3309,-5785,-3304,-5765,-3309,-5761,-3305,-5753,-3302,-5745,-3305,-5743,-3310,-5737,-3307,-5730,-3310,-5728,-3315,-5724,-3312,-5722,-3316,-5713,-3312,-5735,-3338,-5730,-3343,-5726,-3355,-5716,-3361,-5719,-3375,-5708,-3396,-5729,-3395,-5739,-3390,-5765,-3394,-5779,-3390,-5785,-3386,-5799,-3386,-5804,-3380,-5817,-3378,-5828,-3384,-5842,-3388]]},{"n":"Tacuarembó","c":"Tacuarembó","lp":[-5584,-3212],"r":[[-5656,-3249,-5649,-3233,-5636,-3223,-5629,-3204,-5629,-3194,-5625,-3191,-5628,-3186,-5628,-3179,-5632,-3175,-5635,-3159,-5632,-3151,-5619,-3140,-5616,-3130,-5610,-3126,-5606,-3126,-5583,-3138,-5579,-3151,-5567,-3158,-5565,-3164,-5566,-3170,-5565,-3176,-5562,-3180,-5538,-3180,-5512,-3182,-5491,-3187,-5481,-3194,-5465,-3212,-5469,-3213,-5476,-3210,-5481,-3219,-5480,-3224,-5484,-3231,-5504,-3247,-5511,-3249,-5524,-3246,-5536,-3250,-5543,-3247,-5547,-3243,-5552,-3250,-5565,-3250,-5569,-3255,-5577,-3252,-5579,-3261,-5583,-3263,-5590,-3260,-5601,-3270,-5617,-3273,-5622,-3282,-5636,-3281,-5641,-3286,-5647,-3283,-5658,-3284,-5664,-3286,-5667,-3284,-5656,-3249]]},{"n":"Treinta y Tres","c":"Treinta y Tres","lp":[-5429,-3304],"r":[[-5318,-3280,-5330,-3289,-5333,-3297,-5348,-3307,-5352,-3312,-5377,-3319,-5381,-3325,-5396,-3335,-5401,-3341,-5413,-3347,-5423,-3342,-5430,-3335,-5435,-3336,-5441,-3339,-5444,-3343,-5449,-3345,-5471,-3340,-5483,-3334,-5491,-3337,-5500,-3334,-5506,-3335,-5512,-3338,-5515,-3335,-5509,-3325,-5511,-3312,-5501,-3302,-5502,-3296,-5482,-3284,-5468,-3281,-5460,-3282,-5456,-3279,-5451,-3278,-5449,-3275,-5441,-3275,-5432,-3271,-5412,-3276,-5403,-3280,-5403,-3275,-5395,-3271,-5384,-3277,-5350,-3275,-5339,-3279,-5333,-3278,-5318,-3280]]}],"sudamerica":[{"n":"Argentina","c":"Buenos Aires","lp":[-6387,-3057],"r":[[-5761,-3019,-5787,-3059,-5781,-3086,-5805,-3149,-5799,-3162,-5819,-3192,-5817,-3296,-5842,-3311,-5855,-3366,-5839,-3419,-5853,-3430,-5828,-3468,-5755,-3502,-5717,-3536,-5738,-3590,-5708,-3630,-5672,-3639,-5673,-3696,-5755,-3809,-5818,-3844,-6111,-3899,-6233,-3880,-6230,-3924,-6205,-3937,-6218,-3938,-6208,-3946,-6213,-3983,-6240,-4020,-6225,-4067,-6240,-4089,-6296,-4111,-6362,-4116,-6487,-4074,-6507,-4081,-6515,-4111,-6499,-4210,-6454,-4225,-6457,-4242,-6442,-4243,-6410,-4240,-6406,-4227,-6423,-4222,-6380,-4211,-6363,-4228,-6362,-4270,-6403,-4288,-6449,-4251,-6497,-4267,-6503,-4276,-6432,-4297,-6484,-4319,-6525,-4357,-6527,-4428,-6565,-4466,-6564,-4501,-6619,-4496,-6694,-4526,-6760,-4605,-6751,-4644,-6678,-4701,-6585,-4716,-6578,-4757,-6623,-4783,-6581,-4794,-6747,-4895,-6791,-4998,-6826,-5010,-6867,-4975,-6866,-4994,-6898,-5000,-6860,-5001,-6842,-5016,-6894,-5038,-6936,-5103,-6920,-5099,-6906,-5155,-6947,-5158,-6897,-5168,-6839,-5231,-6996,-5201,-7197,-5196,-7241,-5154,-7234,-5068,-7315,-5074,-7350,-5013,-7358,-4958,-7346,-4931,-7314,-4930,-7303,-4901,-7261,-4879,-7261,-4852,-7229,-4823,-7252,-4788,-7235,-4749,-7190,-4720,-7194,-4683,-7170,-4665,-7188,-4616,-7163,-4595,-7175,-4558,-7151,-4551,-7135,-4523,-7160,-4498,-7204,-4490,-7206,-4477,-7126,-4476,-7116,-4456,-7121,-4444,-7182,-4438,-7168,-4393,-7190,-4335,-7175,-4324,-7215,-4299,-7211,-4225,-7175,-4205,-7191,-4165,-7193,-4069,-7171,-4038,-7182,-4018,-7166,-4002,-7172,-3964,-7154,-3960,-7140,-3894,-7086,-3860,-7117,-3776,-7119,-3684,-7106,-3652,-7040,-3606,-7056,-3525,-7039,-3515,-7005,-3430,-6985,-3422,-6982,-3328,-7008,-3320,-7002,-3288,-7034,-3218,-7025,-3196,-7059,-3157,-7055,-3132,-7031,-3102,-7017,-3039,-6996,-3036,-6984,-3018,-6996,-3008,-7003,-2932,-6983,-2910,-6966,-2841,-6917,-2792,-6885,-2715,-6832,-2697,-6859,-2647,-6841,-2615,-6860,-2549,-6838,-2509,-6856,-2484,-6851,-2463,-6825,-2439,-6736,-2403,-6701,-2300,-6719,-2282,-6671,-2222,-6637,-2211,-6622,-2180,-6577,-2210,-6461,-2223,-6433,-2283,-6392,-2203,-6284,-2200,-6193,-2306,-6103,-2376,-5989,-2409,-5919,-2456,-5796,-2505,-5764,-2533,-5757,-2553,-5811,-2618,-5819,-2663,-5862,-2713,-5860,-2731,-5644,-2755,-5616,-2732,-5571,-2741,-5543,-2701,-5483,-2665,-5462,-2558,-5415,-2552,-5389,-2567,-5367,-2629,-5384,-2712,-5483,-2755,-5510,-2787,-5573,-2820,-5569,-2838,-5589,-2837,-5761,-3019],[-6865,-5485,-6863,-5265,-6824,-5308,-6843,-5306,-6849,-5326,-6816,-5331,-6801,-5356,-6729,-5405,-6624,-5453,-6518,-5468,-6547,-5491,-6651,-5503,-6865,-5485]]},{"n":"Bolivia","c":"Sucre","lp":[-6462,-1679],"r":[[-6951,-1751,-6962,-1720,-6884,-1634,-6922,-1615,-6942,-1564,-6917,-1524,-6936,-1480,-6887,-1417,-6907,-1368,-6898,-1288,-6869,-1250,-6958,-1095,-6862,-1111,-6807,-1070,-6772,-1068,-6658,-990,-6540,-971,-6530,-1015,-6545,-1051,-6539,-1125,-6499,-1198,-6442,-1244,-6307,-1267,-6277,-1300,-6212,-1316,-6179,-1353,-6108,-1349,-6051,-1379,-6027,-1509,-6058,-1510,-6024,-1548,-6018,-1627,-5835,-1628,-5848,-1670,-5840,-1723,-5783,-1751,-5750,-1821,-5778,-1891,-5772,-1904,-5813,-1974,-5786,-1998,-5809,-2015,-5818,-1982,-5909,-1929,-6001,-1930,-6176,-1965,-6228,-2056,-6228,-2107,-6265,-2223,-6284,-2200,-6392,-2203,-6433,-2283,-6461,-2223,-6577,-2210,-6622,-2180,-6637,-2211,-6671,-2222,-6719,-2282,-6771,-2289,-6788,-2282,-6820,-2130,-6856,-2090,-6848,-2063,-6876,-2042,-6876,-2009,-6856,-1997,-6870,-1972,-6847,-1941,-6897,-1897,-6909,-1805,-6931,-1794,-6951,-1751]]},{"n":"Brasil","c":"Brasilia","lp":[-4901,-1279],"r":[[-6688,122,-6635,77,-6568,98,-6547,69,-6510,111,-6421,153,-6401,193,-6343,216,-6339,241,-6405,250,-6422,359,-6479,428,-6419,413,-6402,393,-6334,394,-6286,359,-6271,402,-6100,454,-6063,489,-6074,520,-6065,522,-6014,524,-5999,508,-6015,453,-5970,438,-5955,393,-5985,359,-5999,269,-5967,175,-5886,120,-5851,128,-5834,159,-5803,152,-5712,201,-5684,188,-5596,186,-5592,204,-5614,226,-5596,252,-5573,241,-5498,260,-5413,212,-5377,235,-5296,218,-5265,243,-5233,318,-5146,431,-5122,409,-5071,213,-5046,183,-4996,166,-4990,116,-5076,22,-5128,-9,-5198,-137,-5266,-155,-5195,-159,-5089,-94,-5069,-176,-5040,-202,-4931,-173,-4964,-266,-4921,-192,-4871,-149,-4846,-161,-4835,-148,-4845,-115,-4812,-74,-4756,-67,-4742,-77,-4744,-65,-4727,-65,-4546,-136,-4533,-172,-4508,-147,-4478,-180,-4465,-175,-4454,-205,-4476,-227,-4466,-237,-4444,-217,-4438,-237,-4459,-257,-4472,-320,-4444,-294,-4423,-247,-4411,-249,-4419,-281,-4338,-238,-4225,-279,-4188,-275,-4148,-292,-3996,-286,-3848,-372,-3717,-491,-3659,-510,-3555,-513,-3524,-557,-3481,-729,-3497,-841,-3560,-954,-3589,-969,-3589,-985,-3640,-1048,-3694,-1082,-3736,-1140,-3736,-1125,-3769,-1210,-3824,-1284,-3850,-1296,-3869,-1262,-3885,-1279,-3876,-1291,-3909,-1359,-3899,-1362,-3905,-1404,-3894,-1403,-3906,-1465,-3888,-1586,-3920,-1718,-3915,-1770,-3965,-1825,-3978,-1957,-4095,-2124,-4100,-2200,-4171,-2231,-4198,-2258,-4204,-2295,-4296,-2297,-4315,-2273,-4322,-2299,-4390,-2310,-4368,-2301,-4387,-2291,-4464,-2306,-4457,-2327,-4533,-2360,-4546,-2380,-4597,-2380,-4687,-2424,-4799,-2504,-4793,-2517,-4820,-2542,-4819,-2531,-4840,-2527,-4848,-2544,-4873,-2537,-4840,-2560,-4867,-2584,-4862,-2618,-4875,-2627,-4855,-2720,-4880,-2858,-4975,-2936,-5092,-3126,-5204,-3211,-5206,-3183,-5168,-3177,-5127,-3148,-5116,-3112,-5098,-3109,-5069,-3070,-5072,-3043,-5058,-3044,-5056,-3025,-5102,-3037,-5130,-3003,-5116,-3036,-5128,-3075,-5136,-3067,-5151,-3110,-5197,-3138,-5219,-3189,-5213,-3217,-5265,-3314,-5337,-3374,-5353,-3366,-5353,-3317,-5313,-3274,-5360,-3240,-5376,-3206,-5422,-3186,-5459,-3149,-5517,-3128,-5560,-3085,-5600,-3108,-5604,-3078,-5683,-3011,-5721,-3028,-5761,-3019,-5589,-2837,-5569,-2838,-5573,-2820,-5510,-2787,-5483,-2755,-5384,-2712,-5367,-2623,-5401,-2558,-5462,-2558,-5424,-2405,-5463,-2381,-5519,-2402,-5542,-2395,-5562,-2267,-5580,-2235,-5625,-2226,-5645,-2208,-5694,-2227,-5799,-2205,-5783,-2100,-5816,-2016,-5786,-1998,-5813,-1974,-5772,-1904,-5778,-1891,-5750,-1821,-5783,-1751,-5840,-1723,-5848,-1670,-5835,-1628,-6018,-1627,-6024,-1548,-6058,-1510,-6027,-1509,-6051,-1379,-6108,-1349,-6179,-1353,-6212,-1316,-6277,-1300,-6307,-1267,-6442,-1244,-6499,-1198,-6539,-1125,-6545,-1051,-6530,-1015,-6540,-971,-6658,-990,-6772,-1068,-6807,-1070,-6862,-1111,-6923,-1096,-7064,-1101,-7054,-944,-7124,-997,-7218,-1000,-7238,-951,-7321,-941,-7297,-899,-7355,-835,-7378,-794,-7372,-778,-7400,-756,-7396,-738,-7372,-731,-7376,-691,-7314,-647,-7324,-610,-7289,-512,-7184,-450,-7097,-435,-7080,-417,-6997,-430,-6940,-119,-6963,-51,-7007,-14,-7005,58,-6947,73,-6915,66,-6931,105,-6985,106,-6985,171,-6818,172,-6819,199,-6794,175,-6740,212,-6712,170,-6708,119,-6688,122],[-4963,-23,-4912,-16,-4839,-30,-4883,-139,-4904,-151,-4917,-141,-4923,-160,-4951,-151,-4959,-171,-4981,-179,-5051,-179,-5076,-124,-5058,-110,-5080,-91,-5065,-27,-5025,-12,-4963,-23]]},{"n":"Chile","c":"Santiago","lp":[-6907,-2342],"r":[[-7042,-1835,-6993,-1821,-6980,-1799,-6985,-1770,-6951,-1751,-6931,-1794,-6909,-1805,-6897,-1897,-6846,-1943,-6870,-1972,-6856,-1997,-6876,-2009,-6876,-2042,-6848,-2063,-6856,-2090,-6820,-2130,-6788,-2282,-6719,-2282,-6701,-2300,-6736,-2403,-6825,-2439,-6856,-2475,-6838,-2509,-6859,-2542,-6841,-2615,-6859,-2647,-6832,-2697,-6885,-2715,-6917,-2792,-6966,-2841,-6983,-2910,-7003,-2932,-6996,-3008,-6984,-3018,-6996,-3036,-7015,-3036,-7031,-3102,-7052,-3115,-7059,-3157,-7025,-3196,-7036,-3208,-7002,-3288,-7008,-3320,-6982,-3328,-6985,-3422,-7005,-3430,-7039,-3515,-7056,-3525,-7040,-3606,-7106,-3652,-7119,-3684,-7117,-3776,-7085,-3854,-7095,-3874,-7140,-3894,-7154,-3960,-7172,-3964,-7166,-4002,-7182,-4018,-7170,-4034,-7194,-4079,-7191,-4165,-7175,-4205,-7211,-4225,-7214,-4258,-7210,-4307,-7175,-4324,-7190,-4335,-7168,-4393,-7182,-4438,-7121,-4444,-7116,-4456,-7126,-4476,-7206,-4477,-7204,-4490,-7160,-4498,-7135,-4523,-7151,-4551,-7175,-4558,-7163,-4595,-7188,-4616,-7170,-4665,-7194,-4683,-7190,-4720,-7235,-4749,-7252,-4788,-7229,-4823,-7261,-4852,-7261,-4879,-7303,-4901,-7314,-4930,-7346,-4931,-7358,-4958,-7350,-5013,-7315,-5074,-7234,-5068,-7241,-5154,-7197,-5196,-6996,-5201,-6846,-5229,-6924,-5221,-6962,-5246,-7080,-5277,-7100,-5378,-7130,-5388,-7217,-5363,-7241,-5335,-7194,-5323,-7189,-5352,-7179,-5348,-7174,-5323,-7129,-5303,-7123,-5281,-7139,-5276,-7228,-5313,-7255,-5346,-7305,-5324,-7273,-5276,-7151,-5261,-7271,-5254,-7312,-5307,-7365,-5284,-7324,-5271,-7312,-5249,-7359,-5269,-7401,-5264,-7404,-5240,-7430,-5212,-7383,-5223,-7368,-5208,-7326,-5216,-7280,-5195,-7257,-5220,-7271,-5236,-7252,-5226,-7262,-5201,-7254,-5171,-7317,-5145,-7260,-5180,-7352,-5204,-7375,-5180,-7420,-5168,-7393,-5162,-7394,-5127,-7481,-5106,-7509,-5068,-7469,-5066,-7478,-5047,-7464,-5036,-7381,-5094,-7365,-5049,-7398,-5083,-7420,-5061,-7419,-5049,-7395,-5051,-7463,-5019,-7433,-4997,-7396,-4999,-7432,-4978,-7429,-4960,-7384,-4961,-7409,-4943,-7393,-4902,-7422,-4950,-7437,-4940,-7434,-4860,-7401,-4848,-7447,-4846,-7458,-4800,-7339,-4815,-7361,-4799,-7372,-4766,-7394,-4793,-7423,-4797,-7465,-4770,-7453,-4757,-7424,-4768,-7413,-4759,-7448,-4743,-7416,-4718,-7431,-4679,-7451,-4689,-7501,-4674,-7498,-4651,-7554,-4670,-7543,-4693,-7571,-4671,-7492,-4616,-7507,-4587,-7416,-4577,-7412,-4550,-7396,-4540,-7382,-4545,-7402,-4606,-7439,-4622,-7397,-4615,-7388,-4585,-7374,-4581,-7371,-4607,-7395,-4653,-7385,-4657,-7359,-4590,-7376,-4570,-7373,-4548,-7327,-4535,-7293,-4545,-7344,-4524,-7340,-4510,-7268,-4459,-7266,-4444,-7327,-4417,-7300,-4363,-7308,-4332,-7276,-4304,-7285,-4267,-7263,-4251,-7277,-4226,-7263,-4220,-7241,-4239,-7250,-4198,-7282,-4191,-7236,-4165,-7232,-4150,-7254,-4169,-7295,-4151,-7324,-4178,-7374,-4174,-7362,-4158,-7386,-4145,-7398,-4097,-7367,-3996,-7341,-3979,-7323,-3922,-7352,-3851,-7346,-3804,-7366,-3770,-7366,-3734,-7360,-3719,-7322,-3717,-7312,-3669,-7259,-3576,-7262,-3559,-7222,-3510,-7200,-3417,-7166,-3365,-7174,-3310,-7145,-3266,-7171,-3063,-7167,-3033,-7140,-3014,-7132,-2965,-7152,-2893,-7119,-2838,-7065,-2633,-7071,-2578,-7045,-2525,-7057,-2464,-7039,-2357,-7059,-2326,-7033,-2285,-7009,-2149,-7016,-1971,-7042,-1835],[-6863,-5265,-6865,-5485,-6949,-5486,-6972,-5471,-7050,-5481,-7190,-5460,-7180,-5443,-7080,-5433,-7070,-5449,-7031,-5453,-7086,-5411,-7087,-5388,-7053,-5363,-7038,-5399,-7063,-5401,-7054,-5414,-7017,-5438,-6974,-5431,-6925,-5456,-6904,-5441,-6999,-5411,-7015,-5389,-7009,-5372,-6936,-5342,-7033,-5338,-7044,-5309,-7013,-5294,-7038,-5275,-6994,-5282,-6941,-5249,-6917,-5267,-6863,-5265]]},{"n":"Colombia","c":"Bogotá","lp":[-7341,305],"r":[[-7132,1186,-7196,1167,-7225,1120,-7269,1084,-7301,979,-7337,919,-7306,926,-7280,911,-7267,863,-7239,829,-7247,752,-7201,703,-7074,709,-7013,695,-6943,612,-6786,629,-6748,618,-6747,593,-6782,527,-6786,451,-6766,386,-6731,342,-6786,279,-6762,279,-6721,239,-6688,136,-6688,122,-6708,119,-6712,170,-6740,212,-6794,175,-6819,199,-6818,172,-6985,171,-6985,106,-6931,105,-6915,66,-6947,73,-7005,58,-7007,-14,-6963,-51,-6940,-119,-6997,-424,-7034,-381,-7074,-378,-7010,-266,-7097,-221,-7140,-233,-7175,-215,-7222,-240,-7294,-239,-7315,-228,-7320,-183,-7350,-169,-7366,-125,-7425,-97,-7480,-20,-7578,9,-7627,44,-7649,24,-7740,39,-7770,84,-7831,105,-7903,162,-7879,185,-7858,177,-7859,236,-7781,272,-7708,391,-7726,389,-7728,406,-7736,394,-7741,425,-7752,421,-7729,472,-7737,532,-7753,554,-7725,578,-7747,618,-7737,658,-7790,723,-7776,770,-7754,757,-7720,797,-7748,850,-7739,864,-7679,793,-7677,831,-7692,857,-7628,899,-7603,937,-7564,945,-7554,1021,-7571,1014,-7545,1061,-7484,1111,-7433,1100,-7452,1086,-7440,1077,-7414,1132,-7331,1130,-7228,1189,-7214,1219,-7171,1242,-7126,1234,-7114,1205,-7132,1186]]},{"n":"Ecuador","c":"Quito","lp":[-7816,-119],"r":[[-7528,-11,-7563,-12,-7526,-59,-7525,-95,-7541,-92,-7557,-153,-7668,-256,-7786,-298,-7816,-347,-7835,-340,-7869,-456,-7903,-497,-7933,-493,-7964,-445,-8014,-430,-8048,-443,-8035,-421,-8049,-401,-8018,-388,-8032,-339,-7996,-316,-7973,-258,-7984,-207,-7993,-255,-8003,-256,-8001,-235,-8028,-271,-8093,-227,-8076,-193,-8090,-108,-8055,-85,-8046,-59,-8028,-62,-8048,-37,-8005,16,-8004,83,-7890,121,-7886,146,-7818,97,-7770,84,-7740,39,-7649,24,-7627,44,-7528,-11]]},{"n":"Guyana","c":"Georgetown","lp":[-5875,276],"r":[[-6074,520,-6139,594,-6113,621,-6115,669,-6035,700,-6035,715,-6063,721,-6072,754,-5985,825,-6002,855,-5920,807,-5851,740,-5867,639,-5830,688,-5798,679,-5723,618,-5719,555,-5732,534,-5721,520,-5733,502,-5788,488,-5805,410,-5765,339,-5730,338,-5720,285,-5670,204,-5648,194,-5732,196,-5803,152,-5834,159,-5851,128,-5882,120,-5923,138,-5967,175,-5999,269,-5985,359,-5955,393,-5970,438,-6015,453,-5999,508,-6014,524,-6074,520]]},{"n":"Paraguay","c":"Asunción","lp":[-6023,-2166],"r":[[-5816,-2016,-5783,-2100,-5796,-2211,-5694,-2227,-5645,-2208,-5625,-2226,-5585,-2231,-5562,-2267,-5542,-2395,-5519,-2402,-5463,-2381,-5424,-2405,-5476,-2653,-5514,-2693,-5543,-2701,-5571,-2741,-5616,-2732,-5644,-2755,-5860,-2731,-5862,-2713,-5819,-2663,-5811,-2618,-5757,-2553,-5764,-2533,-5796,-2505,-5919,-2456,-5989,-2409,-6103,-2376,-6180,-2318,-6265,-2223,-6228,-2107,-6228,-2056,-6176,-1965,-6001,-1930,-5909,-1929,-5818,-1982,-5816,-2016]]},{"n":"Perú","c":"Lima","lp":[-7296,-1308],"r":[[-6997,-424,-7005,-433,-7040,-415,-7080,-417,-7097,-435,-7184,-450,-7289,-512,-7324,-610,-7314,-647,-7376,-691,-7372,-731,-7396,-738,-7400,-756,-7372,-778,-7378,-794,-7355,-835,-7297,-899,-7321,-941,-7238,-951,-7218,-1000,-7124,-997,-7054,-944,-7064,-1101,-6958,-1095,-6869,-1250,-6898,-1288,-6907,-1368,-6887,-1417,-6936,-1480,-6917,-1524,-6942,-1564,-6922,-1615,-6884,-1634,-6962,-1720,-6951,-1751,-6985,-1770,-6980,-1799,-6993,-1821,-7042,-1835,-7134,-1768,-7153,-1729,-7510,-1541,-7593,-1463,-7638,-1386,-7626,-1380,-7622,-1337,-7683,-1235,-7715,-1206,-7722,-1166,-7763,-1129,-7876,-862,-7999,-677,-8114,-606,-8116,-588,-8093,-584,-8088,-564,-8134,-467,-8123,-423,-8032,-339,-8018,-388,-8049,-401,-8035,-421,-8048,-443,-8014,-430,-7964,-445,-7933,-493,-7903,-497,-7869,-456,-7835,-340,-7816,-347,-7786,-298,-7668,-256,-7557,-153,-7541,-92,-7525,-95,-7526,-59,-7563,-12,-7522,-4,-7462,-37,-7425,-97,-7366,-125,-7350,-169,-7320,-183,-7315,-228,-7294,-239,-7222,-240,-7175,-215,-7140,-233,-7097,-221,-7010,-266,-7074,-378,-7034,-381,-6997,-424]]},{"n":"Surinam","c":"Paramaribo","lp":[-5596,418],"r":[[-5416,536,-5445,501,-5445,449,-5435,405,-5399,359,-5440,246,-5466,233,-5498,260,-5573,241,-5596,252,-5614,226,-5592,204,-5596,186,-5670,204,-5720,285,-5730,338,-5765,339,-5803,400,-5788,488,-5731,505,-5721,521,-5732,534,-5697,599,-5624,589,-5590,570,-5583,596,-5436,591,-5405,581,-5416,536]]},{"n":"Uruguay","c":"Montevideo","lp":[-5598,-3294],"r":[[-5337,-3374,-5379,-3438,-5417,-3467,-5490,-3493,-5567,-3478,-5625,-3490,-5717,-3445,-5787,-3445,-5844,-3372,-5836,-3318,-5809,-3297,-5819,-3192,-5799,-3162,-5805,-3149,-5781,-3086,-5787,-3059,-5765,-3023,-5721,-3028,-5683,-3011,-5604,-3078,-5600,-3108,-5560,-3085,-5517,-3128,-5459,-3149,-5422,-3186,-5376,-3206,-5360,-3240,-5313,-3274,-5353,-3317,-5353,-3366,-5337,-3374]]},{"n":"Venezuela","c":"Caracas","lp":[-6441,715],"r":[[-6002,855,-5985,825,-6072,754,-6063,721,-6035,715,-6035,700,-6115,669,-6113,621,-6139,594,-6067,516,-6063,489,-6100,454,-6128,452,-6155,429,-6271,402,-6286,359,-6334,394,-6402,393,-6419,413,-6479,428,-6422,359,-6405,250,-6339,241,-6339,222,-6401,193,-6421,153,-6503,116,-6556,69,-6564,97,-6630,75,-6688,122,-6721,239,-6762,279,-6786,279,-6731,342,-6766,386,-6786,451,-6782,527,-6747,593,-6748,618,-6786,629,-6943,612,-7013,695,-7074,709,-7201,703,-7247,752,-7239,829,-7267,863,-7280,911,-7306,926,-7337,919,-7301,979,-7269,1084,-7225,1120,-7196,1167,-7132,1186,-7196,1157,-7159,1066,-7211,982,-7169,907,-7124,916,-7105,971,-7149,1053,-7147,1096,-7010,1152,-6980,1147,-6982,1167,-7019,1162,-7029,1189,-7000,1218,-6963,1148,-6883,1143,-6840,1116,-6814,1049,-6625,1063,-6585,1026,-6513,1007,-6419,1046,-6373,1050,-6430,1064,-6188,1074,-6238,1055,-6291,1053,-6269,1029,-6274,1006,-6255,1020,-6232,978,-6208,998,-6174,963,-6177,981,-6159,989,-6079,936,-6102,915,-6125,860,-6162,860,-6130,841,-6080,859,-6002,855]]}]};
+const COLORES_MAPA=[['rojo','#e57373'],['azul','#64b5f6'],['verde','#81c784'],['amarillo','#ffd54f']];
+const MAPA_INFO={ uruguay:{ nombre:'departamentos', cos:Math.cos(32.5*Math.PI/180), uno:'departamento', titulo:'Uruguay' }, sudamerica:{ nombre:'países', cos:Math.cos(22*Math.PI/180), uno:'país', titulo:'América del Sur' } };
+GEN.mapas = function(sel,count){
+  const M=MAPAS[sel.mapa], n=Math.min(count, M.length), reg=M.map((r,i)=>i);
+  const elegidos=shuffle([...reg]).slice(0,n);
+  if (sel.modo==='colorear'){
+    const grupos=COLORES_MAPA.slice(0, Math.min(4, Math.max(2,Math.ceil(n/3)))).map(([c,hex])=>({ c, hex, regs:[] }));
+    elegidos.forEach((r,k)=> grupos[k%grupos.length].regs.push(r));
+    return { kind:'blocks', cols:1, items:[{ type:'mapa', mapa:sel.mapa, modo:'colorear', grupos, banco:false }] };
+  }
+  return { kind:'blocks', cols:1, items:[{ type:'mapa', mapa:sel.mapa, modo:'nombres', num:elegidos, capital:sel.capital==='si', banco:sel.banco==='si',
+    words:shuffle(elegidos.map(i=>M[i].n)), caps:shuffle(elegidos.map(i=>M[i].c)) }] };
+};
+function mapaGeom(it,w){
+  const M=MAPAS[it.mapa], inf=MAPA_INFO[it.mapa], cs=inf.cos;
+  let lo=1e9, hi=-1e9, la0=1e9, la1=-1e9;
+  M.forEach(r=>r.r.forEach(ring=>{ for (let i=0;i<ring.length;i+=2){ lo=Math.min(lo,ring[i]); hi=Math.max(hi,ring[i]); la0=Math.min(la0,ring[i+1]); la1=Math.max(la1,ring[i+1]); } }));
+  const dx=(hi-lo)/100*cs, dy=(la1-la0)/100, mw=Math.min(w*.55,100), sc=Math.min(mw/dx, 150/dy);
+  return { M, inf, lo, la1, sc, cs, mw:dx*sc, mh:dy*sc };
+}
+BLOCKS.mapa = { full:true,
+  h:(it,w)=>{ const g=mapaGeom(it,w), n= it.modo==='colorear' ? it.grupos.length*14 : it.num.length*8.6;
+    const bank= it.banco ? 8+wrapText(it.words.join('   ·   '),12,w-18).length*5.5+4 : 0;
+    return 10 + bank + Math.max(g.mh, n+8) + 4; },
+  draw(els,it,idx,x,y,w,isKey){
+    const g=mapaGeom(it,w); numLabel(els,idx,x,y+4);
+    const titulo = it.modo==='colorear' ? `Pintá el mapa de ${g.inf.titulo} según las indicaciones.` : `Escribí el nombre de cada ${g.inf.uno} numerado${it.capital?' y su capital':''}.`;
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:titulo});
+    let cy=y+8;
+    if (it.banco){
+      const lines=wrapText(it.words.join('   ·   '),12,w-18), bh=8+lines.length*5.5;
+      els.push({t:'rect', x:x+8, y:cy, w:w-8, h:bh, r:2.5, stroke:'#999', lw:.4});
+      lines.forEach((ln,j)=> els.push({t:'text', x:x+8+(w-8)/2, y:cy+6.5+j*5.5, s:12, str:ln, a:'center', b:true}));
+      cy+=bh+4;
+    }
+    const P=(lon,lat)=>[x+8+(lon-g.lo)/100*g.cs*g.sc, cy+(g.la1-lat)/100*g.sc];
+    const dest = it.modo==='colorear' ? new Map(it.grupos.flatMap(gr=>gr.regs.map(r=>[r,gr.hex]))) : null;
+    g.M.forEach((r,ri)=>{ const marca = isKey && dest && dest.has(ri);
+      r.r.forEach(ring=>{ for (let i=0;i<ring.length;i+=2){ const j=(i+2)%ring.length, a=P(ring[i],ring[i+1]), b=P(ring[j],ring[j+1]);
+        els.push({t:'line', x1:a[0], y1:a[1], x2:b[0], y2:b[1], w: marca?1.3:.35, c: marca? dest.get(ri) : '#333'}); } }); });
+    const lx=x+8+g.mw+8, lw=w-(g.mw+16)-0;
+    if (it.modo==='colorear'){
+      let ly=cy+6;
+      it.grupos.forEach(gr=>{
+        els.push({t:'rect', x:lx, y:ly-4.2, w:6, h:6, r:1, stroke:'#444', lw:.4, fill:gr.hex});
+        const L=wrapText(`Pintá de ${gr.c}: `+gr.regs.map(r=>g.M[r].n).join(', ')+'.', 11, lw-9);
+        L.forEach((ln,j)=> els.push({t:'text', x:lx+9, y:ly+j*4.8, s:11, str:ln}));
+        ly+=Math.max(14, L.length*4.8+6); });
+      return;
+    }
+    it.num.forEach((ri,k)=>{ const p=P(g.M[ri].lp[0], g.M[ri].lp[1]);
+      els.push({t:'text', x:p[0], y:p[1]+1.2, s: it.mapa==='uruguay'?9:8, str:String(k+1), a:'center', b:true, c:'#111'});
+      const ly=cy+6+k*8.6, rowL=lx, nl=measure((k+1)+'.',FSB)+2;
+      els.push({t:'text', x:rowL, y:ly, s:FSB, b:true, str:(k+1)+'.'});
+      if (it.capital){ const bw=(lw-nl-4)/2;
+        els.push({t:'line', x1:rowL+nl, y1:ly+.8, x2:rowL+nl+bw, y2:ly+.8, w:.3, c:'#444'});
+        els.push({t:'line', x1:rowL+nl+bw+4, y1:ly+.8, x2:rowL+lw, y2:ly+.8, w:.3, c:'#444'});
+        if (isKey){ [[g.M[ri].n,rowL+nl+1,bw-2],[g.M[ri].c,rowL+nl+bw+5,bw-3]].forEach(([s,tx,mw2])=> els.push({t:'text', x:tx, y:ly, s:Math.min(FSB, FSB*mw2/Math.max(1,measure(s,FSB))), str:s, c:RED, b:true})); }
+      } else {
+        els.push({t:'line', x1:rowL+nl, y1:ly+.8, x2:rowL+lw, y2:ly+.8, w:.3, c:'#444'});
+        if (isKey) els.push({t:'text', x:rowL+nl+1, y:ly, s:Math.min(FSB, FSB*(lw-nl-2)/Math.max(1,measure(g.M[ri].n,FSB))), str:g.M[ri].n, c:RED, b:true});
+      }
+    });
+  } };
+
+/* ---------- Catálogo y opciones ---------- */
+CATALOG.splice(CATALOG.findIndex(a=>a.id==='sopas'),0,{ id:'ciencias', name:'Ciencias', icon:'ciencias', desc:'Naturales y Sociales', items:[
+  { id:'esquemas', name:'Esquemas para rotular', ready:true },
+  { id:'cadenas', name:'Cadenas alimentarias', ready:true },
+  { id:'lineas', name:'Líneas de tiempo', ready:true },
+  { id:'mapas', name:'Mapas mudos', ready:true } ] });
+ICONS.ciencias='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5.2 9.2A1.8 1.8 0 0 0 6.4 21h11.2a1.8 1.8 0 0 0 1.6-2.8L14 9V3M7.5 15h9"/></svg>';
+Object.assign(ACTIVITIES, {
+  esquemas:{ title:'Esquemas para rotular', consigna:'Escribí el nombre de cada parte.', single:true, cols:1,
+    count:{ label:'Cantidad de esquemas', options:[1,2,3], def:2 }, groups:[
+    { id:'diagramas', label:'Esquemas', type:'multi', options:[ {v:'planta',t:'Partes de la planta'},{v:'agua',t:'El ciclo del agua'},{v:'solar',t:'Los planetas del Sistema Solar'} ], def:['planta','agua'] },
+    { id:'banco', label:'Lista de palabras para elegir', type:'single', options:SINO, def:'si' } ] },
+  cadenas:{ title:'Cadenas alimentarias', consigna:'Completá las cadenas.', single:true, cols:1,
+    count:{ label:'Cantidad de cadenas', options:[2,3,4,5,6], def:4 }, groups:[
+    { id:'huecos', label:'Lugares para completar', type:'single', options:[ {v:1,t:'1'},{v:2,t:'2'},{v:3,t:'3'} ], def:2 },
+    { id:'roles', label:'Mostrar el rol (productor, consumidor…)', type:'single', options:SINO, def:'si' } ] },
+  lineas:{ title:'Línea de tiempo', consigna:'Ordená los hechos.', single:true, cols:1,
+    count:{ label:'Cantidad de hechos', options:[4,5,6,7,8], def:6 }, groups:[
+    { id:'tema', label:'Tema', type:'single', options:[ {v:'uruguay',t:'Historia de Uruguay'},{v:'inventos',t:'Inventos y descubrimientos'} ], def:'uruguay' },
+    { id:'modo', label:'Cómo se trabaja', type:'single', options:[ {v:'linea',t:'Completar una línea de tiempo con los años'},{v:'ordenar',t:'Numerar los hechos en orden'} ], def:'linea' },
+    { id:'anios', label:'Mostrar el año junto a cada hecho', type:'single', options:SINO, def:'no', showIf:s=>s.modo==='ordenar' } ] },
+  mapas:{ title:'Mapa mudo', consigna:'Mirá el mapa y resolvé.', single:true, cols:1,
+    count:{ label:'Cantidad de lugares', options:[4,6,8,10,12,19], def:8 }, groups:[
+    { id:'mapa', label:'Mapa', type:'single', options:[ {v:'uruguay',t:'Uruguay: departamentos'},{v:'sudamerica',t:'América del Sur: países'} ], def:'uruguay' },
+    { id:'modo', label:'Actividad', type:'single', options:[ {v:'nombres',t:'Escribir los nombres (mapa numerado)'},{v:'colorear',t:'Pintar según indicaciones'} ], def:'nombres' },
+    { id:'capital', label:'Escribir también la capital', type:'single', options:SINO, def:'no', showIf:s=>s.modo==='nombres' },
+    { id:'banco', label:'Lista de nombres para elegir', type:'single', options:SINO, def:'no', showIf:s=>s.modo==='nombres' } ] },
+});
+Object.assign(DESC, {
+  esquemas:'Dibujos de la planta, el ciclo del agua y los planetas, con líneas para escribir cada nombre.',
+  cadenas:'Cadenas alimentarias con lugares para completar y, si querés, el rol de cada ser vivo.',
+  lineas:'Hechos de la historia de Uruguay o de la ciencia para ubicar en una línea de tiempo.',
+  mapas:'Mapa de los departamentos de Uruguay o de los países de América del Sur, para rotular o pintar.',
+});
+Object.assign(NOTAS, {
+  esquemas:'Rotulamos esquemas. Si no recuerdan un nombre, pueden buscarlo en el cuaderno o en el libro.',
+  cadenas:'Completamos cadenas alimentarias. Recordá: la flecha va hacia quien se come al otro ser vivo.',
+  lineas:'Ordenamos hechos en el tiempo. Primero los más antiguos, después los más recientes.',
+  mapas:'Trabajamos con mapas. Pueden ayudarse con el mapa del cuaderno o del libro.',
 });
 
 const BILL_W=25, BILL_H=12.5, COIN_D=11.5;
@@ -3355,7 +3705,8 @@ const DIAS_SEM=['Lunes','Martes','Miércoles','Jueves','Viernes'];
 const CORTA={ sumas:6, restas:6, mult:6, div:4, numeracion:6, problemas:2, mental:10, escribir:6, dinero:3, hora:6,
   sopaN:6, sopaL:6, crucigrama:5, unir:5, completar:5, vf:5, ordenar:5,
   fracciones:6, tablas:9, medidas:4, patrones:4, logica:2, graficos:3,
-  ortografia:6, acentos:6, ordenarOr:3, clases:3, verbos:3, ahorcado:4 };
+  ortografia:6, acentos:6, ordenarOr:3, clases:3, verbos:3, ahorcado:4,
+  esquemas:1, cadenas:2, lineas:4, mapas:4 };
 let week={ dias:4, acts:['sumas','problemas','mental','sopaL','unir'], largo:'corta' };
 function loadWeek(){ try{ const w=JSON.parse(localStorage.getItem('hojas-semana')||'null'); if (w && Array.isArray(w.acts)) week={...week,...w}; }catch(e){} }
 function saveWeek(){ try{ localStorage.setItem('hojas-semana', JSON.stringify(week)); }catch(e){} }
