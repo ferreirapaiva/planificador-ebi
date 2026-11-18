@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Icono } from '../componentes/Iconos';
 
 /**
@@ -7,6 +8,10 @@ import { Icono } from '../componentes/Iconos';
  * Guarda sus opciones y temas propios en este navegador.
  */
 export function HojasActividades() {
+  // Si se llega desde una clase del plan semanal, se pasa el tema al generador (?q=…&c=…&uc=…).
+  const [params] = useSearchParams();
+  const vinculo = ['q', 'c', 'uc'].filter((k) => params.get(k)).map((k) => `${k}=${encodeURIComponent(params.get(k) ?? '')}`).join('&');
+  const destino = `actividades/index.html${vinculo ? `?${vinculo}` : ''}`;
   // En pantallas grandes el marco crece con el contenido (sin scroll propio).
   const [alto, setAlto] = useState<number | null>(null);
   useEffect(() => {
@@ -24,7 +29,7 @@ export function HojasActividades() {
           <p className="mt-1 text-slate-600">Elegí la actividad, ajustala y descargala en PDF lista para imprimir, con su hoja de respuestas.</p>
         </div>
         <a
-          href="actividades/index.html"
+          href={destino}
           target="_blank"
           rel="noopener"
           className="inline-flex min-h-11 items-center gap-2 rounded-full border-[1.5px] border-slate-200 bg-white px-5 text-sm font-extrabold text-slate-900 hover:border-blue-300 hover:bg-blue-50"
@@ -34,7 +39,8 @@ export function HojasActividades() {
         </a>
       </div>
       <iframe
-        src="actividades/index.html"
+        src={destino}
+        key={destino}
         title="Generador de hojas de actividades"
         style={alto ? ({ '--alto': `${alto}px` } as React.CSSProperties) : undefined}
         className="h-[calc(100dvh-15rem)] min-h-[34rem] w-full border-0 bg-transparent lg:h-[var(--alto,calc(100dvh-11rem))]"

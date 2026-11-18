@@ -192,6 +192,17 @@ function EditorBloque({ bloque, onCambio, onBorrar }: { bloque: BloqueHorario; o
         <AreaTexto etiqueta="Qué se hace" valor={bloque.detalle} onCambio={set('detalle')} filas={3} placeholder="Consigna, momentos, agrupamiento…" />
         <AreaTexto etiqueta="Materiales" valor={bloque.materiales} onCambio={set('materiales')} filas={3} placeholder="Uno por línea o separados por coma" />
       </div>
+      {(bloque.actividad.trim() || bloque.detalle.trim()) && (
+        <div className="mt-3">
+          <Link
+            to={`/actividades?${new URLSearchParams({ q: `${bloque.actividad} ${bloque.detalle}`.trim().slice(0, 400), c: bloque.actividad.trim().slice(0, 80), uc: bloque.area })}`}
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border-[1.5px] border-slate-200 bg-white px-5 text-sm font-extrabold text-slate-900 hover:border-blue-300 hover:bg-blue-50"
+          >
+            <Icono nombre="hoja" tamano={18} grosor={2.2} />
+            Hoja de actividades para este momento
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

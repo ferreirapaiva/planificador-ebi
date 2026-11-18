@@ -63,6 +63,26 @@
   .embebido .intro p{color:var(--muted)}
   .embebido .intro .mini{border-radius:999px}
   .embebido .btn.ghost{border-width:1.5px}
+  .subfold{margin:12px 0 0; border:1.5px solid var(--line); border-radius:14px; padding:2px 12px 12px}
+  .subfold summary{cursor:pointer; font-weight:800; padding:10px 0; list-style:none}
+  .subfold summary::-webkit-details-marker{display:none}
+  .subfold summary::after{content:"▾"; float:right; color:var(--muted)}
+  .subfold[open] summary::after{content:"▴"}
+  .fav-new{display:flex; gap:8px; flex-wrap:wrap}
+  .fav-new input{flex:1 1 200px; padding:10px 12px; border:1.5px solid var(--line); border-radius:14px; background:#fff}
+  .fav-list{list-style:none; margin:12px 0 0; padding:0; display:flex; flex-direction:column; gap:8px}
+  .fav-list li{display:flex; align-items:center; gap:8px; border:1.5px solid var(--line); border-radius:14px; padding:8px 8px 8px 12px; background:#fff}
+  .fav-list li b{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .fav-list li small{color:var(--muted); display:block; font-weight:600}
+  .fav-vacio{color:var(--muted); font-size:.92rem; margin:10px 0 0}
+  .vinc{background:var(--c-soft); border-radius:20px; padding:14px 16px; border:1.5px solid color-mix(in srgb, var(--c) 35%, white)}
+  .vinc[hidden]{display:none}
+  .vinc b{display:block; margin-bottom:6px}
+  .vinc .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+  .txt-area{display:block; width:100%; margin-top:6px; padding:10px 12px; border:1.5px solid var(--line); border-radius:14px; background:#fff; font:inherit; resize:vertical}
+  .txt-area:focus{border-color:var(--c); outline:none}
+  .embebido .area b{white-space:normal; line-height:1.1; text-align:left}
+  .embebido .area{white-space:normal}
   body[data-area="sopas"]{ --c:var(--sopas); --c-soft:var(--sopas-soft); }
   body[data-area="cruci"]{ --c:var(--cruci); --c-soft:var(--cruci-soft); }
   body[data-area="repaso"]{ --c:var(--repaso); --c-soft:var(--repaso-soft); }
@@ -296,6 +316,7 @@
 
 <main>
   <section class="controls" aria-label="Opciones de la hoja">
+    <div class="vinc" id="vinc" hidden></div>
     <div class="intro" id="intro" hidden>
       <b>Cómo se usa</b>
       <p>Seguí los pasos del 1 al 5. A la derecha ves la hoja tal como se va a imprimir, y se actualiza con cada cambio.</p>
@@ -374,6 +395,24 @@
         </label>
       </div>
       <p class="help" id="versionsHelp" hidden>Cada versión tiene los mismos tipos de ejercicio con otros números, para que no se copien.</p>
+      <label class="field">Nivel de dificultad
+        <select id="nivel">
+          <option value="propio">Como lo configuré arriba</option>
+          <option value="facil">Fácil</option>
+          <option value="dificil">Difícil</option>
+          <option value="ambos">Las dos versiones: fácil y difícil</option>
+        </select>
+      </label>
+      <p class="help" id="nivelHelp" hidden></p>
+      <details class="subfold" id="escDet">
+        <summary>Encabezado de la escuela <span class="hint">· nombre, grupo y docente ya completados</span></summary>
+        <div class="row2 first">
+          <label class="field">Escuela<input type="text" id="escEscuela" maxlength="40" placeholder="Escuela N.º 123"></label>
+          <label class="field">Grupo<input type="text" id="escGrupo" maxlength="20" placeholder="4.º A"></label>
+        </div>
+        <label class="field">Docente<input type="text" id="escDocente" maxlength="40" placeholder="Maestra Ana Pérez"></label>
+        <p class="help">Se imprime arriba de todas las hojas. Se guarda en este navegador; dejalo vacío si no lo querés.</p>
+      </details>
       <label class="check"><input type="checkbox" id="upper"> Todo en mayúscula de imprenta</label>
       <label class="check"><input type="checkbox" id="withKey" checked> Agregar al final la hoja de respuestas para el docente</label>
     </div>
@@ -397,6 +436,16 @@
     </div>
 
     <h3 class="more-title">Para juntar varias actividades</h3>
+
+    <details class="panel fold" id="favPanel">
+      <summary><span class="fold-t">Fichas favoritas</span><span class="fold-d" id="favSub">Guardá una ficha con sus ajustes para repetirla</span></summary>
+      <p class="lead">Armá la ficha como la querés y guardala con un nombre. Después la abrís con un toque.</p>
+      <div class="fav-new">
+        <input type="text" id="favName" maxlength="50" placeholder="Nombre de la ficha (por ejemplo: Sumas de los lunes)">
+        <button type="button" class="btn primary" id="favSave">Guardar esta ficha</button>
+      </div>
+      <ul class="fav-list" id="favList"></ul>
+    </details>
 
     <details class="panel fold" id="comboPanel">
       <summary><span class="fold-t">Hoja combinada</span><span class="fold-d" id="comboSub">Varias actividades distintas en un solo PDF</span></summary>
@@ -1559,10 +1608,12 @@ function loadSaved(){
     if (typeof s.upper==='boolean') OPT.upper=s.upper;
     if ([1,1.2,1.4].includes(s.scale)) OPT.scale=s.scale;
     OPT.tarea=!!s.tarea; OPT.media=!!s.media; if ([1,2,3,4].includes(s.versions)) OPT.versions=s.versions;
+    if (['propio','facil','dificil','ambos'].includes(s.nivel)) OPT.nivel=s.nivel;
+    if (s.esc && typeof s.esc==='object') OPT.esc={ escuela:String(s.esc.escuela||''), grupo:String(s.esc.grupo||''), docente:String(s.esc.docente||'') };
   }catch(e){}
 }
 function save(){
-  try{ localStorage.setItem('hojas-v2', JSON.stringify({ per:state.per, activity:state.activity, order:$('order').value, withKey:$('withKey').checked, upper:OPT.upper, scale:OPT.scale, tarea:OPT.tarea, media:OPT.media, versions:OPT.versions })); }catch(e){}
+  try{ localStorage.setItem('hojas-v2', JSON.stringify({ per:state.per, activity:state.activity, order:$('order').value, withKey:$('withKey').checked, upper:OPT.upper, scale:OPT.scale, tarea:OPT.tarea, media:OPT.media, versions:OPT.versions, nivel:OPT.nivel, esc:OPT.esc })); }catch(e){}
 }
 
 /* ================= Menús ================= */
@@ -1602,7 +1653,9 @@ function selectActivity(id){
   $('actDesc').textContent=DESC[id]||'';
   $('regenTxt').textContent = ['sopaN','sopaL','crucigrama','unir','completar','vf','ordenar'].includes(id) ? 'Mezclar de nuevo' : 'Cambiar los ejercicios';
   $('regen').hidden = id==='comprension';
+  if (typeof syncNivelUI==='function') syncNivelUI();
 }
+let taT;
 function renderOptions(){
   const A=ACTIVITIES[state.activity], P=cur(), box=$('opts'); box.innerHTML='';
   A.groups.forEach(g=>{
@@ -1611,6 +1664,13 @@ function renderOptions(){
     const wrap=document.createElement('div'); wrap.className='group';
     wrap.innerHTML=`<h4>${g.label} ${g.type==='multi'?'<span class="hint">· podés marcar varias</span>':''}</h4>`;
     if (g.type==='comp'){ wrap.appendChild(compUI(P)); box.appendChild(wrap); return; }
+    if (g.type==='texto'){
+      const ta=document.createElement('textarea'); ta.className='txt-area'; ta.rows=g.rows||6; ta.placeholder=g.placeholder||''; ta.value=P.sel[g.id]||'';
+      ta.oninput=()=>{ P.sel[g.id]=ta.value; clearTimeout(taT); taT=setTimeout(regenerate,300); };
+      wrap.appendChild(ta);
+      if (g.help){ const hp=document.createElement('p'); hp.className='help'; hp.textContent=g.help; wrap.appendChild(hp); }
+      box.appendChild(wrap); return;
+    }
     if (g.type==='bank'){
       if (!allBanks().some(b=>b.id===P.sel[g.id])) P.sel[g.id]=BUILTIN_BANKS[0].id;
       wrap.appendChild(bankGroupUI(g,P)); box.appendChild(wrap); return;
@@ -1655,18 +1715,21 @@ const PAGE_W=210, PAGE_H=297, RED='#c0392b', S=6.5, RS=8.5, F=18;
 let M=15;
 let W=PAGE_W, H=PAGE_H;          // se achican al agrandar la letra (la hoja se escala)
 let SH=null;                      // hoja que se está dibujando: {activity,title,consigna,sel,data}
-const OPT={ upper:false, scale:1, tarea:false, media:false, versions:1 };
+const OPT={ upper:false, scale:1, tarea:false, media:false, versions:1, nivel:'propio', esc:{ escuela:'', grupo:'', docente:'' } };
 
 function header(els, isKey, pageNo, total){
   const P=SH, title=P.title.trim()||'Actividades';
   const ttl = isKey?'Respuestas · '+title:title;
   els.push({t:'text', x:W/2, y:22, s:Math.min(20, 20*(W-2*M)/measure(ttl,20)), str:ttl, b:true, a:'center'});
+  const esc=[OPT.esc.escuela, OPT.esc.grupo, OPT.esc.docente && 'Docente: '+OPT.esc.docente].map(t=>(t||'').trim()).filter(Boolean).join('   ·   ');
+  if (esc) els.push({t:'text', x:W/2, y:14, s:Math.min(9.5, 9.5*(W-2*M-92)/Math.max(1,measure(esc,9.5))), str:esc, a:'center', c:'#555'});
   if (P.version){
-    const lab='Versión '+P.version, tw=measure(lab,9)+7;
+    const lab = String(P.version).length>1 ? P.version : 'Versión '+P.version, tw=measure(lab,9)+7;
     els.push({t:'rect', x:M, y:6.2, w:tw, h:6.6, r:3.3, stroke:'#16223F', lw:.5, fill:'#ffffff'});
     els.push({t:'text', x:M+tw/2, y:10.9, s:9, str:lab, a:'center', b:true});
   }
   if (!isKey){
+   if (!(P.data && P.data.limpia)){
     if (OPT.tarea){
       const tw=measure('TAREA DOMICILIARIA',8)+6;
       els.push({t:'rect', x:W-M-tw, y:6.5, w:tw, h:6, r:3, fill:'#16223F'});
@@ -1679,6 +1742,7 @@ function header(els, isKey, pageNo, total){
     els.push({t:'text', x:fx, y:35, s:12, str:lab});
     els.push({t:'line', x1:fx+fw, y1:35.8, x2:W-M, y2:35.8, w:.3, c:'#555'});
     if (P.consigna.trim()) wrapText(P.consigna.trim(),12,W-2*M).forEach((ln,j)=> els.push({t:'text', x:M, y:46+j*5, s:12, str:ln}));
+   }
   } else els.push({t:'text', x:W/2, y:31, s:11, str:'Para el docente', a:'center', c:'#777'});
   const ry=headerTop(isKey)-6;
   els.push({t:'line', x1:M, y1:ry, x2:W-M, y2:ry, w:.4, c:'#bbb'});
@@ -1687,6 +1751,7 @@ function header(els, isKey, pageNo, total){
 }
 /* Dónde empieza el contenido: la consigna larga ocupa más de un renglón */
 function headerTop(isKey){
+  if (SH.data && SH.data.limpia) return isKey ? 40 : 34;
   const c=(SH.consigna||'').trim();
   if (isKey || !c) return 56;
   return 56 + (wrapText(c,12,W-2*M).length-1)*5;
@@ -3344,6 +3409,432 @@ Object.assign(NOTAS, {
   mapas:'Trabajamos con mapas. Pueden ayudarse con el mapa del cuaderno o del libro.',
 });
 
+/* =========================================================
+   HERRAMIENTAS PARA EL AULA: evaluación con rúbrica, rúbrica o lista de cotejo,
+   planilla o carné de tareas, registro de lectura, bingo, tarjetas y hoja con encabezado.
+   ========================================================= */
+const isEj = it => !['texto','grafico','banco','seccion'].includes(it.type);
+const SIN_RESP = [{ type:'texto', full:true, text:'Esta hoja es para completar a mano: no tiene hoja de respuestas.' }];
+const areaAvail = isKey => contentEnd() - headerTop(isKey);
+
+/* ---------- Evaluación: una actividad de cada tipo en una sola hoja, con su rúbrica ---------- */
+const EVAL_SECC=[
+  { id:'sumas', titulo:'Sumas', criterio:'Resuelve sumas con números de varias cifras.', act:'sumas', sel:{ dif:['con'], cifras:[2,3], sumandos:[2], formato:'vertical' } },
+  { id:'restas', titulo:'Restas', criterio:'Resuelve restas, con y sin canje.', act:'restas', sel:{ dif:['con'], cifras:[2,3], formato:'vertical' } },
+  { id:'mult', titulo:'Multiplicaciones', criterio:'Resuelve multiplicaciones.', act:'mult', sel:{ cifrasA:[2,3], cifrasB:[1], formato:'vertical' } },
+  { id:'div', titulo:'Divisiones', criterio:'Resuelve divisiones.', act:'div', sel:{ dividendo:[2,3], divisor:[1], resto:['exacta'], formato:'galera' }, m:.67 },
+  { id:'problemas', titulo:'Problemas', criterio:'Resuelve situaciones problemáticas.', act:'problemas', sel:{ op:['suma','resta'], hasta:1000, espacio:'simple' }, m:.67 },
+  { id:'mental', titulo:'Cálculo mental', criterio:'Calcula mentalmente.', act:'mental', sel:{ tipo:['tablas','dobles','complementos'], tablas:[2,3,4,5,6,7,8,9,10], nivel:'basico' }, m:2 },
+  { id:'tablas', titulo:'Tablas de multiplicar', criterio:'Recuerda las tablas de multiplicar.', act:'tablas', sel:{ tipo:['completar','faltante'], tablas:[2,3,4,5,6,7,8,9], hasta:10 }, m:2 },
+  { id:'numeracion', titulo:'Numeración', criterio:'Ordena y compara números.', act:'numeracion', sel:{ tipo:['antpos','creciente'], cifras:[3] }, m:1.3 },
+  { id:'escribir', titulo:'Escribir números', criterio:'Lee, escribe y descompone números.', act:'escribir', sel:{ tipo:['aPalabras','descomponer'], cifras:[3] } },
+  { id:'fracciones', titulo:'Fracciones', criterio:'Reconoce, compara y opera con fracciones.', act:'fracciones', sel:{ tipo:['leer','equivalentes','comparar','sumar'], nivel:'basico' } },
+  { id:'decimales', titulo:'Decimales', criterio:'Relaciona fracciones y decimales y compara decimales.', act:'fracciones', sel:{ tipo:['decimal','compDec'] } },
+  { id:'piramides', titulo:'Pirámides numéricas', criterio:'Completa pirámides numéricas aplicando la suma.', act:'logica', sel:{ tipo:['piramide'], nivel:'medio' }, m:.67 },
+  { id:'magicos', titulo:'Cuadrados mágicos', criterio:'Completa cuadrados mágicos.', act:'logica', sel:{ tipo:['magico'], nivel:'facil' }, m:.67 },
+  { id:'patrones', titulo:'Series y patrones', criterio:'Completa series y descubre la regla.', act:'patrones', sel:{ tipo:['suma','resta','regla'], nivel:'chico' }, m:.67 },
+  { id:'dinero', titulo:'Dinero', criterio:'Resuelve situaciones con dinero.', act:'dinero', sel:{ tipo:['contar','vuelto'], hasta:1000 }, m:.67 },
+  { id:'hora', titulo:'La hora', criterio:'Lee la hora y calcula duraciones.', act:'hora', sel:{ tipo:['leer','cuanto'], precision:'cuarto' }, m:1.3 },
+  { id:'conversion', titulo:'Medidas', criterio:'Convierte unidades de medida.', act:'medidas', sel:{ tipo:['conversion'], unidades:['long','masa','cap'] } },
+  { id:'geometria', titulo:'Geometría', criterio:'Calcula perímetro y área y clasifica ángulos.', act:'medidas', sel:{ tipo:['perimetro','area','angulos'] }, m:.67 },
+  { id:'graficos', titulo:'Gráficos', criterio:'Interpreta datos en un gráfico de barras.', act:'graficos', sel:{ formato:'barras', cats:4, hasta:10, preg:['leer','mayor','dif'] } },
+  { id:'ortografia', titulo:'Ortografía', criterio:'Aplica reglas de ortografía.', act:'ortografia', sel:{ modo:'completar', tipo:['bv','csz','gj','lly'] }, m:2 },
+  { id:'acentos', titulo:'Acentuación', criterio:'Reconoce palabras agudas, graves y esdrújulas y usa la tilde.', act:'acentos', sel:{ tipo:['clase','tilde'], clases:['aguda','grave','esdrújula'] }, m:1.3 },
+  { id:'ordenarOr', titulo:'Ordenar palabras', criterio:'Ordena palabras y oraciones.', act:'ordenarOr', sel:{ tipo:['oracion','alfabetico'], nivel:'facil' }, m:.67 },
+  { id:'clases', titulo:'Clases de palabras', criterio:'Reconoce sustantivos, adjetivos y verbos; usa plural y género.', act:'clases', sel:{ tipo:['identificar','plural','genero'] }, m:.67 },
+  { id:'verbos', titulo:'Verbos', criterio:'Usa las formas de los verbos y reconoce el tiempo.', act:'verbos', sel:{ modo:['frase','tiempo'], tiempo:['presente','pasado','futuro'], conj:['ar','er','ir'] }, m:1.3 },
+  { id:'vf', titulo:'Verdadero o falso', criterio:'Distingue afirmaciones verdaderas y falsas.', act:'vf', sel:{ corregir:'no' }, banco:true, m:1.3 },
+  { id:'definiciones', titulo:'Definiciones', criterio:'Identifica conceptos a partir de su definición.', act:'completar', sel:{ modo:'definicion', banco:'si' }, banco:true, m:1.3 },
+  { id:'unir', titulo:'Unir con flechas', criterio:'Relaciona conceptos con su definición.', act:'unir', sel:{ lado:'izq-palabra' }, banco:true },
+];
+function evalSeccion(sec,n,nivel,bank){
+  const A=ACTIVITIES[sec.act], sel={};
+  A.groups.forEach(g=>{ sel[g.id]=Array.isArray(g.def)?[...g.def]:g.def; });
+  if (nivel && DIF[sec.act] && DIF[sec.act][nivel]) Object.assign(sel, DIF[sec.act][nivel]);
+  Object.assign(sel, sec.sel||{});
+  const res=GEN[sec.act](sel,n,{ bank, comp:null });
+  if (Array.isArray(res)){
+    res.sort((a,b)=>(a.diff||0)-(b.diff||0));
+    return res[0] && res[0].type ? { items:res, cols:A.cols||2 } : { ops:res, fmt:sel.formato||'vertical' };
+  }
+  return { items:[...(res.top?[{...res.top, full:true}]:[]), ...res.items], cols:res.cols||1 };
+}
+GEN.evaluacion = function(sel,count,ctx){
+  const secs=EVAL_SECC.filter(s=>sel.secciones.includes(s.id)), items=[], rub=[], letras='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let base=0, aviso='';
+  secs.forEach((sec,i)=>{
+    const g=evalSeccion(sec, Math.max(1,Math.round(count*(sec.m||1))), sel._n||null, ctx.bank);
+    const n = g.ops ? g.ops.length : g.items.some(x=>x.type==='unir') ? g.items.find(x=>x.type==='unir').left.length : g.items.filter(isEj).length;
+    items.push({ type:'grupo', base, ops:g.ops, fmt:g.fmt, items:g.items, cols:g.cols, letra:letras[i], titulo:sec.titulo, n, puntaje:sel.puntaje==='si' });
+    base += g.ops ? g.ops.length : g.items.filter(isEj).length;
+    rub.push({ letra:letras[i], titulo:sec.titulo, criterio:sec.criterio, n });
+  });
+  if (sel.rubrica==='si') items.push({ type:'rubricaEval', secs:rub, tipo:sel.tipoRubrica });
+  if (secs.some(s=>s.banco) && (!ctx.bank || !ctx.bank.entries.length)) aviso='Elegí un tema para las secciones de palabras.';
+  return { kind:'blocks', cols:1, items, fit: sel.hojas==='una', warn:aviso };
+};
+BLOCKS.seccion = { full:true, h:()=>11,
+  draw(els,it,idx,x,y,w){
+    els.push({t:'rect', x, y:y+1, w, h:8, r:4, fill:CLARO, stroke:'#8a82d6', lw:.3});
+    els.push({t:'rect', x:x+1.1, y:y+2.1, w:5.8, h:5.8, r:2.9, fill:'#5B4BF5'});
+    els.push({t:'text', x:x+4, y:y+6.3, s:9, str:it.letra, a:'center', b:true, c:'#ffffff'});
+    els.push({t:'text', x:x+10, y:y+6.3, s:11, str:it.titulo, b:true});
+    if (it.puntaje){ const t='Puntaje:', lw=measure(t,9.5)+2, rx=x+w-34;
+      els.push({t:'text', x:rx, y:y+6.3, s:9.5, str:t});
+      els.push({t:'line', x1:rx+lw, y1:y+7, x2:rx+lw+9, y2:y+7, w:.3, c:'#444'});
+      els.push({t:'text', x:rx+lw+11, y:y+6.3, s:9.5, str:'/ '+it.n}); }
+  } };
+function grupoLayout(it,w){
+  const filas=[]; let y=it.titulo?11:0, num=it.base||0;
+  if (it.ops){
+    const exs=it.ops; let cols, hOf, draw;
+    if (it.fmt==='linea'){
+      const need=ex=> 8+measure(ex.expr,15)+2.5+(ex.resto ? 18+3+14+measure(ex.ansR,15)+8 : measure(ex.ans,15)+8);
+      cols=(W>=160 && Math.max(...exs.map(need))<=w/2)?2:1; hOf=()=>15; draw=cellLinea; }
+    else if (exs[0] && exs[0].kind==='div'){ cols=W>=160?2:1; hOf=divHeight; draw=cellDiv; }
+    else { cols=W>=140?3:2; hOf=vertHeight; draw=cellVert; }
+    const cw=w/cols;
+    for (let i=0;i<exs.length;i+=cols){
+      const row=exs.slice(i,i+cols), h=Math.max(...row.map(hOf));
+      filas.push({ y, celdas: row.map((ex,k)=>({ x:k*cw, w:cw, draw:(els,cx,cy,ww,isKey)=>draw(els,ex,num+i+k,cx,cy,ww,isKey) })) }); y+=h;
+    }
+  } else {
+    const cols = W>=160 ? (it.cols||1) : Math.min(2,it.cols||1), cw=(w-(cols-1)*8)/cols; let fila=[];
+    const flush=()=>{ if (!fila.length) return;
+      const h=Math.max(...fila.map(o=>BLOCKS[o.it.type].h(o.it,o.w)))+4;
+      filas.push({ y, celdas: fila.map(o=>({ x:o.x, w:o.w, draw:(els,cx,cy,ww,isKey)=>BLOCKS[o.it.type].draw(els,o.it,o.idx,cx,cy,ww,isKey) })) }); y+=h; fila=[]; };
+    it.items.forEach(sub=>{
+      const idx = isEj(sub) ? num++ : -1, solo = cols===1 || sub.full || BLOCKS[sub.type].full;
+      if (solo){ flush(); fila=[{ it:sub, idx, x:0, w }]; flush(); }
+      else { fila.push({ it:sub, idx, x:fila.length*(cw+8), w:cw }); if (fila.length===cols) flush(); }
+    });
+    flush();
+  }
+  return { filas, h:y+3 };
+}
+BLOCKS.grupo = { full:true,
+  h:(it,w)=> grupoLayout(it,w).h,
+  draw(els,it,idx,x,y,w,isKey){
+    if (it.titulo) BLOCKS.seccion.draw(els,it,0,x,y,w);
+    grupoLayout(it,w).filas.forEach(f=> f.celdas.forEach(c=> c.draw(els,x+c.x,y+f.y,c.w,isKey))); } };
+/* Rúbrica armada a partir de las secciones de la evaluación */
+function descriptores(n){
+  if (n<=1) return ['Lo resuelve bien','Lo resuelve con ayuda','No lo resuelve'];
+  const L=Math.ceil(n*.8), P=Math.ceil(n*.5);
+  const a = L===n ? `Acierta los ${n} de ${n}` : `Acierta ${L} o más de ${n}`;
+  const b = P===L-1 ? `Acierta ${P} de ${n}` : `Acierta de ${P} a ${L-1} de ${n}`;
+  const c = P<=1 ? 'No acierta ninguno' : `Acierta menos de ${P} de ${n}`;
+  return [a,b,c];
+}
+const NIVELES3=['Logrado','En proceso','Por lograr'];
+function rubLayout(it,w){
+  const cc=w*.35, lc=w*.185, pc=w-cc-3*lc;
+  const filas=it.secs.map(s=>{
+    const cl=wrapText(`${s.letra}. ${s.titulo}: ${s.criterio}`,9,cc-3), d=it.tipo==='rubrica' ? descriptores(s.n).map(t=>wrapText(t,8,lc-9)) : [[],[],[]];
+    return { s, cl, d, h:Math.max(10, cl.length*3.9+3, ...d.map(x=>x.length*3.5+3)) };
+  });
+  return { cc, lc, pc, filas, h: 9 + 8 + filas.reduce((t,f)=>t+f.h,0) + 14 };
+}
+BLOCKS.rubricaEval = { full:true,
+  h:(it,w)=> rubLayout(it,w).h,
+  draw(els,it,idx,x,y,w,isKey){
+    const L=rubLayout(it,w);
+    els.push({t:'text', x, y:y+4.5, s:11, b:true, str:'Rúbrica de la evaluación'});
+    els.push({t:'text', x:x+measure('Rúbrica de la evaluación',11)+4, y:y+4.5, s:8.5, c:'#6b7488', str:'Marcá con una X el nivel alcanzado en cada criterio.'});
+    let cy=y+8; const hdr=['Criterio',...NIVELES3,'Puntaje'], widths=[L.cc,L.lc,L.lc,L.lc,L.pc]; let cx=x;
+    hdr.forEach((t,k)=>{ els.push({t:'rect', x:cx, y:cy, w:widths[k], h:8, stroke:'#333', lw:.4, fill:CLARO});
+      els.push({t:'text', x:cx+widths[k]/2, y:cy+5.5, s:9.5, str:t, a:'center', b:true}); cx+=widths[k]; });
+    cy+=8;
+    L.filas.forEach(f=>{
+      cx=x; els.push({t:'rect', x:cx, y:cy, w:L.cc, h:f.h, stroke:'#333', lw:.35});
+      f.cl.forEach((ln,j)=> els.push({t:'text', x:cx+1.5, y:cy+4.6+j*3.9, s:9, str:ln})); cx+=L.cc;
+      for (let k=0;k<3;k++){ els.push({t:'rect', x:cx, y:cy, w:L.lc, h:f.h, stroke:'#333', lw:.35});
+        els.push({t:'rect', x:cx+L.lc-5.5, y:cy+1.5, w:4, h:4, stroke:'#555', lw:.35});
+        f.d[k].forEach((ln,j)=> els.push({t:'text', x:cx+1.5, y:cy+4.5+j*3.5, s:8, str:ln, c:'#444'})); cx+=L.lc; }
+      els.push({t:'rect', x:cx, y:cy, w:L.pc, h:f.h, stroke:'#333', lw:.35});
+      const ly=cy+f.h/2+2; els.push({t:'line', x1:cx+2, y1:ly+.6, x2:cx+L.pc/2-1, y2:ly+.6, w:.3, c:'#444'});
+      els.push({t:'text', x:cx+L.pc/2+1, y:ly, s:9, str:'/ '+f.s.n}); cy+=f.h; });
+    const tot=it.secs.reduce((t,s)=>t+s.n,0), ty=cy+8;
+    els.push({t:'text', x, y:ty, s:9.5, b:true, str:'Observaciones:'});
+    els.push({t:'line', x1:x+measure('Observaciones:',9.5)+2, y1:ty+.8, x2:x+w*.66, y2:ty+.8, w:.3, c:'#444'});
+    els.push({t:'text', x:x+w*.7, y:ty, s:9.5, b:true, str:'Total:'});
+    els.push({t:'line', x1:x+w*.7+measure('Total:',9.5)+2, y1:ty+.8, x2:x+w*.7+measure('Total:',9.5)+16, y2:ty+.8, w:.3, c:'#444'});
+    els.push({t:'text', x:x+w*.7+measure('Total:',9.5)+18, y:ty, s:9.5, str:'/ '+tot});
+  } };
+
+/* ---------- Rúbrica o lista de cotejo para escribir ---------- */
+GEN.rubrica = function(sel,count){
+  const crit=(sel.criterios||'').split('\n').map(t=>t.trim()).filter(Boolean).slice(0,12);
+  if (!crit.length) crit.push('Escribí el primer criterio');
+  if (sel.modo==='cotejo'){
+    const names=(sel.nombres||'').split('\n').map(t=>t.trim()).filter(Boolean);
+    return { kind:'blocks', cols:1, limpia:true, sinRespuestas:true, items:[{ type:'cotejo', crit:crit.slice(0,8), names, n:Math.min(40,Math.max(count,names.length)) }], keyItems:SIN_RESP };
+  }
+  return { kind:'blocks', cols:1, sinRespuestas:true, items:[{ type:'rubricaLibre', crit, niveles:Number(sel.niveles)||3 }], keyItems:SIN_RESP };
+};
+const NIVELES4=['Muy bueno','Bueno','Regular','Insuficiente'];
+BLOCKS.rubricaLibre = { full:true,
+  h:(it,w)=> areaAvail(false)-6,
+  draw(els,it,idx,x,y,w,isKey){
+    const niv = it.niveles===4 ? NIVELES4 : NIVELES3, k=niv.length, cc=w*.27, lc=(w-cc)/k, n=it.crit.length;
+    const rh=Math.max(13, Math.min(30,(areaAvail(false)-6-9-8)/n));
+    els.push({t:'text', x, y:y+4.5, s:10.5, b:true, str:'Criterios y niveles de logro'});
+    let cy=y+8; els.push({t:'rect', x, y:cy, w:cc, h:9, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'text', x:x+cc/2, y:cy+6, s:10, str:'Criterio', a:'center', b:true});
+    niv.forEach((t,j)=>{ els.push({t:'rect', x:x+cc+j*lc, y:cy, w:lc, h:9, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'text', x:x+cc+j*lc+lc/2, y:cy+6, s:10, str:t, a:'center', b:true}); });
+    cy+=9;
+    it.crit.forEach(c=>{
+      els.push({t:'rect', x, y:cy, w:cc, h:rh, stroke:'#333', lw:.35});
+      wrapText(c,10,cc-4).slice(0,Math.floor((rh-2)/4.4)).forEach((ln,j)=> els.push({t:'text', x:x+2, y:cy+5.2+j*4.4, s:10, str:ln, b:true}));
+      for (let j=0;j<k;j++){ els.push({t:'rect', x:x+cc+j*lc, y:cy, w:lc, h:rh, stroke:'#333', lw:.35});
+        for (let r=1;r<=Math.floor(rh/6.5);r++) els.push({t:'line', x1:x+cc+j*lc+2, y1:cy+r*6.5, x2:x+cc+(j+1)*lc-2, y2:cy+r*6.5, w:.15, c:'#bbb'}); }
+      cy+=rh; });
+  } };
+BLOCKS.cotejo = { full:true,
+  h:(it,w)=> areaAvail(false)-6,
+  draw(els,it,idx,x,y,w,isKey){
+    const lab='Fecha:', n=it.n, k=it.crit.length, nw=8, aw=46, cw=(w-nw-aw)/k;
+    els.push({t:'text', x, y:y+4.5, s:10.5, b:true, str:'Grupo:'}); els.push({t:'line', x1:x+measure('Grupo:',10.5)+2, y1:y+5.3, x2:x+55, y2:y+5.3, w:.3, c:'#444'});
+    els.push({t:'text', x:x+62, y:y+4.5, s:10.5, b:true, str:'Actividad:'}); els.push({t:'line', x1:x+62+measure('Actividad:',10.5)+2, y1:y+5.3, x2:x+w-36, y2:y+5.3, w:.3, c:'#444'});
+    els.push({t:'text', x:x+w-33, y:y+4.5, s:10.5, b:true, str:lab}); els.push({t:'line', x1:x+w-33+measure(lab,10.5)+2, y1:y+5.3, x2:x+w, y2:y+5.3, w:.3, c:'#444'});
+    const lines=it.crit.map(c=>wrapText(c,8,cw-2)), hh=Math.max(16, Math.max(...lines.map(l=>l.length))*3.4+3), top=y+9;
+    const rh=Math.min(8.5,(areaAvail(false)-6-9-hh-1)/n);
+    els.push({t:'rect', x, y:top, w:nw, h:hh, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'rect', x:x+nw, y:top, w:aw, h:hh, stroke:'#333', lw:.4, fill:CLARO});
+    els.push({t:'text', x:x+nw+aw/2, y:top+hh/2+1.5, s:9.5, str:'Alumno', a:'center', b:true});
+    it.crit.forEach((c,j)=>{ const cx=x+nw+aw+j*cw; els.push({t:'rect', x:cx, y:top, w:cw, h:hh, stroke:'#333', lw:.4, fill:CLARO});
+      lines[j].forEach((ln,q)=> els.push({t:'text', x:cx+cw/2, y:top+4+q*3.4, s:8, str:ln, a:'center', b:true})); });
+    for (let r=0;r<n;r++){ const ry=top+hh+r*rh;
+      els.push({t:'rect', x, y:ry, w:nw, h:rh, stroke:'#333', lw:.3}); els.push({t:'text', x:x+nw/2, y:ry+rh*.68, s:8, str:String(r+1), a:'center', c:'#555'});
+      els.push({t:'rect', x:x+nw, y:ry, w:aw, h:rh, stroke:'#333', lw:.3});
+      if (it.names[r]) els.push({t:'text', x:x+nw+1.5, y:ry+rh*.7, s:Math.min(9, 9*(aw-3)/Math.max(1,measure(it.names[r],9))), str:it.names[r]});
+      for (let j=0;j<k;j++) els.push({t:'rect', x:x+nw+aw+j*cw, y:ry, w:cw, h:rh, stroke:'#333', lw:.3}); }
+  } };
+
+/* ---------- Planilla o carné de tareas ---------- */
+GEN.planilla = function(sel,count){
+  const names=(sel.nombres||'').split('\n').map(t=>t.trim()).filter(Boolean);
+  if (sel.formato==='carne'){
+    const lista = names.length ? names : ['',''], items=lista.map(nombre=>({ type:'carne', nombre, semanas:Number(sel.semanas)||6 }));
+    return { kind:'blocks', cols:1, limpia:true, sinRespuestas:true, items, keyItems:SIN_RESP };
+  }
+  return { kind:'blocks', cols:1, limpia:true, sinRespuestas:true, items:[{ type:'planillaGrupo', n:Math.min(40,Math.max(count,names.length)), k:Number(sel.columnas)||10, names }], keyItems:SIN_RESP };
+};
+BLOCKS.planillaGrupo = { full:true,
+  h:(it,w)=> areaAvail(false)-6,
+  draw(els,it,idx,x,y,w,isKey){
+    const n=it.n, k=it.k, nw=8, aw=48, cw=(w-nw-aw)/k;
+    els.push({t:'text', x, y:y+4.5, s:10.5, b:true, str:'Grupo:'}); els.push({t:'line', x1:x+measure('Grupo:',10.5)+2, y1:y+5.3, x2:x+55, y2:y+5.3, w:.3, c:'#444'});
+    els.push({t:'text', x:x+62, y:y+4.5, s:10.5, b:true, str:'Mes:'}); els.push({t:'line', x1:x+62+measure('Mes:',10.5)+2, y1:y+5.3, x2:x+w, y2:y+5.3, w:.3, c:'#444'});
+    const top=y+9, hh=13, rh=Math.min(8.5,(areaAvail(false)-6-9-hh-1)/n);
+    els.push({t:'rect', x, y:top, w:nw, h:hh, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'rect', x:x+nw, y:top, w:aw, h:hh, stroke:'#333', lw:.4, fill:CLARO});
+    els.push({t:'text', x:x+nw+aw/2, y:top+8, s:9.5, str:'Alumno', a:'center', b:true});
+    for (let j=0;j<k;j++){ const cx=x+nw+aw+j*cw; els.push({t:'rect', x:cx, y:top, w:cw, h:hh, stroke:'#333', lw:.4, fill:CLARO});
+      els.push({t:'text', x:cx+cw/2, y:top+5, s:8.5, str:String(j+1), a:'center', b:true});
+      els.push({t:'line', x1:cx+1.5, y1:top+10.3, x2:cx+cw-1.5, y2:top+10.3, w:.2, c:'#777'}); }
+    for (let r=0;r<n;r++){ const ry=top+hh+r*rh;
+      els.push({t:'rect', x, y:ry, w:nw, h:rh, stroke:'#333', lw:.3}); els.push({t:'text', x:x+nw/2, y:ry+rh*.68, s:8, str:String(r+1), a:'center', c:'#555'});
+      els.push({t:'rect', x:x+nw, y:ry, w:aw, h:rh, stroke:'#333', lw:.3});
+      if (it.names[r]) els.push({t:'text', x:x+nw+1.5, y:ry+rh*.7, s:Math.min(9, 9*(aw-3)/Math.max(1,measure(it.names[r],9))), str:it.names[r]});
+      for (let j=0;j<k;j++) els.push({t:'rect', x:x+nw+aw+j*cw, y:ry, w:cw, h:rh, stroke:'#333', lw:.3}); }
+    els.push({t:'text', x, y:top+hh+n*rh+5, s:8.5, c:'#6b7488', str:'En cada casilla: V = entregó · – = no entregó'});
+  } };
+BLOCKS.carne = { full:true,
+  h:(it,w)=> 21+(it.semanas+1)*10+8,
+  draw(els,it,idx,x,y,w,isKey){
+    const S=it.semanas, h=21+(S+1)*10+8;
+    els.push({t:'rect', x, y, w, h, r:4, stroke:'#5B4BF5', lw:.8});
+    els.push({t:'text', x:x+w/2, y:y+8, s:14, str:'CARNÉ DE TAREAS', a:'center', b:true, c:'#5B4BF5'});
+    els.push({t:'text', x:x+6, y:y+16, s:10.5, b:true, str:'Nombre:'}); els.push({t:'line', x1:x+6+measure('Nombre:',10.5)+2, y1:y+16.8, x2:x+w*.68, y2:y+16.8, w:.3, c:'#444'});
+    if (it.nombre) els.push({t:'text', x:x+6+measure('Nombre:',10.5)+3, y:y+16, s:11, str:it.nombre});
+    els.push({t:'text', x:x+w*.72, y:y+16, s:10.5, b:true, str:'Grupo:'}); els.push({t:'line', x1:x+w*.72+measure('Grupo:',10.5)+2, y1:y+16.8, x2:x+w-6, y2:y+16.8, w:.3, c:'#444'});
+    const top=y+21, tw=w-12, sw=30, dw=14, fw=tw-sw-5*dw, rh=10;
+    const cols=[['Semana del',sw],['L',dw],['M',dw],['M',dw],['J',dw],['V',dw],['Firma de la familia',fw]]; let cx=x+6;
+    cols.forEach(([t,cw])=>{ els.push({t:'rect', x:cx, y:top, w:cw, h:rh, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'text', x:cx+cw/2, y:top+rh*.68, s:9, str:t, a:'center', b:true}); cx+=cw; });
+    for (let r=0;r<S;r++){ cx=x+6; cols.forEach(([,cw])=>{ els.push({t:'rect', x:cx, y:top+rh*(r+1), w:cw, h:rh, stroke:'#333', lw:.3}); cx+=cw; }); }
+  } };
+
+/* ---------- Registro de lectura ---------- */
+GEN.registro = function(sel,count){
+  return { kind:'blocks', cols:1, sinRespuestas:true, items:[{ type:'registroLectura', n:count, circulos:sel.gusto==='si' }], keyItems:SIN_RESP };
+};
+BLOCKS.registroLectura = { full:true,
+  h:(it,w)=> areaAvail(false)-6,
+  draw(els,it,idx,x,y,w,isKey){
+    const cols=[['Fecha',.12],['Título',.33],['Autor',.24],['Páginas',.11],['¿Me gustó?',.20]], n=it.n, hh=9, rh=Math.min(14,(areaAvail(false)-6-hh-1)/n);
+    let cx=x; const xs=[];
+    cols.forEach(([t,f])=>{ const cw=w*f; xs.push([cx,cw]); els.push({t:'rect', x:cx, y, w:cw, h:hh, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'text', x:cx+cw/2, y:y+6, s:10, str:t, a:'center', b:true}); cx+=cw; });
+    for (let r=0;r<n;r++){ const ry=y+hh+r*rh;
+      xs.forEach(([px,cw],j)=>{ els.push({t:'rect', x:px, y:ry, w:cw, h:rh, stroke:'#333', lw:.3});
+        if (j===4 && it.circulos) for (let q=0;q<5;q++) els.push({t:'rect', x:px+cw/2-5*3.6+q*7.2+.8, y:ry+rh/2-2.6, w:5.2, h:5.2, r:2.6, stroke:'#777', lw:.35}); });
+    }
+  } };
+
+/* ---------- Bingo ---------- */
+const OPS_BINGO={
+  suma:()=>{ const a=rnd(3,25), b=rnd(3,25); return { expr:`${a} + ${b}`, res:a+b }; },
+  resta:()=>{ const a=rnd(12,50), b=rnd(2,a-2); return { expr:`${a} − ${b}`, res:a-b }; },
+  mult:()=>{ const a=rnd(2,10), b=rnd(2,10); return { expr:`${a} × ${b}`, res:a*b }; },
+  div:()=>{ const b=rnd(2,9), q=rnd(2,10); return { expr:`${b*q} ÷ ${b}`, res:q }; },
+};
+GEN.bingo = function(sel,count,ctx){
+  const n=Number(sel.tam), cells=n*n-(n===5?1:0), cartones=[]; let pool, llamar, aviso='';
+  if (sel.tipo==='numeros'){
+    const H=Math.max(Number(sel.hasta), cells*2); pool=Array.from({length:H},(_,i)=>String(i+1)); llamar=shuffle(pool.map(v=>({ txt:v })));
+  } else if (sel.tipo==='resultados'){
+    const T=Math.max(cells*2,16), vistos=new Map(); let g=0;
+    while (vistos.size<T && g<2000){ g++; const o=OPS_BINGO[pick(sel.ops)](); if (!vistos.has(o.res)) vistos.set(o.res,o); }
+    pool=[...vistos.keys()].map(String); llamar=shuffle([...vistos.values()].map(o=>({ txt:o.expr+' = ?', res:String(o.res) })));
+    if (pool.length<cells) aviso='Con esas operaciones no alcanzan los resultados distintos: sumá otra operación.';
+  } else {
+    const bp=shuffle(bankPool(ctx.bank,true)); pool=bp.map(e=>e.word); llamar=bp.map(e=>({ txt:capFirst(e.clue)+'.', res:e.word }));
+    if (pool.length<cells) aviso=`El tema necesita al menos ${cells} palabras con pista para cartones de ${n} × ${n}.`;
+  }
+  for (let k=0;k<count;k++){ const ch=shuffle([...pool]).slice(0,cells); if (n===5) ch.splice(12,0,'LIBRE');
+    cartones.push({ type:'carton', n, celdas:ch, tipo:sel.tipo, k:k+1 }); }
+  return { kind:'blocks', cols:2, items:cartones, keyItems:[{ type:'bingoLlamar', tipo:sel.tipo, llamar }], limpia:true, warn:aviso };
+};
+const cartonCelda = (it,w)=> Math.min(w/it.n, 24);
+BLOCKS.carton = {
+  h:(it,w)=> 10 + it.n*cartonCelda(it,w) + 4,
+  draw(els,it,idx,x,y,w){
+    const c=cartonCelda(it,w), gx=x+(w-it.n*c)/2;
+    els.push({t:'text', x:x+w/2, y:y+6.5, s:14, str:'BINGO', a:'center', b:true, c:'#5B4BF5'});
+    els.push({t:'text', x:gx, y:y+6.5, s:8, str:'Cartón '+it.k, c:'#888'});
+    it.celdas.forEach((t,i)=>{ const cx=gx+(i%it.n)*c, cy=y+10+Math.floor(i/it.n)*c, libre=t==='LIBRE';
+      els.push({t:'rect', x:cx, y:cy, w:c, h:c, stroke:'#333', lw:.5, fill: libre?CLARO:undefined});
+      if (it.tipo==='palabras' && !libre){ let s=13; while (s>6.5 && (wrapText(t,s,c-2).length*s*.3528*1.15>c-3 || measure(t,s)>c*2.2 && wrapText(t,s,c-2).some(l=>measure(l,s)>c-2))) s-=.5;
+        const L=wrapText(t,s,c-2), lh=s*.3528*1.15, top=cy+c/2-(L.length*lh)/2+lh*.78;
+        L.forEach((ln,j)=> els.push({t:'text', x:cx+c/2, y:top+j*lh, s, str:ln, a:'center', b:true})); }
+      else els.push({t:'text', x:cx+c/2, y:cy+c*(libre?.58:.64), s:libre?9:Math.min(20,c*.8/0.3528*.62), str:t, a:'center', b:true}); });
+  } };
+BLOCKS.bingoLlamar = { full:true,
+  h:(it,w)=> it.tipo==='numeros' ? 14 + Math.ceil(it.llamar.length/10)*9 + 6 : 14 + Math.ceil(it.llamar.length/2)*(it.tipo==='palabras'?10:6.5) + 6,
+  draw(els,it,idx,x,y,w,isKey){
+    els.push({t:'text', x, y:y+5, s:12, b:true, str:'Para el docente: orden para cantar'});
+    els.push({t:'text', x, y:y+10.5, s:8.5, c:'#6b7488', str: it.tipo==='numeros' ? 'Tachá cada número a medida que sale.' : it.tipo==='resultados' ? 'Leé la operación; los alumnos buscan el resultado en su cartón.' : 'Leé la pista; los alumnos buscan la palabra en su cartón.'});
+    if (it.tipo==='numeros'){
+      const cw=w/10; it.llamar.forEach((o,i)=>{ const cx=x+(i%10)*cw, cy=y+14+Math.floor(i/10)*9; els.push({t:'rect', x:cx, y:cy, w:cw, h:9, stroke:'#999', lw:.3}); els.push({t:'text', x:cx+cw/2, y:cy+6.2, s:11, str:o.txt, a:'center', b:true}); });
+      return; }
+    const half=Math.ceil(it.llamar.length/2), cw=(w-6)/2, lh= it.tipo==='palabras'?10:6.5;
+    it.llamar.forEach((o,i)=>{ const col=i<half?0:1, row=i%half, cx=x+col*(cw+6), cy=y+14+row*lh;
+      els.push({t:'text', x:cx, y:cy+4, s:9, str:(i+1)+'.', b:true});
+      if (it.tipo==='palabras'){ const L=wrapText(o.txt,8.5,cw-9).slice(0,2); L.forEach((ln,j)=> els.push({t:'text', x:cx+7, y:cy+3.4+j*3.6, s:8.5, str:ln}));
+        els.push({t:'text', x:cx+7, y:cy+3.4+L.length*3.6, s:8.5, str:'→ '+o.res, c:RED, b:true}); }
+      else { els.push({t:'text', x:cx+7, y:cy+4, s:10, str:o.txt.replace(' = ?','')}); els.push({t:'text', x:cx+7+measure(o.txt.replace(' = ?',''),10)+2, y:cy+4, s:10, str:'= '+o.res, c:RED, b:true}); } });
+  } };
+
+/* ---------- Tarjetas (frente y dorso) ---------- */
+GEN.tarjetas = function(sel,count,ctx){
+  const pares=[]; let aviso='';
+  if (sel.tipo==='tablas'){
+    const vistos=new Set(); let g=0; const T=[...sel.tablas];
+    while (pares.length<count && g<count*40){ g++; const a=pick(T), b=rnd(1,10), k=a+'x'+b; if (vistos.has(k)) continue; vistos.add(k); pares.push({ f:`${a} × ${b}`, b:String(a*b) }); }
+  } else if (sel.tipo==='operaciones'){
+    const vistos=new Set(); let g=0;
+    while (pares.length<count && g<count*40){ g++; const o=OPS_BINGO[pick(sel.ops)]();  if (vistos.has(o.expr)) continue; vistos.add(o.expr); pares.push({ f:o.expr, b:String(o.res) }); }
+  } else {
+    const pool=shuffle(bankPool(ctx.bank,true)).slice(0,count);
+    pool.forEach(e=> pares.push(sel.frente==='pista' ? { f:capFirst(e.clue)+'.', b:e.word } : { f:e.word, b:capFirst(e.clue)+'.' }));
+    if (pool.length<count) aviso=`El tema tiene ${pool.length} palabras con pista: salen menos tarjetas.`;
+  }
+  const items=[], dorso=[];
+  for (let i=0;i<pares.length;i+=8){ const lote=pares.slice(i,i+8); items.push({ type:'tarjetas', lado:'frente', lote }); dorso.push({ type:'tarjetas', lado:'dorso', lote }); }
+  return { kind:'blocks', cols:1, limpia:true, items, keyItems:dorso, warn:aviso };
+};
+function textoAjustado(els,str,cx,cy,w,h,b){
+  for (const s of [24,20,17,15,13,11.5,10,9,8]){
+    const L=wrapText(str,s,w), lh=s*.3528*1.25; if (L.length*lh<=h && L.every(l=>measure(l,s)<=w)){
+      const top=cy-(L.length*lh)/2+lh*.78; L.forEach((ln,j)=> els.push({t:'text', x:cx, y:top+j*lh, s, str:ln, a:'center', b})); return; } }
+  wrapText(str,8,w).slice(0,5).forEach((ln,j)=> els.push({t:'text', x:cx, y:cy-8+j*4, s:8, str:ln, a:'center'}));
+}
+BLOCKS.tarjetas = { full:true,
+  h:(it,w)=> areaAvail(false)-6,
+  draw(els,it,idx,x,y,w,isKey){
+    const rows=4, ch=(areaAvail(false)-6)/rows, cw=w/2;
+    for (let r=0;r<=rows;r++) els.push({t:'line', x1:x, y1:y+r*ch, x2:x+w, y2:y+r*ch, w:.3, c:'#9aa3b5', dash:true});
+    for (let c=0;c<=2;c++) els.push({t:'line', x1:x+c*cw, y1:y, x2:x+c*cw, y2:y+rows*ch, w:.3, c:'#9aa3b5', dash:true});
+    it.lote.forEach((p,i)=>{ const r=Math.floor(i/2), c=i%2, col = it.lado==='dorso' ? 1-c : c;
+      textoAjustado(els, it.lado==='dorso'?p.b:p.f, x+col*cw+cw/2, y+r*ch+ch/2, cw-14, ch-14, true); });
+  } };
+
+/* ---------- Hoja con el encabezado de la escuela ---------- */
+GEN.hojaEscuela = function(sel,count){
+  const hay=OPT.esc.escuela||OPT.esc.grupo||OPT.esc.docente;
+  return { kind:'blocks', cols:1, sinRespuestas:true, items:Array.from({length:count},()=>({ type:'hojaBase', tipo:sel.tipo })), keyItems:SIN_RESP,
+    warn: hay ? '' : 'Completá "Encabezado de la escuela" en el paso 4 para que aparezcan la escuela, el grupo y la docente.' };
+};
+BLOCKS.hojaBase = { full:true,
+  h:(it,w)=> areaAvail(false)-6,
+  draw(els,it,idx,x,y,w){
+    const h=areaAvail(false)-6;
+    if (it.tipo==='rayada') for (let ly=y+8; ly<=y+h; ly+=8) els.push({t:'line', x1:x, y1:ly, x2:x+w, y2:ly, w:.2, c:'#9aa3b5'});
+    else if (it.tipo==='cuadriculada'){ const c=5, nx=Math.floor(w/c), ny=Math.floor(h/c);
+      for (let i=0;i<=nx;i++) els.push({t:'line', x1:x+i*c, y1:y, x2:x+i*c, y2:y+ny*c, w:.15, c:'#9aa3b5'});
+      for (let j=0;j<=ny;j++) els.push({t:'line', x1:x, y1:y+j*c, x2:x+nx*c, y2:y+j*c, w:.15, c:'#9aa3b5'}); }
+    else els.push({t:'rect', x, y, w, h, r:3, stroke:'#bbb', lw:.3});
+  } };
+
+/* ---------- Catálogo y opciones ---------- */
+(()=>{ const a=CATALOG.find(x=>x.id==='repaso'); a.name='Herramientas para el aula'; a.desc='Evaluar, organizar y jugar';
+  a.items.unshift(
+    { id:'evaluacion', name:'Evaluación con rúbrica', ready:true },
+    { id:'rubrica', name:'Rúbrica o lista de cotejo', ready:true },
+    { id:'planilla', name:'Planilla o carné de tareas', ready:true },
+    { id:'registro', name:'Registro de lectura', ready:true },
+    { id:'bingo', name:'Bingo', ready:true },
+    { id:'tarjetas', name:'Tarjetas', ready:true },
+    { id:'hojaEscuela', name:'Hoja con encabezado', ready:true } ); })();
+Object.assign(ACTIVITIES, {
+  evaluacion:{ title:'Evaluación', consigna:'Resolvé todas las actividades.', single:true, cols:1,
+    count:{ label:'Ejercicios por sección', options:[2,3,4,5,6], def:3 }, groups:[
+    { id:'secciones', label:'Una actividad de cada tipo', type:'multi', options:EVAL_SECC.map(s=>({ v:s.id, t:s.titulo })), def:['sumas','restas','piramides','fracciones'] },
+    { id:'tema', label:'Tema para las secciones de palabras', type:'bank', def:'b-digestivo', showIf:s=>EVAL_SECC.some(x=>x.banco && s.secciones.includes(x.id)) },
+    { id:'rubrica', label:'Rúbrica con los criterios, en la misma hoja', type:'single', options:SINO, def:'si' },
+    { id:'tipoRubrica', label:'Cómo se arma la rúbrica', type:'single', options:[ {v:'rubrica',t:'Con descriptores (cuántos aciertos en cada nivel)'},{v:'cotejo',t:'Lista de cotejo (solo casillas)'} ], def:'rubrica', showIf:s=>s.rubrica==='si' },
+    { id:'puntaje', label:'Casilla de puntaje en cada sección', type:'single', options:SINO, def:'si' },
+    { id:'hojas', label:'Tamaño de la evaluación', type:'single', options:[ {v:'una',t:'Todo en una sola hoja (se ajusta el tamaño)'},{v:'varias',t:'Puede ocupar más de una hoja'} ], def:'una' } ] },
+  rubrica:{ title:'Rúbrica', consigna:'', single:true, cols:1,
+    count:{ label:'Cantidad de alumnos (lista de cotejo)', options:[10,15,20,25,30,35], def:25 }, groups:[
+    { id:'modo', label:'Qué se imprime', type:'single', options:[ {v:'rubrica',t:'Rúbrica: criterios y niveles, para escribir'},{v:'cotejo',t:'Lista de cotejo del grupo (alumnos y criterios)'} ], def:'rubrica' },
+    { id:'criterios', label:'Criterios', type:'texto', rows:6, placeholder:'Uno por renglón', help:'Escribí un criterio por renglón (hasta 12; en la lista de cotejo, hasta 8).', def:'Participa en las actividades\nTrabaja con orden y prolijidad\nCumple con las tareas\nRespeta a sus compañeros' },
+    { id:'niveles', label:'Niveles', type:'single', options:[ {v:3,t:'3: Logrado, En proceso, Por lograr'},{v:4,t:'4: Muy bueno, Bueno, Regular, Insuficiente'} ], def:3, showIf:s=>s.modo==='rubrica' },
+    { id:'nombres', label:'Nombres de los alumnos', type:'texto', rows:6, placeholder:'Uno por renglón (si lo dejás vacío, quedan renglones en blanco)', def:'', showIf:s=>s.modo==='cotejo' } ] },
+  planilla:{ title:'Planilla de tareas', consigna:'', single:true, cols:1,
+    count:{ label:'Cantidad de alumnos', options:[10,15,20,25,30,35], def:25 }, groups:[
+    { id:'formato', label:'Formato', type:'single', options:[ {v:'grupo',t:'Planilla del grupo (alumnos y tareas)'},{v:'carne',t:'Carné de tareas para cada alumno'} ], def:'grupo' },
+    { id:'columnas', label:'Cantidad de tareas (columnas)', type:'single', options:[ {v:5,t:'5'},{v:10,t:'10'},{v:15,t:'15'},{v:20,t:'20'} ], def:10, showIf:s=>s.formato==='grupo' },
+    { id:'semanas', label:'Semanas en el carné', type:'single', options:[ {v:4,t:'4'},{v:6,t:'6'},{v:8,t:'8'} ], def:6, showIf:s=>s.formato==='carne' },
+    { id:'nombres', label:'Nombres de los alumnos', type:'texto', rows:6, placeholder:'Uno por renglón (si lo dejás vacío, quedan renglones en blanco)', def:'' } ] },
+  registro:{ title:'Registro de lectura', consigna:'Anotá cada libro que leas.', single:true, cols:1,
+    count:{ label:'Cantidad de lecturas', options:[8,10,12,15,20], def:12 }, groups:[
+    { id:'gusto', label:'Casillas para pintar cuánto me gustó', type:'single', options:SINO, def:'si' } ] },
+  bingo:{ title:'Bingo', consigna:'', single:true, cols:2,
+    count:{ label:'Cantidad de cartones', options:[2,4,6,8,12], def:4 }, groups:[
+    { id:'tipo', label:'Qué lleva el cartón', type:'single', options:[ {v:'numeros',t:'Números'},{v:'resultados',t:'Resultados de cuentas'},{v:'palabras',t:'Palabras de un tema'} ], def:'numeros' },
+    { id:'tam', label:'Tamaño del cartón', type:'single', options:[ {v:3,t:'3 × 3'},{v:4,t:'4 × 4'},{v:5,t:'5 × 5 (con casilla libre)'} ], def:3 },
+    { id:'hasta', label:'Números hasta', type:'single', options:[ {v:20,t:'20'},{v:50,t:'50'},{v:100,t:'100'} ], def:50, showIf:s=>s.tipo==='numeros' },
+    { id:'ops', label:'Cuentas', type:'multi', options:[ {v:'suma',t:'Sumas'},{v:'resta',t:'Restas'},{v:'mult',t:'Multiplicaciones'},{v:'div',t:'Divisiones'} ], def:['suma','mult'], showIf:s=>s.tipo==='resultados' },
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo', showIf:s=>s.tipo==='palabras' } ] },
+  tarjetas:{ title:'Tarjetas', consigna:'', single:true, cols:1,
+    count:{ label:'Cantidad de tarjetas', options:[8,16,24,32], def:16 }, groups:[
+    { id:'tipo', label:'Qué llevan', type:'single', options:[ {v:'tablas',t:'Tablas de multiplicar'},{v:'operaciones',t:'Cuentas'},{v:'palabras',t:'Palabras y definiciones de un tema'} ], def:'tablas' },
+    { id:'tablas', label:'Tablas', type:'multi', options:[2,3,4,5,6,7,8,9,10].map(v=>({v,t:'Del '+v})), def:[2,3,4,5], showIf:s=>s.tipo==='tablas' },
+    { id:'ops', label:'Cuentas', type:'multi', options:[ {v:'suma',t:'Sumas'},{v:'resta',t:'Restas'},{v:'mult',t:'Multiplicaciones'},{v:'div',t:'Divisiones'} ], def:['suma','resta'], showIf:s=>s.tipo==='operaciones' },
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo', showIf:s=>s.tipo==='palabras' },
+    { id:'frente', label:'Al frente va', type:'single', options:[ {v:'palabra',t:'La palabra'},{v:'pista',t:'La definición'} ], def:'palabra', showIf:s=>s.tipo==='palabras' } ] },
+  hojaEscuela:{ title:'Hoja de trabajo', consigna:'', single:true, cols:1,
+    count:{ label:'Cantidad de hojas', options:[1,2,3,4], def:1 }, groups:[
+    { id:'tipo', label:'Tipo de hoja', type:'single', options:[ {v:'rayada',t:'Rayada'},{v:'cuadriculada',t:'Cuadriculada'},{v:'lisa',t:'Lisa'} ], def:'rayada' } ] },
+});
+Object.assign(DESC, {
+  evaluacion:'Una sección de cada tipo en una sola hoja, con la rúbrica de los criterios al pie.',
+  rubrica:'Rúbrica con criterios y niveles, o lista de cotejo del grupo, para imprimir y completar.',
+  planilla:'Planilla del grupo para registrar las tareas, o carné de tareas con firma de la familia.',
+  registro:'Tabla para anotar fecha, título, autor, páginas y cuánto gustó cada lectura.',
+  bingo:'Cartones de bingo con números, resultados de cuentas o palabras; la hoja de respuestas trae el orden para cantar.',
+  tarjetas:'Tarjetas para recortar: el frente en la hoja del alumno y el dorso en la de respuestas (imprimir a doble faz).',
+  hojaEscuela:'Hoja rayada, cuadriculada o lisa con el encabezado de la escuela.',
+});
+
 const BILL_W=25, BILL_H=12.5, COIN_D=11.5;
 function moneyRows(money,w){
   const rows=[[]]; let x=0;
@@ -3428,11 +3919,12 @@ function unirRows(it,w){
     return { L, R, h:Math.max(L.length,R.length)*4.6+6 }; });
 }
 function layoutBlocks(d, isKey){
-  const startY=headerTop(isKey), endY=contentEnd(), cols=W>=160?(d.cols||1):((d.cols||1)>1 && d.items.some(it=>(it.type==='fill'||it.type==='reloj') && !it.full) ? 2 : 1), cw=(W-2*M-(cols-1)*8)/cols, fullW=W-2*M;
+  const ITEMS=(isKey && d.keyItems) ? d.keyItems : d.items;
+  const startY=headerTop(isKey), endY=contentEnd(), cols=W>=160?(d.cols||1):((d.cols||1)>1 && ITEMS.some(it=>(it.type==='fill'||it.type==='reloj') && !it.full) ? 2 : 1), cw=(W-2*M-(cols-1)*8)/cols, fullW=W-2*M;
   const rows=[]; let curRow=[];
   let num=0;
-  d.items.forEach((it,i)=>{
-    const o={it, idx: (it.type==='texto'||it.type==='grafico') ? -1 : num++};
+  ITEMS.forEach((it,i)=>{
+    const o={it, idx: (it.type==='texto'||it.type==='grafico'||it.type==='seccion') ? -1 : num++};
     if (cols===1 || it.full || BLOCKS[it.type].full){ if (curRow.length){ rows.push(curRow); curRow=[]; } rows.push([o]); }
     else { curRow.push(o); if (curRow.length===cols){ rows.push(curRow); curRow=[]; } }
   });
@@ -3466,15 +3958,26 @@ function layoutBlocks(d, isKey){
 function snapshot(){
   const P=cur();
   return JSON.parse(JSON.stringify({ activity:state.activity, title:P.title, consigna:P.consigna, nota:P.nota, sel:P.sel, data:state.data,
-    variants: (state.variants && state.variants.length>1) ? state.variants : null }));
+    variants: (state.variants && state.variants.length>1) ? state.variants : null,
+    versionLabels: (state.variants && state.variants.length>1) ? (state.versionLabels||null) : null }));
 }
 /* Dibuja una hoja: con letra más grande se arma sobre una hoja "más chica" y después se escala a A4 */
+let fitOver=false;
 function renderSheet(snap, isKey, pw=PAGE_W, ph=PAGE_H){
-  const k=OPT.scale; SH=snap; W=pw/k; H=ph/k;
+  const k0=OPT.scale; SH=snap; let k=k0;
   const d=snap.data;
   let pages;
+  const pasos = d.fit ? [1,.94,.88,.82,.76,.7,.64,.58,.52,.46] : [1];   // "todo en una hoja": se achica hasta que entre
   try{
-    pages = d.kind==='blocks' ? layoutBlocks(d,isKey) : d.kind==='sopa' ? layoutSopa(d,isKey) : d.kind==='cruci' ? layoutCruci(d,isKey) : layoutOps(d.list,isKey);
+    for (const f of pasos){
+      k=k0*f; W=pw/k; H=ph/k; M=15/f;
+      pages = d.kind==='blocks' ? layoutBlocks(d,isKey) : d.kind==='sopa' ? layoutSopa(d,isKey) : d.kind==='cruci' ? layoutCruci(d,isKey) : layoutOps(d.list,isKey);
+      if (pages.length<=1) break;
+    }
+    if (d.fit && pages.length>1){   // ni achicando entra: tamaño normal en más hojas, y se avisa
+      fitOver=true; k=k0; W=pw/k; H=ph/k; M=15;
+      pages = layoutBlocks(d,isKey);
+    }
   } finally { W=PAGE_W; H=PAGE_H; M=15; }
   return pages.map(els=>els.map(e=>{
     const o=scaleEl(e,k);
@@ -3486,7 +3989,7 @@ function renderSheet(snap, isKey, pw=PAGE_W, ph=PAGE_H){
 const LETRAS_V='ABCDEF';
 function sheetPages(snap, isKey){
   if (snap.variants && snap.variants.length>1)
-    return snap.variants.flatMap((v,i)=> sheetPagesOne({ ...snap, data:v, variants:null, version:LETRAS_V[i] }, isKey));
+    return snap.variants.flatMap((v,i)=> sheetPagesOne({ ...snap, data:v, variants:null, version:(snap.versionLabels ? snap.versionLabels[i] : LETRAS_V[i]) }, isKey));
   return sheetPagesOne(snap, isKey);
 }
 function sheetPagesOne(snap, isKey){
@@ -3565,7 +4068,7 @@ function buildPDF(snaps, week){
   if (week){ all.push(...weekPages(snaps,false)); if ($('withKey').checked) all.push(...weekPages(snaps,true)); }
   else {
     snaps.forEach(sn=> all.push(...sheetPages(sn,false)));
-    if ($('withKey').checked) snaps.forEach(sn=> all.push(...sheetPages(sn,true)));
+    if ($('withKey').checked) snaps.filter(sn=>!(sn.data && sn.data.sinRespuestas)).forEach(sn=> all.push(...sheetPages(sn,true)));
   }
   const orient=p=> p.w>p.h?'l':'p';
   const doc=new jsPDF({unit:'mm', format:'a4', orientation:orient(all[0])});
@@ -3617,9 +4120,10 @@ function fallbackDownload(blob,name){
 let flashT;
 function flash(text,kind){ const m=$('msg'); m.textContent=text; m.className='msg '+(kind||''); clearTimeout(flashT); flashT=setTimeout(()=>{m.textContent='';},4000); }
 
-function buildData(actId, P, count){
+function buildData(actId, P, count, nivel='propio'){
   const A=ACTIVITIES[actId];
-  const res=GEN[actId](P.sel, count, { bank: P.sel.tema ? findBank(P.sel.tema) : null, comp:P.comp });
+  const sel = (DIF[actId] && DIF[actId][nivel]) ? { ...P.sel, ...DIF[actId][nivel] } : P.sel;
+  const res=GEN[actId](sel, count, { bank: sel.tema ? findBank(sel.tema) : null, comp:P.comp });
   if (!Array.isArray(res)) return res;
   if ($('order').value==='facil') res.sort((a,b)=>a.diff-b.diff); else shuffle(res);
   return (res[0] && res[0].type) ? { kind:'blocks', cols:A.cols||2, items:res } : { kind:'ops', list:res };
@@ -3628,12 +4132,20 @@ function regenerate(){
   state.previewCombo=false; state.previewWeek=false;
   const P=cur(), A=ACTIVITIES[state.activity];
   P.count=parseInt($('count').value,10)||A.count.def;
-  const makeOne=()=> buildData(state.activity, P, P.count);
-  // varias versiones: misma configuración, números (o palabras) distintos
-  state.variants = Array.from({length:OPT.versions}, makeOne);
+  // varias versiones: misma configuración, números (o palabras) distintos; o dos niveles (fácil y difícil)
+  const nv=OPT.nivel;
+  if (nv==='ambos' && DIF[state.activity]){
+    state.variants=[ buildData(state.activity,P,P.count,'facil'), buildData(state.activity,P,P.count,'dificil') ];
+    state.versionLabels=['Nivel fácil','Nivel difícil'];
+  } else {
+    const n1=(nv==='facil'||nv==='dificil') ? nv : 'propio';
+    state.variants = Array.from({length:OPT.versions}, ()=> buildData(state.activity,P,P.count,n1));
+    state.versionLabels=null;
+  }
   state.data = state.variants[0];
-  renderPreview(); save();
+  fitOver=false; renderPreview(); save();
   if (state.data.warn) flash(state.data.warn,'err');
+  else if (fitOver) flash('Son muchas secciones: no entran en una hoja ni achicando. Se imprime en más hojas; probá con menos secciones o ejercicios.','err');
 }
 
 $('regen').onclick=regenerate;
@@ -3775,14 +4287,129 @@ $('nota').addEventListener('input',()=>{ cur().nota=$('nota').value; renderPrevi
 $('upper').onchange=()=>{ OPT.upper=$('upper').checked; renderPreview(); save(); };
 $('scale').onchange=()=>{ OPT.scale=parseFloat($('scale').value)||1; renderPreview(); save(); };
 
+/* =========================================================
+   Niveles (fácil y difícil), encabezado de la escuela, fichas favoritas
+   y vínculo con el plan semanal.
+   ========================================================= */
+const DIF={
+  sumas:{ facil:{dif:['sin'],cifras:[2],sumandos:[2]}, dificil:{dif:['con'],cifras:[3,4],sumandos:[2,3]} },
+  restas:{ facil:{dif:['sin'],cifras:[2]}, dificil:{dif:['con'],cifras:[3,4]} },
+  mult:{ facil:{cifrasA:[2],cifrasB:[1]}, dificil:{cifrasA:[3],cifrasB:[1,2]} },
+  div:{ facil:{dividendo:[2],divisor:[1],resto:['exacta']}, dificil:{dividendo:[3],divisor:[1,2],resto:['exacta','con']} },
+  numeracion:{ facil:{cifras:[2]}, dificil:{cifras:[4,5]} },
+  problemas:{ facil:{op:['suma','resta'],hasta:100}, dificil:{op:['mult','div','comb'],hasta:1000} },
+  mental:{ facil:{nivel:'basico'}, dificil:{nivel:'avanzado'} },
+  escribir:{ facil:{cifras:[2]}, dificil:{cifras:[4,5]} },
+  dinero:{ facil:{hasta:100}, dificil:{hasta:5000} },
+  hora:{ facil:{precision:'media'}, dificil:{precision:'5'} },
+  fracciones:{ facil:{nivel:'basico',tipo:['leer','pintar','equivalentes']}, dificil:{nivel:'amplio',tipo:['comparar','sumar','decimal','compDec']} },
+  tablas:{ facil:{tablas:[2,3,4,5]}, dificil:{tablas:[6,7,8,9]} },
+  medidas:{ facil:{tipo:['conversion','perimetro'],unidades:['long']}, dificil:{tipo:['area','angulos','conversion'],unidades:['long','masa','cap']} },
+  patrones:{ facil:{nivel:'chico',tipo:['suma','resta']}, dificil:{nivel:'grande',tipo:['mult','alterna','regla']} },
+  logica:{ facil:{nivel:'facil'}, dificil:{nivel:'dificil'} },
+  graficos:{ facil:{hasta:10,cats:4}, dificil:{hasta:50,cats:6} },
+  ortografia:{ facil:{modo:'elegir'}, dificil:{modo:'completar'} },
+  acentos:{ facil:{tipo:['tonica'],clases:['aguda','grave']}, dificil:{tipo:['clase','tilde'],clases:['aguda','grave','esdrújula']} },
+  ordenarOr:{ facil:{nivel:'facil'}, dificil:{nivel:'dificil'} },
+  clases:{ facil:{palabras:6}, dificil:{palabras:12} },
+  verbos:{ facil:{tiempo:['presente'],conj:['ar']}, dificil:{tiempo:['pasado','imperfecto','futuro'],conj:['ar','er','ir']} },
+  sopaN:{ facil:{tam:10,dir:['h','v'],cifras:[2,3]}, dificil:{tam:15,dir:['h','v','d'],cifras:[4,5]} },
+  sopaL:{ facil:{tam:10,dir:['h','v']}, dificil:{tam:15,dir:['h','v','d','r']} },
+  evaluacion:{ facil:{ _n:'facil' }, dificil:{ _n:'dificil' } },
+};
+function syncNivelUI(){
+  const hay=!!DIF[state.activity], nv=OPT.nivel, h=$('nivelHelp');
+  let t='';
+  if (nv!=='propio' && !hay) t='Esta actividad no tiene niveles: se imprime como la configuraste arriba.';
+  else if (nv==='ambos') t='Salen dos hojas: una fácil y otra difícil, con los mismos tipos de ejercicio.';
+  else if (nv==='facil' || nv==='dificil') t='Se usan los ajustes del nivel elegido (por ejemplo, menos o más cifras) en lugar de los de arriba.';
+  h.textContent=t; h.hidden=!t;
+}
+$('nivel').onchange=()=>{ OPT.nivel=$('nivel').value; syncNivelUI(); regenerate(); };
+[['escEscuela','escuela'],['escGrupo','grupo'],['escDocente','docente']].forEach(([id,k])=>{ $(id).addEventListener('input',()=>{ OPT.esc[k]=$(id).value; renderPreview(); save(); }); });
+
+/* ---------- Fichas favoritas ---------- */
+let favs=[];
+function loadFavs(){ try{ favs=JSON.parse(localStorage.getItem('hojas-favs')||'[]')||[]; if (!Array.isArray(favs)) favs=[]; }catch(e){ favs=[]; } }
+function saveFavs(){ try{ localStorage.setItem('hojas-favs', JSON.stringify(favs)); }catch(e){ flash('No se pudo guardar la ficha en este navegador.','err'); } }
+const nombreActividad = id => { for (const a of CATALOG){ const it=a.items.find(i=>i.id===id); if (it) return it.name; } return id; };
+const NOMBRE_NIVEL={ facil:'nivel fácil', dificil:'nivel difícil', ambos:'fácil y difícil' };
+function renderFavs(){
+  const ul=$('favList'); ul.innerHTML='';
+  $('favSub').textContent = favs.length ? `${favs.length} guardada${favs.length>1?'s':''}` : 'Guardá una ficha con sus ajustes para repetirla';
+  if (!favs.length){ ul.innerHTML='<li class="fav-vacio" style="border:none;padding:0;background:none">Todavía no guardaste ninguna ficha.</li>'; return; }
+  favs.forEach(f=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<b>${esc(f.name)}<small>${esc(nombreActividad(f.activity))}${NOMBRE_NIVEL[f.nivel]?' · '+NOMBRE_NIVEL[f.nivel]:''}</small></b>`;
+    const use=document.createElement('button'); use.type='button'; use.className='mini primary'; use.textContent='Usar'; use.onclick=()=>useFav(f);
+    const del=document.createElement('button'); del.type='button'; del.className='mini danger'; del.textContent='Borrar'; del.onclick=()=>{ favs=favs.filter(x=>x.id!==f.id); saveFavs(); renderFavs(); };
+    li.append(use,del); ul.appendChild(li);
+  });
+}
+function useFav(f){
+  if (!ACTIVITIES[f.activity]){ flash('Esa actividad ya no existe.','err'); return; }
+  state.per[f.activity]=JSON.parse(JSON.stringify(f.per)); OPT.nivel=f.nivel||'propio'; $('nivel').value=OPT.nivel;
+  state.area=CATALOG.find(a=>a.items.some(i=>i.id===f.activity)).id; renderAreas(); selectActivity(f.activity); save();
+  flash('Ficha cargada: '+f.name,'ok');
+}
+$('favSave').onclick=()=>{
+  const P=cur(), name=($('favName').value||P.title||nombreActividad(state.activity)).trim().slice(0,50);
+  favs.unshift({ id:Date.now().toString(36)+Math.random().toString(36).slice(2,5), name, activity:state.activity, per:JSON.parse(JSON.stringify(P)), nivel:OPT.nivel });
+  saveFavs(); renderFavs(); $('favName').value=''; $('favPanel').open=true; flash('Ficha guardada en "Fichas favoritas".','ok');
+};
+
+/* ---------- Vínculo con el plan semanal: ?q=…&c=…&uc=… ---------- */
+const norm = t => String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const VINC=[
+  ['sumas',/suma|adicion/],['restas',/resta|sustraccion/],['mult',/multiplic|producto/],['div',/divisi|cociente|reparto/],['numeracion',/numeracion|antecesor|sucesor|orden de numeros/],
+  ['problemas',/problema|situacion/],['mental',/calculo mental/],['escribir',/escribir numeros|descomposicion/],['dinero',/dinero|plata|pesos|vuelto/],['hora',/hora|reloj|calendario/],
+  ['fracciones',/fraccion|decimal/],['tablas',/tabla/],['medidas',/medid|perimetro|area|angulo|longitud|geometri/],['patrones',/serie|patron|regularidad/],
+  ['logica',/magico|piramide|laberinto|logica/],['graficos',/grafic|estadistic|encuesta|datos/],
+  ['ortografia',/ortograf|b y v|c, s y z/],['acentos',/tilde|acent|silaba|aguda|grave|esdrujula/],['ordenarOr',/oracion|alfabet/],['clases',/sustantiv|adjetiv|plural|genero/],['verbos',/verbo|conjug|tiempo verbal/],
+  ['comprension',/lectura|comprension|cuento|noticia|texto/],
+  ['esquemas',/esquema|planeta|planta|ciclo del agua|sistema solar/],['cadenas',/cadena|alimentari|ecosistema|ser vivo/],['lineas',/linea de tiempo|historia|hechos|inventos/],['mapas',/mapa|departamento|pais|continente|geografia/],
+];
+const AREA_UC=[[/matematic/,'mate'],[/lengua|comunicaci|literatura/,'lengua'],[/ciencias|naturales|sociales|historia|geografia|biolog/,'ciencias']];
+const CON_TEMA=['sopaL','crucigrama','unir','completar','vf','ahorcado'];
+function vincular(){
+  const qs=new URLSearchParams(location.search), q=(qs.get('q')||'').trim(), c=(qs.get('c')||'').trim(), uc=norm(qs.get('uc')||'');
+  if (!q && !c) return;
+  const txt=norm(c+' '+q), box=$('vinc');
+  const area = (AREA_UC.find(([r])=>r.test(uc)) || [])[1];
+  const areaDe=id=>CATALOG.find(a=>a.items.some(i=>i.id===id)).id;
+  let cand=VINC.map(([id,re])=>({ id, sc:(txt.match(new RegExp(re.source,'g'))||[]).length + (area && areaDe(id)===area ? .5 : 0) })).filter(x=>x.sc>=1).sort((a,b)=>b.sc-a.sc).slice(0,3);
+  // tema de palabras: algún tema que se nombre en la clase
+  let banco=null, best=0;
+  allBanks().forEach(b=>{ const nombre=norm(b.name).split(/\s+/).filter(w=>w.length>4);
+    let n=nombre.filter(w=>txt.includes(w.slice(0,Math.max(5,w.length-2)))).length*2 + b.entries.filter(e=>e.word.length>4 && txt.includes(norm(e.word))).length;
+    if (n>best){ best=n; banco=b; } });
+  const chips=[...cand.map(x=>({ id:x.id })), ...(banco && best>=2 ? CON_TEMA.slice(0,3).map(id=>({ id, tema:banco.id })) : [])];
+  if (!chips.length) (area ? CATALOG.find(a=>a.id===area).items.slice(0,4) : [{id:'sumas'},{id:'ortografia'},{id:'esquemas'}]).forEach(it=>chips.push({ id:it.id }));
+  const aplicar=ch=>{
+    state.area=areaDe(ch.id); const P=ensurePer(ch.id); if (ch.tema && P.sel.tema!==undefined) P.sel.tema=ch.tema;
+    P.title=(c||q).slice(0,60); renderAreas(); selectActivity(ch.id); markChips(ch);
+  };
+  const markChips=ch=>{ box.querySelectorAll('.item').forEach((b,i)=> b.classList.toggle('sel', chips[i]===ch)); };
+  box.hidden=false;
+  box.innerHTML=`<b>Hoja para la clase: «${esc(c||q)}»</b><span class="hint">${cand.length||banco ? 'Te sugerimos estas actividades. Tocá la que quieras usar; después podés ajustarla.' : 'No encontramos una actividad parecida. Probá con alguna de estas o elegí otra abajo.'}</span><div class="chips"></div>`;
+  const wrap=box.querySelector('.chips');
+  chips.forEach(ch=>{ const b=document.createElement('button'); b.type='button'; b.className='item';
+    b.textContent=nombreActividad(ch.id)+(ch.tema ? ' · '+findBank(ch.tema).name : ''); b.onclick=()=>aplicar(ch); wrap.appendChild(b); });
+  aplicar(chips[0]);
+}
+
 loadBanks();
 loadCombo();
 loadWeek();
+loadFavs();
 loadSaved();
 $('upper').checked=OPT.upper; $('scale').value=String(OPT.scale);
 $('versions').value=String(OPT.versions); $('sheetType').value=OPT.tarea?'tarea':'clase'; $('paper').value=OPT.media?'media':'entera'; syncTareaUI();
+$('nivel').value=OPT.nivel; $('escEscuela').value=OPT.esc.escuela; $('escGrupo').value=OPT.esc.grupo; $('escDocente').value=OPT.esc.docente;
+if (OPT.esc.escuela||OPT.esc.grupo||OPT.esc.docente) $('escDet').open=true;
 ensurePer(state.activity);
-renderAreas(); selectActivity(state.activity); renderCombo(); renderWeekUI();
+renderAreas(); selectActivity(state.activity); renderCombo(); renderWeekUI(); renderFavs();
+vincular();
 initDownloads();
 initSample();
 </script>
