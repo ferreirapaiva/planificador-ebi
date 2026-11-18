@@ -25,6 +25,7 @@
     --sopas:#D99100; --sopas-soft:#FFF5D6;
     --cruci:#13926F; --cruci-soft:#E3F8F1;
     --repaso:#E5552F; --repaso-soft:#FFEDE6;
+    --lengua:#2F6FD6; --lengua-soft:#E4EEFC;
     --c:var(--mate); --c-soft:var(--mate-soft);
     --ok:#13926F; --err:#C42F40;
     --display:'Nunito Variable', Nunito, system-ui, sans-serif;
@@ -40,7 +41,9 @@
   .embebido main{max-width:none; padding:0 0 16px; gap:24px}
   .embebido .panel{border:none; border-radius:28px; box-shadow:0 4px 16px rgb(59 45 184 / .08); padding:22px 22px 24px}
   .embebido .panel h2{font-weight:800; font-size:1.15rem}
-  .embebido .folders{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; padding:0}
+  .embebido .folders{display:grid; grid-template-columns:repeat(6,1fr); gap:8px; padding:0}
+  .embebido .area{grid-column:span 2}
+  .embebido .area:nth-child(n+4){grid-column:span 3}
   .embebido .area{flex:1 1 auto; min-width:0; min-height:0; justify-content:center; white-space:nowrap; flex-direction:row; align-items:center; gap:8px; padding:9px 14px;
     border-radius:999px; background:#fff; border:1.5px solid var(--line); box-shadow:none}
   .embebido .area:hover{transform:none; border-color:var(--ac)}
@@ -63,6 +66,7 @@
   body[data-area="sopas"]{ --c:var(--sopas); --c-soft:var(--sopas-soft); }
   body[data-area="cruci"]{ --c:var(--cruci); --c-soft:var(--cruci-soft); }
   body[data-area="repaso"]{ --c:var(--repaso); --c-soft:var(--repaso-soft); }
+  body[data-area="lengua"]{ --c:var(--lengua); --c-soft:var(--lengua-soft); }
 
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -94,7 +98,7 @@
   .controls{display:flex; flex-direction:column; gap:16px}
 
   /* ---------- Carpetas (áreas) ---------- */
-  .folders{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; align-items:end; padding:0 4px}
+  .folders{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; align-items:end; padding:0 4px}
   .area{--ac:var(--mate); --as:var(--mate-soft);
     position:relative; border:none; cursor:pointer; text-align:left; padding:10px 10px 12px;
     border-radius:14px 14px 0 0; background:var(--as); color:var(--ink);
@@ -103,6 +107,7 @@
   .area[data-a="sopas"]{--ac:var(--sopas); --as:var(--sopas-soft)}
   .area[data-a="cruci"]{--ac:var(--cruci); --as:var(--cruci-soft)}
   .area[data-a="repaso"]{--ac:var(--repaso); --as:var(--repaso-soft)}
+  .area[data-a="lengua"]{--ac:var(--lengua); --as:var(--lengua-soft)}
   .area:hover{transform:translateY(-2px)}
   .area .ic{width:30px; height:30px; border-radius:9px; display:grid; place-items:center; background:var(--ac); color:#fff}
   .area .ic svg{width:18px; height:18px}
@@ -2570,6 +2575,425 @@ Object.assign(NOTAS, {
   graficos:'Leemos datos en gráficos y tablas. Fijate bien en los títulos y en la escala.',
 });
 
+/* =========================================================
+   LENGUA: ortografía, acentuación, ordenar oraciones y palabras,
+   clases de palabras, verbos y ahorcado.
+   ========================================================= */
+
+/* ---------- Ortografía ---------- */
+/* Cada palabra lleva entre corchetes la letra (o letras) que se completa. */
+const ORT = {
+  bv:{ letras:['b','v'], palabras:
+    'a[b]uelo [b]icicleta ár[b]ol [b]allena [b]ombero [b]arco li[b]ro la[b]io ca[b]allo ta[b]la [b]anana a[b]eja som[b]rero ta[b]aco a[b]ril [b]ufanda [b]arrio [b]rillo ca[b]ello [b]otella [b]olsa [b]andera [b]urro '+
+    '[v]aso [v]entana [v]erano in[v]ierno no[v]iembre [v]iento [v]estido [v]ioleta [v]olcán [v]entilador cue[v]a nu[v]e lle[v]ar [v]erdura a[v]ión a[v]ispa mo[v]er tra[v]ieso pa[v]o o[v]eja [v]ecino no[v]ela' },
+  csz:{ letras:['c','s','z'], palabras:
+    '[c]ielo [c]ine ra[c]imo a[c]eite [c]ebolla [c]ereza [c]ebra [c]entro [c]epillo [c]erdo [c]ircuito a[c]ero [c]ruce ve[c]ino á[c]ido fá[c]il [c]ero '+
+    '[z]apato [z]orro [z]anahoria pi[z]arra ca[z]uela a[z]úcar [z]ona a[z]ul cabe[z]a ra[z]ón cora[z]ón tra[z]o go[z]ar ma[z]orca lu[z] pe[z] nari[z] feli[z] '+
+    '[s]emáforo [s]illa ca[s]co [s]apo [s]opa e[s]cuela pa[s]ta [s]ábado pi[s]o o[s]o pa[s]to [s]ilencio' },
+  gj:{ letras:['g','j'], palabras:
+    '[g]ente [g]irasol [g]imnasio [g]elatina [g]eografía án[g]el re[g]ión prote[g]er diri[g]ir ele[g]ir mar[g]en ur[g]ente [g]igante [g]enial [g]eneral '+
+    '[j]ugar [j]ardín ho[j]a ba[j]ar vie[j]o via[j]e [j]oven [j]ugo co[j]ín mu[j]er e[j]emplo pá[j]aro [j]uguete [j]ueves [j]inete re[j]a' },
+  lly:{ letras:['ll','y'], palabras:
+    '[ll]ave [ll]uvia [ll]ama ca[ll]e ga[ll]ina si[ll]a ga[ll]eta ta[ll]er cuchi[ll]o estre[ll]a amari[ll]o cepi[ll]o toa[ll]a ga[ll]o bri[ll]ante cabe[ll]o '+
+    '[y]ema [y]ate pla[y]a pa[y]aso a[y]uda a[y]er ma[y]or [y]ogur jo[y]a a[y]udar' },
+  h:{ con:'huevo hueso hormiga hielo hoja hospital historia helado hermano hombre humo hilo hacha hierba hamaca hongo harina hotel hambre hijo humano herida hueco huerta hacer habitación',
+      sin:'abeja abrir oreja ojo arena invierno oso uña alfombra' },
+};
+const ORT_PROHIBIDAS=new Set(['caga','cagón','gaga','baca','vota','col','capo','casa','caza','masa','maza','rosa','roza','cazar','casar']);
+function ortItems(sel,count){
+  const out=[], used=new Set(), tipos=shuffle([...sel.tipo]); let g=0, i=0;
+  while (out.length<count && g<count*80){
+    g++; const t=tipos[i%tipos.length]; let it, key;
+    if (t==='h'){
+      const conH=Math.random()<.78, w = conH ? pick(ORT.h.con.split(' ')) : pick(ORT.h.sin.split(' '));
+      const mal = conH ? w.slice(1) : 'h'+w; key='h'+w;
+      it={ type:'elegirOrt', bien:w, mal, izq: Math.random()<.5 };
+    } else {
+      const R=ORT[t], raw=pick(R.palabras.split(' ')), m=raw.match(/^(.*)\[(.+)\](.*)$/);
+      const pre=m[1], L=m[2], post=m[3], bien=pre+L+post;
+      const otros=R.letras.filter(x=>x!==L).filter(x=> !(x==='c' && /^[aouáóú]/.test(post)) && !(x==='z' && /^[ei]/.test(post)));
+      if (!otros.length) continue;
+      const mal=pre+pick(otros)+post; key=t+bien;
+      if (ORT_PROHIBIDAS.has(mal)||ORT_PROHIBIDAS.has(bien)) continue;
+      if (sel.modo==='elegir') it={ type:'elegirOrt', bien, mal, izq: Math.random()<.5 };
+      else {
+        const chars=[...pre.toUpperCase()], hide=[chars.length]; chars.push(L.toUpperCase()); chars.push(...post.toUpperCase());
+        const op = R.letras.length===2 ? `¿${R.letras[0]} o ${R.letras[1]}?` : `¿${R.letras[0]}, ${R.letras[1]} o ${R.letras[2]}?`;
+        it={ type:'letras', chars, hide, clue:op };
+      }
+    }
+    if (used.has(key)) continue; used.add(key); i++;
+    it.diff=['bv','csz','gj','lly','h'].indexOf(t); out.push(it);
+  }
+  return out;
+}
+GEN.ortografia = ortItems;
+/* Dos formas de escribir una palabra: marcar la correcta */
+BLOCKS.elegirOrt = {
+  h:()=>12,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+6);
+    const bw=Math.min(34,(w-14)/2), a=it.izq?it.bien:it.mal, b=it.izq?it.mal:it.bien;
+    [[a,x+10],[b,x+10+bw+4]].forEach(([wd,bx])=>{
+      const ok = isKey && wd===it.bien;
+      els.push({t:'rect', x:bx, y:y, w:bw, h:9, r:4.5, stroke: ok?RED:'#666', lw: ok?.9:.35, fill: ok?CLARO_R:'#ffffff'});
+      els.push({t:'text', x:bx+bw/2, y:y+6.2, s:Math.min(12, 12*(bw-4)/Math.max(1,measure(wd,12))), str:wd, a:'center', b:ok, c: ok?RED:'#111'});
+    });
+  } };
+
+/* ---------- Acentuación ---------- */
+const ACENTOS=('ca-fé:1 so-fá:1 ma-má:1 pa-pá:1 ca-mión:1 can-ción:1 co-ra-zón:2 ja-más:1 bo-tón:1 a-trás:1 bal-cón:1 co-li-brí:2 pan-ta-lón:2 sa-lón:1 '+
+  're-loj:1 ciu-dad:1 pa-pel:1 co-lor:1 a-ni-mal:2 fe-liz:1 ta-ller:1 '+
+  'ca-sa:0 me-sa:0 li-bro:0 ár-bol:0 lá-piz:0 fá-cil:0 di-fí-cil:1 ca-rác-ter:1 a-zú-car:1 ú-til:0 mó-vil:0 cár-cel:0 e-xa-men:1 jo-ven:0 lu-nes:0 '+
+  'ca-mi-no:1 ven-ta-na:1 pe-lo-ta:1 es-cue-la:1 ma-es-tra:1 zo-rro:0 es-tre-lla:1 ca-ba-llo:1 cua-der-no:1 '+
+  'pá-ja-ro:0 mur-cié-la-go:1 te-lé-fo-no:1 mú-si-ca:0 mé-di-co:0 sá-ba-do:0 lám-pa-ra:0 es-drú-ju-la:1 rá-pi-do:0 sí-la-ba:0 pá-gi-na:0 ár-bo-les:0 nú-me-ro:0 cá-ma-ra:0 pe-lí-cu-la:1 pró-xi-mo:0 téc-ni-co:0')
+  .split(' ').map(s=>{ const [w,t]=s.split(':'), syl=w.split('-'), ton=Number(t), n=syl.length,
+    clase = ton===n-1 ? 'aguda' : ton===n-2 ? 'grave' : 'esdrújula';
+    const palabra=syl.join(''); return { palabra, syl, ton, clase, tilde:/[áéíóú]/.test(palabra), base:palabra.normalize('NFD').replace(/[̀-ͯ]/g,'') }; });
+GEN.acentos = function(sel,count){
+  const out=[], used=new Set(), tipos=shuffle([...sel.tipo]); let g=0, i=0;
+  const clases=sel.clases;
+  const pool=ACENTOS.filter(e=> clases.includes(e.clase));
+  while (out.length<count && g<count*80 && pool.length){
+    g++; const t=tipos[i%tipos.length], sinTilde=pool.filter(x=>!x.tilde), e=pick(t==='tonica' && sinTilde.length ? sinTilde : pool), key=t+e.palabra; let it;
+    if (used.has(key)) continue;
+    if (t==='tonica') it={ type:'silabas', mode:'tonica', syl:e.syl, ton:e.ton, clase:e.clase };
+    else if (t==='clase') it={ type:'silabas', mode:'clase', syl:e.syl, ton:e.ton, clase:e.clase };
+    else it={ type:'fill', parts:[`${e.base} →`, B(e.palabra,28)] };
+    used.add(key); i++; it.diff=['tonica','clase','tilde'].indexOf(t); out.push(it);
+  }
+  return out;
+};
+/* Palabra separada en sílabas: marcar la tónica o decir qué clase de palabra es */
+BLOCKS.silabas = {
+  h:(it)=> it.mode==='clase' ? 27 : 21,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+7);
+    let cx=x+10; const bw=Math.min(15,(w-14)/it.syl.length);
+    it.syl.forEach((s,k)=>{
+      const on = it.mode==='clase' ? k===it.ton : (isKey && k===it.ton);
+      els.push({t:'rect', x:cx, y:y, w:bw-1.5, h:9, r:1.5, stroke:'#444', lw:.4, fill: on ? (it.mode==='clase'?CLARO:CLARO_R) : '#ffffff'});
+      els.push({t:'text', x:cx+(bw-1.5)/2, y:y+6.4, s:12, str:s, a:'center', b:on, c: (isKey&&it.mode==='tonica'&&on)?RED:'#111'});
+      cx+=bw;
+    });
+    if (it.mode==='tonica') els.push({t:'text', x:x+10, y:y+16, s:8.5, str:'Pintá la sílaba tónica.', c:'#6b7488'});
+    else {
+      const ly=y+19, lab='Es una palabra', lw=measure(lab,FSB)+2;
+      els.push({t:'text', x:x+10, y:ly, s:FSB, str:lab});
+      els.push({t:'line', x1:x+10+lw, y1:ly+.8, x2:Math.min(x+w, x+10+lw+28), y2:ly+.8, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:x+10+lw+2, y:ly, s:FSB, str:it.clase, c:RED, b:true});
+    }
+  } };
+
+/* ---------- Ordenar oraciones y palabras ---------- */
+const ORACIONES=[
+  'El perro corre por el parque.','Mi hermana lee un libro de cuentos.','Los niños juegan al fútbol en el recreo.','Hoy vamos a la plaza con mis abuelos.',
+  'La maestra escribe en el pizarrón.','Mamá prepara un bizcochuelo para la merienda.','Las gaviotas vuelan sobre el mar.','Mi vecino riega las plantas del jardín.',
+  'En invierno hace mucho frío.','Los pájaros construyen sus nidos en los árboles.','El sábado iremos a la playa.','Mi papá maneja el camión de la fábrica.',
+  'La biblioteca de la escuela tiene muchos libros.','Los alumnos cuidan la huerta todos los días.','Una tortuga camina despacio por el camino.',
+  'Mis primos viven en una casa grande.','El tren llega a la estación a las ocho.','Me gusta dibujar con lápices de colores.','La luna brilla en el cielo oscuro.',
+  'Los domingos almorzamos todos juntos.','El gato duerme sobre el sillón.','Compramos frutas y verduras en la feria.','La abuela teje una bufanda de lana.',
+  'Los estudiantes preparan una obra de teatro.','En primavera florecen los jardines.','El río lleva mucha agua después de la lluvia.','Mi bicicleta nueva es de color rojo.',
+  'Tomamos mate en la plaza con mis tíos.','El colibrí vuela de flor en flor.','Mañana tenemos clase de música.',
+];
+const SECUENCIAS=[
+  ['Juan se levantó temprano.','Se lavó los dientes.','Desayunó leche con pan.','Salió para la escuela.'],
+  ['Pusimos las semillas en la tierra.','Las regamos todos los días.','Después de unas semanas brotaron las hojas.','Finalmente la planta dio flores.'],
+  ['Mamá compró harina y huevos.','Mezcló todo en un bol.','Puso la mezcla en el horno.','Sacó un bizcochuelo y lo comimos.'],
+  ['Salió el sol por la mañana.','Los niños fueron a la playa.','Armaron un castillo de arena.','Al atardecer volvieron a casa.'],
+  ['Un gato vio un pájaro en el árbol.','El gato trepó despacio.','El pájaro voló asustado.','El gato bajó y se fue a dormir.'],
+  ['Llegó el invierno y hacía mucho frío.','Sofía se puso el abrigo y la bufanda.','Tomó chocolate caliente.','Se quedó leyendo bajo una manta.'],
+];
+const PALABRAS_ABC=('árbol barco cuaderno dedo escuela flor gato hoja isla jardín kiosco lápiz mesa nube ojo pelota queso reloj sol techo uva vaso zapato '+
+  'abeja bicicleta caballo dulce espejo fuego goma helado iglesia jugo lámpara mariposa naranja ovejas pizarra radio sapo tijera ventana '+
+  'amigo barrio camino diario elefante familia globo huevo imagen juego libro montaña nido oso paraguas queso rana silla tren').split(' ');
+GEN.ordenarOr = function(sel,count){
+  const out=[], tipos=shuffle([...sel.tipo]), usadas=new Set(); let g=0, i=0;
+  while (out.length<count && g<count*60){
+    g++; const t=tipos[i%tipos.length]; let it, key;
+    if (t==='oracion'){
+      const s=pick(ORACIONES); key='o'+s; if (usadas.has(key)) continue;
+      const palabras=s.replace(/\.$/,'').split(' ').map((w,k)=> k===0 ? w.charAt(0).toLowerCase()+w.slice(1) : w);
+      let mix, n=0; do { mix=shuffle([...palabras]); n++; } while (mix.join(' ')===palabras.join(' ') && n<20);
+      it={ type:'oracion', words:mix, answer:s };
+    } else if (t==='secuencia'){
+      const sq=pick(SECUENCIAS); key='s'+sq[0]; if (usadas.has(key)) continue;
+      const ord=shuffle([0,1,2,3]); if (ord.every((v,k)=>v===k)) continue;
+      it={ type:'secuencia', frases:ord.map(k=>sq[k]), orden:ord.map(k=>k+1) };
+    } else {
+      key='a'+Math.random();
+      const n=sel.nivel==='facil'?5:6; let pal=[], tries=0;
+      const unicas=[...new Set(PALABRAS_ABC)];
+      do { pal=shuffle([...unicas]).slice(0,n); tries++; }
+      while (tries<80 && (sel.nivel==='facil' ? new Set(pal.map(p=>p[0])).size<n : new Set(pal.map(p=>p[0])).size>n-2));
+      it={ type:'alfabetico', words:pal, sorted:[...pal].sort((a,b)=>a.localeCompare(b,'es')) };
+    }
+    usadas.add(key); i++; it.diff=['oracion','secuencia','alfabetico'].indexOf(t); out.push(it);
+  }
+  return out;
+};
+function chipLines(words,w,size){
+  const lines=[[]]; let x=0;
+  words.forEach(wd=>{ const cw=measure(wd,size)+6; if (x>0 && x+cw>w){ lines.push([]); x=0; } lines[lines.length-1].push({wd,x,cw}); x+=cw+3; });
+  return lines;
+}
+BLOCKS.oracion = { full:true,
+  h:(it,w)=> chipLines(it.words,w-8,11).length*9 + 4 + 2*8.5 + 2,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    let cy=y; const rows=chipLines(it.words,w-8,11);
+    rows.forEach(row=>{ row.forEach(c=>{
+      els.push({t:'rect', x:x+8+c.x, y:cy, w:c.cw, h:7, r:1.5, stroke:'#666', lw:.3, fill:'#f4f4f4'});
+      els.push({t:'text', x:x+8+c.x+c.cw/2, y:cy+5, s:11, str:c.wd, a:'center'}); }); cy+=9; });
+    cy+=1;
+    for (let k=0;k<2;k++) els.push({t:'line', x1:x+8, y1:cy+(k+1)*8.5-1, x2:x+w, y2:cy+(k+1)*8.5-1, w:.25, c:'#888'});
+    if (isKey) wrapText(it.answer,11,w-10).slice(0,2).forEach((ln,j)=> els.push({t:'text', x:x+9, y:cy+(j+1)*8.5-2.2, s:11, str:ln, c:RED, b:true}));
+  } };
+BLOCKS.secuencia = { full:true,
+  h:(it,w)=> 8 + it.frases.reduce((t,f)=> t+Math.max(10, wrapText(f,FSB,w-26).length*LHB+5),0),
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:'Numerá las oraciones del 1 al 4 para ordenar la historia.'});
+    let cy=y+8;
+    it.frases.forEach((f,k)=>{
+      const L=wrapText(f,FSB,w-26), hh=Math.max(10,L.length*LHB+5);
+      els.push({t:'rect', x:x+8, y:cy, w:9, h:8, r:1.5, stroke:'#444', lw:.4});
+      if (isKey) els.push({t:'text', x:x+12.5, y:cy+6, s:12, str:String(it.orden[k]), a:'center', c:RED, b:true});
+      L.forEach((ln,j)=> els.push({t:'text', x:x+21, y:cy+5.5+j*LHB, s:FSB, str:ln}));
+      cy+=hh;
+    });
+  } };
+BLOCKS.alfabetico = { full:true,
+  h:(it,w)=> 8 + (8+wrapText(it.words.join('   ·   '),12,w-18).length*5.5) + 4 + Math.ceil(it.words.length/2)*9,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:'Escribí las palabras en orden alfabético.'});
+    const lines=wrapText(it.words.join('   ·   '),12,w-18), by=y+8, bh=8+lines.length*5.5;
+    els.push({t:'rect', x:x+8, y:by, w:w-8, h:bh, r:2.5, stroke:'#999', lw:.4});
+    lines.forEach((ln,j)=> els.push({t:'text', x:x+8+(w-8)/2, y:by+6.5+j*5.5, s:12, str:ln, a:'center', b:true}));
+    const half=Math.ceil(it.words.length/2), cw=(w-8)/2; let ry=by+bh+3;
+    for (let k=0;k<half;k++) for (let c=0;c<2;c++){
+      const n=k+c*half; if (n>=it.words.length) continue;
+      const lx=x+8+c*cw, ly=ry+k*9+6;
+      els.push({t:'text', x:lx, y:ly, s:FSB, b:true, str:(n+1)+'.'});
+      els.push({t:'line', x1:lx+8, y1:ly+.8, x2:lx+cw-6, y2:ly+.8, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:lx+10, y:ly, s:FSB, str:it.sorted[n], c:RED, b:true});
+    }
+  } };
+
+/* ---------- Clases de palabras ---------- */
+const SUSTANTIVOS='casa perro mesa escuela ciudad mar libro niño árbol flor camino ventana bicicleta pelota maestra río montaña cuaderno plaza ratón puerta cielo isla zapato reloj cancha jardín caballo nube cocina'.split(' ');
+const ADJETIVOS='grande pequeño rojo alegre veloz tranquilo dulce frío redondo suave fuerte simpático alto bajo nuevo viejo limpio divertido difícil amarillo lento brillante cansado oscuro ancho liviano curioso húmedo'.split(' ');
+const VERBOS_CL='correr saltar comer dormir escribir leer cantar pintar nadar jugar mirar abrir subir beber llorar reír caminar dibujar trabajar viajar escuchar construir bailar cocinar estudiar'.split(' ');
+const ORAC_CL=[
+  ['El perro pequeño corre por el jardín verde.',['perro','jardín'],['pequeño','verde'],['corre']],
+  ['La maestra simpática escribe una palabra difícil.',['maestra','palabra'],['simpática','difícil'],['escribe']],
+  ['Los niños alegres juegan en la plaza grande.',['niños','plaza'],['alegres','grande'],['juegan']],
+  ['Mi abuela prepara un pastel dulce.',['abuela','pastel'],['dulce'],['prepara']],
+  ['Un gato negro duerme sobre la mesa redonda.',['gato','mesa'],['negro','redonda'],['duerme']],
+  ['El cielo azul tiene nubes blancas.',['cielo','nubes'],['azul','blancas'],['tiene']],
+  ['Las flores amarillas crecen en el campo.',['flores','campo'],['amarillas'],['crecen']],
+  ['Mi hermano menor toca una guitarra vieja.',['hermano','guitarra'],['menor','vieja'],['toca']],
+  ['El viento frío mueve las hojas secas.',['viento','hojas'],['frío','secas'],['mueve']],
+  ['La niña curiosa mira un libro grande.',['niña','libro'],['curiosa','grande'],['mira']],
+  ['Los pájaros pequeños cantan en el árbol alto.',['pájaros','árbol'],['pequeños','alto'],['cantan']],
+  ['Mi vecino amable riega las plantas verdes.',['vecino','plantas'],['amable','verdes'],['riega']],
+  ['El tren veloz cruza el puente largo.',['tren','puente'],['veloz','largo'],['cruza']],
+  ['La luna brillante ilumina la noche oscura.',['luna','noche'],['brillante','oscura'],['ilumina']],
+  ['Un barco grande navega por el río ancho.',['barco','río'],['grande','ancho'],['navega']],
+  ['Mi mamá compra pan fresco en la panadería.',['mamá','pan','panadería'],['fresco'],['compra']],
+];
+const PLURALES=[['la casa','las casas'],['el lápiz','los lápices'],['la luz','las luces'],['la canción','las canciones'],['el país','los países'],['el pez','los peces'],
+  ['el árbol','los árboles'],['la flor','las flores'],['el joven','los jóvenes'],['el lunes','los lunes'],['el ratón','los ratones'],['el papel','los papeles'],
+  ['el reloj','los relojes'],['la nariz','las narices'],['la vez','las veces'],['el camión','los camiones'],['la ciudad','las ciudades'],['el tren','los trenes'],
+  ['el mes','los meses'],['la voz','las voces'],['el avestruz','los avestruces'],['el jardín','los jardines'],['la lección','las lecciones'],['el paraguas','los paraguas']];
+const FEMENINOS=[['el niño','la niña'],['el profesor','la profesora'],['el gato','la gata'],['el hermano','la hermana'],['el doctor','la doctora'],['el vecino','la vecina'],
+  ['el rey','la reina'],['el actor','la actriz'],['el caballo','la yegua'],['el padre','la madre'],['el abuelo','la abuela'],['el tío','la tía'],['el león','la leona'],
+  ['el gallo','la gallina'],['el héroe','la heroína'],['el poeta','la poetisa'],['el director','la directora'],['el amigo','la amiga'],['el primo','la prima'],['el yerno','la nuera']];
+GEN.clases = function(sel,count){
+  const tipos=[...sel.tipo], out=[], items=[];
+  if (tipos.includes('clasificar')){
+    const n=Number(sel.palabras)||9, k=n/3;
+    const S=shuffle([...SUSTANTIVOS]).slice(0,k), A=shuffle([...ADJETIVOS]).slice(0,k), V=shuffle([...VERBOS_CL]).slice(0,k);
+    out.push({ type:'columnas', words:shuffle([...S,...A,...V]), cols:['Sustantivos','Adjetivos','Verbos'], key:[S,A,V], diff:-1 });
+  }
+  const resto=tipos.filter(t=>t!=='clasificar'); let g=0, i=0; const usados=new Set();
+  while (resto.length && items.length<count && g<count*60){
+    g++; const t=resto[i%resto.length]; let it, key;
+    if (t==='identificar'){ const o=pick(ORAC_CL); key='i'+o[0]; it={ type:'identificar', s:o[0], sust:o[1], adj:o[2], verbo:o[3] }; }
+    else if (t==='plural'){ const p=pick(PLURALES); key='p'+p[0]; it={ type:'fill', parts:[`${p[0]} →`, B(p[1],30)] }; }
+    else { const p=pick(FEMENINOS); key='g'+p[0]; it={ type:'fill', parts:[`${p[0]} →`, B(p[1],30)] }; }
+    if (usados.has(key)) continue; usados.add(key); i++;
+    it.diff=['identificar','plural','genero'].indexOf(t); items.push(it);
+  }
+  if ($('order').value==='facil') items.sort((a,b)=>a.diff-b.diff); else shuffle(items);
+  return { kind:'blocks', cols:1, items:[...out, ...items] };
+};
+BLOCKS.columnas = { full:true,
+  h:(it,w)=> 8 + (8+wrapText(it.words.join('   ·   '),12,w-18).length*5.5) + 4 + 8 + it.key[0].length*8.5 + 2,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:'Escribí cada palabra en la columna que le corresponde.'});
+    const lines=wrapText(it.words.join('   ·   '),12,w-18), by=y+8, bh=8+lines.length*5.5;
+    els.push({t:'rect', x:x+8, y:by, w:w-8, h:bh, r:2.5, stroke:'#999', lw:.4});
+    lines.forEach((ln,j)=> els.push({t:'text', x:x+8+(w-8)/2, y:by+6.5+j*5.5, s:12, str:ln, a:'center', b:true}));
+    const ty=by+bh+4, cw=(w-8)/3, rows=it.key[0].length;
+    it.cols.forEach((c,k)=>{
+      els.push({t:'rect', x:x+8+k*cw, y:ty, w:cw, h:8, stroke:'#333', lw:.4, fill:CLARO});
+      els.push({t:'text', x:x+8+k*cw+cw/2, y:ty+5.6, s:11, str:c, a:'center', b:true});
+      for (let r=0;r<rows;r++){
+        els.push({t:'rect', x:x+8+k*cw, y:ty+8+r*8.5, w:cw, h:8.5, stroke:'#333', lw:.4});
+        if (isKey) els.push({t:'text', x:x+8+k*cw+cw/2, y:ty+8+r*8.5+5.8, s:11, str:it.key[k][r], a:'center', c:RED, b:true});
+      }
+    });
+  } };
+BLOCKS.identificar = { full:true,
+  h:(it,w)=> wrapText(it.s,12,w-10).length*5.4 + 3*8 + 4,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    const L=wrapText(it.s,12,w-10); L.forEach((ln,j)=> els.push({t:'text', x:x+8, y:y+4.5+j*5.4, s:12, str:ln, b:true}));
+    let cy=y+L.length*5.4+2;
+    [['Sustantivos:',it.sust],['Adjetivos:',it.adj],['Verbos:',it.verbo]].forEach(([lab,ans],k)=>{
+      const ly=cy+k*8+5, lw=measure(lab,FSB)+2;
+      els.push({t:'text', x:x+8, y:ly, s:FSB, str:lab});
+      els.push({t:'line', x1:x+8+lw, y1:ly+.8, x2:x+w, y2:ly+.8, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:x+8+lw+2, y:ly, s:FSB, str:ans.join(', '), c:RED, b:true});
+    });
+  } };
+
+/* ---------- Verbos ---------- */
+const VERBOS={
+  ar:[['cantar','una canción'],['saltar','la soga'],['bailar','en el patio'],['mirar','la película'],['caminar','por el parque'],['trabajar','en la huerta'],['estudiar','para la prueba'],
+      ['dibujar','un paisaje'],['ayudar','a mamá'],['cocinar','una tarta'],['pintar','la pared'],['escuchar','música'],['lavar','la ropa'],['llevar','la mochila']],
+  er:[['comer','una manzana'],['beber','agua fresca'],['correr','en la plaza'],['aprender','la lección'],['vender','frutas'],['barrer','el patio'],['meter','los libros en la mochila']],
+  ir:[['vivir','en Montevideo'],['escribir','una carta'],['subir','la escalera'],['abrir','la ventana'],['partir','la torta'],['decidir','el juego'],['recibir','un regalo'],['descubrir','un tesoro']],
+};
+const FIN={
+  presente:{ ar:['o','ás','a','amos','an','an'], er:['o','és','e','emos','en','en'], ir:['o','ís','e','imos','en','en'] },
+  pasado:{ ar:['é','aste','ó','amos','aron','aron'], er:['í','iste','ió','imos','ieron','ieron'], ir:['í','iste','ió','imos','ieron','ieron'] },
+  imperfecto:{ ar:['aba','abas','aba','ábamos','aban','aban'], er:['ía','ías','ía','íamos','ían','ían'], ir:['ía','ías','ía','íamos','ían','ían'] },
+};
+const FUT=['é','ás','á','emos','án','án'];
+const TIEMPOS_V={
+  presente:{ nombre:'Presente', clase:'presente', marca:'Todos los días' },
+  pasado:{ nombre:'Pasado (pretérito perfecto simple)', clase:'pasado', marca:'Ayer' },
+  imperfecto:{ nombre:'Pasado (pretérito imperfecto)', clase:'pasado', marca:'Antes' },
+  futuro:{ nombre:'Futuro', clase:'futuro', marca:'Mañana' },
+};
+function conjugar(inf,tiempo,persona){
+  const tipo=inf.slice(-2);
+  if (tiempo==='futuro') return inf+FUT[persona];
+  return inf.slice(0,-2)+FIN[tiempo][tipo][persona];
+}
+const PERSONAS=['yo','vos','él / ella','nosotros','ustedes','ellos / ellas'];
+const PRON=['yo','vos','él','nosotros','ustedes','ellos'];
+const SUJ=['Yo','Vos','Mi hermana','Nosotros','Ustedes','Los niños'];
+GEN.verbos = function(sel,count){
+  const out=[], modos=shuffle([...sel.modo]), tiempos=sel.tiempo, conjs=sel.conj; let g=0, i=0; const usados=new Set();
+  const lista=conjs.flatMap(c=>VERBOS[c]);
+  while (out.length<count && g<count*80){
+    g++; const m=modos[i%modos.length], [inf,comp]=pick(lista), tm=pick(tiempos); let it, key;
+    if (m==='tabla'){ key='t'+inf+tm; it={ type:'conjugar', inf, tiempo:tm, nombre:TIEMPOS_V[tm].nombre, formas:PERSONAS.map((_,p)=>conjugar(inf,tm,p)) }; }
+    else if (m==='frase'){ const p=rnd(0,5); key='f'+inf+tm+p;
+      it={ type:'fill', full:true, parts:[`${TIEMPOS_V[tm].marca}, ${PRON[p]}`, B(conjugar(inf,tm,p),26), `(${inf}) ${comp}.`] }; }
+    else { const p=rnd(0,5), tt=pick(tiempos), frase=`${SUJ[p]} ${conjugar(inf,tt,p)} ${comp}.`; key='x'+frase;
+      it={ type:'fill', full:true, parts:[{t:frase, bold:true}, '→', B(TIEMPOS_V[tt].clase,24)] }; }
+    if (usados.has(key)) continue; usados.add(key); i++;
+    it.diff=['frase','tiempo','tabla'].indexOf(m); out.push(it);
+  }
+  return out;
+};
+BLOCKS.conjugar = { full:true, h:()=>46,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB+.5, b:true, str:`Verbo: ${it.inf}`});
+    els.push({t:'text', x:x+8+measure(`Verbo: ${it.inf}`,FSB+.5)+6, y:y+5, s:FSB, str:'· '+it.nombre, c:'#555'});
+    const cw=(w-8)/2;
+    it.formas.forEach((f,k)=>{ const c=k<3?0:1, r=k%3, lx=x+8+c*cw, ly=y+16+r*10, lab=PERSONAS[k], lw=measure(lab,FSB)+2;
+      els.push({t:'text', x:lx, y:ly, s:FSB, b:true, str:lab});
+      els.push({t:'line', x1:lx+lw, y1:ly+.8, x2:lx+cw-8, y2:ly+.8, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:lx+lw+2, y:ly, s:FSB, str:f, c:RED, b:true}); });
+  } };
+
+/* ---------- Ahorcado ---------- */
+GEN.ahorcado = function(sel,count,ctx){
+  const pool=bankPool(ctx.bank, sel.pista==='si'), chosen=shuffle(pool).slice(0,count);
+  const items=chosen.map(e=>({ type:'ahorcado', chars:[...e.word.toUpperCase()], clue: sel.pista==='si' ? capFirst(e.clue)+'.' : '', primera: sel.primera==='si' }));
+  return { kind:'blocks', cols:1, items, warn: poolWarn(pool,count,1, sel.pista==='si'?' con pista':'') };
+};
+BLOCKS.ahorcado = { full:true,
+  h:(it,w)=> 24 + (it.clue? wrapText(it.clue,10,w-30).length*4.3 : 0),
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+6);
+    const gx=x+10, gy=y+3;   // horca
+    [[gx,gy+16,gx+14,gy+16],[gx+4,gy+16,gx+4,gy],[gx+4,gy,gx+12,gy],[gx+12,gy,gx+12,gy+3]].forEach(([a,b,c,d])=> els.push({t:'line', x1:a, y1:b, x2:c, y2:d, w:.5, c:'#555'}));
+    const n=it.chars.length, x0=x+30, avail=w-32, sp=Math.min(7,avail/n);
+    it.chars.forEach((ch,k)=>{ const cx=x0+k*sp+sp/2; if (ch===' ') return;
+      els.push({t:'line', x1:cx-sp*.4, y1:y+11, x2:cx+sp*.4, y2:y+11, w:.5, c:'#333'});
+      const show = isKey || (it.primera && k===0);
+      if (show) els.push({t:'text', x:cx, y:y+9.8, s:Math.min(14,sp*2.4), str:ch, a:'center', f:'courier', b:true, c: isKey?RED:'#111'}); });
+    let cy=y+17;
+    if (it.clue) wrapText(it.clue,10,w-30).forEach((ln,j)=>{ els.push({t:'text', x:x0, y:cy+j*4.3, s:10, str:ln, c:'#666'}); cy+=0; });
+    const ly=y+19+(it.clue? wrapText(it.clue,10,w-30).length*4.3 : 0), lab='Letras que no están:', lw=measure(lab,9)+2;
+    els.push({t:'text', x:x0, y:ly, s:9, str:lab, c:'#6b7488'});
+    els.push({t:'line', x1:x0+lw, y1:ly+.8, x2:Math.min(x+w, x0+lw+48), y2:ly+.8, w:.25, c:'#999'});
+  } };
+
+/* ---------- Catálogo y opciones ---------- */
+CATALOG.splice(1,0,{ id:'lengua', name:'Lengua', icon:'lengua', desc:'Palabras y oraciones', items:[
+  { id:'ortografia', name:'Ortografía', ready:true },
+  { id:'acentos', name:'Acentuación', ready:true },
+  { id:'ordenarOr', name:'Ordenar oraciones y palabras', ready:true },
+  { id:'clases', name:'Clases de palabras', ready:true },
+  { id:'verbos', name:'Verbos', ready:true },
+  { id:'ahorcado', name:'Ahorcado', ready:true } ] });
+ICONS.lengua='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19 8.5 5 14 19M5.3 14h6.4M17 9h4M17 13h4M17 17h4"/></svg>';
+const SINO=[{v:'si',t:'Sí'},{v:'no',t:'No'}];
+Object.assign(ACTIVITIES, {
+  ortografia:{ title:'Ortografía', consigna:'Completá las palabras o marcá la que está bien escrita.', cols:2,
+    count:{ label:'Cantidad de palabras', options:[8,10,12,16,20,24], def:12 }, groups:[
+    { id:'modo', label:'Cómo se practica', type:'single', options:[ {v:'completar',t:'Completar la letra que falta'},{v:'elegir',t:'Elegir la palabra bien escrita'} ], def:'completar' },
+    { id:'tipo', label:'Qué practicar', type:'multi', options:[ {v:'bv',t:'b y v'},{v:'csz',t:'c, s y z'},{v:'gj',t:'g y j'},{v:'lly',t:'ll e y'},{v:'h',t:'La h (se elige la correcta)'} ], def:['bv','csz'] } ] },
+  acentos:{ title:'Acentuación', consigna:'Resolvé.', cols:2,
+    count:{ label:'Cantidad de palabras', options:[6,8,10,12,16], def:10 }, groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'tonica',t:'Marcar la sílaba tónica'},{v:'clase',t:'Aguda, grave o esdrújula'},{v:'tilde',t:'Poner la tilde si hace falta'} ], def:['tonica','clase'] },
+    { id:'clases', label:'Qué palabras', type:'multi', options:[ {v:'aguda',t:'Agudas'},{v:'grave',t:'Graves'},{v:'esdrújula',t:'Esdrújulas'} ], def:['aguda','grave','esdrújula'] } ] },
+  ordenarOr:{ title:'Ordenar oraciones y palabras', consigna:'Ordená.', cols:1,
+    count:{ label:'Cantidad de ejercicios', options:[3,4,5,6,8], def:5 }, groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'oracion',t:'Armar la oración con palabras desordenadas'},{v:'secuencia',t:'Ordenar una historia (numerar)'},{v:'alfabetico',t:'Orden alfabético'} ], def:['oracion','alfabetico'] },
+    { id:'nivel', label:'Orden alfabético', type:'single', options:[ {v:'facil',t:'Fácil (distintas letras iniciales)'},{v:'dificil',t:'Difícil (letras iniciales repetidas)'} ], def:'facil', showIf:s=>s.tipo.includes('alfabetico') } ] },
+  clases:{ title:'Clases de palabras', consigna:'Resolvé.', cols:1,
+    count:{ label:'Cantidad de ejercicios', options:[3,4,5,6,8,10], def:5 }, groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'clasificar',t:'Clasificar: sustantivos, adjetivos y verbos'},{v:'identificar',t:'Encontrar las palabras en una oración'},{v:'plural',t:'Singular y plural'},{v:'genero',t:'Masculino y femenino'} ], def:['clasificar','identificar'] },
+    { id:'palabras', label:'Palabras para clasificar', type:'single', options:[ {v:6,t:'6'},{v:9,t:'9'},{v:12,t:'12'} ], def:9, showIf:s=>s.tipo.includes('clasificar') } ] },
+  verbos:{ title:'Verbos', consigna:'Conjugá o completá.', cols:1,
+    count:{ label:'Cantidad de ejercicios', options:[3,4,5,6,8,10], def:6 }, groups:[
+    { id:'modo', label:'Tipo de actividad', type:'multi', options:[ {v:'tabla',t:'Conjugar un verbo (todas las personas)'},{v:'frase',t:'Completar con la forma del verbo'},{v:'tiempo',t:'¿Presente, pasado o futuro?'} ], def:['tabla','frase'] },
+    { id:'tiempo', label:'Tiempos', type:'multi', options:[ {v:'presente',t:'Presente'},{v:'pasado',t:'Pasado (cantó)'},{v:'imperfecto',t:'Pasado (cantaba)'},{v:'futuro',t:'Futuro'} ], def:['presente','pasado','futuro'] },
+    { id:'conj', label:'Verbos terminados en', type:'multi', options:[ {v:'ar',t:'-ar'},{v:'er',t:'-er'},{v:'ir',t:'-ir'} ], def:['ar','er','ir'] } ] },
+  ahorcado:{ title:'Ahorcado', consigna:'Descubrí cada palabra. Tachá las letras que no están.', single:true, cols:1,
+    count:{ label:'Cantidad de palabras', options:[4,5,6,8], def:6 }, groups:[
+    { id:'tema', label:'Tema', type:'bank', def:'b-digestivo' },
+    { id:'pista', label:'Mostrar una pista', type:'single', options:SINO, def:'si' },
+    { id:'primera', label:'Mostrar la primera letra', type:'single', options:SINO, def:'no' } ] },
+});
+Object.assign(DESC, {
+  ortografia:'Completar la letra que falta (b/v, c/s/z, g/j, ll/y) o elegir la palabra bien escrita.',
+  acentos:'Sílaba tónica, palabras agudas, graves y esdrújulas, y poner la tilde.',
+  ordenarOr:'Oraciones con palabras desordenadas, historias para numerar y orden alfabético.',
+  clases:'Sustantivos, adjetivos y verbos; encontrarlos en oraciones; singular y plural; masculino y femenino.',
+  verbos:'Conjugar verbos regulares en presente, pasado y futuro, y reconocer el tiempo.',
+  ahorcado:'Palabras de un tema para descubrir letra por letra, con pista.',
+});
+Object.assign(NOTAS, {
+  ortografia:'Practicamos ortografía. Si dudan, pueden pensar en otras palabras de la misma familia.',
+  acentos:'Practicamos las sílabas tónicas y las tildes. Decir la palabra en voz alta ayuda a encontrar la sílaba más fuerte.',
+  ordenarOr:'Ordenamos oraciones y palabras. Al terminar, que la lean en voz alta para ver si tiene sentido.',
+  clases:'Repasamos sustantivos, adjetivos y verbos. Recordá: el verbo dice qué hace o qué pasa.',
+  verbos:'Practicamos los verbos. Fijate en el final de cada palabra para saber cuándo ocurre la acción.',
+  ahorcado:'Jugamos al ahorcado con palabras del tema. Se puede jugar en parejas.',
+});
+
 const BILL_W=25, BILL_H=12.5, COIN_D=11.5;
 function moneyRows(money,w){
   const rows=[[]]; let x=0;
@@ -2930,7 +3354,8 @@ $('mDownload').onclick=()=> state.previewWeek ? $('weekDownload').click() : stat
 const DIAS_SEM=['Lunes','Martes','Miércoles','Jueves','Viernes'];
 const CORTA={ sumas:6, restas:6, mult:6, div:4, numeracion:6, problemas:2, mental:10, escribir:6, dinero:3, hora:6,
   sopaN:6, sopaL:6, crucigrama:5, unir:5, completar:5, vf:5, ordenar:5,
-  fracciones:6, tablas:9, medidas:4, patrones:4, logica:2, graficos:3 };
+  fracciones:6, tablas:9, medidas:4, patrones:4, logica:2, graficos:3,
+  ortografia:6, acentos:6, ordenarOr:3, clases:3, verbos:3, ahorcado:4 };
 let week={ dias:4, acts:['sumas','problemas','mental','sopaL','unir'], largo:'corta' };
 function loadWeek(){ try{ const w=JSON.parse(localStorage.getItem('hojas-semana')||'null'); if (w && Array.isArray(w.acts)) week={...week,...w}; }catch(e){} }
 function saveWeek(){ try{ localStorage.setItem('hojas-semana', JSON.stringify(week)); }catch(e){} }
