@@ -2066,6 +2066,510 @@ BLOCKS.fill = {
       });
     });
   } };
+/* =========================================================
+   MATEMÁTICA (ampliación): fracciones y decimales, tablas de multiplicar,
+   medidas y geometría, series y patrones, lógica numérica y gráficos.
+   ========================================================= */
+const coma = n => String(n).replace('.',',');
+const miles = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const CLARO='#cfc8ff', CLARO_R='#f6cfc9';
+
+/* ---------- Fracciones y decimales ---------- */
+const DEN_BASICO=[2,3,4,5,6,8], DEN_AMPLIO=[2,3,4,5,6,7,8,9,10,12];
+const DEC_PARES=[['1/2','0,5'],['1/4','0,25'],['3/4','0,75'],['1/5','0,2'],['2/5','0,4'],['3/5','0,6'],['4/5','0,8'],['1/10','0,1'],['1/100','0,01'],['1/20','0,05']];
+GEN.fracciones = function(sel,count){
+  const dens = sel.nivel==='amplio' ? DEN_AMPLIO : DEN_BASICO;
+  const tipos=shuffle([...sel.tipo]), out=[], seen=new Set(); let g=0, i=0;
+  const orden=['leer','pintar','equivalentes','comparar','decimal','compDec','sumar'];
+  while (out.length<count && g<count*80){
+    g++; const t=tipos[i%tipos.length]; let it, key;
+    if (t==='leer' || t==='pintar'){
+      const d=pick(dens.filter(x=>x<=12)), n=rnd(1,d-1); key=t+n+'/'+d;
+      it={ type:'barra', mode:t, n, d };
+    } else if (t==='equivalentes'){
+      const d=pick([2,3,4,5,6]), n=rnd(1,d-1), k=rnd(2,4); key='e'+n+'/'+d+'x'+k;
+      it = Math.random()<.5
+        ? { type:'fill', parts:[`${n}/${d} =`, B(n*k,10), `/ ${d*k}`] }
+        : { type:'fill', parts:[`${n}/${d} = ${n*k} /`, B(d*k,10)] };
+    } else if (t==='comparar'){
+      let a,b,c,d;
+      if (Math.random()<.5 || sel.nivel!=='amplio'){
+        if (Math.random()<.5){ b=d=pick(dens); a=rnd(1,b-1); c=rnd(1,d-1); }      // mismo denominador
+        else { a=c=rnd(1,3); b=pick(dens.filter(x=>x>a)); d=pick(dens.filter(x=>x>a)); } // mismo numerador
+      } else { b=pick(dens); d=pick(dens); a=rnd(1,b-1); c=rnd(1,d-1); }
+      if (a===c && b===d) continue;
+      const v=a/b-c/d, s = Math.abs(v)<1e-9 ? '=' : v<0 ? '<' : '>';
+      key=`c${a}/${b}${c}/${d}`;
+      it={ type:'fill', parts:[{t:`${a}/${b}`, bold:true}, B(s,9), {t:`${c}/${d}`, bold:true}] };
+    } else if (t==='decimal'){
+      const r=Math.random(); let f, dec;
+      if (r<.35){ const p=pick(DEC_PARES); f=p[0]; dec=p[1]; }
+      else if (r<.7){ const n=rnd(1,9); f=`${n}/10`; dec=`0,${n}`; }
+      else { const n=rnd(1,99); f=`${n}/100`; dec= n<10 ? `0,0${n}` : `0,${n}`; }
+      key='d'+f;
+      it = Math.random()<.5 ? { type:'fill', parts:[`${f} =`, B(dec,14)] } : { type:'fill', parts:[`${dec} =`, B(f,14)] };
+    } else if (t==='compDec'){
+      const fmt=v=>coma(String(+v.toFixed(2)));
+      const x=Math.random()<.5 ? rnd(1,9)/10 : rnd(11,99)/100, y=rnd(11,99)/100; if (x===y) continue;
+      key='cd'+x+'-'+y;
+      it={ type:'fill', parts:[{t:fmt(x), bold:true}, B(x<y?'<':'>',9), {t:fmt(y), bold:true}] };
+    } else {
+      const d=pick(dens.filter(x=>x>=3)), resta=Math.random()<.4;
+      if (resta){ const a=rnd(2,d), b=rnd(1,a-1); key=`r${a}-${b}/${d}`; it={ type:'fill', parts:[`${a}/${d} − ${b}/${d} =`, B(`${a-b}/${d}`,14)] }; }
+      else { const a=rnd(1,d-1), b=rnd(1,d-a); key=`s${a}+${b}/${d}`; it={ type:'fill', parts:[`${a}/${d} + ${b}/${d} =`, B(`${a+b}/${d}`,14)] }; }
+    }
+    if (seen.has(key)) continue; seen.add(key); i++;
+    it.diff=orden.indexOf(t); out.push(it);
+  }
+  return out;
+};
+/* Barra dividida en partes iguales: leer la fracción o pintarla */
+BLOCKS.barra = {
+  h:()=>25,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    const bx=x+9, bw=Math.min(66,w*.5), by=y+1.5, bh=9, cw=bw/it.d, mark=(isKey&&it.mode==='pintar');
+    for (let k=0;k<it.d;k++){
+      const on = k<it.n && (it.mode==='leer' || isKey);
+      els.push({t:'rect', x:bx+k*cw, y:by, w:cw, h:bh, stroke:'#333', lw:.4, fill: on ? (mark?CLARO_R:CLARO) : undefined});
+    }
+    const ax=bx+bw+5;
+    if (it.mode==='leer'){
+      els.push({t:'text', x:ax, y:y+8, s:12, str:'=', b:true});
+      els.push({t:'line', x1:ax+6, y1:y+8.5, x2:Math.min(x+w, ax+26), y2:y+8.5, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:ax+8, y:y+7.6, s:12, str:`${it.n}/${it.d}`, c:RED, b:true});
+    } else {
+      els.push({t:'text', x:ax, y:y+7.6, s:12, str:`${it.n}/${it.d}`, b:true});
+    }
+    els.push({t:'text', x:bx, y:y+18.5, s:9, str: it.mode==='leer' ? 'Escribí la fracción pintada.' : `Pintá ${it.n} de las ${it.d} partes.`, c:'#6b7488'});
+  } };
+
+/* ---------- Tablas de multiplicar ---------- */
+GEN.tablas = function(sel,count){
+  const tablas=[...sel.tablas].sort((a,b)=>a-b), hasta=Number(sel.hasta)||10;
+  const tipos=shuffle([...sel.tipo.filter(t=>t!=='cuadro')]), out=[], seen=new Set(); let g=0, i=0;
+  if (tipos.length){
+    while (out.length<count && g<count*80){
+      g++; const t=tipos[i%tipos.length], a=pick(tablas), b=rnd(1,hasta); let it, key;
+      if (t==='completar'){ key=`${a}x${b}`; it={ type:'fill', parts:[`${a} × ${b} =`, B(a*b,14)] }; }
+      else if (t==='faltante'){ if (b===0) continue;
+        if (Math.random()<.5){ key=`${a}x?${b}`; it={ type:'fill', parts:[`${a} ×`, B(b,12), `= ${a*b}`] }; }
+        else { key=`?x${a}${b}`; it={ type:'fill', parts:[B(b,12), `× ${a} = ${a*b}`] }; } }
+      else { if (b===0) continue; key=`${a*b}/${a}`; it={ type:'fill', parts:[`${a*b} ÷ ${a} =`, B(b,14)] }; }
+      if (seen.has(key)) continue; seen.add(key); i++;
+      it.diff=['completar','faltante','dividir'].indexOf(t); out.push(it);
+    }
+  }
+  if ($('order').value==='facil') out.sort((a,b)=>a.diff-b.diff); else shuffle(out);
+  if (sel.tipo.includes('cuadro')) out.unshift({ type:'cuadro', tablas, hasta, full:true });
+  return { kind:'blocks', cols:3, items:out };
+};
+/* Cuadro de doble entrada: filas = tablas, columnas = multiplicadores */
+BLOCKS.cuadro = { full:true,
+  h:(it,w)=> 11 + 9*(it.tablas.length+1) + 4,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    els.push({t:'text', x:x+8, y:y+4, s:FSB, b:true, str:'Completá el cuadro de las tablas.'});
+    const left=x+8, top=y+8, lw=18, cw=(w-8-lw)/it.hasta, rh=9;
+    els.push({t:'rect', x:left, y:top, w:lw, h:rh, stroke:'#333', lw:.4, fill:CLARO});
+    els.push({t:'text', x:left+lw/2, y:top+6.3, s:12, str:'×', a:'center', b:true});
+    for (let c=1;c<=it.hasta;c++){
+      els.push({t:'rect', x:left+lw+(c-1)*cw, y:top, w:cw, h:rh, stroke:'#333', lw:.4, fill:CLARO});
+      els.push({t:'text', x:left+lw+(c-1)*cw+cw/2, y:top+6.3, s:12, str:String(c), a:'center', b:true});
+    }
+    it.tablas.forEach((t,r)=>{
+      const ry=top+rh*(r+1);
+      els.push({t:'rect', x:left, y:ry, w:lw, h:rh, stroke:'#333', lw:.4, fill:CLARO});
+      els.push({t:'text', x:left+lw/2, y:ry+6.3, s:12, str:String(t), a:'center', b:true});
+      for (let c=1;c<=it.hasta;c++){
+        els.push({t:'rect', x:left+lw+(c-1)*cw, y:ry, w:cw, h:rh, stroke:'#333', lw:.4});
+        if (isKey) els.push({t:'text', x:left+lw+(c-1)*cw+cw/2, y:ry+6.2, s:Math.min(11,cw*.85/0.3528*.5+3), str:String(t*c), a:'center', c:RED, b:true});
+      }
+    });
+  } };
+
+/* ---------- Medidas y geometría ---------- */
+const CONV={ long:[['km','m',1000],['m','cm',100],['cm','mm',10]], masa:[['kg','g',1000]], cap:[['L','mL',1000]] };
+GEN.medidas = function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[], seen=new Set(); let g=0, i=0;
+  const orden=['conversion','perimetro','area','angulos'];
+  const fams=[...sel.unidades];
+  while (out.length<count && g<count*80){
+    g++; const t=tipos[i%tipos.length]; let it, key;
+    if (t==='conversion'){
+      const [big,small,f]=pick(CONV[pick(fams)]), half=Math.random()<.3;
+      const v = half ? pick([0.5,1.5,2.5]) : rnd(1,9), n=Math.round(v*f);
+      it = Math.random()<.6 ? { type:'fill', parts:[`${coma(v)} ${big} =`, B(miles(n),16), small] }
+                            : { type:'fill', parts:[`${miles(n)} ${small} =`, B(coma(v),16), big] };
+      key=JSON.stringify(it.parts);
+    } else if (t==='perimetro' || t==='area'){
+      const cuad=Math.random()<.25, a=t==='area'? rnd(2,8) : rnd(2,12), b=cuad? a : (t==='area'? rnd(2,6) : rnd(2,10));
+      if (!cuad && a===b) continue; key=`${t}${a}x${b}`;
+      it={ type:'figura', mode:t, a, b, cuad, unit: t==='area'?'cm':pick(['cm','cm','m']) };
+    } else {
+      const k=pick(['agudo','recto','obtuso']);
+      const ang = k==='recto'?90 : k==='agudo'? pick([20,25,30,35,40,45,50,55,60,65,70,75,80]) : pick([100,105,110,120,130,135,140,150,160]);
+      key='a'+ang; it={ type:'angulo', deg:ang, clase:k };
+    }
+    if (seen.has(key)) continue; seen.add(key); i++;
+    it.diff=orden.indexOf(t); out.push(it);
+  }
+  return out;
+};
+/* Rectángulo con medidas: perímetro (suma de los lados) o área (cuadrícula de cm²) */
+BLOCKS.figura = {
+  h:(it,w)=> it.mode==='area' ? 20 + Math.min(8,it.b)*5 + 14 : 14 + 26 + 14,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    const u = it.mode==='area' ? 'cm' : it.unit;
+    let bx=x+12, by=y+(it.mode==='area'?15:9), rw, rh, bottom;
+    if (it.mode==='area'){
+      const c=Math.min(5, (w-34)/it.a); rw=c*it.a; rh=c*it.b;
+      els.push({t:'rect', x:bx, y:by, w:rw, h:rh, stroke:'#333', lw:.5, fill:'#f1efff'});
+      for (let k=1;k<it.a;k++) els.push({t:'line', x1:bx+k*c, y1:by, x2:bx+k*c, y2:by+rh, w:.2, c:'#8a82d6'});
+      for (let k=1;k<it.b;k++) els.push({t:'line', x1:bx, y1:by+k*c, x2:bx+rw, y2:by+k*c, w:.2, c:'#8a82d6'});
+      els.push({t:'text', x:bx+rw/2, y:by-2, s:9, str:`${it.a} ${u}`, a:'center', b:true});
+      els.push({t:'text', x:bx+rw+2, y:by+rh/2+1.5, s:9, str:`${it.b} ${u}`, b:true});
+      bottom=by+rh;
+      els.push({t:'text', x:x+8, y:y+9, s:9, str:'Cada cuadradito mide 1 cm²', c:'#6b7488'});
+    } else {
+      const s=Math.min(40/it.a, 24/it.b); rw=it.a*s; rh=it.b*s;
+      els.push({t:'rect', x:bx, y:by, w:rw, h:rh, stroke:'#333', lw:.6, fill:'#f1efff'});
+      els.push({t:'text', x:bx+rw/2, y:by-2, s:9, str:`${it.a} ${u}`, a:'center', b:true});
+      els.push({t:'text', x:bx+rw+2, y:by+rh/2+1.5, s:9, str:`${it.b} ${u}`, b:true});
+      bottom=by+rh;
+    }
+    const ly=bottom+9, lab = it.mode==='area' ? 'Área:' : 'Perímetro:', lw=measure(lab,FSB)+2;
+    els.push({t:'text', x:x+8, y:ly, s:FSB, b:true, str:lab});
+    els.push({t:'line', x1:x+8+lw, y1:ly+.8, x2:x+8+lw+22, y2:ly+.8, w:.3, c:'#444'});
+    els.push({t:'text', x:x+8+lw+24, y:ly, s:FSB, str: it.mode==='area' ? 'cm²' : u});
+    if (isKey){
+      const r = it.mode==='area' ? it.a*it.b : 2*(it.a+it.b);
+      els.push({t:'text', x:x+8+lw+2, y:ly, s:FSB, str:String(r), c:RED, b:true});
+    }
+  } };
+/* Ángulo dibujado con dos semirrectas: agudo, recto u obtuso */
+BLOCKS.angulo = {
+  h:()=>44,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    const L=Math.min(24,w-30), th=it.deg*Math.PI/180, vx=x+10+Math.max(0,-Math.cos(th))*L, vy=y+28;
+    els.push({t:'line', x1:vx, y1:vy, x2:vx+L, y2:vy, w:.7, c:'#111'});
+    els.push({t:'line', x1:vx, y1:vy, x2:vx+L*Math.cos(th), y2:vy-L*Math.sin(th), w:.7, c:'#111'});
+    if (it.deg===90){
+      els.push({t:'rect', x:vx, y:vy-5, w:5, h:5, stroke:'#111', lw:.4});
+    } else {
+      const r=7, n=14;
+      for (let k=0;k<n;k++){ const a1=th*k/n, a2=th*(k+1)/n;
+        els.push({t:'line', x1:vx+r*Math.cos(a1), y1:vy-r*Math.sin(a1), x2:vx+r*Math.cos(a2), y2:vy-r*Math.sin(a2), w:.4, c:'#555'}); }
+    }
+    const ly=y+40, lab='Es un ángulo', lw=measure(lab,FSB)+2;
+    els.push({t:'text', x:x+8, y:ly, s:FSB, str:lab});
+    els.push({t:'line', x1:x+8+lw, y1:ly+.8, x2:Math.min(x+w, x+8+lw+26), y2:ly+.8, w:.3, c:'#444'});
+    if (isKey) els.push({t:'text', x:x+8+lw+2, y:ly, s:FSB, str:it.clase, c:RED, b:true});
+  } };
+
+/* ---------- Series y patrones ---------- */
+const PAT_LETRAS=['AB','AAB','ABB','ABC','AABB','ABAC'];
+GEN.patrones = function(sel,count){
+  const nivel=sel.nivel, tipos=shuffle([...sel.tipo]), out=[], seen=new Set(); let g=0, i=0;
+  const orden=['suma','resta','mult','alterna','regla','letras'];
+  const paso = nivel==='chico' ? [2,3,4,5,6,10] : nivel==='medio' ? [10,20,25,50,100] : [100,250,500,1000];
+  const ini  = nivel==='chico' ? [0,1,2,3,5] : nivel==='medio' ? [10,50,100,200,300] : [1000,2500,5000];
+  while (out.length<count && g<count*80){
+    g++; const t=tipos[i%tipos.length]; let seq, regla, it, key;
+    const crear=(tipo)=>{
+      if (tipo==='suma'){ const s=pick(ini), p=pick(paso); seq=Array.from({length:7},(_,k)=>s+p*k); regla='+ '+p; }
+      else if (tipo==='resta'){ const p=pick(paso), s=pick(ini)+p*7; seq=Array.from({length:7},(_,k)=>s-p*k); regla='− '+p; }
+      else if (tipo==='mult'){ const m=pick(nivel==='chico'?[2,3]:[2,3,10]), s=rnd(1,nivel==='grande'?5:3); seq=[s]; while (seq.length<6) seq.push(seq[seq.length-1]*m); regla='× '+m; }
+      else { const [a,b]=pick(nivel==='chico' ? [[5,2],[10,4],[6,3],[8,5],[4,1],[10,5]] : nivel==='medio' ? [[50,20],[100,50],[20,10],[25,5],[40,10]] : [[500,200],[1000,500],[250,100],[600,300]]), s=pick(ini);
+        seq=[s]; for (let k=1;k<7;k++) seq.push(seq[k-1] + (k%2? a : -b)); regla=`+ ${a} y − ${b}`; }
+    };
+    if (t==='letras'){
+      const pat=pick(PAT_LETRAS), len=9; seq=Array.from({length:len},(_,k)=>pat[k%pat.length]);
+      it={ type:'serie', full:true, seq, blanks:[len-2,len-1] };
+      key='l'+pat+Math.random();
+    } else if (t==='regla'){
+      const base=pick(['suma','resta','mult','alterna']); crear(base); seq=seq.slice(0,5);
+      it={ type:'fill', full:true, parts:[ seq.join(' , ')+' , …   La regla es:', B(regla,34) ] };
+      key='r'+seq.join();
+    } else {
+      crear(t); const len=seq.length, b1=rnd(2,len-1); let b2=rnd(2,len-1); if (b2===b1) b2=b1===len-1?2:b1+1;
+      it={ type:'serie', full:true, seq, blanks:[b1,b2] };
+      key='s'+seq.join();
+    }
+    if (seen.has(key)) continue; seen.add(key); i++;
+    it.diff=orden.indexOf(t); out.push(it);
+  }
+  return out;
+};
+
+/* ---------- Cuadrados mágicos, laberintos y pirámides ---------- */
+const LOSHU=[[2,7,6],[9,5,1],[4,3,8]];
+function magicoNuevo(nivel){
+  let m=LOSHU.map(r=>[...r]);
+  const rot=g=>g[0].map((_,c)=>g.map(r=>r[c]).reverse());
+  for (let k=rnd(0,3);k>0;k--) m=rot(m);
+  if (Math.random()<.5) m=m.map(r=>[...r].reverse());
+  let mul=1, add=0;
+  if (nivel==='medio') add=rnd(1,20); else if (nivel==='dificil'){ mul=rnd(2,5); add=Math.random()<.5? 0 : rnd(1,9); }
+  const grid=m.flat().map(v=>v*mul+add), suma=15*mul+3*add;
+  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  const quita = nivel==='facil'? rnd(3,4) : nivel==='medio'? rnd(4,5) : rnd(5,6);
+  for (let tries=0; tries<300; tries++){
+    const hide=shuffle([0,1,2,3,4,5,6,7,8]).slice(0,quita), known=new Array(9).fill(true); hide.forEach(h=>known[h]=false);
+    let changed=true; const k2=[...known];
+    while (changed){ changed=false;
+      for (const L of lines){ const un=L.filter(c=>!k2[c]); if (un.length===1){ k2[un[0]]=true; changed=true; } } }
+    if (k2.every(Boolean)) return { grid, hide, suma };
+  }
+  return { grid, hide:[4], suma };
+}
+function piramideNueva(nivel){
+  const base = nivel==='facil'?3 : nivel==='medio'?4 : 5, hi = nivel==='facil'?9 : nivel==='medio'?15 : 30;
+  const rows=[Array.from({length:base},()=>rnd(1,hi))];
+  while (rows[0].length>1){ const r=rows[0]; rows.unshift(r.slice(1).map((v,k)=>v+r[k])); }
+  // celdas planas (fila, col) y restricciones: padre = hijo izq + hijo der
+  const cells=[]; rows.forEach((r,ri)=>r.forEach((_,ci)=>cells.push([ri,ci])));
+  const quita = nivel==='facil'?3 : nivel==='medio'?5 : 7;
+  for (let tries=0; tries<400; tries++){
+    const hide=new Set(shuffle([...cells.keys()]).slice(0,quita)), k=cells.map((_,n)=>!hide.has(n));
+    const id=(r,c)=>cells.findIndex(x=>x[0]===r&&x[1]===c);
+    let changed=true;
+    while (changed){ changed=false;
+      for (let r=0;r<rows.length-1;r++) for (let c=0;c<rows[r].length;c++){
+        const t=[id(r,c),id(r+1,c),id(r+1,c+1)], un=t.filter(n=>!k[n]);
+        if (un.length===1){ k[un[0]]=true; changed=true; } } }
+    if (k.every(Boolean)) return { rows, hide:[...hide].map(n=>cells[n]) };
+  }
+  return { rows, hide:[[0,0]] };
+}
+function laberintoNuevo(n, k){
+  const ady=([r,c])=>[[r+1,c],[r-1,c],[r,c+1],[r,c-1]].filter(([a,b])=>a>=0&&b>=0&&a<n&&b<n);
+  let path=null;
+  for (let tries=0; tries<600 && !path; tries++){
+    const vis=new Set(['0,0']), p=[[0,0]]; let ok=false;
+    for (let step=0; step<n*n; step++){
+      const cur=p[p.length-1];
+      if (cur[0]===n-1 && cur[1]===n-1){ ok=true; break; }
+      const opts=shuffle(ady(cur)).filter(c=>{
+        if (vis.has(c+'')) return false;
+        return ady(c).every(v=> (v[0]===cur[0]&&v[1]===cur[1]) || !vis.has(v+''));   // sin tocarse a sí mismo
+      });
+      if (!opts.length) break;
+      const nx=opts[0]; p.push(nx); vis.add(nx+'');
+    }
+    if (ok && p.length>=n*2+1) path=p;
+  }
+  if (!path){ path=[]; for (let c=0;c<n;c++) path.push([0,c]); for (let r=1;r<n;r++) path.push([r,n-1]); }
+  const onPath=new Set(path.map(c=>c+'')), grid=Array.from({length:n},()=>Array(n).fill(0));
+  const maxM = k<=3?30 : 15;
+  for (let r=0;r<n;r++) for (let c=0;c<n;c++){
+    if (onPath.has(r+','+c)) grid[r][c]=k*rnd(1,maxM);
+    else { let v; do { v = Math.random()<.5 && k>2 ? k*rnd(1,maxM)+pick([1,-1]) : rnd(1,k*maxM); } while (v<=0 || v%k===0); grid[r][c]=v; }
+  }
+  return { grid, path, k };
+}
+GEN.logica = function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0;
+  const orden=['magico','piramide','laberinto'];
+  while (out.length<count){
+    const t=tipos[i++%tipos.length]; let it;
+    if (t==='magico'){ const m=magicoNuevo(sel.nivel); it={ type:'magico', ...m }; }
+    else if (t==='piramide'){ const p=piramideNueva(sel.nivel); it={ type:'piramide', ...p }; }
+    else { const n=Number(sel.tam)||5, k=pick(sel.multiplos); it={ type:'laberinto', n, ...laberintoNuevo(n,k) }; }
+    it.diff=orden.indexOf(t); out.push(it);
+  }
+  return out;
+};
+BLOCKS.magico = {
+  h:(it,w)=> wrapText('Cuadrado mágico: cada fila, cada columna y cada diagonal suman '+it.suma+'.',FSB,w-8).length*LHB + 3*Math.min(13,(w-16)/3) + 8,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    const L=wrapText('Cuadrado mágico: cada fila, cada columna y cada diagonal suman '+it.suma+'.',FSB,w-8);
+    L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln, b:true}));
+    const c=Math.min(13,(w-16)/3), gx=x+8+(w-8-3*c)/2, gy=y+L.length*LHB+2, hide=new Set(it.hide);
+    it.grid.forEach((v,n)=>{ const cx=gx+(n%3)*c, cy=gy+Math.floor(n/3)*c, oc=hide.has(n);
+      els.push({t:'rect', x:cx, y:cy, w:c, h:c, stroke:'#333', lw:.5, fill: oc?'#f4f4f4':CLARO});
+      if (!oc) els.push({t:'text', x:cx+c/2, y:cy+c*.66, s:14, str:String(v), a:'center', b:true});
+      else if (isKey) els.push({t:'text', x:cx+c/2, y:cy+c*.66, s:14, str:String(v), a:'center', c:RED, b:true}); });
+  } };
+BLOCKS.piramide = {
+  h:(it,w)=> wrapText('Pirámide: cada número es la suma de los dos que tiene debajo.',FSB,w-8).length*LHB + it.rows.length*Math.min(9,12) + 6,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    const L=wrapText('Pirámide: cada número es la suma de los dos que tiene debajo.',FSB,w-8);
+    L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln, b:true}));
+    const base=it.rows[it.rows.length-1].length, cw=Math.min(16,(w-12)/base), rh=9, top=y+L.length*LHB+2, mid=x+8+(w-8)/2;
+    const hide=new Set(it.hide.map(h=>h+''));
+    it.rows.forEach((row,r)=>{ const n=row.length, x0=mid-n*cw/2;
+      row.forEach((v,c)=>{ const cx=x0+c*cw, cy=top+r*rh, oc=hide.has(r+','+c);
+        els.push({t:'rect', x:cx, y:cy, w:cw, h:rh, stroke:'#333', lw:.45, fill: oc?'#f4f4f4':CLARO});
+        if (!oc) els.push({t:'text', x:cx+cw/2, y:cy+6.3, s:12, str:String(v), a:'center', b:true});
+        else if (isKey) els.push({t:'text', x:cx+cw/2, y:cy+6.3, s:12, str:String(v), a:'center', c:RED, b:true}); }); });
+  } };
+BLOCKS.laberinto = {
+  h:(it,w)=> wrapText(`Laberinto: unir la entrada con la salida pasando solo por múltiplos de ${it.k}. Se avanza arriba, abajo o a los costados.`,10,w-8).length*4.4 + it.n*Math.min(15,(w-26)/it.n) + 16,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4);
+    const L=wrapText(`Laberinto: unir la entrada con la salida pasando solo por múltiplos de ${it.k}. Se avanza arriba, abajo o a los costados.`,10,w-8);
+    L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*4.4, s:10, str:ln, b:true}));
+    const c=Math.min(15,(w-26)/it.n), gx=x+8+(w-8-it.n*c)/2, gy=y+L.length*4.4+7;
+    els.push({t:'text', x:gx, y:gy-1.5, s:8.5, str:'ENTRADA', c:'#6b7488', b:true});
+    const on=new Set(it.path.map(p=>p+''));
+    for (let r=0;r<it.n;r++) for (let col=0;col<it.n;col++){
+      const key=isKey && on.has(r+','+col);
+      els.push({t:'rect', x:gx+col*c, y:gy+r*c, w:c, h:c, stroke:'#333', lw:.45, fill: key?CLARO_R:'#ffffff'});
+      els.push({t:'text', x:gx+col*c+c/2, y:gy+r*c+c*.63, s:Math.min(12, c*.9/0.3528*.45), str:String(it.grid[r][col]), a:'center', b:key, c:key?RED:'#111'});
+    }
+    els.push({t:'text', x:gx+it.n*c, y:gy+it.n*c+5, s:8.5, str:'SALIDA', a:'right', c:'#6b7488', b:true});
+  } };
+
+/* ---------- Gráficos y tablas ---------- */
+const TEMAS_GRAF={
+  frutas:{ t:'Frutas preferidas del grupo', cats:['Manzana','Banana','Naranja','Pera','Frutilla','Uva'] },
+  mascotas:{ t:'Mascotas de los alumnos', cats:['Perro','Gato','Pez','Pájaro','Conejo','Tortuga'] },
+  deportes:{ t:'Deporte preferido', cats:['Fútbol','Básquetbol','Natación','Handball','Rugby','Voleibol'] },
+  transporte:{ t:'Cómo llegan los alumnos a la escuela', cats:['A pie','En bicicleta','En ómnibus','En auto','En moto','En taxi'] },
+  helados:{ t:'Gustos de helado preferidos', cats:['Chocolate','Dulce de leche','Frutilla','Vainilla','Limón','Menta'] },
+  libros:{ t:'Tipo de libro preferido', cats:['Cuentos','Aventuras','Poesía','Humor','Ciencia','Misterio'] },
+};
+GEN.graficos = function(sel,count){
+  const tema = TEMAS_GRAF[sel.tema==='azar' ? pick(Object.keys(TEMAS_GRAF)) : sel.tema];
+  const nCats=Number(sel.cats), hasta=Number(sel.hasta), unit = hasta<=10?1 : hasta<=20?2 : 5;
+  const cats=shuffle([...tema.cats]).slice(0,nCats);
+  let vals, tries=0;
+  do { vals=cats.map(()=>unit*rnd(1,hasta/unit)); tries++;
+    const mx=Math.max(...vals), mn=Math.min(...vals);
+    if (vals.filter(v=>v===mx).length===1 && vals.filter(v=>v===mn).length===1) break; } while (tries<200);
+  const axis=Math.ceil(Math.max(...vals)/unit)*unit;
+  const items=[{ type:'grafico', mode:sel.formato, title:tema.t, cats, vals, axis, unit, full:true }];
+  const tot=vals.reduce((a,b)=>a+b,0), orden=cats.map((_,k)=>k);
+  const tipos=[...sel.preg], q=[];
+  let n=0;
+  while (q.length<count && n<count*30){
+    const t=tipos[n++%tipos.length], a=pick(orden); let b=pick(orden); let it;
+    if (t==='leer') it={ type:'fill', full:true, parts:[`¿Cuántos alumnos respondieron «${cats[a]}»?`, B(vals[a],14)], key:'l'+a };
+    else if (t==='mayor') it={ type:'fill', full:true, parts:['¿Cuál fue la opción más elegida?', B(cats[vals.indexOf(Math.max(...vals))],40)], key:'M' };
+    else if (t==='menor') it={ type:'fill', full:true, parts:['¿Cuál fue la opción menos elegida?', B(cats[vals.indexOf(Math.min(...vals))],40)], key:'m' };
+    else if (t==='total') it={ type:'fill', full:true, parts:['¿Cuántos alumnos respondieron en total?', B(tot,14)], key:'T' };
+    else if (t==='dif'){ if (a===b || vals[a]===vals[b]) continue; const [hi,lo]= vals[a]>vals[b]?[a,b]:[b,a];
+      it={ type:'fill', full:true, parts:[`¿Cuántos alumnos más respondieron «${cats[hi]}» que «${cats[lo]}»?`, B(vals[hi]-vals[lo],14)], key:`d${hi}-${lo}` }; }
+    else { if (a===b) continue;
+      it={ type:'fill', full:true, parts:[`¿Cuántos alumnos respondieron «${cats[a]}» o «${cats[b]}»?`, B(vals[a]+vals[b],14)], key:`s${Math.min(a,b)}-${Math.max(a,b)}` }; }
+    if (q.some(x=>x.key===it.key)) continue;
+    q.push(it);
+  }
+  return { kind:'blocks', cols:1, items:[...items, ...q.map(({key,...r})=>r)] };
+};
+function tablaHoriz(els,x,y,w,cats,vals,isKey,blank){
+  const lw=30, cw=(w-lw)/cats.length, rh=8.5;
+  els.push({t:'rect', x, y, w:lw, h:rh, stroke:'#333', lw:.4, fill:CLARO});
+  els.push({t:'text', x:x+lw/2, y:y+5.8, s:9, str:'Opción', a:'center', b:true});
+  els.push({t:'rect', x, y:y+rh, w:lw, h:rh, stroke:'#333', lw:.4, fill:CLARO});
+  els.push({t:'text', x:x+lw/2, y:y+rh+5.8, s:9, str:'Alumnos', a:'center', b:true});
+  cats.forEach((cat,k)=>{ const cx=x+lw+k*cw;
+    els.push({t:'rect', x:cx, y, w:cw, h:rh, stroke:'#333', lw:.4, fill:CLARO});
+    const s = measure(cat,9)>cw-2 ? 7.5 : 9;
+    els.push({t:'text', x:cx+cw/2, y:y+5.8, s, str:cat, a:'center', b:true});
+    els.push({t:'rect', x:cx, y:y+rh, w:cw, h:rh, stroke:'#333', lw:.4});
+    if (!blank) els.push({t:'text', x:cx+cw/2, y:y+rh+6, s:11, str:String(vals[k]), a:'center'});
+    else if (isKey) els.push({t:'text', x:cx+cw/2, y:y+rh+6, s:11, str:String(vals[k]), a:'center', c:RED, b:true}); });
+}
+BLOCKS.grafico = { full:true,
+  h:(it,w)=> it.mode==='tabla' ? 12+19 : it.mode==='pasar' ? 12+66+12+19+6 : 12+66+12,
+  draw(els,it,idx,x,y,w,isKey){
+    els.push({t:'text', x:x+w/2, y:y+5, s:12, str:'Encuesta: '+it.title, a:'center', b:true});
+    let cy=y+10;
+    if (it.mode!=='tabla'){
+      const x0=x+14, cw=w-18, ch=60, base=cy+6+ch, lines=it.axis/it.unit, slot=cw/it.cats.length, bw=slot*.55;
+      els.push({t:'text', x:x, y:cy+2, s:8.5, str:'Cantidad de alumnos', c:'#6b7488'});
+      for (let k=0;k<=lines;k++){ const ly=base-ch*k/lines;
+        els.push({t:'line', x1:x0, y1:ly, x2:x0+cw, y2:ly, w: k===0?.5:.15, c: k===0?'#222':'#bbb'});
+        if (lines<=10 || k%2===0) els.push({t:'text', x:x0-2, y:ly+1.2, s:8, str:String(k*it.unit), a:'right', c:'#444'}); }
+      els.push({t:'line', x1:x0, y1:base-ch, x2:x0, y2:base, w:.5, c:'#222'});
+      it.cats.forEach((cat,k)=>{ const bx=x0+k*slot+(slot-bw)/2, bh=ch*it.vals[k]/it.axis;
+        els.push({t:'rect', x:bx, y:base-bh, w:bw, h:bh, stroke:'#5b4bf5', lw:.4, fill:CLARO});
+        wrapText(cat,8.5,slot-1).slice(0,2).forEach((ln,j)=> els.push({t:'text', x:x0+k*slot+slot/2, y:base+4.5+j*3.8, s:8.5, str:ln, a:'center', b:true})); });
+      cy=base+12;
+    }
+    if (it.mode==='tabla') tablaHoriz(els,x+4,cy+2,w-4,it.cats,it.vals,isKey,false);
+    else if (it.mode==='pasar'){ els.push({t:'text', x:x+4, y:cy+3, s:FSB, b:true, str:'Pasá los datos del gráfico a la tabla.'});
+      tablaHoriz(els,x+4,cy+6,w-4,it.cats,it.vals,isKey,true); }
+  } };
+
+/* ---------- Catálogo y opciones ---------- */
+CATALOG.find(a=>a.id==='mate').items.push(
+  { id:'fracciones', name:'Fracciones y decimales', ready:true },
+  { id:'tablas', name:'Tablas de multiplicar', ready:true },
+  { id:'medidas', name:'Medidas y geometría', ready:true },
+  { id:'patrones', name:'Series y patrones', ready:true },
+  { id:'logica', name:'Cuadrados mágicos y laberintos', ready:true },
+  { id:'graficos', name:'Gráficos y tablas', ready:true } );
+const CNT=(label,options,def)=>({ label, options, def });
+Object.assign(ACTIVITIES, {
+  fracciones:{ title:'Fracciones y decimales', consigna:'Resolvé las siguientes actividades.', cols:2,
+    count:CNT('Cantidad de ejercicios',[6,8,10,12,16,20],10), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[
+      {v:'leer',t:'Escribir la fracción pintada'},{v:'pintar',t:'Pintar la fracción'},{v:'equivalentes',t:'Fracciones equivalentes'},
+      {v:'comparar',t:'Comparar fracciones'},{v:'sumar',t:'Sumar y restar (mismo denominador)'},{v:'decimal',t:'Fracción y número decimal'},{v:'compDec',t:'Comparar decimales'} ],
+      def:['leer','pintar','equivalentes','comparar'] },
+    { id:'nivel', label:'Denominadores', type:'single', options:[ {v:'basico',t:'Básicos (2, 3, 4, 5, 6 y 8)'},{v:'amplio',t:'Más amplios (hasta 12)'} ], def:'basico' } ] },
+  tablas:{ title:'Tablas de multiplicar', consigna:'Completá.', cols:3,
+    count:CNT('Cantidad de cuentas',[9,12,15,20,30,40],20), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[
+      {v:'completar',t:'Completar el resultado (6 × 7 = ?)'},{v:'faltante',t:'Hallar el factor que falta (6 × ? = 42)'},
+      {v:'dividir',t:'Dividir (42 ÷ 6 = ?)'},{v:'cuadro',t:'Cuadro de las tablas para completar'} ], def:['completar','faltante'] },
+    { id:'tablas', label:'Tablas', type:'multi', options:[2,3,4,5,6,7,8,9,10].map(v=>({v,t:'Del '+v})), def:[2,3,4,5] },
+    { id:'hasta', label:'Multiplicar hasta', type:'single', options:[ {v:10,t:'Por 10'},{v:12,t:'Por 12'} ], def:10 } ] },
+  medidas:{ title:'Medidas y geometría', consigna:'Resolvé.', cols:2,
+    count:CNT('Cantidad de ejercicios',[4,6,8,10,12],8), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[
+      {v:'conversion',t:'Pasar de una unidad a otra'},{v:'perimetro',t:'Perímetro de rectángulos y cuadrados'},
+      {v:'area',t:'Área (contar cuadraditos)'},{v:'angulos',t:'Clasificar ángulos'} ], def:['conversion','perimetro'] },
+    { id:'unidades', label:'Unidades', type:'multi', options:[ {v:'long',t:'Longitud (km, m, cm, mm)'},{v:'masa',t:'Masa (kg, g)'},{v:'cap',t:'Capacidad (L, mL)'} ], def:['long'],
+      showIf:s=>s.tipo.includes('conversion') } ] },
+  patrones:{ title:'Series y patrones', consigna:'Completá cada serie o descubrí su regla.', cols:1,
+    count:CNT('Cantidad de series',[4,6,8,10],6), groups:[
+    { id:'tipo', label:'Tipo de serie', type:'multi', options:[
+      {v:'suma',t:'Que crecen sumando'},{v:'resta',t:'Que decrecen restando'},{v:'mult',t:'Que crecen multiplicando'},
+      {v:'alterna',t:'Que suman y restan'},{v:'regla',t:'Descubrir la regla'},{v:'letras',t:'Patrones de letras'} ], def:['suma','resta','regla'] },
+    { id:'nivel', label:'Tamaño de los números', type:'single', options:[ {v:'chico',t:'Hasta 100'},{v:'medio',t:'Hasta 1.000'},{v:'grande',t:'Hasta 10.000'} ], def:'chico' } ] },
+  logica:{ title:'Desafíos numéricos', consigna:'Resolvé cada desafío.', cols:2,
+    count:CNT('Cantidad de desafíos',[1,2,3,4,6],4), groups:[
+    { id:'tipo', label:'Tipo de desafío', type:'multi', options:[
+      {v:'magico',t:'Cuadrados mágicos'},{v:'piramide',t:'Pirámides numéricas'},{v:'laberinto',t:'Laberintos de múltiplos'} ], def:['magico','piramide'] },
+    { id:'nivel', label:'Dificultad', type:'single', options:[ {v:'facil',t:'Fácil'},{v:'medio',t:'Media'},{v:'dificil',t:'Difícil'} ], def:'facil' },
+    { id:'tam', label:'Tamaño del laberinto', type:'single', options:[ {v:5,t:'5 × 5'},{v:6,t:'6 × 6'} ], def:5, showIf:s=>s.tipo.includes('laberinto') },
+    { id:'multiplos', label:'Múltiplos del laberinto', type:'multi', options:[2,3,4,5,6,7,8,9].map(v=>({v,t:'Del '+v})), def:[3,5], showIf:s=>s.tipo.includes('laberinto') } ] },
+  graficos:{ title:'Gráficos y tablas', consigna:'Mirá los datos y respondé.', single:true, cols:1,
+    count:CNT('Cantidad de preguntas',[3,4,5,6,8],5), groups:[
+    { id:'tema', label:'Tema de la encuesta', type:'single', options:[ {v:'azar',t:'Al azar'},
+      {v:'frutas',t:'Frutas'},{v:'mascotas',t:'Mascotas'},{v:'deportes',t:'Deportes'},{v:'transporte',t:'Transporte'},{v:'helados',t:'Helados'},{v:'libros',t:'Libros'} ], def:'azar' },
+    { id:'formato', label:'Formato', type:'single', options:[ {v:'barras',t:'Gráfico de barras'},{v:'tabla',t:'Tabla de datos'},{v:'pasar',t:'Pasar del gráfico a la tabla'} ], def:'barras' },
+    { id:'cats', label:'Cantidad de opciones', type:'single', options:[ {v:4,t:'4'},{v:5,t:'5'},{v:6,t:'6'} ], def:5 },
+    { id:'hasta', label:'Alumnos por opción', type:'single', options:[ {v:10,t:'Hasta 10'},{v:20,t:'Hasta 20'},{v:50,t:'Hasta 50'} ], def:10 },
+    { id:'preg', label:'Preguntas', type:'multi', options:[
+      {v:'leer',t:'Leer un dato'},{v:'mayor',t:'La opción más elegida'},{v:'menor',t:'La opción menos elegida'},{v:'total',t:'El total'},
+      {v:'dif',t:'Diferencia entre dos opciones'},{v:'suma2',t:'Sumar dos opciones'} ], def:['leer','mayor','total','dif'] } ] },
+});
+Object.assign(DESC, {
+  fracciones:'Fracciones en barras para leer y pintar, equivalentes, comparar, sumar y decimales.',
+  tablas:'Cuentas de las tablas, factor que falta, divisiones y un cuadro para completar.',
+  medidas:'Pasar entre unidades, perímetro, área con cuadrícula y clasificar ángulos.',
+  patrones:'Series numéricas para completar, descubrir la regla y patrones de letras.',
+  logica:'Cuadrados mágicos, pirámides numéricas y laberintos de múltiplos.',
+  graficos:'Una encuesta en gráfico de barras o tabla, con preguntas para responder.',
+});
+Object.assign(NOTAS, {
+  fracciones:'Practicamos fracciones. Dibujar la parte pintada ayuda a compararlas.',
+  tablas:'Practicamos las tablas de multiplicar. Repasarlas en voz alta ayuda mucho.',
+  medidas:'Practicamos medidas. Recordá: 1 m = 100 cm y 1 kg = 1.000 g.',
+  patrones:'Buscamos la regla de cada serie: ¿cuánto cambia de un número al siguiente?',
+  logica:'Resolvemos desafíos de lógica con números. Probar y corregir también es aprender.',
+  graficos:'Leemos datos en gráficos y tablas. Fijate bien en los títulos y en la escala.',
+});
+
 const BILL_W=25, BILL_H=12.5, COIN_D=11.5;
 function moneyRows(money,w){
   const rows=[[]]; let x=0;
@@ -2154,7 +2658,7 @@ function layoutBlocks(d, isKey){
   const rows=[]; let curRow=[];
   let num=0;
   d.items.forEach((it,i)=>{
-    const o={it, idx: it.type==='texto' ? -1 : num++};
+    const o={it, idx: (it.type==='texto'||it.type==='grafico') ? -1 : num++};
     if (cols===1 || it.full || BLOCKS[it.type].full){ if (curRow.length){ rows.push(curRow); curRow=[]; } rows.push([o]); }
     else { curRow.push(o); if (curRow.length===cols){ rows.push(curRow); curRow=[]; } }
   });
@@ -2244,7 +2748,7 @@ function describeData(act, d){
   if (d.kind==='ops') return d.list.length+' ejercicios';
   if (d.kind==='sopa') return d.items.length+(act==='sopaL'?' palabras':' números')+' para buscar';
   if (d.kind==='cruci') return d.words.length+' palabras';
-  const its=d.items.filter(it=>it.type!=='texto');
+  const its=d.items.filter(it=>it.type!=='texto' && it.type!=='grafico');
   if (its[0] && its[0].type==='unir') return its[0].left.length+' pares para unir';
   if (act==='comprension') return its.length+' preguntas';
   if (act==='problemas') return its.length+' problemas';
@@ -2425,7 +2929,8 @@ $('mDownload').onclick=()=> state.previewWeek ? $('weekDownload').click() : stat
 /* ================= Tarea de la semana ================= */
 const DIAS_SEM=['Lunes','Martes','Miércoles','Jueves','Viernes'];
 const CORTA={ sumas:6, restas:6, mult:6, div:4, numeracion:6, problemas:2, mental:10, escribir:6, dinero:3, hora:6,
-  sopaN:6, sopaL:6, crucigrama:5, unir:5, completar:5, vf:5, ordenar:5 };
+  sopaN:6, sopaL:6, crucigrama:5, unir:5, completar:5, vf:5, ordenar:5,
+  fracciones:6, tablas:9, medidas:4, patrones:4, logica:2, graficos:3 };
 let week={ dias:4, acts:['sumas','problemas','mental','sopaL','unir'], largo:'corta' };
 function loadWeek(){ try{ const w=JSON.parse(localStorage.getItem('hojas-semana')||'null'); if (w && Array.isArray(w.acts)) week={...week,...w}; }catch(e){} }
 function saveWeek(){ try{ localStorage.setItem('hojas-semana', JSON.stringify(week)); }catch(e){} }
