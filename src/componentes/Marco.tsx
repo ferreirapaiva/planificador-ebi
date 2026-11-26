@@ -10,6 +10,7 @@ const SECCIONES: { to: string; etiqueta: string; icono: NombreIcono; activa?: (r
   { to: '/nueva', etiqueta: 'Nueva planificación', icono: 'nueva', activa: (r) => r.startsWith('/planificacion/') || r.startsWith('/nueva') || r === '/nuevo-plan-semanal' },
   { to: '/mis-planificaciones', etiqueta: 'Mis planificaciones', icono: 'carpeta', activa: (r) => r.startsWith('/mis-planificaciones') || r.startsWith('/plan-semanal') },
   { to: '/plan-anual', etiqueta: 'Plan anual', icono: 'calendario', activa: (r) => r.startsWith('/plan-anual') || r === '/nuevo-plan-anual' },
+  { to: '/clase', etiqueta: 'Mi clase', icono: 'grupo' },
   { to: '/actividades', etiqueta: 'Hojas de actividades', icono: 'hoja' },
   { to: '/seguimiento', etiqueta: 'Avance del programa', icono: 'grafico' },
   { to: '/programas', etiqueta: 'Programas', icono: 'libro' },

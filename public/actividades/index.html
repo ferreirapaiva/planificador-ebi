@@ -1692,6 +1692,15 @@ function selectActivity(id){
   if (typeof syncNivelUI==='function') syncNivelUI();
 }
 let taT;
+/* Lista de alumnos del grupo elegido en la app (se carga una vez en «Mis grupos»). */
+const CLAVE_ALUMNOS='planificador-ebi:alumnos';
+let LISTA={ grupo:'', nombres:[] };
+function leerLista(){
+  try{ const d=JSON.parse(localStorage.getItem(CLAVE_ALUMNOS)||'null'); LISTA={ grupo:String((d&&d.grupo)||''), nombres:Array.isArray(d&&d.nombres)?d.nombres.map(n=>String(n).trim()).filter(Boolean):[] }; }
+  catch(e){ LISTA={ grupo:'', nombres:[] }; }
+}
+leerLista();
+window.addEventListener('storage', e=>{ if (!e.key || e.key===CLAVE_ALUMNOS){ leerLista(); try{ renderOptions(); regenerate(); }catch(_){} } });
 function renderOptions(){
   const A=ACTIVITIES[state.activity], P=cur(), box=$('opts'); box.innerHTML='';
   A.groups.forEach(g=>{
@@ -1701,9 +1710,20 @@ function renderOptions(){
     wrap.innerHTML=`<h4>${g.label} ${g.type==='multi'?'<span class="hint">· podés marcar varias</span>':''}</h4>`;
     if (g.type==='comp'){ wrap.appendChild(compUI(P)); box.appendChild(wrap); return; }
     if (g.type==='texto'){
+      if (g.id==='nombres' && LISTA.nombres.length && !P.nomTocado && !P.sel[g.id]) P.sel[g.id]=LISTA.nombres.join('\n');
       const ta=document.createElement('textarea'); ta.className='txt-area'; ta.rows=g.rows||6; ta.placeholder=g.placeholder||''; ta.value=P.sel[g.id]||'';
-      ta.oninput=()=>{ P.sel[g.id]=ta.value; clearTimeout(taT); taT=setTimeout(regenerate,300); };
+      ta.oninput=()=>{ P.sel[g.id]=ta.value; if (g.id==='nombres') P.nomTocado=true; clearTimeout(taT); taT=setTimeout(regenerate,300); };
       wrap.appendChild(ta);
+      if (g.id==='nombres'){
+        const nb=document.createElement('p'); nb.className='help';
+        if (LISTA.nombres.length){
+          nb.textContent=`Lista de ${LISTA.grupo||'tu grupo'}: ${LISTA.nombres.length} alumnos. `;
+          const b=document.createElement('button'); b.type='button'; b.className='btn'; b.textContent='Usar la lista del grupo';
+          b.onclick=()=>{ P.sel[g.id]=LISTA.nombres.join('\n'); P.nomTocado=false; renderOptions(); regenerate(); };
+          nb.appendChild(b);
+        } else nb.textContent='Cargá la lista de alumnos una vez en «Mis grupos» y aparece sola acá.';
+        wrap.appendChild(nb);
+      }
       if (g.help){ const hp=document.createElement('p'); hp.className='help'; hp.textContent=g.help; wrap.appendChild(hp); }
       box.appendChild(wrap); return;
     }
@@ -3724,8 +3744,9 @@ GEN.bingo = function(sel,count,ctx){
     const bp=shuffle(bankPool(ctx.bank,true)); pool=bp.map(e=>e.word); llamar=bp.map(e=>({ txt:capFirst(e.clue)+'.', res:e.word }));
     if (pool.length<cells) aviso=`El tema necesita al menos ${cells} palabras con pista para cartones de ${n} × ${n}.`;
   }
-  for (let k=0;k<count;k++){ const ch=shuffle([...pool]).slice(0,cells); if (n===5) ch.splice(12,0,'LIBRE');
-    cartones.push({ type:'carton', n, celdas:ch, tipo:sel.tipo, k:k+1 }); }
+  const nom = sel.conNombres==='si' && LISTA.nombres.length ? LISTA.nombres.slice(0,60) : null, total = nom ? nom.length : count;
+  for (let k=0;k<total;k++){ const ch=shuffle([...pool]).slice(0,cells); if (n===5) ch.splice(12,0,'LIBRE');
+    cartones.push({ type:'carton', n, celdas:ch, tipo:sel.tipo, k:k+1, nombre: nom ? nom[k] : '' }); }
   return { kind:'blocks', cols:2, items:cartones, keyItems:[{ type:'bingoLlamar', tipo:sel.tipo, llamar }], limpia:true, warn:aviso };
 };
 const cartonCelda = (it,w)=> Math.min(w/it.n, 24);
@@ -3734,7 +3755,8 @@ BLOCKS.carton = {
   draw(els,it,idx,x,y,w){
     const c=cartonCelda(it,w), gx=x+(w-it.n*c)/2;
     els.push({t:'text', x:x+w/2, y:y+6.5, s:14, str:'BINGO', a:'center', b:true, c:'#5B4BF5'});
-    els.push({t:'text', x:gx, y:y+6.5, s:8, str:'Cartón '+it.k, c:'#888'});
+    if (it.nombre) els.push({t:'text', x:gx, y:y+6.5, s:9.5, b:true, str:it.nombre.length>22 ? it.nombre.slice(0,21)+'…' : it.nombre, c:'#333'});
+    else els.push({t:'text', x:gx, y:y+6.5, s:8, str:'Cartón '+it.k, c:'#888'});
     it.celdas.forEach((t,i)=>{ const cx=gx+(i%it.n)*c, cy=y+10+Math.floor(i/it.n)*c, libre=t==='LIBRE';
       els.push({t:'rect', x:cx, y:cy, w:c, h:c, stroke:'#333', lw:.5, fill: libre?CLARO:undefined});
       if (it.tipo==='palabras' && !libre){ let s=13; while (s>6.5 && (wrapText(t,s,c-2).length*s*.3528*1.15>c-3 || measure(t,s)>c*2.2 && wrapText(t,s,c-2).some(l=>measure(l,s)>c-2))) s-=.5;
@@ -3846,6 +3868,7 @@ Object.assign(ACTIVITIES, {
   bingo:{ title:'Bingo', consigna:'', single:true, cols:2,
     count:{ label:'Cantidad de cartones', options:[2,4,6,8,12], def:4 }, groups:[
     { id:'tipo', label:'Qué lleva el cartón', type:'single', options:[ {v:'numeros',t:'Números'},{v:'resultados',t:'Resultados de cuentas'},{v:'palabras',t:'Palabras de un tema'} ], def:'numeros' },
+    { id:'conNombres', label:'Cartones con el nombre de cada alumno', type:'single', options:SINO, def:'no', showIf:()=>LISTA.nombres.length>0, help:'Hace un cartón por alumno de tu lista, con su nombre.' },
     { id:'tam', label:'Tamaño del cartón', type:'single', options:[ {v:3,t:'3 × 3'},{v:4,t:'4 × 4'},{v:5,t:'5 × 5 (con casilla libre)'} ], def:3 },
     { id:'hasta', label:'Números hasta', type:'single', options:[ {v:20,t:'20'},{v:50,t:'50'},{v:100,t:'100'} ], def:50, showIf:s=>s.tipo==='numeros' },
     { id:'ops', label:'Cuentas', type:'multi', options:[ {v:'suma',t:'Sumas'},{v:'resta',t:'Restas'},{v:'mult',t:'Multiplicaciones'},{v:'div',t:'Divisiones'} ], def:['suma','mult'], showIf:s=>s.tipo==='resultados' },

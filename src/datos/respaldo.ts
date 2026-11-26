@@ -1,4 +1,4 @@
-import { db, type Grupo, type PlanAnual, type PlanSemanal, type Planificacion, type Seguimiento } from './db';
+import { db, type Asistencia, type EntradaDiario, type Grupo, type RegistroEvaluacion, type PlanAnual, type PlanSemanal, type Planificacion, type Seguimiento } from './db';
 import { registrarCopia } from './copias';
 
 export type Respaldo = {
@@ -14,6 +14,10 @@ export type Respaldo = {
   /** Desde que existen los grupos y el avance del programa. */
   grupos?: Grupo[];
   seguimiento?: Seguimiento[];
+  /** Desde que existen la asistencia, los registros de evaluación y el diario de clase. */
+  asistencia?: Asistencia[];
+  evaluaciones?: RegistroEvaluacion[];
+  diario?: EntradaDiario[];
 };
 
 /** Copia protegida con contraseña: AES-GCM de 256 bits con la clave derivada por PBKDF2. */
@@ -31,8 +35,12 @@ async function sha256(texto: string) {
   const h = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto)));
   return [...h].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
-const textoDeHuella = (r: Pick<Respaldo, 'planificaciones' | 'planesAnuales' | 'planesSemanales' | 'grupos' | 'seguimiento'>) =>
-  JSON.stringify([r.planificaciones, r.planesAnuales, r.planesSemanales ?? [], r.grupos ?? [], r.seguimiento ?? []]);
+type ParaHuella = Pick<Respaldo, 'planificaciones' | 'planesAnuales' | 'planesSemanales' | 'grupos' | 'seguimiento' | 'asistencia' | 'evaluaciones' | 'diario'>;
+/** Los respaldos anteriores no traen asistencia, evaluaciones ni diario: su huella se calculó sin ellos y se sigue verificando igual. */
+const textoDeHuella = (r: ParaHuella) => {
+  const base = [r.planificaciones, r.planesAnuales, r.planesSemanales ?? [], r.grupos ?? [], r.seguimiento ?? []];
+  return JSON.stringify(r.asistencia || r.evaluaciones || r.diario ? [...base, r.asistencia ?? [], r.evaluaciones ?? [], r.diario ?? []] : base);
+};
 
 async function claveDe(clave: string, sal: Uint8Array, iteraciones: number) {
   const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(clave), 'PBKDF2', false, ['deriveKey']);
@@ -58,14 +66,17 @@ async function descifrar(c: Cifrado, clave: string) {
 
 /** Junta todo lo que hay en este navegador, con su huella para poder verificarlo después. */
 export async function armarRespaldo(): Promise<Respaldo> {
-  const [planificaciones, planesAnuales, planesSemanales, grupos, seguimiento] = await Promise.all([
+  const [planificaciones, planesAnuales, planesSemanales, grupos, seguimiento, asistencia, evaluaciones, diario] = await Promise.all([
     db.planificaciones.toArray(),
     db.planesAnuales.toArray(),
     db.planesSemanales.toArray(),
     db.grupos.toArray(),
     db.seguimiento.toArray(),
+    db.asistencia.toArray(),
+    db.evaluaciones.toArray(),
+    db.diario.toArray(),
   ]);
-  const base = { planificaciones, planesAnuales, planesSemanales, grupos, seguimiento };
+  const base = { planificaciones, planesAnuales, planesSemanales, grupos, seguimiento, asistencia, evaluaciones, diario };
   return { app: 'planificador-ebi', version: 2, fecha: new Date().toISOString(), huella: await sha256(textoDeHuella(base)), ...base };
 }
 
@@ -83,6 +94,10 @@ export const resumenDe = (r: Respaldo) => ({
   planesSemanales: r.planesSemanales?.length ?? 0,
   grupos: r.grupos?.length ?? 0,
   seguimiento: r.seguimiento?.length ?? 0,
+  alumnos: (r.grupos ?? []).reduce((n, g) => n + (g.alumnos?.length ?? 0), 0),
+  asistencia: r.asistencia?.length ?? 0,
+  evaluaciones: r.evaluaciones?.length ?? 0,
+  diario: r.diario?.length ?? 0,
 });
 export type Resumen = ReturnType<typeof resumenDe>;
 const cuenta = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
@@ -93,6 +108,10 @@ export const textoDeResumen = (n: Resumen) =>
     cuenta(n.planesSemanales, 'plan del día o la semana', 'planes del día o la semana'),
     cuenta(n.grupos, 'grupo', 'grupos'),
     `${cuenta(n.seguimiento, 'contenido', 'contenidos')} con avance marcado`,
+    ...(n.alumnos ? [cuenta(n.alumnos, 'alumno', 'alumnos')] : []),
+    ...(n.asistencia ? [cuenta(n.asistencia, 'día de asistencia', 'días de asistencia')] : []),
+    ...(n.evaluaciones ? [cuenta(n.evaluaciones, 'registro de evaluación', 'registros de evaluación')] : []),
+    ...(n.diario ? [cuenta(n.diario, 'día del diario de clase', 'días del diario de clase')] : []),
   ].join(', ');
 
 /** Descarga un archivo .json con todo lo de este navegador; con contraseña, queda protegido. */
@@ -151,13 +170,16 @@ export async function leerRespaldo(archivo: File, clave?: string): Promise<Respa
 export async function restaurarDatos(datos: Respaldo) {
   let agregadas = 0;
   let actualizadas = 0;
-  await db.transaction('rw', [db.planificaciones, db.planesAnuales, db.planesSemanales, db.grupos, db.seguimiento], async () => {
+  await db.transaction('rw', [db.planificaciones, db.planesAnuales, db.planesSemanales, db.grupos, db.seguimiento, db.asistencia, db.evaluaciones, db.diario], async () => {
     for (const [tabla, items] of [
       [db.planificaciones, datos.planificaciones],
       [db.planesAnuales, datos.planesAnuales],
       [db.planesSemanales, Array.isArray(datos.planesSemanales) ? datos.planesSemanales : []],
       [db.grupos, Array.isArray(datos.grupos) ? datos.grupos : []],
       [db.seguimiento, Array.isArray(datos.seguimiento) ? datos.seguimiento : []],
+      [db.asistencia, Array.isArray(datos.asistencia) ? datos.asistencia : []],
+      [db.evaluaciones, Array.isArray(datos.evaluaciones) ? datos.evaluaciones : []],
+      [db.diario, Array.isArray(datos.diario) ? datos.diario : []],
     ] as const) {
       for (const item of items as { id: string; modificada: number }[]) {
         if (!item?.id) continue;

@@ -13,6 +13,7 @@ const SECCIONES: Seccion[] = [
       'Cargá tus grupos (4.º A, 5.º B…) con su grado, escuela y docente.',
       'Elegí con qué grupo trabajás en la barra lateral: la app muestra solo sus planificaciones, horarios y avance.',
       'Lo que creás sale con el grupo, la escuela y la docente ya completados.',
+      'Cargá la lista de alumnos una sola vez: se usa en planillas, listas de cotejo, carnés y bingo ya con los nombres, y en Mi clase.',
       'Si das clase a un solo grupo, no hace falta cargarlo.',
     ],
     enlaces: [{ to: '/grupos', texto: 'Mis grupos' }],
@@ -72,6 +73,18 @@ const SECCIONES: Seccion[] = [
       'Ves el porcentaje de avance de cada unidad curricular y cuántos contenidos planificaste pero todavía no diste.',
     ],
     enlaces: [{ to: '/seguimiento', texto: 'Avance del programa' }],
+  },
+  {
+    icono: 'grupo',
+    tile: 'bg-menta-500 text-white',
+    titulo: 'Mi clase',
+    puntos: [
+      'Asistencia diaria: marcá presente, falta o falta justificada, y mirá el resumen del mes por alumno.',
+      'Evaluaciones: registrá el nivel de cada alumno en cada criterio (desde una rúbrica de tus planificaciones o en blanco) y mirá quién lo logró y a quién reforzar.',
+      'Informe para las familias: con la asistencia y los resultados, listo para imprimir, guardar en PDF o copiar; uno por alumno o de todo el grupo.',
+      'Diario de clase: anotá lo que planeaste, lo que hiciste de verdad y lo que quedó pendiente, y pasalo al día siguiente con un toque.',
+    ],
+    enlaces: [{ to: '/clase', texto: 'Mi clase' }],
   },
   {
     icono: 'hoja',

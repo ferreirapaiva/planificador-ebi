@@ -4,12 +4,15 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, leerPerfil, type Grupo } from '../datos/db';
 import { grupoNuevo, perteneceAlGrupo, useGrupos } from '../datos/grupos';
 import { normalizar } from '../datos/programas';
-import { Aviso, Boton, Campo, Pildora } from '../componentes/ui';
+import { AreaTexto, Aviso, Boton, Campo, Pildora } from '../componentes/ui';
+import { alumnosATexto, textoAAlumnos } from '../datos/aula';
 import { useConfirmar } from '../componentes/Confirmar';
 import { Icono } from '../componentes/Iconos';
 
 function Formulario({ inicial, onGuardar, onCancelar }: { inicial: Grupo; onGuardar: (g: Grupo) => void; onCancelar: () => void }) {
   const [g, setG] = useState(inicial);
+  const [lista, setLista] = useState(() => alumnosATexto(inicial.alumnos));
+  const nAlumnos = textoAAlumnos(lista).length;
   const set = (p: Partial<Grupo>) => setG((x) => ({ ...x, ...p }));
   const multi = g.grados.length > 1;
   return (
@@ -17,7 +20,7 @@ function Formulario({ inicial, onGuardar, onCancelar }: { inicial: Grupo; onGuar
       className="space-y-4 rounded-[24px] bg-white p-5 shadow-suave"
       onSubmit={(e) => {
         e.preventDefault();
-        if (g.nombre.trim()) onGuardar({ ...g, nombre: g.nombre.trim(), modificada: Date.now() });
+        if (g.nombre.trim()) onGuardar({ ...g, nombre: g.nombre.trim(), alumnos: textoAAlumnos(lista, g.alumnos), modificada: Date.now() });
       }}
     >
       <div className="grid gap-4 sm:grid-cols-2">
@@ -33,6 +36,14 @@ function Formulario({ inicial, onGuardar, onCancelar }: { inicial: Grupo; onGuar
         <Campo etiqueta="Escuela (opcional)" valor={g.escuela} onCambio={(v) => set({ escuela: v })} placeholder="Ej.: Escuela N.º 123" />
         <Campo etiqueta="Docente (opcional)" valor={g.docente} onCambio={(v) => set({ docente: v })} />
       </div>
+      <AreaTexto
+        etiqueta={`Lista de alumnos${nAlumnos ? ` (${nAlumnos})` : ''}`}
+        valor={lista}
+        onCambio={setLista}
+        filas={8}
+        placeholder={'Un nombre por renglón. Podés pegar la lista de la libreta o de una planilla.\nAlmada, Sofía\nBenítez, Mateo'}
+        ayuda="Se carga una sola vez y se usa en todo: planillas de tareas, listas de cotejo, carnés y bingo con los nombres, además de la asistencia y los registros de evaluación."
+      />
       <div className="flex flex-wrap gap-2">
         <button
           type="submit"
@@ -75,7 +86,7 @@ export function Grupos() {
   const eliminar = async (g: Grupo) => {
     const ok = await confirmar({
       titulo: `¿Eliminar el grupo «${g.nombre}»?`,
-      mensaje: 'Sus planificaciones y horarios no se borran: quedan sin grupo. Se borra el avance del programa que marcaste para este grupo.',
+      mensaje: 'Sus planificaciones y horarios no se borran: quedan sin grupo. Se borran su lista de alumnos, la asistencia, los registros de evaluación, el diario de clase y el avance del programa que marcaste para este grupo.',
       aceptar: 'Eliminar',
       peligro: true,
     });
@@ -86,6 +97,9 @@ export function Grupos() {
       });
     }
     await db.seguimiento.where('grupoKey').equals(g.id).delete();
+    await db.asistencia.where('grupoKey').equals(g.id).delete();
+    await db.evaluaciones.where('grupoKey').equals(g.id).delete();
+    await db.diario.where('grupoKey').equals(g.id).delete();
     await db.grupos.delete(g.id);
     if (activo?.id === g.id) elegir(null);
   };
@@ -154,7 +168,8 @@ export function Grupos() {
                 </p>
                 <h2 className="mt-2 text-[21px] font-extrabold text-slate-900">{g.nombre}</h2>
                 <p className="mt-1 text-sm text-slate-600">{[g.escuela, g.docente].filter(Boolean).join(' · ') || 'Sin escuela ni docente cargados'}</p>
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-2 text-xs font-semibold text-slate-700">{g.alumnos?.length ? `${g.alumnos.length} alumnos en la lista` : 'Sin lista de alumnos todavía'}</p>
+                <p className="mt-1 text-xs text-slate-500">
                   {np} planificaciones · {na} planes anuales · {ns} horarios
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">

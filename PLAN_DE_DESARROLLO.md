@@ -245,3 +245,6 @@ Anotadas por la docente; todavía no están desarrolladas.
 - [x] **Guía de primer uso** y pantalla «Cómo funciona».
 - [x] **Horario semanal en una sola hoja** A4 horizontal, con colores por área, para pegar en el aula.
 - [x] **Respaldo seguro de los datos.** Pantalla «Respaldo y seguridad»: recordatorio de copia, copia con contraseña (AES-256), verificación de que el archivo no esté dañado antes de restaurar, copia automática diaria en una carpeta elegida (Chrome y Edge) y protección del almacenamiento del navegador.
+- [x] **Lista de alumnos por grupo.** Se carga una vez en «Mis grupos» y las Hojas de actividades la usan sola: planilla de tareas, lista de cotejo, carnés y bingo con un cartón por alumno.
+- [x] **Asistencia y registro de evaluación.** «Mi clase»: asistencia diaria con resumen mensual, resultados por alumno y criterio (desde una rúbrica de las planificaciones o en blanco), quién logró cada criterio e informe imprimible para las familias.
+- [x] **Diario de clase.** «Mi clase»: lo planeado, lo hecho y lo pendiente de cada día; lo pendiente se pasa al día siguiente. Todo entra en la copia de seguridad.
