@@ -1,7 +1,8 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, nuevoId, type Grupo } from './db';
 import { normalizar } from './programas';
+import { publicarAlumnos } from './aula';
 
 const CLAVE_ACTIVO = 'planificador-ebi:grupo-activo';
 
@@ -30,6 +31,11 @@ export function GruposProvider({ children }: { children: ReactNode }) {
   const [id, setId] = useState<string | null>(leerGrupoActivoId);
   const grupos = useMemo(() => lista ?? [], [lista]);
   const activo = useMemo(() => grupos.find((g) => g.id === id) ?? null, [grupos, id]);
+  // La lista del grupo en uso (o del único grupo) queda a mano de las Hojas de actividades.
+  const paraHojas = activo ?? (lista && grupos.length === 1 ? grupos[0] : null);
+  useEffect(() => {
+    if (lista) publicarAlumnos(paraHojas);
+  }, [lista, paraHojas]);
   const elegir = useCallback((nuevo: string | null) => {
     setId(nuevo);
     guardarGrupoActivoId(nuevo);

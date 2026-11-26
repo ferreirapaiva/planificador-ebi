@@ -190,3 +190,19 @@ body {
     background-color: #fff;
   }
 }
+
+/* Informes para las familias: se imprimen solos, uno por hoja A4. */
+@media print {
+  body.imprimir-informe #root {
+    display: none !important;
+  }
+  body.imprimir-informe .solo-impresion {
+    display: block;
+  }
+  .hoja-informe {
+    break-after: page;
+  }
+  .hoja-informe:last-child {
+    break-after: auto;
+  }
+}

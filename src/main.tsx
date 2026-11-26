@@ -14,6 +14,7 @@ import { MisPlanificaciones } from './paginas/MisPlanificaciones';
 import { CrearPlanificacion, NuevaPlanificacion } from './paginas/Nueva';
 import { EditorPlanSemanal, NuevoPlanSemanal, PlanesSemanales } from './paginas/PlanSemanal';
 import { HojasActividades } from './paginas/HojasActividades';
+import { MiClase } from './paginas/MiClase';
 import { Grupos } from './paginas/Grupos';
 import { Seguimiento } from './paginas/Seguimiento';
 import { ComoFunciona } from './paginas/ComoFunciona';
@@ -42,6 +43,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="nuevo-plan-semanal" element={<NuevoPlanSemanal />} />
           <Route path="actividades" element={<HojasActividades />} />
           <Route path="grupos" element={<Grupos />} />
+          <Route path="clase" element={<MiClase />} />
           <Route path="seguimiento" element={<Seguimiento />} />
           <Route path="como-funciona" element={<ComoFunciona />} />
           <Route path="respaldo" element={<RespaldoYSeguridad />} />

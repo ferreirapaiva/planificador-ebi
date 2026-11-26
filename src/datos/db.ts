@@ -132,10 +132,20 @@ export type PlanSemanal = {
   modificada: number;
 };
 
+/** Un alumno de la lista de un grupo. */
+export type Alumno = {
+  id: string;
+  nombre: string;
+  /** Lo que se quiere contar a la familia en el informe (se guarda para volver a usarlo). */
+  observacion?: string;
+};
+
 /** Un grupo de la docente (4.º A, 5.º B…): reúne sus planificaciones, planes y avance del programa. */
 export type Grupo = {
   id: string;
   nombre: string;
+  /** Lista de alumnos: se carga una vez y se usa en planillas, listas de cotejo, carnés, bingo, asistencia y evaluaciones. */
+  alumnos?: Alumno[];
   grados: number[];
   escuela: string;
   docente: string;
@@ -157,7 +167,51 @@ export type Seguimiento = {
   modificada: number;
 };
 
+export type EstadoAsistencia = 'P' | 'F' | 'J';
+
+/** Asistencia de un día: el id es «grupo|fecha». Quien no figura en `estados` no tiene nada marcado. */
+export type Asistencia = {
+  id: string;
+  grupoKey: string;
+  fecha: string;
+  estados: Record<string, EstadoAsistencia>;
+  modificada: number;
+};
+
+/** Registro de evaluación: criterios en columnas, alumnos en filas, y el nivel alcanzado en cada casilla. */
+export type RegistroEvaluacion = {
+  id: string;
+  grupoKey: string;
+  titulo: string;
+  fecha: string;
+  criterios: string[];
+  niveles: string[];
+  /** Primer nivel (posición en `niveles`) que cuenta como logrado. */
+  logro: number;
+  /** alumnoId → posición del criterio → posición del nivel. */
+  resultados: Record<string, Record<number, number>>;
+  /** De qué planificación viene la rúbrica, si se trajo de una. */
+  planificacionId?: string;
+  modificada: number;
+};
+
+/** Diario de clase de un día: lo planeado, lo que se hizo de verdad y lo que quedó pendiente. */
+export type EntradaDiario = {
+  id: string;
+  grupoKey: string;
+  fecha: string;
+  planeado: string;
+  hecho: string;
+  pendiente: string;
+  /** Lo pendiente ya se pasó al día siguiente. */
+  pasado?: boolean;
+  modificada: number;
+};
+
 export const db = new Dexie('planificador-ebi') as Dexie & {
+  asistencia: EntityTable<Asistencia, 'id'>;
+  evaluaciones: EntityTable<RegistroEvaluacion, 'id'>;
+  diario: EntityTable<EntradaDiario, 'id'>;
   planificaciones: EntityTable<Planificacion, 'id'>;
   planesAnuales: EntityTable<PlanAnual, 'id'>;
   planesSemanales: EntityTable<PlanSemanal, 'id'>;
@@ -174,6 +228,16 @@ db.version(4).stores({
   planesSemanales: 'id, modificada, fecha',
   grupos: 'id, nombre',
   seguimiento: 'id, grupoKey, ucId',
+});
+db.version(5).stores({
+  planificaciones: 'id, modificada, tipo',
+  planesAnuales: 'id, modificada, anio',
+  planesSemanales: 'id, modificada, fecha',
+  grupos: 'id, nombre',
+  seguimiento: 'id, grupoKey, ucId',
+  asistencia: 'id, grupoKey, fecha',
+  evaluaciones: 'id, grupoKey, fecha',
+  diario: 'id, grupoKey, fecha',
 });
 
 export const nuevoId = () => crypto.randomUUID();
