@@ -1,0 +1,371 @@
+{
+  "id": "tierra-espacio-t4",
+  "nombre": "Ciencias de la Tierra y el Espacio",
+  "espacio": "Científico-Matemático",
+  "tramo": 4,
+  "version": "v2",
+  "revisado": false,
+  "notasRevision": [
+    "El contenido estructurante («Sistemas de la Tierra y el Espacio») se tomó del programa del Tramo 3; este PDF no lo explicita.",
+    "5.º grado: el criterio sobre océanos y glaciares figura con «(CE6)» en el PDF (pág. 12), pero la unidad tiene cinco competencias y está en la fila de la CE4; se cargó como CE4."
+  ],
+  "fuente": {
+    "archivo": "Ciencias de la Tierra y el Espacio_v2 - Tramo 4.pdf",
+    "paginas": [
+      8,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  "justificacion": "La unidad curricular está integrada por Geología y Astronomía, lo que permite que el estudiante conozca, comprenda y se maraville con su entorno entramando los saberes. Situarlo en la realidad ambiental con un enfoque interdisciplinario en clave de competencia promueve el pensamiento global y local, para actuar local y globalmente. Conocer el ambiente desde una perspectiva integral acerca al estudiante a experiencias que trascienden lo cotidiano y lo forman como individuo consciente del cuidado de su entorno, que lo habita de forma sustentable, comprometido, responsable y crítico.",
+  "contenidosEstructurantes": [
+    "Sistemas de la Tierra y el Espacio"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Incorpora y emplea el uso del vocabulario específico contribuyendo al pensamiento científico para entender el Sistema Solar y el Universo.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Reconoce, representa y reflexiona sobre los temas actuales de la astronomía para el conocimiento de los elementos que constituyen el Universo.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Observa, indaga, explica y reflexiona adquiriendo una visión de la interrelación de los componentes del Universo, sus características y consecuencias, para entender su funcionamiento.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Indaga, analiza y explica los procesos geológicos de manera colaborativa para resolver problemas y plantear hipótesis.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Indaga, reconoce, valora, reflexiona y comunica sobre los procesos geológicos para la toma de conciencia de los riesgos y vulnerabilidades de los territorios.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "cte5-b1",
+          "titulo": "El Sistema Solar",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3"
+          ],
+          "contenidos": [
+            {
+              "id": "cte5-b1-1",
+              "texto": "Los astros del Sistema Solar: Sol, planetas, cuerpos menores."
+            },
+            {
+              "id": "cte5-b1-2",
+              "texto": "Los modelos geocéntrico y heliocéntrico."
+            },
+            {
+              "id": "cte5-b1-3",
+              "texto": "El Sistema Sol-Tierra-Luna. Las mareas. Las fases lunares. El eclipse solar y lunar. Las estaciones."
+            }
+          ]
+        },
+        {
+          "id": "cte5-b2",
+          "titulo": "Las aguas superficiales",
+          "ceVinculadas": [
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "cte5-b2-1",
+              "texto": "Las aguas superficiales: océanos y glaciares. La distribución y circulación (corrientes marinas)."
+            }
+          ]
+        },
+        {
+          "id": "cte5-b3",
+          "titulo": "Dinámica de la litosfera",
+          "ceVinculadas": [
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "cte5-b3-1",
+              "texto": "Estructura interna de la Tierra, capas, características y formas de conocerlas."
+            },
+            {
+              "id": "cte5-b3-2",
+              "texto": "Los continentes y sus movimientos."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "cte5-cl-01",
+          "ce": "CE1",
+          "texto": "Incorpora y emplea el vocabulario específico contribuyendo al pensamiento científico indagando sobre las características y componentes del sistema solar, con mediación.",
+          "contenidos": [
+            "cte5-b1-1",
+            "cte5-b1-2",
+            "cte5-b1-3"
+          ]
+        },
+        {
+          "id": "cte5-cl-02",
+          "ce": "CE2",
+          "texto": "Reconoce, representa y reflexiona sobre la visión humana del sistema solar, a través de diferentes formatos y dispositivos.",
+          "contenidos": [
+            "cte5-b1-1",
+            "cte5-b1-2",
+            "cte5-b1-3"
+          ]
+        },
+        {
+          "id": "cte5-cl-03",
+          "ce": "CE3",
+          "texto": "Observa, relaciona, indaga, explica y reflexiona sobre las características y causas de las mareas, fases lunares, eclipses y las estaciones, a través de las modelizaciones y representaciones.",
+          "contenidos": [
+            "cte5-b1-1",
+            "cte5-b1-2",
+            "cte5-b1-3"
+          ]
+        },
+        {
+          "id": "cte5-cl-04",
+          "ce": "CE4",
+          "texto": "Indaga, analiza y explica las características de los océanos y glaciares identificando problemáticas actuales y planteando hipótesis o alternativas de resolución de manera colaborativa.",
+          "contenidos": [
+            "cte5-b2-1"
+          ]
+        },
+        {
+          "id": "cte5-cl-05",
+          "ce": "CE5",
+          "texto": "Indaga, reconoce, valora, reflexiona y comunica las características de los movimientos de la corteza terrestre y sus consecuencias, atendiendo a los sucesos emergentes en el mundo, a través de diversos dispositivos y soportes o modelos.",
+          "contenidos": [
+            "cte5-b3-1",
+            "cte5-b3-2"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias de la Tierra y el Espacio_v2 - Tramo 4.pdf",
+        "paginas": [
+          12
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "cte6-b1",
+          "titulo": "El Universo",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3"
+          ],
+          "contenidos": [
+            {
+              "id": "cte6-b1-1",
+              "texto": "El Sistema Universo, las teorías de su origen y evolución."
+            },
+            {
+              "id": "cte6-b1-2",
+              "texto": "Las galaxias: la Vía Láctea y otras."
+            },
+            {
+              "id": "cte6-b1-3",
+              "texto": "Los cambios y avances científicos y tecnológicos para conocer el universo."
+            },
+            {
+              "id": "cte6-b1-4",
+              "texto": "Los satélites artificiales: la carrera espacial, origen y la situación actual."
+            }
+          ]
+        },
+        {
+          "id": "cte6-b2",
+          "titulo": "Dinámica de la litosfera",
+          "ceVinculadas": [
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "cte6-b2-1",
+              "texto": "La tectónica de placas y sus movimientos."
+            }
+          ]
+        },
+        {
+          "id": "cte6-b3",
+          "titulo": "Procesos geológicos y tiempo geológico",
+          "ceVinculadas": [
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "cte6-b3-1",
+              "texto": "Los bordes divergentes y convergentes. Sismicidad y vulcanismo. Las fallas."
+            },
+            {
+              "id": "cte6-b3-2",
+              "texto": "El tiempo geológico. Las eras geológicas. Los fósiles."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "cte6-cl-01",
+          "ce": "CE1",
+          "texto": "Observa, identifica, indaga, explica y reflexiona sobre las teorías de formación del universo a través de diversos formatos y dispositivos en el trabajo colaborativo.",
+          "contenidos": [
+            "cte6-b1-1",
+            "cte6-b1-2",
+            "cte6-b1-3",
+            "cte6-b1-4"
+          ]
+        },
+        {
+          "id": "cte6-cl-02",
+          "ce": "CE2",
+          "texto": "Observa, distingue, describe, explica y reflexiona sobre las galaxias con diversos formatos y dispositivos.",
+          "contenidos": [
+            "cte6-b1-1",
+            "cte6-b1-2",
+            "cte6-b1-3",
+            "cte6-b1-4"
+          ]
+        },
+        {
+          "id": "cte6-cl-03",
+          "ce": "CE3",
+          "texto": "Indaga, distingue, expone y reflexiona a través de los recursos tecnológicos sobre los cambios y avances científicos y tecnológicos para conocer el universo de forma colaborativa.",
+          "contenidos": [
+            "cte6-b1-1",
+            "cte6-b1-2",
+            "cte6-b1-3",
+            "cte6-b1-4"
+          ]
+        },
+        {
+          "id": "cte6-cl-04",
+          "ce": "CE4",
+          "texto": "Indaga, analiza y explica la dinámica de la litósfera, la tectónica de placas y sus movimientos, a través de diferentes soportes, dispositivos y modelos.",
+          "contenidos": [
+            "cte6-b2-1"
+          ]
+        },
+        {
+          "id": "cte6-cl-05",
+          "ce": "CE5",
+          "texto": "Indaga, reconoce, valora, reflexiona y comunica sobre los tipos de borde, terremotos, volcanes, tomando conciencia sobre los riesgos y vulnerabilidades con mediación docente y de pares.",
+          "contenidos": [
+            "cte6-b3-1",
+            "cte6-b3-2"
+          ]
+        },
+        {
+          "id": "cte6-cl-06",
+          "ce": "CE5",
+          "texto": "Indaga, identifica, reflexiona y comunica sobre el tiempo geológico, la edad de la Tierra, las eras geológicas y los fósiles, a través de diferentes dispositivos y formatos.",
+          "contenidos": [
+            "cte6-b3-1",
+            "cte6-b3-2"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias de la Tierra y el Espacio_v2 - Tramo 4.pdf",
+        "paginas": [
+          13
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Abordar la ciencia en forma interdisciplinaria: Geología, Astronomía, Oceanografía y Meteorología aportan a un mismo objeto de conocimiento desde diferentes miradas.",
+    "Fomentar la observación, la elaboración de estrategias y la comunicación de ideas y resultados en equipos de trabajo.",
+    "Ayudar a comprender procesos de múltiples causas en extensos períodos de tiempo, fortaleciendo la metacognición.",
+    "Proponer consignas accesibles, claras y contextualizadas, manteniendo la rigurosidad científica.",
+    "Trabajar desde una visión problematizadora y crítica de la realidad, superando la relación causa-efecto e incorporando procesos multicausales y multidimensionales."
+  ],
+  "metodologiasSugeridas": [
+    "Centros de interés",
+    "Estudios de caso",
+    "Aprendizaje basado en el juego",
+    "Aprendizaje basado en problemas",
+    "Aula invertida",
+    "STEAHM",
+    "Aprendizaje basado en preguntas problematizadoras",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

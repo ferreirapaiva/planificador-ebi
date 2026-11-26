@@ -25,7 +25,7 @@ function Logo() {
       </span>
       <span className="flex flex-col leading-tight">
         <span className="text-[17px] font-black text-slate-900">Planificador</span>
-        <span className="text-[11px] font-extrabold tracking-[0.08em] text-blue-600 uppercase">EBI · Tramo 3</span>
+        <span className="text-[11px] font-extrabold tracking-[0.08em] text-blue-600 uppercase">EBI · 1.º a 6.º</span>
       </span>
     </Link>
   );

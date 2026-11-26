@@ -1,0 +1,368 @@
+{
+  "id": "historia-t4",
+  "nombre": "Historia",
+  "espacio": "Ciencias Sociales y Humanidades",
+  "tramo": 4,
+  "version": "v2",
+  "revisado": false,
+  "notasRevision": [
+    "Las tablas de contenidos vinculan todas las competencias (CE1 a CE7) a todos los contenidos; los criterios figuran en tablas aparte numerados por competencia (1.1 → CE1, etc.).",
+    "6.º grado: la CE6 tiene un solo criterio (6.1) y la CE7 uno (7.1) según el PDF (pág. 16).",
+    "Los contenidos estructurantes son los del espacio Ciencias Sociales y Humanidades (pág. 3); el programa no los asigna a cada contenido."
+  ],
+  "fuente": {
+    "archivo": "Historia_v2 - Tramo 4.pdf",
+    "paginas": [
+      3,
+      7,
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "justificacion": "El aprendizaje de la historia requiere conocer la naturaleza y origen del conocimiento en relación con las formas de enseñarlo. Como disciplina, ha contribuido a la conformación de identidades políticas y sociales y a la formación de ciudadanos críticos en el ejercicio de derechos y obligaciones. Comprender y explicar los fenómenos históricos requiere pensar en clave de procesos, que están en permanente reconstrucción a través de múltiples interpretaciones, teorías, hallazgos y tecnología, lo que acerca a los estudiantes al pensamiento científico, reflexivo y crítico. Por eso es imprescindible acercar la metodología de la investigación histórica como simulación y presentar evidencias de nuevos hallazgos.",
+  "contenidosEstructurantes": [
+    "El rol del Estado democrático",
+    "Construcción del concepto de ciudadanía",
+    "Ciudadanía y convivencia en los grupos humanos",
+    "Sociedades y sus interrelaciones históricas",
+    "Democracia",
+    "Los derechos humanos como construcción: logros y tensiones",
+    "Los niños, niñas, adolescentes y jóvenes como sujetos de derecho",
+    "Diversidad cultural: las manifestaciones culturales como signo de identidad",
+    "La violencia y sus distintas manifestaciones",
+    "Cultura y patrimonio"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Elabora argumentos y contraargumentos sobre relatos y testimonios historiográficos participando en debates con la guía del docente para integrar vocabulario histórico.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Metacognitiva"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Construye explicaciones elaboradas formulando interrogantes sobre las acciones de los sujetos sociales y los procesos históricos para ampliar sus conocimientos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Metacognitiva"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Construye e interpreta las fuentes históricas o materiales reconociendo las múltiples sensibilidades y puntos de vista para incorporar estrategias de abordaje propias de la investigación histórica.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Planifica con la guía del docente proyectos de indagación sobre temáticas contextualizadas para vincularlas a problemas históricos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Selecciona y relaciona con mediación del docente herramientas digitales para interpretar y organizar información de carácter histórico.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Elabora escrituras pertinentes a las temáticas abordadas con base en las fuentes para ilustrar distintos contextos históricos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Reconoce a partir del estudio de casos concretos en el aula de historia el valor de la convivencia democrática como garantía de los derechos de las sociedades.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "his5-b1",
+          "titulo": "Contenidos específicos",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "his5-b1-1",
+              "texto": "El virreinato del Río de la Plata en 1810: geografía, economía y sociedad. La Revolución Oriental y el proyecto artiguista. Principales ideas y acontecimientos (1811-1820). La Provincia Oriental y la Liga Federal. Trabajo con líneas de tiempo y documentos: las Instrucciones del año XIII; el Reglamento de aranceles; el Reglamento para el Fomento de la Campaña y Seguridad de sus Hacendados de 1815."
+            },
+            {
+              "id": "his5-b1-2",
+              "texto": "La Cruzada Libertadora y las Leyes del 25 de agosto de 1825. La Convención Preliminar de Paz y el rol de Inglaterra (1828). La Constitución de 1830. Dificultades para la consolidación del Uruguay independiente (1830-1876). Procesos políticos, económicos y sociales del periodo. Las divisas. Caudillos y doctores. Formas de vida en el campo y la ciudad. La Guerra Grande y la política de Fusión y de Pactos."
+            },
+            {
+              "id": "his5-b1-3",
+              "texto": "La modernización del Uruguay y la consolidación del Estado-nación (1876-1903). Cambios económicos y sociales. La inmigración y sus aportes. Formas de vida y expresiones culturales en el campo y la ciudad. El Militarismo. La reforma vareliana y sus principios escolares. El Uruguay del 900: las ideas, las artes, los oficios."
+            }
+          ]
+        },
+        {
+          "id": "his5-b2",
+          "titulo": "Conceptos",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "his5-b2-1",
+              "texto": "Caudillismo, emancipación, independencia, modernización, modelo agroexportador, migración, inmigración, divisa, partido, secularización, laicidad, bienes patrimoniales."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "his5-cl-01",
+          "ce": "CE1",
+          "texto": "Reconoce argumentos y contraargumentos en relatos testimoniales e historiográficos."
+        },
+        {
+          "id": "his5-cl-02",
+          "ce": "CE1",
+          "texto": "Identifica argumentos y contraargumentos en relación con temas del curso."
+        },
+        {
+          "id": "his5-cl-03",
+          "ce": "CE1",
+          "texto": "Diferencia argumentos y contraargumentos en torno a un mismo tema."
+        },
+        {
+          "id": "his5-cl-04",
+          "ce": "CE2",
+          "texto": "Propone explicaciones elaboradas a partir de preguntas y supuestos sobre las acciones de los sujetos sociales."
+        },
+        {
+          "id": "his5-cl-05",
+          "ce": "CE2",
+          "texto": "Desarrolla y construye explicaciones incorporando conceptos específicos de cada uno de los procesos históricos en estudio."
+        },
+        {
+          "id": "his5-cl-06",
+          "ce": "CE3",
+          "texto": "Explora e identifica diferentes perspectivas según las fuentes de la historia dando inicio al abordaje en la investigación histórica."
+        },
+        {
+          "id": "his5-cl-07",
+          "ce": "CE3",
+          "texto": "Construye e interpreta fuentes históricas elaborando explicaciones propias con base en indagaciones desde la investigación."
+        },
+        {
+          "id": "his5-cl-08",
+          "ce": "CE4",
+          "texto": "Selecciona con la guía del docente temáticas históricas que involucran a la comunidad, el barrio, la localidad o la ciudad donde vive, participando en proyectos."
+        },
+        {
+          "id": "his5-cl-09",
+          "ce": "CE4",
+          "texto": "Planifica con la guía del docente proyectos históricos y patrimoniales, a través de la indagación, abordando problemas de la comunidad."
+        },
+        {
+          "id": "his5-cl-10",
+          "ce": "CE5",
+          "texto": "Selecciona y relaciona herramientas digitales organizando e interpretando la información histórica."
+        },
+        {
+          "id": "his5-cl-11",
+          "ce": "CE6",
+          "texto": "Escribe con pertinencia sobre temáticas abordadas comunicando procesos y hechos históricos."
+        },
+        {
+          "id": "his5-cl-12",
+          "ce": "CE6",
+          "texto": "Incorpora vocabulario histórico específico en su producción escrita profundizando en el conocimiento histórico."
+        },
+        {
+          "id": "his5-cl-13",
+          "ce": "CE7",
+          "texto": "Reconoce el valor de la convivencia como garantía de los derechos, interpretándolo en las distintas sociedades históricas."
+        }
+      ],
+      "fuente": {
+        "archivo": "Historia_v2 - Tramo 4.pdf",
+        "paginas": [
+          12,
+          13
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "his6-b1",
+          "titulo": "Contenidos específicos",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "his6-b1-1",
+              "texto": "La historia como ciencia y el estudio del siglo XX. Criterios científicos para la búsqueda de la objetividad en la historia (dimensiones de análisis, hechos, datos, conceptos e interpretaciones argumentadas). Diferencias entre historia y memoria. Instrumentos para el análisis del pasado: documentos históricos, mapas históricos y cronologías o líneas de tiempo."
+            },
+            {
+              "id": "his6-b1-2",
+              "texto": "Historia del siglo XX (1914-1948). Las guerras mundiales y sus consecuencias. La Revolución rusa, la URSS y el «socialismo real». Totalitarismos y genocidios (por ejemplo, el Holodomor), conceptos y características. El Holocausto judío. Los organismos internacionales y la Declaración Universal de los Derechos Humanos (1948)."
+            },
+            {
+              "id": "his6-b1-3",
+              "texto": "Uruguay en la primera mitad del siglo XX (1903-1958). El periodo batllista y las transformaciones políticas, sociales y económicas del país. El rol del Estado. Agro e industria. El modelo ISI. La secularización del Estado. El golpe de Estado de 1933, causas y apoyos. La oposición al régimen. Diferencias entre la Constitución de 1919 y la de 1934. El sufragio universal. La educación, el pensamiento y las artes durante el periodo. El segundo batllismo: concepto y características. La vida cotidiana en el campo y la ciudad. Celebraciones rurales y urbanas. Deporte e identidad nacional."
+            },
+            {
+              "id": "his6-b1-4",
+              "texto": "Historia del siglo XX, continuación: la Guerra Fría, concepto y características (1949-1991). La OTAN y el Pacto de Varsovia. El muro de Berlín: formación y caída. EE. UU. en la segunda mitad del siglo: sociedad y economía, el problema racial y los cambios políticos y culturales. Crisis y disolución de la URSS. China en el siglo XX: cambios y permanencias. América Latina en el periodo: principales transformaciones y continuidades (económicas, sociales y políticas)."
+            },
+            {
+              "id": "his6-b1-5",
+              "texto": "Uruguay: crisis y recuperación democrática (1959-1985). Evolución económica y social. La Constitución de 1967. La Guerra Fría en Uruguay: la guerrilla y las instituciones republicanas y democráticas amenazadas. Evolución política del periodo. El golpe de Estado y la dictadura cívico-militar (1973-1985). Los derechos humanos, civiles y políticos avasallados. El plebiscito de 1980 y el retorno a la democracia."
+            },
+            {
+              "id": "his6-b1-6",
+              "texto": "Uruguay: desarrollos, transformaciones y desafíos (1986-2010). Principales rasgos económicos y políticos del periodo. Inserción regional e internacional del país (Aladi-Mercosur). El mundo del trabajo y sus transformaciones. El impacto de las ciencias y tecnologías en la vida cotidiana. Artes y culturas urbanas y rurales. Las migraciones. El planeta y sus recursos en perspectiva histórica: las fuentes de energía, el medioambiente, problemas y soluciones locales, regionales y globales."
+            }
+          ]
+        },
+        {
+          "id": "his6-b2",
+          "titulo": "Conceptos",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "his6-b2-1",
+              "texto": "Gobierno, Estado, totalitarismo, terrorismo, terrorismo de Estado, populismo, industrialización, capitalismo, migraciones, derechos humanos, delitos de lesa humanidad, garantías individuales, estatismo, nacionalizaciones, sociedad de masas, revolución, reforma, Estado de derecho, república, democracia, liberalismo, socialismos, pluralismo político, sociedad civil, tolerancia, deliberación, cooperación, sociedad de consumo, sociedad de la información, bienes patrimoniales."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "his6-cl-01",
+          "ce": "CE1",
+          "texto": "Identifica y elabora argumentos y contraargumentos debatiendo sobre relatos testimoniales e historiográficos."
+        },
+        {
+          "id": "his6-cl-02",
+          "ce": "CE1",
+          "texto": "Diferencia argumentos y contraargumentos sobre el proceso histórico en estudio, en diálogo e intercambio con sus pares."
+        },
+        {
+          "id": "his6-cl-03",
+          "ce": "CE2",
+          "texto": "Construye explicaciones amplias incorporando interrogantes y supuestos sobre los procesos históricos, reconociendo las acciones de los sujetos sociales."
+        },
+        {
+          "id": "his6-cl-04",
+          "ce": "CE3",
+          "texto": "Interpreta los procesos históricos estudiados a partir del reconocimiento de las diversas fuentes apropiándose de estrategias de investigación."
+        },
+        {
+          "id": "his6-cl-05",
+          "ce": "CE3",
+          "texto": "Construye una mirada propia del proceso histórico a partir de las fuentes con las que interactúa y de su interpretación."
+        },
+        {
+          "id": "his6-cl-06",
+          "ce": "CE4",
+          "texto": "Explora proyectos de indagación histórica y patrimonial a partir de sus intereses involucrándose en la participación de la comunidad."
+        },
+        {
+          "id": "his6-cl-07",
+          "ce": "CE4",
+          "texto": "Planifica con la guía del docente, estrategias de indagación creando proyectos con base en la investigación histórica."
+        },
+        {
+          "id": "his6-cl-08",
+          "ce": "CE5",
+          "texto": "Selecciona y relaciona datos mediante herramientas digitales interpretando la información de carácter histórico."
+        },
+        {
+          "id": "his6-cl-09",
+          "ce": "CE6",
+          "texto": "Elabora una escritura propia en historia compleja y eficiente al abordar los distintos contextos históricos."
+        },
+        {
+          "id": "his6-cl-10",
+          "ce": "CE7",
+          "texto": "Reconoce el valor de la convivencia como garantía de los derechos al interpretarlo en las distintas sociedades históricas."
+        }
+      ],
+      "fuente": {
+        "archivo": "Historia_v2 - Tramo 4.pdf",
+        "paginas": [
+          14,
+          15,
+          16
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Seleccionar estrategias metodológicas diversas, adecuadas al grupo y al contexto, que contribuyan a procesos cognitivos como describir, clasificar, analizar y argumentar.",
+    "Explicitar la opción historiográfica al seleccionar temáticas y referentes teóricos.",
+    "Elaborar miniglosarios con los estudiantes para comprender en profundidad los conceptos y sus relaciones.",
+    "Construir el conocimiento histórico mediante la indagación, la pregunta, la problematización de casos de estudio y la simulación del trabajo del historiador; diseñar proyectos a partir de problemas del contexto.",
+    "En 5.º y 6.º, introducir las categorías de causalidad, temporalidad, espacialidad y el análisis de fuentes, reservando tiempo para la metacognición.",
+    "Incorporar las tecnologías al servicio de aprendizajes que respondan a las brechas digitales (libros digitales, juegos, escritura cooperativa, trabajo de campo)."
+  ],
+  "metodologiasSugeridas": [
+    "Estudio de casos",
+    "Simulación",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

@@ -1,0 +1,465 @@
+{
+  "id": "literatura-t4",
+  "nombre": "Literatura",
+  "espacio": "Creativo-Artístico",
+  "tramo": 4,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "La justificación del PDF (pág. 7) reproduce la de Artes Visuales; aquí se resumió el enfoque del programa a partir de las competencias y las orientaciones metodológicas.",
+    "Los criterios de logro figuran en una tabla aparte agrupados por competencia; no se vinculan con géneros concretos."
+  ],
+  "fuente": {
+    "archivo": "Literatura - Tramo 4.pdf",
+    "paginas": [
+      7,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "justificacion": "La literatura en la escuela no es un mero instrumento para el entretenimiento, sino una experiencia imprescindible para la adquisición de competencias interpretativas y creativas. En 5.º y 6.º se profundiza en los géneros narrativo, poético y dramático: la voz narrativa y la polifonía, la construcción de los personajes, los recursos del lenguaje poético, la estructura dramática y los géneros híbridos, vinculando la lectura con la producción oral y escrita y con los derechos humanos.",
+  "contenidosEstructurantes": [
+    "Género narrativo",
+    "Género poético",
+    "Género dramático"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Reconoce relaciones de interacción e independencia entre textos a través de la escucha o la escritura para explicar sus emociones e ideas.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Alcanza mayor autonomía en la percepción, en función de sus intereses y características, interactuando con pertinencia en la construcción del sentido simbólico del vocabulario para explorar las diversas posibilidades del lenguaje literario.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Metacognitiva"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Vincula, de forma independiente, sus experiencias de lectura con nuevas ideas y emociones propias que son plasmadas en producciones escritas para el desarrollo de su criterio estético.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Acepta y valora nuevos puntos de vista que le permitan rever su posición y reorganizar su discurso de manera creativa para construir nuevos significados e interpretaciones de forma individual y colectiva.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Reconoce y explica con independencia las diferencias entre acciones, personajes y hechos fantásticos de realistas, para elaborar de forma oral y escrita nuevas producciones literarias.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento computacional",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Clasifica con autonomía el tipo de voz narrativa de un cuento e identifica la presencia de la polifonía narrativa para incluir en diversas producciones propias o colectivas.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento científico",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Diferencia con autonomía las obras en función de su género literario e identifica la presencia de géneros literarios híbridos para explicar sus características.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico"
+      ]
+    },
+    {
+      "codigo": "CE8",
+      "texto": "Amplía la capacidad de recepción y expresión de ideas y sentimientos atendiendo a derechos y deberes mutuos para la producción escrita y oral.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "lit5-b1",
+          "titulo": "Género narrativo",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7",
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "lit5-b1-1",
+              "texto": "Cosmogonías."
+            },
+            {
+              "id": "lit5-b1-2",
+              "texto": "Novelas infantiles."
+            },
+            {
+              "id": "lit5-b1-3",
+              "texto": "Novelas clásicas (selección de capítulos). Voz narrativa, contexto espacio-temporal, personajes protagonistas y secundarios. Construcción psicológica de los personajes (etopeya)."
+            }
+          ],
+          "contenidoEstructurante": "Género narrativo"
+        },
+        {
+          "id": "lit5-b2",
+          "titulo": "Género poético",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE7",
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "lit5-b2-1",
+              "texto": "La letra de la canción como expresión de subjetividad. Su forma: verso, rima, estrofa, estribillo."
+            },
+            {
+              "id": "lit5-b2-2",
+              "texto": "Poemas. Recursos del lenguaje poético: metáfora e hipérbole."
+            }
+          ],
+          "contenidoEstructurante": "Género poético"
+        },
+        {
+          "id": "lit5-b3",
+          "titulo": "Género dramático",
+          "ceVinculadas": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE7",
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "lit5-b3-1",
+              "texto": "El guion de la comedia. La estructura dramática y su división en escenas."
+            }
+          ],
+          "contenidoEstructurante": "Género dramático"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "lit5-cl-01",
+          "ce": "CE1",
+          "texto": "Distingue voz narrativa, personajes protagonistas y secundarios, versos, estribillos, rimas y escenas justificando sus opiniones."
+        },
+        {
+          "id": "lit5-cl-02",
+          "ce": "CE1",
+          "texto": "Crea producciones partiendo de las semejanzas y diferencias entre elementos presentes en novelas, letras de canciones, poemas y obras teatrales a través del trabajo individual o colectivo."
+        },
+        {
+          "id": "lit5-cl-03",
+          "ce": "CE2",
+          "texto": "Reconoce recursos literarios como la comparación, la metáfora y la hipérbole presentes en novelas, poemas, canciones, durante la lectura de las obras."
+        },
+        {
+          "id": "lit5-cl-04",
+          "ce": "CE2",
+          "texto": "Manifiesta su comprensión simbólica presente en diversos textos a través de la oralidad y la escritura."
+        },
+        {
+          "id": "lit5-cl-05",
+          "ce": "CE2",
+          "texto": "Crea producciones escritas (canciones, poemas y cuentos) que incluyan elementos simbólicos de forma individual y colectiva."
+        },
+        {
+          "id": "lit5-cl-06",
+          "ce": "CE3",
+          "texto": "Crea nuevos textos considerando las características básicas de mitos, cuentos, canciones y poemas de forma independiente."
+        },
+        {
+          "id": "lit5-cl-07",
+          "ce": "CE4",
+          "texto": "Explica y debate las razones de sus interpretaciones sobre personajes y situaciones en mitos, novelas, poemas, canciones y obras teatrales de forma oral."
+        },
+        {
+          "id": "lit5-cl-08",
+          "ce": "CE5",
+          "texto": "Comprende y explica los ideales e intereses que motivan las acciones de los personajes en novelas, cuentos, mitos y obras teatrales a través de la oralidad."
+        },
+        {
+          "id": "lit5-cl-09",
+          "ce": "CE5",
+          "texto": "Expresa su empatía con los personajes de novelas, cuentos, mitos y obras teatrales con los que se identifica a través de la oralidad."
+        },
+        {
+          "id": "lit5-cl-10",
+          "ce": "CE5",
+          "texto": "Incluye los ideales e intereses que motivan las acciones de los personajes en sus propias producciones."
+        },
+        {
+          "id": "lit5-cl-11",
+          "ce": "CE6",
+          "texto": "Identifica en el texto las construcciones lingüísticas que expresan la voz narrativa interna o externa en cuentos, novelas y mitos de forma autónoma."
+        },
+        {
+          "id": "lit5-cl-12",
+          "ce": "CE6",
+          "texto": "Reformula la voz narrativa de un cuento o fragmento de una novela a través de la escritura individual o colectiva."
+        },
+        {
+          "id": "lit5-cl-13",
+          "ce": "CE7",
+          "texto": "Identifica el género al que pertenece un texto durante su lectura."
+        },
+        {
+          "id": "lit5-cl-14",
+          "ce": "CE7",
+          "texto": "Expresa características específicas de los géneros literarios durante la lectura de una obra."
+        },
+        {
+          "id": "lit5-cl-15",
+          "ce": "CE8",
+          "texto": "Identifica y expresa elementos vinculados a los derechos humanos durante la lectura de una obra literaria."
+        },
+        {
+          "id": "lit5-cl-16",
+          "ce": "CE8",
+          "texto": "Crea producciones escritas que incluyan deberes y derechos de la humanidad a través de la creación colaborativa."
+        }
+      ],
+      "fuente": {
+        "archivo": "Literatura - Tramo 4.pdf",
+        "paginas": [
+          13,
+          14
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "lit6-b1",
+          "titulo": "Género narrativo",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "lit6-b1-1",
+              "texto": "El cuento contemporáneo y sus innovaciones: polifonía narrativa, comienzos y finales abruptos, monólogos interiores de los personajes."
+            },
+            {
+              "id": "lit6-b1-2",
+              "texto": "Cuentos de ciencia ficción y su visión crítica."
+            },
+            {
+              "id": "lit6-b1-3",
+              "texto": "Relatos no ficcionales como la biografía y la autobiografía."
+            }
+          ],
+          "contenidoEstructurante": "Género narrativo"
+        },
+        {
+          "id": "lit6-b2",
+          "titulo": "Género poético",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "lit6-b2-1",
+              "texto": "Poemas en prosa."
+            },
+            {
+              "id": "lit6-b2-2",
+              "texto": "Literatura gauchesca: las relaciones para pericón. Lectura crítica de los antiguos versos y sus posibles actualizaciones."
+            }
+          ],
+          "contenidoEstructurante": "Género poético"
+        },
+        {
+          "id": "lit6-b3",
+          "titulo": "Género dramático",
+          "ceVinculadas": [
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "lit6-b3-1",
+              "texto": "El guion de la tragedia. La estructura dramática y su división en escenas."
+            }
+          ],
+          "contenidoEstructurante": "Género dramático"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "lit6-cl-01",
+          "ce": "CE1",
+          "texto": "Distingue polifonía narrativa, comienzos y finales abruptos, monólogos interiores de los personajes, relatos no ficcionales y estructura dramática organizando la argumentación de sus opiniones."
+        },
+        {
+          "id": "lit6-cl-02",
+          "ce": "CE1",
+          "texto": "Crea producciones partiendo de las semejanzas y diferencias entre los elementos presentes en el cuento contemporáneo y relatos no ficcionales a través del trabajo individual o colectivo."
+        },
+        {
+          "id": "lit6-cl-03",
+          "ce": "CE2",
+          "texto": "Reconoce recursos literarios presentes en poemas, relatos de ciencia ficción y obras de teatro durante su lectura."
+        },
+        {
+          "id": "lit6-cl-04",
+          "ce": "CE2",
+          "texto": "Manifiesta su comprensión simbólica presente en los textos trabajados a través de la oralidad y la escritura."
+        },
+        {
+          "id": "lit6-cl-05",
+          "ce": "CE2",
+          "texto": "Crea producciones escritas (poemas en prosa, relatos de ciencia ficción y obras teatrales) que incluyan elementos simbólicos, de forma individual y colectiva."
+        },
+        {
+          "id": "lit6-cl-06",
+          "ce": "CE3",
+          "texto": "Genera producciones considerando las características básicas de las obras teatrales y los textos no ficcionales como la biografía y la autobiografía de forma independiente."
+        },
+        {
+          "id": "lit6-cl-07",
+          "ce": "CE4",
+          "texto": "Explica y justifica las razones de sus interpretaciones sobre personajes y situaciones en cuentos contemporáneos, cuentos de ciencia ficción y literatura gauchesca, de forma oral."
+        },
+        {
+          "id": "lit6-cl-08",
+          "ce": "CE5",
+          "texto": "Reconoce los ideales e intereses que motivan las acciones de los personajes en obras teatrales y relatos de ciencia ficción a través de la oralidad."
+        },
+        {
+          "id": "lit6-cl-09",
+          "ce": "CE5",
+          "texto": "Expresa su empatía con los personajes de obras teatrales y relatos de ciencia ficción con los que se identifica a través de la oralidad."
+        },
+        {
+          "id": "lit6-cl-10",
+          "ce": "CE5",
+          "texto": "Incorpora los ideales que motivan las acciones de los personajes en producciones escritas."
+        },
+        {
+          "id": "lit6-cl-11",
+          "ce": "CE6",
+          "texto": "Identifica en el texto las construcciones lingüísticas que expresan la voz narrativa interna o externa en cuentos y novelas de forma autónoma."
+        },
+        {
+          "id": "lit6-cl-12",
+          "ce": "CE6",
+          "texto": "Reconoce los cambios de voz narrativa en un mismo cuento contemporáneo o fragmento de novelas."
+        },
+        {
+          "id": "lit6-cl-13",
+          "ce": "CE6",
+          "texto": "Reformula la voz narrativa de un cuento o fragmento de una novela a través de la escritura."
+        },
+        {
+          "id": "lit6-cl-14",
+          "ce": "CE7",
+          "texto": "Identifica el género al que pertenece un texto durante su lectura señalando sus componentes."
+        },
+        {
+          "id": "lit6-cl-15",
+          "ce": "CE7",
+          "texto": "Expresa características específicas de los géneros literarios durante la lectura de una obra."
+        },
+        {
+          "id": "lit6-cl-16",
+          "ce": "CE7",
+          "texto": "Argumenta la presencia de dos géneros literarios en un mismo texto señalando de forma oral."
+        },
+        {
+          "id": "lit6-cl-17",
+          "ce": "CE8",
+          "texto": "Identifica y expresa elementos que promueven la importancia de la participación, la convivencia, la diversidad y la responsabilidad en la sociedad durante la lectura de las obras."
+        },
+        {
+          "id": "lit6-cl-18",
+          "ce": "CE8",
+          "texto": "Crea producciones escritas que incluyan deberes y derechos de la humanidad a través de la creación individual y colaborativa."
+        }
+      ],
+      "fuente": {
+        "archivo": "Literatura - Tramo 4.pdf",
+        "paginas": [
+          15,
+          16,
+          17
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Seleccionar con cuidado el corpus de literatura infantil y juvenil (LIJ): el programa sugiere autores y sitios; se destacan el proyecto Biblioteca Solidaria de la ANEP y la Biblioteca País.",
+    "Colaborar en el descubrimiento y la creación de recursos literarios; usar imágenes y fragmentos como disparadores de la creación.",
+    "Crear finales alternativos, cartas entre personajes, ponerse en el lugar del personaje.",
+    "Abordar el teatro desde la lectura y desde la creación (actuación, títeres, objetos, audiovisual); generar textos dramáticos breves a partir de textos narrativos.",
+    "Ofrecer proyectos prolongados, lectura en varios momentos del día, relectura, respuesta creativa, lectura individual, recomendaciones mutuas y un buen fondo de libros.",
+    "Evaluar, autoevaluar y coevaluar con listas de cotejo, rúbricas, portafolios (antologías de producciones propias) e infografías."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

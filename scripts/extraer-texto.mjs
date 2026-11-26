@@ -8,8 +8,11 @@ const ORIGEN = path.resolve('PROGRAMAS');
 const DESTINO = path.resolve('data/raw');
 await mkdir(DESTINO, { recursive: true });
 
-for (const nombre of (await readdir(ORIGEN)).filter((n) => n.toLowerCase().endsWith('.pdf'))) {
-  const datos = new Uint8Array(await readFile(path.join(ORIGEN, nombre)));
+// Incluye las subcarpetas (p. ej. «PROGRAMA DE 1ERO Y 2DO»).
+const pdfs = (await readdir(ORIGEN, { recursive: true })).filter((n) => n.toLowerCase().endsWith('.pdf'));
+for (const ruta of pdfs) {
+  const nombre = path.basename(ruta);
+  const datos = new Uint8Array(await readFile(path.join(ORIGEN, ruta)));
   const pdf = await getDocument({ data: datos, verbosity: 0 }).promise;
   let salida = '';
   for (let i = 1; i <= pdf.numPages; i++) {

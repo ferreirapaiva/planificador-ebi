@@ -24,7 +24,7 @@ const ACCESOS: { to: string; titulo: string; texto: string; icono: NombreIcono; 
   { to: '/nueva', titulo: 'Nueva planificación', texto: 'Unidad, proyecto, secuencia, plan anual, semanal o diario.', icono: 'nueva', fondo: 'bg-blue-100', tile: 'bg-blue-600 text-white', flecha: 'text-blue-600', desc: 'text-slate-600' },
   { to: '/plan-anual', titulo: 'Plan anual', texto: 'Repartí los contenidos en el año escolar.', icono: 'calendario', fondo: 'bg-coral-50', tile: 'bg-coral-500 text-white', flecha: 'text-coral-700', desc: 'text-slate-600' },
   { to: '/mis-planificaciones', titulo: 'Mis planificaciones', texto: 'Retomá, duplicá o descargá en Word y PDF.', icono: 'carpeta', fondo: 'bg-menta-50', tile: 'bg-menta-500 text-white', flecha: 'text-menta-700', desc: 'text-slate-600' },
-  { to: '/programas', titulo: 'Explorar programas', texto: 'Contenidos y criterios de 3.º y 4.º.', icono: 'libro', fondo: 'bg-amarillo-50', tile: 'bg-amarillo-400 text-slate-900', flecha: 'text-slate-900', desc: 'text-amarillo-800' },
+  { to: '/programas', titulo: 'Explorar programas', texto: 'Contenidos y criterios de 1.º a 6.º.', icono: 'libro', fondo: 'bg-amarillo-50', tile: 'bg-amarillo-400 text-slate-900', flecha: 'text-slate-900', desc: 'text-amarillo-800' },
 ];
 
 const TARJETA = 'rounded-[28px] bg-white shadow-suave';
@@ -97,7 +97,7 @@ export function Inicio() {
         <div className="flex min-w-0 flex-[999_1_380px] flex-col gap-3.5">
           <span className="inline-flex items-center gap-2 self-start rounded-full bg-white/20 px-3 py-1.5 text-[11px] font-extrabold tracking-[0.08em] text-white uppercase">
             <Icono nombre="calendario" tamano={14} />
-            {fechaHoy} · Tramo 3
+            {fechaHoy}
           </span>
           <h1 className="m-0 text-3xl leading-tight font-black tracking-tight text-white sm:text-[44px]">
             ¡Hola{nombre ? `, ${nombre}` : ''}! ¿Qué planificamos hoy?

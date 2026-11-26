@@ -1,0 +1,497 @@
+{
+  "id": "biologia-t2",
+  "nombre": "Ciencias del Ambiente (Biología)",
+  "espacio": "Científico-Matemático",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "La asignación de los «contenidos para la profundización y contextualización» a cada contenido se hizo por la posición en la tabla del PDF; verificar en las págs. 14 a 16."
+  ],
+  "fuente": {
+    "archivo": "Ciencias del Ambiente (Biología) - Tramo 2_.pdf",
+    "paginas": [
+      4,
+      8,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  "justificacion": "Un currículum mixto que abarca competencias y contenidos permite globalizar los esquemas conceptuales de la ciencia sin dejar de lado el contenido científico ni los diversos ámbitos de la cultura, y aborda la formación integral del estudiante. El docente podrá recrear el modo en que la ciencia adquiere el conocimiento de la naturaleza, en un ir y venir entre el pensamiento inductivo y deductivo, para que los esquemas conceptuales y las teorías se visualicen como un modelo en permanente construcción. La enseñanza se focaliza en competencias que desarrollen estructuras de pensamiento. Los contenidos no son contenidos agotados: no se pretende un dominio enciclopédico y se respeta la autonomía del docente; los conceptos se construyen mediante metodologías activas con miradas interdisciplinares.",
+  "contenidosEstructurantes": [
+    "Ser vivo",
+    "Ambiente",
+    "Salud"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Interactúa dialogando con sus pares dando razones que justifican las opiniones y preguntas que surgen en la interacción con el otro ante hechos y fenómenos del mundo natural.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Indaga e interroga, elaborando estrategias de resolución en forma colaborativa para anticipar resultados posibles en temáticas ambientales.",
+      "competenciasMCN": [
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Juega, observa, indaga, plantea dudas sobre fenómenos concretos con el acompañamiento del docente.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Identifica las etapas en diferentes procesos naturales de su entorno con o sin mediación, demostrando cierto grado de autonomía para responder a situaciones lúdicas o cotidianas.",
+      "competenciasMCN": [
+        "Pensamiento computacional",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Explora y usa datos, ensaya algoritmos, emplea aplicaciones y dispositivos para resolver situaciones vinculadas a los seres vivos.",
+      "competenciasMCN": [
+        "Pensamiento computacional",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Reconoce sus intereses y emociones, vinculándose con otros de manera empática, logrando una motivación propia, involucrándose en sus aprendizajes reconociendo qué aprendió, y cómo lo aprendió sobre procesos biológicos, para interactuar con sus pares y adultos y así construir vínculos de confianza.",
+      "competenciasMCN": [
+        "Metacognitiva",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "bio1-b1",
+          "titulo": "Funciones vitales: nutrición humana y salud",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "bio1-b1-1",
+              "texto": "Alimentación con relación a los tipos de órganos bucales, en diferentes seres vivos.",
+              "profundizacion": [
+                "Importancia del aire para la vida."
+              ]
+            },
+            {
+              "id": "bio1-b1-2",
+              "texto": "La nutrición humana: estructura del sistema digestivo. Ingestión."
+            },
+            {
+              "id": "bio1-b1-3",
+              "texto": "Características de la cavidad bucal. Dieta saludable. Cuidado de la salud bucal."
+            }
+          ],
+          "contenidoEstructurante": "Funciones vitales: nutrición humana y salud"
+        },
+        {
+          "id": "bio1-b2",
+          "titulo": "Ecosistema y conciencia ambiental",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "bio1-b2-1",
+              "texto": "Clasificación de componentes del ecosistema terrestre."
+            },
+            {
+              "id": "bio1-b2-2",
+              "texto": "Funciones de los órganos de las plantas.",
+              "profundizacion": [
+                "Tipos de raíces en relación a la función."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Ecosistema y conciencia ambiental"
+        },
+        {
+          "id": "bio1-b3",
+          "titulo": "Funciones vitales: reproducción",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "bio1-b3-1",
+              "texto": "Reproducción sexual: tipos de desarrollo embrionario (ovovivíparo, ovíparo y vivíparo).",
+              "profundizacion": [
+                "Tipos de fecundación: interna y externa."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Funciones vitales: reproducción"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "bio1-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Identifica el tipo de alimento y lo relaciona con los tipos de órganos bucales en ejemplos prácticos.",
+          "contenidos": [
+            "bio1-b1-1",
+            "bio1-b1-2",
+            "bio1-b1-3"
+          ]
+        },
+        {
+          "id": "bio1-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Secuencia las etapas del proceso digestivo con mediación, reconociendo los órganos que componen el sistema digestivo.",
+          "contenidos": [
+            "bio1-b1-1",
+            "bio1-b1-2",
+            "bio1-b1-3"
+          ]
+        },
+        {
+          "id": "bio1-cl-03",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Organiza la información analizando evidencias para crear explicaciones sobre nutrición.",
+          "contenidos": [
+            "bio1-b1-1",
+            "bio1-b1-2",
+            "bio1-b1-3"
+          ]
+        },
+        {
+          "id": "bio1-cl-04",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Opina y da razones sobre el cuidado bucal en rutinas diarias.",
+          "contenidos": [
+            "bio1-b1-1",
+            "bio1-b1-2",
+            "bio1-b1-3"
+          ]
+        },
+        {
+          "id": "bio1-cl-05",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE6"
+          ],
+          "texto": "Reconoce los componentes bióticos y abióticos interactuando respetando la diversidad del entorno con acciones de cuidado.",
+          "contenidos": [
+            "bio1-b2-1",
+            "bio1-b2-2"
+          ]
+        },
+        {
+          "id": "bio1-cl-06",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE6"
+          ],
+          "texto": "Observa e identifica los órganos de las plantas a partir de la exploración en su entorno.",
+          "contenidos": [
+            "bio1-b2-1",
+            "bio1-b2-2"
+          ]
+        },
+        {
+          "id": "bio1-cl-07",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4"
+          ],
+          "texto": "Identifica, compara y clasifica las diferentes formas de reproducción en casos presentados.",
+          "contenidos": [
+            "bio1-b3-1"
+          ]
+        },
+        {
+          "id": "bio1-cl-08",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4"
+          ],
+          "texto": "Plantea preguntas sobre reproducción sexual en los ejemplos trabajados.",
+          "contenidos": [
+            "bio1-b3-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias del Ambiente (Biología) - Tramo 2_.pdf",
+        "paginas": [
+          14,
+          15
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "bio2-b1",
+          "titulo": "Nutrición",
+          "ceVinculadas": [
+            "CE1",
+            "CE4",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "bio2-b1-1",
+              "texto": "Nutrición autótrofa y heterótrofa. Estudio de caso.",
+              "profundizacion": [
+                "Sistema excretor."
+              ]
+            },
+            {
+              "id": "bio2-b1-2",
+              "texto": "Transformación mecánica del alimento. Formación del bolo alimenticio. Movimiento peristáltico."
+            }
+          ],
+          "contenidoEstructurante": "Nutrición"
+        },
+        {
+          "id": "bio2-b2",
+          "titulo": "Ecosistema y conciencia ambiental",
+          "ceVinculadas": [
+            "CE2",
+            "CE3",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "bio2-b2-1",
+              "texto": "Ecosistema acuático: componentes y relaciones.",
+              "profundizacion": [
+                "Ecosistemas dulceacuícolas: preservación de especies."
+              ]
+            },
+            {
+              "id": "bio2-b2-2",
+              "texto": "Metamorfosis de ranas y sapos."
+            }
+          ],
+          "contenidoEstructurante": "Ecosistema y conciencia ambiental"
+        },
+        {
+          "id": "bio2-b3",
+          "titulo": "Nutrición: respiración",
+          "ceVinculadas": [
+            "CE2",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "bio2-b3-1",
+              "texto": "La respiración de los seres vivos: respiración pulmonar."
+            }
+          ],
+          "contenidoEstructurante": "Nutrición: respiración"
+        },
+        {
+          "id": "bio2-b4",
+          "titulo": "Adaptaciones",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3"
+          ],
+          "contenidos": [
+            {
+              "id": "bio2-b4-1",
+              "texto": "Locomoción: aves y mamíferos.",
+              "profundizacion": [
+                "Clasificación de aves."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Adaptaciones"
+        },
+        {
+          "id": "bio2-b5",
+          "titulo": "Reproducción",
+          "ceVinculadas": [
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "bio2-b5-1",
+              "texto": "Reproducción ovípara (aves y reptiles).",
+              "profundizacion": [
+                "Estudio de caso: ornitorrinco."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Reproducción"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "bio2-cl-01",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE6"
+          ],
+          "texto": "Reconoce las modalidades de nutrición en animales y plantas.",
+          "contenidos": [
+            "bio2-b1-1",
+            "bio2-b1-2"
+          ]
+        },
+        {
+          "id": "bio2-cl-02",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE6"
+          ],
+          "texto": "Secuencia las etapas de la digestión mecánica a partir de la observación.",
+          "contenidos": [
+            "bio2-b1-1",
+            "bio2-b1-2"
+          ]
+        },
+        {
+          "id": "bio2-cl-03",
+          "ce": [
+            "CE2",
+            "CE3",
+            "CE6"
+          ],
+          "texto": "Identifica el ecosistema acuático y reconoce sus componentes utilizando ejemplos del mundo y de nuestro país.",
+          "contenidos": [
+            "bio2-b2-1",
+            "bio2-b2-2"
+          ]
+        },
+        {
+          "id": "bio2-cl-04",
+          "ce": [
+            "CE2",
+            "CE3",
+            "CE6"
+          ],
+          "texto": "Reconoce las etapas del desarrollo de la metamorfosis a partir de la observación y el análisis de evidencias.",
+          "contenidos": [
+            "bio2-b2-1",
+            "bio2-b2-2"
+          ]
+        },
+        {
+          "id": "bio2-cl-05",
+          "ce": [
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Identifica órganos del sistema respiratorio secuenciando las etapas del proceso con mediación docente.",
+          "contenidos": [
+            "bio2-b3-1"
+          ]
+        },
+        {
+          "id": "bio2-cl-06",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3"
+          ],
+          "texto": "Identifica, compara y explica la locomoción en diferentes animales relacionándolo con su hábitat.",
+          "contenidos": [
+            "bio2-b4-1"
+          ]
+        },
+        {
+          "id": "bio2-cl-07",
+          "ce": [
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Identifica y compara las características de la reproducción ovípara a partir del estudio de caso.",
+          "contenidos": [
+            "bio2-b5-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias del Ambiente (Biología) - Tramo 2_.pdf",
+        "paginas": [
+          15,
+          16
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Plantear el aprendizaje de la ciencia desde la problematización: observación, comunicación e interpretación de datos, formulación de hipótesis, experimentación, reconocimiento y control de variables.",
+    "Proponer situaciones diferentes y variadas que permitan profundizar en los temas de interés de los estudiantes, tomando en cuenta sus conocimientos y experiencias previas.",
+    "Diseñar propuestas en el marco del ABP y metodologías activas interdisciplinares basadas en el estudio de hechos y fenómenos observables, para descubrir propiedades, establecer relaciones y llegar a un primer modelo del hecho observado.",
+    "Explicitar las relaciones causales mediante el andamiaje docente, para favorecer la generalización y la transferencia.",
+    "Partir de procedimientos sencillos que se van complejizando (mediciones, gráficos, uso de instrumentos) hacia operaciones de pensamiento de orden superior.",
+    "Promover valores para un estilo de vida saludable y la valoración del trabajo científico y de la historia de la ciencia (datos curiosos, narraciones, preguntas investigables, actividades metacognitivas)."
+  ],
+  "metodologiasSugeridas": [
+    "Indagación",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

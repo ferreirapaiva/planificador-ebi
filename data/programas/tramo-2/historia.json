@@ -1,0 +1,610 @@
+{
+  "id": "historia-t2",
+  "nombre": "Historia",
+  "espacio": "Ciencias Sociales y Humanidades",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "El PDF vincula todas las competencias (CE1 a CE6) a todos los contenidos de cada grado y no indica a qué competencia corresponde cada criterio; se cargaron vinculados a todas.",
+    "2.º grado, contenido 3: el PDF salta del 3.1 al 3.3 (no hay 3.2).",
+    "Los contenidos estructurantes son los del espacio Ciencias Sociales y Humanidades (pág. 3); el programa no los asigna a cada contenido."
+  ],
+  "fuente": {
+    "archivo": "Historia - Tramo 2.pdf",
+    "paginas": [
+      3,
+      7,
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "justificacion": "La enseñanza de la Historia atiende tanto a las características epistemológicas de este conocimiento como a los aprendizajes que deben lograr los estudiantes para desarrollar el pensamiento histórico. Se distinguen tres dimensiones: el acceso a la información específica (procesos históricos en distintas escalas —Uruguay, la región y el mundo—, mostrando su sincronía y multiescalaridad, sin prescindir de los hechos), la lectura y escritura específicas de la disciplina con su potencial epistémico, y el conocimiento histórico como relato que se construye, con diversas voces y versiones. En 1.º y 2.º los contenidos se fundamentan en la reconstrucción del pasado a partir de hechos, del relato histórico y de las expresiones artísticas de las sociedades, las identidades y los procesos culturales; los procesos fundacionales de pueblos y ciudades y el patrimonio son relevantes para comprender cambios y permanencias.",
+  "contenidosEstructurantes": [
+    "El rol del Estado democrático",
+    "Construcción del concepto de ciudadanía",
+    "Ciudadanía y convivencia en los grupos humanos",
+    "Sociedades y sus interrelaciones históricas",
+    "Democracia",
+    "Los derechos humanos como construcción: logros y tensiones",
+    "Los niños, niñas, adolescentes y jóvenes como sujetos de derecho",
+    "Diversidad cultural: las manifestaciones culturales como signo de identidad",
+    "La violencia y sus distintas manifestaciones",
+    "Cultura y patrimonio"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Elabora preguntas, argumenta e identifica el proceso de aprendizaje a través de la oralidad sobre la temporalidad histórica.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Metacognitiva"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Explora fenómenos y sujetos sociales a través de preguntas y supuestos para la búsqueda de explicaciones válidas.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento científico",
+        "Intrapersonal"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Identifica e interpreta desde su sensibilidad las manifestaciones culturales de los grupos sociales a través de fuentes históricas escritas o materiales.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Metacognitiva",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Indaga y participa en proyectos con sus pares para resolver situaciones sociales o problemas de su entorno proponiendo acciones.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Reconoce el proceso del pensamiento computacional y del pensamiento histórico adecuándose a las nuevas acciones que impactan en la vida cotidiana.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Construye su proceso de apropiación de la escritura a través de las fuentes históricas, a partir de su curiosidad e intereses que involucran algunos aspectos de la historia.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Metacognitiva"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "his1-b1",
+          "titulo": "La construcción del pasado",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "his1-b1-1",
+              "texto": "La construcción del pasado a partir de documentos históricos (no solo escritos) y actividades de la comunidad.",
+              "subitems": [
+                {
+                  "id": "his1-b1-1a",
+                  "texto": "La sociedad colonial, componentes y formas de vida. Ubicación en tiempo y espacio."
+                },
+                {
+                  "id": "his1-b1-1b",
+                  "texto": "Expresiones artísticas y costumbres de ayer y hoy, en el campo y las ciudades."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "his1-b2",
+          "titulo": "Las comunidades humanas",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "his1-b2-1",
+              "texto": "Características sociales, económicas y culturales de las comunidades humanas.",
+              "subitems": [
+                {
+                  "id": "his1-b2-1a",
+                  "texto": "Fundación y formación de ciudades y comunidades (villas, pueblos y ciudades)."
+                },
+                {
+                  "id": "his1-b2-1b",
+                  "texto": "La historia de José Gervasio Artigas, su familia y el entorno socioeconómico."
+                },
+                {
+                  "id": "his1-b2-1c",
+                  "texto": "La historia de vida de referentes locales históricos."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "his1-b3",
+          "titulo": "Las comunidades indígenas del Río de la Plata",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "his1-b3-1",
+              "texto": "Diversidad cultural, social y económica de las comunidades indígenas del Río de la Plata en el período prehispánico.",
+              "subitems": [
+                {
+                  "id": "his1-b3-1a",
+                  "texto": "Cambios, permanencias, multicausalidad: relaciones inter e intraculturales."
+                },
+                {
+                  "id": "his1-b3-1b",
+                  "texto": "Fuentes, testimonios y documentos históricos sobre el pasado cultural de las comunidades del Uruguay."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "his1-b4",
+          "titulo": "Algunos conceptos para tratar",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "his1-b4-1",
+              "texto": "Sociedad, cultura, identidad, grupos sociales, patrimonio, periodización, cronología, dimensiones urbanas y rurales, festividades locales."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "his1-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Reconoce la sucesión y el ordenamiento en la temporalidad en los ámbitos personal, escolar y la comunidad de referencia.",
+          "contenidos": [
+            "his1-b1-1"
+          ]
+        },
+        {
+          "id": "his1-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Propone estrategias propias aportando relatos personales e interactúa en diálogo con otros sobre las fuentes testimoniales.",
+          "contenidos": [
+            "his1-b1-1",
+            "his1-b3-1"
+          ]
+        },
+        {
+          "id": "his1-cl-03",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Utiliza las nuevas tecnologías para extraer información y organizar datos históricos.",
+          "contenidos": [
+            "his1-b1-1",
+            "his1-b2-1",
+            "his1-b3-1"
+          ]
+        },
+        {
+          "id": "his1-cl-04",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Emplea herramientas digitales para la resolución de problemas de la vida cotidiana en distintos tiempos históricos.",
+          "contenidos": [
+            "his1-b1-1",
+            "his1-b2-1",
+            "his1-b3-1"
+          ]
+        },
+        {
+          "id": "his1-cl-05",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Reconoce las características sociales y culturales de grupos humanos del pasado a través de juegos de roles.",
+          "contenidos": [
+            "his1-b2-1",
+            "his1-b3-1"
+          ]
+        },
+        {
+          "id": "his1-cl-06",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Interactúa en situaciones comunicativas concretas sobre fuentes testimoniales de la escuela y el barrio.",
+          "contenidos": [
+            "his1-b2-1",
+            "his1-b3-1"
+          ]
+        },
+        {
+          "id": "his1-cl-07",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Elabora de manera autónoma escrituras breves sobre las poblaciones asentadas en los territorios locales.",
+          "contenidos": [
+            "his1-b2-1",
+            "his1-b3-1"
+          ]
+        },
+        {
+          "id": "his1-cl-08",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Describe explicaciones primarias sobre la multiculturalidad de las comunidades indígenas.",
+          "contenidos": [
+            "his1-b3-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Historia - Tramo 2.pdf",
+        "paginas": [
+          14,
+          15
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "his2-b1",
+          "titulo": "Las culturas prehispánicas",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "his2-b1-1",
+              "texto": "Las culturas prehispánicas: organización de los grupos humanos en los territorios y sus culturas.",
+              "subitems": [
+                {
+                  "id": "his2-b1-1a",
+                  "texto": "Conceptualizaciones: nomadismo, sedentarismo, cazadores y cultivadores."
+                },
+                {
+                  "id": "his2-b1-1b",
+                  "texto": "Principales características históricas de los grupos humanos."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "his2-b2",
+          "titulo": "Las identidades locales y regionales",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "his2-b2-1",
+              "texto": "Las identidades locales y regionales. Las culturas hispanas, criollas y afroamericanas: sus interacciones.",
+              "subitems": [
+                {
+                  "id": "his2-b2-1a",
+                  "texto": "Comunidades y sociedades: interrelaciones con los territorios y el medioambiente."
+                },
+                {
+                  "id": "his2-b2-1b",
+                  "texto": "Características históricas de los grupos humanos con culturas diferentes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "his2-b3",
+          "titulo": "Las poblaciones asentadas en los territorios",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "his2-b3-1",
+              "texto": "Las poblaciones asentadas en los territorios locales y regionales: su organización y formas de vida.",
+              "subitems": [
+                {
+                  "id": "his2-b3-1a",
+                  "texto": "Expresiones materiales y acervo cultural."
+                },
+                {
+                  "id": "his2-b3-1b",
+                  "texto": "Identificación y estudio de expresiones materiales a lo largo del tiempo."
+                },
+                {
+                  "id": "his2-b3-1c",
+                  "texto": "El proceso fundacional de pueblos, villas y ciudades."
+                },
+                {
+                  "id": "his2-b3-1d",
+                  "texto": "Patrimonio local tangible e intangible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "his2-b4",
+          "titulo": "Algunos conceptos para tratar",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "his2-b4-1",
+              "texto": "Sociedad, cultura, identidad, grupos sociales, patrimonio, periodización, cronología, dimensiones urbanas y rurales, festividades locales."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "his2-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Establece las diferencias entre presente y pasado a través de cambios y permanencias de las sociedades prehispánicas.",
+          "contenidos": [
+            "his2-b1-1"
+          ]
+        },
+        {
+          "id": "his2-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Busca explicaciones específicas a partir de problemas que se plantean en perspectiva histórica.",
+          "contenidos": [
+            "his2-b1-1"
+          ]
+        },
+        {
+          "id": "his2-cl-03",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Comprende y comunica relatos de la historia local con base en fuentes testimoniales concretas relacionando cambios y permanencias.",
+          "contenidos": [
+            "his2-b1-1",
+            "his2-b2-1",
+            "his2-b3-1"
+          ]
+        },
+        {
+          "id": "his2-cl-04",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Utiliza las nuevas tecnologías para extraer información y organizar datos históricos.",
+          "contenidos": [
+            "his2-b1-1",
+            "his2-b2-1",
+            "his2-b3-1"
+          ]
+        },
+        {
+          "id": "his2-cl-05",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Emplea herramientas digitales para la resolución de problemas de la vida cotidiana en distintos tiempos históricos.",
+          "contenidos": [
+            "his2-b1-1",
+            "his2-b2-1",
+            "his2-b3-1"
+          ]
+        },
+        {
+          "id": "his2-cl-06",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Interactúa con expresiones culturales a través de fuentes primarias y secundarias de las comunidades de referencia.",
+          "contenidos": [
+            "his2-b2-1",
+            "his2-b3-1"
+          ]
+        },
+        {
+          "id": "his2-cl-07",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Elabora y pone a disposición experiencias personales y colectivas del pasado aportando a la concreción del proyecto.",
+          "contenidos": [
+            "his2-b2-1"
+          ]
+        },
+        {
+          "id": "his2-cl-08",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Elabora de manera autónoma escrituras con progresiva complejidad en relación con el proceso fundacional de los pueblos y ciudades.",
+          "contenidos": [
+            "his2-b2-1",
+            "his2-b3-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Historia - Tramo 2.pdf",
+        "paginas": [
+          16,
+          17
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "El rol del docente es el de guía, problematizador y mediador, para promover una construcción propia del conocimiento y el desarrollo del espíritu crítico, la sensibilidad, la empatía y la autonomía.",
+    "Trabajar con metodologías activas centradas en los aprendizajes y sus contextos, el trabajo en equipos y situaciones auténticas de la realidad que orientan a la acción.",
+    "Diseñar situaciones de aprendizaje con interrogantes y problematización, cooperativas, con un clima de aula de participación auténtica, confianza y respeto por opiniones divergentes.",
+    "Formular interrogantes, construir hipótesis, buscar información en forma crítica, encontrar evidencias y contrastar interpretaciones son habilidades que posibilitan la apropiación del conocimiento histórico.",
+    "Compartir los objetivos de aprendizaje con los estudiantes y promover la autoevaluación, la coevaluación y la heteroevaluación."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

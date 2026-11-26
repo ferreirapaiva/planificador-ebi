@@ -17,7 +17,7 @@ import {
   tituloPlan,
 } from '../datos/planSemanal';
 import { calendarioPorDefecto } from '../datos/calendario';
-import { UC_TRAMO_3 } from '../datos/programas';
+import { UC_BASE } from '../datos/programas';
 import { fecha as fechaCorta, ESTILOS_DOCUMENTO } from '../componentes/Documento';
 import { AreaTexto, Aviso, Boton, Campo, Pildora } from '../componentes/ui';
 import { BotonesExportar } from '../componentes/BotonesExportar';
@@ -358,7 +358,7 @@ export function EditorPlanSemanal() {
         document.body,
       )}
       <datalist id="areas-ebi">
-        {UC_TRAMO_3.map((u) => (
+        {UC_BASE.map((u) => (
           <option key={u.id} value={u.nombre} />
         ))}
       </datalist>

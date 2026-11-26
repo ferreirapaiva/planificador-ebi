@@ -1,0 +1,1106 @@
+{
+  "id": "artes-visuales-t2",
+  "nombre": "Artes Visuales y Plásticas",
+  "espacio": "Creativo-Artístico",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "Todas las filas de la tabla tienen su propia lista de competencias; los títulos en mayúscula del PDF (Lenguajes del espacio, del plano, etc.) se cargaron como contenido estructurante de cada bloque.",
+    "1.er grado, Géneros: el PDF lista también «Género cinematográfico: la ciencia ficción» pero no tiene criterio propio para ese contenido (pág. 16)."
+  ],
+  "fuente": {
+    "archivo": "Artes visuales y plásticas - Tramo 2.pdf",
+    "paginas": [
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "justificacion": "El lenguaje visual y la cultura de la imagen están inmersos en toda nuestra vida y constituyen un medio de comunicación importante. Sensibilizar al niño en este sistema representativo desarrolla su inteligencia, su subjetividad, su imaginación y su creatividad. El lenguaje visual construye el pensamiento y desarrolla la inteligencia cualitativa (Eisner): frente a una hoja en blanco el niño toma decisiones sobre formas, líneas, colores y materiales y busca dar unidad a la obra. Por eso no debe simplificarse a la aplicación de técnicas, sino apuntar a educar una mirada inteligente, analítica y reflexiva, y a valorar las obras de arte como bienes culturales. El programa se aborda en forma recursiva y secuenciada desde los lenguajes del espacio y del plano, el lenguaje audiovisual, los elementos plásticos, la cultura visual y la apreciación de imágenes, en los dominios productivo, crítico y cultural.",
+  "contenidosEstructurantes": [
+    "Lenguajes del espacio",
+    "Lenguajes del plano",
+    "Lenguaje audiovisual",
+    "Géneros",
+    "Elementos plásticos",
+    "Cultura visual",
+    "Apreciación, lectura e interpretación de imágenes"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Competencia sensoperceptiva: establece importantes conexiones y respuestas desde lo visual para interpretar su entorno. Desarrolla su mirada y su estética frente al mundo que lo rodea para desarrollar su sensibilidad estética.",
+      "competenciasMCN": [
+        "Intrapersonal",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Competencia interpretativa: analiza, reflexiona y comprende el mensaje inmerso en las producciones artísticas desde lo connotativo y lo denotativo para interpretar las producciones artísticas y decodificar su sintaxis.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Competencia productivo-creativa: representa situaciones, ideas y emociones reales e imaginarias a través de sus producciones para expresarse y comunicarse con los demás.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Competencia cultural: reconoce y valora la existencia de diferentes contextos y entornos culturales para desarrollar la convivencia, la empatía y la valoración de los bienes culturales nacionales y universales.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento científico",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Competencia en el manejo de los elementos del lenguaje visual: interpreta códigos visuales para usarlos en función de situaciones concretas de producción y de interpretación.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento computacional",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Competencia en la práctica de artes visuales colectiva: involucra a diferentes actores sociales en prácticas artísticas para generar espacios de participación e inclusión.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Metacognitiva",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "av1-b1",
+          "titulo": "La escultura",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b1-1",
+              "texto": "Técnicas aditivas en papel."
+            },
+            {
+              "id": "av1-b1-2",
+              "texto": "El equilibrio en el ensamblaje."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del espacio"
+        },
+        {
+          "id": "av1-b2",
+          "titulo": "La instalación y la intervención",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b2-1",
+              "texto": "Transformaciones del espacio con objetos."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del espacio"
+        },
+        {
+          "id": "av1-b3",
+          "titulo": "El dibujo",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b3-1",
+              "texto": "Composiciones no figurativas."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av1-b4",
+          "titulo": "La pintura",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b4-1",
+              "texto": "Técnicas mixtas."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av1-b5",
+          "titulo": "El collage",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b5-1",
+              "texto": "Composiciones con transparencias."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av1-b6",
+          "titulo": "Técnicas de impresión",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b6-1",
+              "texto": "Matrices de impresión."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av1-b7",
+          "titulo": "La fotografía",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b7-1",
+              "texto": "Figura y fondo en el encuadre."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av1-b8",
+          "titulo": "Lenguaje audiovisual",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b8-1",
+              "texto": "Aspectos sonoros del audiovisual."
+            }
+          ],
+          "contenidoEstructurante": "Lenguaje audiovisual"
+        },
+        {
+          "id": "av1-b9",
+          "titulo": "Géneros",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b9-1",
+              "texto": "Género pictórico: pintura costumbrista, escenas cotidianas."
+            },
+            {
+              "id": "av1-b9-2",
+              "texto": "Género cinematográfico: la ciencia ficción."
+            }
+          ],
+          "contenidoEstructurante": "Géneros"
+        },
+        {
+          "id": "av1-b10",
+          "titulo": "Color",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b10-1",
+              "texto": "Colores complementarios."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av1-b11",
+          "titulo": "El punto y la línea",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b11-1",
+              "texto": "Direccionalidad, movimiento y reposo en la línea."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av1-b12",
+          "titulo": "Materia",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b12-1",
+              "texto": "Texturas táctiles a partir de mezclas de materiales."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av1-b13",
+          "titulo": "Luz",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b13-1",
+              "texto": "La luz sobre el paisaje."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av1-b14",
+          "titulo": "Cultura visual",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b14-1",
+              "texto": "Artistas, sus obras y contextos."
+            },
+            {
+              "id": "av1-b14-2",
+              "texto": "Las series animadas televisivas y de plataformas."
+            }
+          ],
+          "contenidoEstructurante": "Cultura visual"
+        },
+        {
+          "id": "av1-b15",
+          "titulo": "Apreciación, lectura e interpretación de imágenes",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "av1-b15-1",
+              "texto": "Interpretación a partir de la contextualización y de inferencias en las imágenes."
+            }
+          ],
+          "contenidoEstructurante": "Apreciación, lectura e interpretación de imágenes"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "av1-cl-01",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Experimenta creativamente técnicas aditivas en papel con cartapesta y papel maché.",
+          "contenidos": [
+            "av1-b1-1",
+            "av1-b1-2"
+          ]
+        },
+        {
+          "id": "av1-cl-02",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Desarrolla estrategias constructivas de equilibrio en el ensamblaje como elemento compositivo.",
+          "contenidos": [
+            "av1-b1-1",
+            "av1-b1-2"
+          ]
+        },
+        {
+          "id": "av1-cl-03",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Produce transformaciones del espacio con objetos intencionalmente.",
+          "contenidos": [
+            "av1-b2-1"
+          ]
+        },
+        {
+          "id": "av1-cl-04",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Produce composiciones no figurativas a partir de formas rítmicas.",
+          "contenidos": [
+            "av1-b3-1"
+          ]
+        },
+        {
+          "id": "av1-cl-05",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Utiliza técnicas mixtas combinando pintura con otras técnicas.",
+          "contenidos": [
+            "av1-b4-1"
+          ]
+        },
+        {
+          "id": "av1-cl-06",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Produce composiciones con transparencias con diferentes materiales.",
+          "contenidos": [
+            "av1-b5-1"
+          ]
+        },
+        {
+          "id": "av1-cl-07",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Elabora matrices de impresión con distintos materiales.",
+          "contenidos": [
+            "av1-b6-1"
+          ]
+        },
+        {
+          "id": "av1-cl-08",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Identifica figura y fondo en el encuadre de sus producciones fotográficas.",
+          "contenidos": [
+            "av1-b7-1"
+          ]
+        },
+        {
+          "id": "av1-cl-09",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Identifica y produce aspectos sonoros del audiovisual con distintos medios.",
+          "contenidos": [
+            "av1-b8-1"
+          ]
+        },
+        {
+          "id": "av1-cl-10",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Reconoce la pintura costumbrista y escenas cotidianas en el acervo nacional y regional.",
+          "contenidos": [
+            "av1-b9-1",
+            "av1-b9-2"
+          ]
+        },
+        {
+          "id": "av1-cl-11",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Reconoce y produce colores complementarios en sus composiciones.",
+          "contenidos": [
+            "av1-b10-1"
+          ]
+        },
+        {
+          "id": "av1-cl-12",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Identifica la direccionalidad, movimiento y reposo en la línea en diferentes tipos de producciones.",
+          "contenidos": [
+            "av1-b11-1"
+          ]
+        },
+        {
+          "id": "av1-cl-13",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Produce texturas táctiles a partir de mezclas de materiales en el collage y técnicas mixtas.",
+          "contenidos": [
+            "av1-b12-1"
+          ]
+        },
+        {
+          "id": "av1-cl-14",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Visualiza y reproduce la luz sobre el paisaje en sus producciones y en las ajenas.",
+          "contenidos": [
+            "av1-b13-1"
+          ]
+        },
+        {
+          "id": "av1-cl-15",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Relaciona las producciones de artistas de diferentes contextos del arte universal.",
+          "contenidos": [
+            "av1-b14-1",
+            "av1-b14-2"
+          ]
+        },
+        {
+          "id": "av1-cl-16",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Reconoce y diferencia los mensajes en series animadas, televisivas y de plataformas a partir de elementos visuales.",
+          "contenidos": [
+            "av1-b14-1",
+            "av1-b14-2"
+          ]
+        },
+        {
+          "id": "av1-cl-17",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Desarrolla interpretaciones a partir de la contextualización e inferencias en las imágenes de la cultura visual.",
+          "contenidos": [
+            "av1-b15-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Artes visuales y plásticas - Tramo 2.pdf",
+        "paginas": [
+          15,
+          16
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "av2-b1",
+          "titulo": "La escultura",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b1-1",
+              "texto": "Técnicas combinadas."
+            },
+            {
+              "id": "av2-b1-2",
+              "texto": "Técnica extractiva."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del espacio"
+        },
+        {
+          "id": "av2-b2",
+          "titulo": "La instalación y la intervención",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b2-1",
+              "texto": "Transformaciones lumínicas del espacio."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del espacio"
+        },
+        {
+          "id": "av2-b3",
+          "titulo": "El dibujo",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b3-1",
+              "texto": "Figura y fondo."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av2-b4",
+          "titulo": "La pintura",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b4-1",
+              "texto": "La acuarela."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av2-b5",
+          "titulo": "El collage",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b5-1",
+              "texto": "El fotocollage."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av2-b6",
+          "titulo": "Técnicas de impresión",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b6-1",
+              "texto": "Matrices con textos escritos."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av2-b7",
+          "titulo": "La fotografía",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b7-1",
+              "texto": "Fotomontajes."
+            }
+          ],
+          "contenidoEstructurante": "Lenguajes del plano"
+        },
+        {
+          "id": "av2-b8",
+          "titulo": "Lenguaje audiovisual",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b8-1",
+              "texto": "Argumento y guion."
+            }
+          ],
+          "contenidoEstructurante": "Lenguaje audiovisual"
+        },
+        {
+          "id": "av2-b9",
+          "titulo": "Géneros",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b9-1",
+              "texto": "Géneros cinematográficos: la aventura y el documental."
+            }
+          ],
+          "contenidoEstructurante": "Géneros"
+        },
+        {
+          "id": "av2-b10",
+          "titulo": "Color",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b10-1",
+              "texto": "Cualidades del color: saturación."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av2-b11",
+          "titulo": "El punto y la línea",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b11-1",
+              "texto": "El punto y la línea como generador de formas en el plano."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av2-b12",
+          "titulo": "Materia",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b12-1",
+              "texto": "La textura visual en el dibujo."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av2-b13",
+          "titulo": "Luz",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b13-1",
+              "texto": "La luz generadora de formas."
+            }
+          ],
+          "contenidoEstructurante": "Elementos plásticos"
+        },
+        {
+          "id": "av2-b14",
+          "titulo": "Cultura visual",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b14-1",
+              "texto": "Artistas, sus obras y contextos."
+            },
+            {
+              "id": "av2-b14-2",
+              "texto": "Las imágenes en la publicidad y en la propaganda."
+            }
+          ],
+          "contenidoEstructurante": "Cultura visual"
+        },
+        {
+          "id": "av2-b15",
+          "titulo": "Apreciación, lectura e interpretación de imágenes",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "av2-b15-1",
+              "texto": "Interpretación a partir de la relación entre el lenguaje visual y el contexto de las imágenes."
+            }
+          ],
+          "contenidoEstructurante": "Apreciación, lectura e interpretación de imágenes"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "av2-cl-01",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Explora creativamente técnicas combinadas con cartapesta y ensamblaje.",
+          "contenidos": [
+            "av2-b1-1",
+            "av2-b1-2"
+          ]
+        },
+        {
+          "id": "av2-cl-02",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Desarrolla estrategias en la técnica extractiva con distintos materiales.",
+          "contenidos": [
+            "av2-b1-1",
+            "av2-b1-2"
+          ]
+        },
+        {
+          "id": "av2-cl-03",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Realiza transformaciones lumínicas del espacio creativamente.",
+          "contenidos": [
+            "av2-b2-1"
+          ]
+        },
+        {
+          "id": "av2-cl-04",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Reconoce figura y fondo en composiciones figurativas.",
+          "contenidos": [
+            "av2-b3-1"
+          ]
+        },
+        {
+          "id": "av2-cl-05",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Produce acuarelas con preparaciones caseras.",
+          "contenidos": [
+            "av2-b4-1"
+          ]
+        },
+        {
+          "id": "av2-cl-06",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Realiza fotocollage creando nuevas figuraciones.",
+          "contenidos": [
+            "av2-b5-1"
+          ]
+        },
+        {
+          "id": "av2-cl-07",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Elabora matrices con textos escritos con intencionalidad.",
+          "contenidos": [
+            "av2-b6-1"
+          ]
+        },
+        {
+          "id": "av2-cl-08",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Realiza fotomontajes con métodos sencillos.",
+          "contenidos": [
+            "av2-b7-1"
+          ]
+        },
+        {
+          "id": "av2-cl-09",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Crea breves argumentos y guiones en forma grupal.",
+          "contenidos": [
+            "av2-b8-1"
+          ]
+        },
+        {
+          "id": "av2-cl-10",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Reconoce los géneros cinematográficos aventura y documental, en producciones de su contexto.",
+          "contenidos": [
+            "av2-b9-1"
+          ]
+        },
+        {
+          "id": "av2-cl-11",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Reconoce y experimenta la saturación del color con pintura.",
+          "contenidos": [
+            "av2-b10-1"
+          ]
+        },
+        {
+          "id": "av2-cl-12",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Explora y reconoce el punto y la línea como generador de formas en el plano, en el dibujo y la pintura.",
+          "contenidos": [
+            "av2-b11-1"
+          ]
+        },
+        {
+          "id": "av2-cl-13",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Realiza texturas visuales en el dibujo a partir de la observación de la naturaleza y los objetos.",
+          "contenidos": [
+            "av2-b12-1"
+          ]
+        },
+        {
+          "id": "av2-cl-14",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Produce composiciones con la luz como generadora de formas en las instalaciones.",
+          "contenidos": [
+            "av2-b13-1"
+          ]
+        },
+        {
+          "id": "av2-cl-15",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Relaciona las producciones de artistas de diferentes contextos del arte nacional y universal.",
+          "contenidos": [
+            "av2-b14-1",
+            "av2-b14-2"
+          ]
+        },
+        {
+          "id": "av2-cl-16",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Identifica los mensajes en las imágenes de la publicidad y la propaganda reflexivamente.",
+          "contenidos": [
+            "av2-b14-1",
+            "av2-b14-2"
+          ]
+        },
+        {
+          "id": "av2-cl-17",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4"
+          ],
+          "texto": "Produce interpretaciones a partir de la relación entre el lenguaje visual y el contexto de las imágenes de la cultura visual.",
+          "contenidos": [
+            "av2-b15-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Artes visuales y plásticas - Tramo 2.pdf",
+        "paginas": [
+          17,
+          18
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Educar la visión artística: desarrollar la creatividad a partir de la experiencia sensible y la capacidad de percibir y observar a través de los sentidos.",
+    "Alfabetizar estéticamente en un trabajo procesual que integre conocimientos, habilidades y actitudes, para codificar, decodificar y comprender textos visuales.",
+    "Desarrollar las dimensiones productiva, crítica y cultural; aprender a ver es un proceso que necesita tiempo.",
+    "Abordar los contenidos en forma contextualizada, con exploración de materiales y de diferentes experiencias, no como aplicación de técnicas y temas sin sentido.",
+    "Trabajar en taller, de forma colaborativa, y promover la reflexión y el análisis crítico de las obras propias y ajenas.",
+    "Abordar la transversalidad con los macroconceptos (imagen, palabra, sonido, cuerpo) y el trabajo interdisciplinario con otras disciplinas artísticas."
+  ],
+  "metodologiasSugeridas": [
+    "Trabajo en taller",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

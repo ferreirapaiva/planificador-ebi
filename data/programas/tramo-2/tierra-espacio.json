@@ -1,0 +1,510 @@
+{
+  "id": "tierra-espacio-t2",
+  "nombre": "Ciencias de la Tierra y el Espacio",
+  "espacio": "Científico-Matemático",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "El PDF agrupa los contenidos de ambos grados bajo «Bienes comunes ambientales» (pág. 12); se tomó como contenido estructurante.",
+    "La relación entre cada contenido y sus criterios se tomó del orden de las filas de las tablas (págs. 13 y 14); verificar."
+  ],
+  "fuente": {
+    "archivo": "Ciencias de la Tierra y el Espacio - Tramo 2.pdf",
+    "paginas": [
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "justificacion": "La unidad curricular está integrada por Geología y Astronomía, lo que permite que el estudiante conozca, comprenda y se maraville con su entorno entramando los saberes. Situarlo en la realidad ambiental con un enfoque interdisciplinario en clave de competencia promueve el pensamiento global y local, para actuar local y globalmente. Conocer el ambiente desde una perspectiva integral acerca al estudiante a experiencias que trasciendan lo cotidiano y lo forman como individuo consciente del cuidado de su entorno, que lo habita de forma sustentable, comprometido, responsable y crítico.",
+  "contenidosEstructurantes": [
+    "Bienes comunes ambientales"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Explora, percibe e indaga en situaciones lúdicas y cotidianas los elementos y características de su entorno para el disfrute, de acuerdo con intereses y motivaciones propias y de/con otros.",
+      "competenciasMCN": [
+        "Pensamiento creativo",
+        "Pensamiento científico",
+        "Intrapersonal",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Construye relaciones espaciales respecto de sí mismo, de los objetos y en los recorridos para aprehender una visión integral del espacio y la noción de lugar.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Intrapersonal",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Describe y vincula los bienes naturales y culturales del entorno y sus usos para interactuar con el ambiente de forma armónica.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento científico",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Interroga, recopila información y describe características de los diferentes territorios (escuela, barrio, localidad, comunidad) para construir representaciones espaciales.",
+      "competenciasMCN": [
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Identifica situaciones ambientales en su entorno, propone preguntas y respuestas alternativas para encontrar explicaciones provisorias, intercambiando información con otros.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Selecciona y utiliza los recursos tecnológicos disponibles para recopilar información, comunicar, expresar y representar hechos, conceptos y procesos del medio socionatural.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Iniciativa y orientación a la acción",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Participa en actividades colaborativas, cooperativas y solidarias mediadas por el docente para reconocer la diversidad.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "cte1-b1",
+          "titulo": "El agua y la meteorización",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "cte1-b1-1",
+              "texto": "El agua como agente erosivo y de transporte de partículas del suelo (meteorización)."
+            }
+          ]
+        },
+        {
+          "id": "cte1-b2",
+          "titulo": "Tiempo atmosférico y relieve",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "cte1-b2-1",
+              "texto": "Elementos del tiempo atmosférico y su influencia en el relieve."
+            }
+          ]
+        },
+        {
+          "id": "cte1-b3",
+          "titulo": "El suelo",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "cte1-b3-1",
+              "texto": "El suelo: componentes y propiedades. Cuidados y preservación. Formas de relieve."
+            }
+          ]
+        },
+        {
+          "id": "cte1-b4",
+          "titulo": "Sistema Tierra-Sol",
+          "ceVinculadas": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "cte1-b4-1",
+              "texto": "Sistema Tierra-Sol."
+            }
+          ]
+        },
+        {
+          "id": "cte1-b5",
+          "titulo": "Duración del día y la noche",
+          "ceVinculadas": [
+            "CE2",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "cte1-b5-1",
+              "texto": "Duración del día y noche."
+            }
+          ]
+        },
+        {
+          "id": "cte1-b6",
+          "titulo": "Las estaciones",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "cte1-b6-1",
+              "texto": "Las estaciones."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "cte1-cl-01",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Describe diferentes características de las aguas superficiales.",
+          "contenidos": [
+            "cte1-b1-1"
+          ]
+        },
+        {
+          "id": "cte1-cl-02",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Comprende y describe la acción modeladora del agua y el viento en el relieve.",
+          "contenidos": [
+            "cte1-b2-1"
+          ]
+        },
+        {
+          "id": "cte1-cl-03",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "texto": "Representa y comunica las características de su entorno a través de diferentes lenguajes y soportes.",
+          "contenidos": [
+            "cte1-b3-1"
+          ]
+        },
+        {
+          "id": "cte1-cl-04",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Observa, recopila y organiza información sobre aspectos y relaciones del sistema Tierra-Sol.",
+          "contenidos": [
+            "cte1-b4-1"
+          ]
+        },
+        {
+          "id": "cte1-cl-05",
+          "ce": [
+            "CE2",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Comunica datos vinculados a una variable (elementos del tiempo atmosféricos) optando entre múltiples modos de representación y soportes.",
+          "contenidos": [
+            "cte1-b5-1"
+          ]
+        },
+        {
+          "id": "cte1-cl-06",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Percibe y describe características de las estaciones observando cambios y permanencias en su entorno.",
+          "contenidos": [
+            "cte1-b6-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias de la Tierra y el Espacio - Tramo 2.pdf",
+        "paginas": [
+          12,
+          13
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "cte2-b1",
+          "titulo": "El suelo",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "cte2-b1-1",
+              "texto": "El suelo. La actividad biológica en el suelo: componentes orgánicos e inorgánicos."
+            }
+          ]
+        },
+        {
+          "id": "cte2-b2",
+          "titulo": "Aguas superficiales",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "cte2-b2-1",
+              "texto": "Aguas superficiales: circulación y transporte. Las consecuencias en el relieve. Representación. Lenguaje cartográfico."
+            }
+          ]
+        },
+        {
+          "id": "cte2-b3",
+          "titulo": "Tiempo atmosférico y estaciones",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "cte2-b3-1",
+              "texto": "La relación tiempo atmosférico-estaciones."
+            }
+          ]
+        },
+        {
+          "id": "cte2-b4",
+          "titulo": "El Sol como cuerpo astronómico",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "cte2-b4-1",
+              "texto": "El Sol como cuerpo astronómico: características."
+            }
+          ]
+        },
+        {
+          "id": "cte2-b5",
+          "titulo": "Movimiento aparente del Sol",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "cte2-b5-1",
+              "texto": "Movimiento aparente del Sol: perihelio y afelio."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "cte2-cl-01",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "texto": "Observa, describe y organiza información respecto a la actividad biológica en el suelo con o sin mediación.",
+          "contenidos": [
+            "cte2-b1-1"
+          ]
+        },
+        {
+          "id": "cte2-cl-02",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Cuestiona afirmaciones y pide explicaciones sobre fenómenos naturales con o sin mediación.",
+          "contenidos": [
+            "cte2-b1-1",
+            "cte2-b2-1",
+            "cte2-b3-1",
+            "cte2-b4-1",
+            "cte2-b5-1"
+          ]
+        },
+        {
+          "id": "cte2-cl-03",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Representa y comunica las características de su entorno a través de diferentes lenguajes y soportes.",
+          "contenidos": [
+            "cte2-b2-1"
+          ]
+        },
+        {
+          "id": "cte2-cl-04",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Comunica datos vinculados a una variable optando entre múltiples modos de representación y soportes.",
+          "contenidos": [
+            "cte2-b3-1",
+            "cte2-b5-1"
+          ]
+        },
+        {
+          "id": "cte2-cl-05",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Identifica y explica las características distintivas del Sol como cuerpo astronómico, con o sin mediación de la tecnología.",
+          "contenidos": [
+            "cte2-b4-1",
+            "cte2-b5-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias de la Tierra y el Espacio - Tramo 2.pdf",
+        "paginas": [
+          12,
+          14
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Diseñar situaciones de aprendizaje con enfoque interdisciplinar y metodologías activas que sitúen al estudiante en el centro y habiliten su participación real en asuntos de su interés, en proyectos del centro educativo y del entorno barrial.",
+    "El docente diseña situaciones pertinentes, orienta, monitorea, brinda apoyos, favorece intercambios y promueve redes conceptuales, metacognición, autonomía y autorregulación.",
+    "Tener en cuenta la integralidad e interdisciplinariedad del conocimiento: mirar un mismo saber desde diversos enfoques y crear conexiones y redes de pensamiento."
+  ],
+  "metodologiasSugeridas": [
+    "Gamificación",
+    "Aprendizaje basado en el juego",
+    "Aprendizaje basado en problemas",
+    "Aula invertida y aprendizaje en ambientes mixtos",
+    "STEAHM",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

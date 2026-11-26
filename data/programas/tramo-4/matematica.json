@@ -1,0 +1,937 @@
+{
+  "id": "matematica-t4",
+  "nombre": "Matemática",
+  "espacio": "Científico-Matemático",
+  "tramo": 4,
+  "version": "v2",
+  "revisado": false,
+  "notasRevision": [
+    "Las tablas de contenidos indican las competencias por eje (columna), no por contenido; los criterios figuran en tablas aparte agrupados por competencia y no se vinculan con contenidos concretos.",
+    "5.º grado, CE3: el criterio «Descubre la suma de las amplitudes de los ángulos interiores de un polígono convexo…» aparece dos veces en el PDF (pág. 14); se cargó una sola vez.",
+    "5.º grado, CE2: el criterio sobre proporcionalidad aparece partido en dos viñetas en el PDF («…entre diferentes magnitudes» / «contextualizadas en situaciones concretas»); se unió.",
+    "6.º grado: en la tabla de criterios (pág. 17) la CE4 figura con otra redacción («Desarrolla el pensamiento matemático a través de la exploración, indaga, analiza y explica para aproximarse al saber matemático»); se usó la de la lista de competencias (pág. 11)."
+  ],
+  "fuente": {
+    "archivo": "Matemática_v2 - Tramo 4.pdf",
+    "paginas": [
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "justificacion": "El conocimiento matemático, como toda construcción humana, está permeado por dimensiones históricas, sociales, políticas y económicas. La matemática se entiende desde una doble concepción (dialéctica instrumento-objeto): como objeto de estudio en sí misma y como herramienta para otras ciencias, lo que la sitúa en una perspectiva formativa y una instrumental. El contenido estructurante es relaciones y funciones, que se sustenta en tres ejes: número, figura y variable. Las tareas y secuencias pueden abordar contenidos asociados a dos ejes o incluso a los tres.",
+  "contenidosEstructurantes": [
+    "Relaciones y funciones"
+  ],
+  "ejes": [
+    "Número",
+    "Variable",
+    "Figura"
+  ],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Incorpora el lenguaje matemático en diversos contextos para argumentar sus decisiones.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Utiliza estrategias matemáticas, conectando conceptos entre sí y fundamenta los procedimientos realizados para resolver problemas en distintos contextos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Identifica modelos, regularidades y alteraciones, compara datos, descubre patrones, integrando diversos recursos para dar respuestas a distintas situaciones.",
+      "competenciasMCN": [
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Desarrolla conciencia sobre sus procesos de pensamiento asociados a la indagación, el análisis y la explicación para aproximarse al saber matemático.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Reflexiona sobre el error en su producción matemática como una oportunidad para internalizar variados procesos de aprendizaje.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Interpreta y emplea conceptos comerciales y financieros a través de situaciones cotidianas para comprender su impacto en la vida diaria.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Organiza e interpreta información del entorno para cuantificar, establecer relaciones o describir fenómenos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "mat5-b1",
+          "titulo": "Numeración natural",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b1-1",
+              "texto": "Números a partir de 5 cifras. Aspectos: conteo, representación (producción e interpretación), relación de orden, composición y descomposición aditiva y multiplicativa, regularidades: valor posicional."
+            },
+            {
+              "id": "mat5-b1-2",
+              "texto": "Otras regularidades: divisibilidad.",
+              "subitems": [
+                {
+                  "id": "mat5-b1-2a",
+                  "texto": "Números divisibles entre 3, 6 y 1000."
+                },
+                {
+                  "id": "mat5-b1-2b",
+                  "texto": "Números primos y compuestos."
+                },
+                {
+                  "id": "mat5-b1-2c",
+                  "texto": "Múltiplos de los primeros números primos: 2, 3, 5 y 7."
+                }
+              ]
+            },
+            {
+              "id": "mat5-b1-3",
+              "texto": "Sistemas de numeración: binario, maya, otros."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat5-b2",
+          "titulo": "Numeración racional",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b2-1",
+              "texto": "Expresiones decimales, fracciones, representación, número mixto, relación de orden, composición y descomposición aditiva y multiplicativa, representación en la recta, cociente de naturales. El valor posicional en las expresiones decimales."
+            },
+            {
+              "id": "mat5-b2-2",
+              "texto": "Propiedad: densidad del conjunto Q."
+            },
+            {
+              "id": "mat5-b2-3",
+              "texto": "Milésimos."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat5-b3",
+          "titulo": "Operaciones",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b3-1",
+              "texto": "Adición y sustracción, multiplicación y división: operaciones combinadas, propiedades, cálculo pensado."
+            },
+            {
+              "id": "mat5-b3-2",
+              "texto": "Adición y sustracción de fracciones de distinto denominador."
+            },
+            {
+              "id": "mat5-b3-3",
+              "texto": "Potenciación: notación."
+            },
+            {
+              "id": "mat5-b3-4",
+              "texto": "Proporcionalidad directa: propiedades de linealidad y aditividad. Porcentaje."
+            },
+            {
+              "id": "mat5-b3-5",
+              "texto": "Los complementos decimales del natural más próximo."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat5-b4",
+          "titulo": "Introducción a la estadística y a la probabilidad",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b4-1",
+              "texto": "Gráficos: diagrama de barras, histogramas."
+            },
+            {
+              "id": "mat5-b4-2",
+              "texto": "Espacio muestral."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat5-b5",
+          "titulo": "Introducción al álgebra",
+          "ceVinculadas": [
+            "CE3",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b5-1",
+              "texto": "Suma de pares e impares: generalización."
+            }
+          ],
+          "eje": "Variable",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat5-b6",
+          "titulo": "Magnitudes y medidas",
+          "ceVinculadas": [
+            "CE3",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b6-1",
+              "texto": "Sistema métrico decimal: múltiplos y submúltiplos (metro cuadrado, centímetro cuadrado, kilómetro cuadrado, hectárea)."
+            },
+            {
+              "id": "mat5-b6-2",
+              "texto": "Área: medida de superficie, cálculo (cuadriláteros y triángulos) y estimación."
+            },
+            {
+              "id": "mat5-b6-3",
+              "texto": "Relaciones entre área y perímetro; capacidad y volumen."
+            }
+          ],
+          "eje": "Variable",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat5-b7",
+          "titulo": "Geometría en el plano",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b7-1",
+              "texto": "Rectas paralelas."
+            },
+            {
+              "id": "mat5-b7-2",
+              "texto": "Paralelogramos: propiedades, clasificación y construcción."
+            },
+            {
+              "id": "mat5-b7-3",
+              "texto": "Polígonos: inscriptos; regulares y no regulares; ángulo al centro y apotema; teselación del plano con triángulos y cuadriláteros."
+            },
+            {
+              "id": "mat5-b7-4",
+              "texto": "Polígono convexo: propiedad asociada a vértices y número de diagonales; suma de ángulos interiores."
+            },
+            {
+              "id": "mat5-b7-5",
+              "texto": "Circunferencia y círculo como lugares geométricos."
+            }
+          ],
+          "eje": "Figura",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat5-b8",
+          "titulo": "Geometría en el espacio",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat5-b8-1",
+              "texto": "Prismas y pirámides: propiedades y desarrollos."
+            },
+            {
+              "id": "mat5-b8-2",
+              "texto": "Diagonales del prisma."
+            },
+            {
+              "id": "mat5-b8-3",
+              "texto": "Posiciones relativas de rectas en el espacio: coplanares y no coplanares."
+            }
+          ],
+          "eje": "Figura",
+          "contenidoEstructurante": "Relaciones y funciones"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "mat5-cl-01",
+          "ce": "CE1",
+          "texto": "Representa e interpreta números naturales de seis y más cifras y justifica su empleo en diferentes contextos."
+        },
+        {
+          "id": "mat5-cl-02",
+          "ce": "CE1",
+          "texto": "Ordena fracciones y justifica sus decisiones con argumentos que expresa de forma oral o escrita."
+        },
+        {
+          "id": "mat5-cl-03",
+          "ce": "CE1",
+          "texto": "Identifica propiedades del sistema de numeración decimal al compararlo con otros sistemas de numeración."
+        },
+        {
+          "id": "mat5-cl-04",
+          "ce": "CE1",
+          "texto": "Establece relaciones entre las diferentes representaciones de los números racionales en diferentes contextos."
+        },
+        {
+          "id": "mat5-cl-05",
+          "ce": "CE1",
+          "texto": "Explica procedimientos de construcción de figuras geométricas en el plano o en el espacio."
+        },
+        {
+          "id": "mat5-cl-06",
+          "ce": "CE2",
+          "texto": "Identifica y explica relaciones de proporcionalidad y no proporcionalidad entre diferentes magnitudes contextualizadas en situaciones concretas."
+        },
+        {
+          "id": "mat5-cl-07",
+          "ce": "CE2",
+          "texto": "Resuelve situaciones de proporcionalidad directa en relación con los datos haciendo uso de las propiedades."
+        },
+        {
+          "id": "mat5-cl-08",
+          "ce": "CE2",
+          "texto": "Ordena fracciones en el contexto de una situación problema comparando con el 1 o con el natural más próximo a la fracción y explica su procedimiento."
+        },
+        {
+          "id": "mat5-cl-09",
+          "ce": "CE2",
+          "texto": "Relaciona las situaciones que involucran un cambio en el lugar de la incógnita con la operación que las modelizan."
+        },
+        {
+          "id": "mat5-cl-10",
+          "ce": "CE2",
+          "texto": "Indaga la relación entre los términos de la división, con dividendo y divisor naturales, e infiere propiedades en situaciones problemas."
+        },
+        {
+          "id": "mat5-cl-11",
+          "ce": "CE2",
+          "texto": "Descubre «en acto» la propiedad de densidad de los números racionales en contextos cotidianos, lúdicos e intramatemáticos."
+        },
+        {
+          "id": "mat5-cl-12",
+          "ce": "CE2",
+          "texto": "Utiliza la noción de paralelismo en la construcción de figuras con distintos recursos."
+        },
+        {
+          "id": "mat5-cl-13",
+          "ce": "CE2",
+          "texto": "Explica el valor posicional de las cifras mediante reagrupamiento de órdenes numéricos en la resolución de situaciones."
+        },
+        {
+          "id": "mat5-cl-14",
+          "ce": "CE2",
+          "texto": "Resuelve situaciones de adición y sustracción de fracciones de distinto denominador transfiriendo conocimientos de fracciones equivalentes en diversos contextos."
+        },
+        {
+          "id": "mat5-cl-15",
+          "ce": "CE2",
+          "texto": "Da explicaciones sobre la composición y descomposición aditiva o multiplicativa con números naturales o racionales ante situaciones de cálculo."
+        },
+        {
+          "id": "mat5-cl-16",
+          "ce": "CE2",
+          "texto": "Resuelve y explica diferentes situaciones de cálculo utilizando estrategias personales o algoritmos convencionales, con números naturales y racionales."
+        },
+        {
+          "id": "mat5-cl-17",
+          "ce": "CE3",
+          "texto": "Pone a prueba sus hipótesis sobre las propiedades de los objetos geométricos relacionando distintas representaciones obtenidas a partir del uso de recursos tecnológicos y no tecnológicos."
+        },
+        {
+          "id": "mat5-cl-18",
+          "ce": "CE3",
+          "texto": "Explora relaciones entre distintas representaciones de rectas a través de diferentes soportes."
+        },
+        {
+          "id": "mat5-cl-19",
+          "ce": "CE3",
+          "texto": "Explora y reconoce las distintas posiciones de rectas en el espacio a partir de las aristas de distintos poliedros."
+        },
+        {
+          "id": "mat5-cl-20",
+          "ce": "CE3",
+          "texto": "Explora las propiedades de los prismas y las pirámides con apoyo de distintas representaciones."
+        },
+        {
+          "id": "mat5-cl-21",
+          "ce": "CE3",
+          "texto": "Descubre regularidades entre múltiplos y divisores al resolver distintas situaciones."
+        },
+        {
+          "id": "mat5-cl-22",
+          "ce": "CE3",
+          "texto": "Construye significado de la noción de área como medida de la superficie y la distingue del perímetro en figuras planas."
+        },
+        {
+          "id": "mat5-cl-23",
+          "ce": "CE3",
+          "texto": "Descubre la suma de las amplitudes de los ángulos interiores de un polígono convexo al vincular propiedades interfigurales y diseñar procedimientos."
+        },
+        {
+          "id": "mat5-cl-24",
+          "ce": "CE3",
+          "texto": "Explora y explica teselaciones en el plano con triángulos y cuadriláteros en diferentes soportes."
+        },
+        {
+          "id": "mat5-cl-25",
+          "ce": "CE4",
+          "texto": "Realiza anticipaciones empleando «en acto» propiedades de las operaciones a través de la exploración en diferentes situaciones."
+        },
+        {
+          "id": "mat5-cl-26",
+          "ce": "CE4",
+          "texto": "Reconoce y construye polígonos utilizando sus propiedades en distintos soportes."
+        },
+        {
+          "id": "mat5-cl-27",
+          "ce": "CE4",
+          "texto": "Utiliza las ideas de círculo y circunferencia a partir de su abordaje en el marco de situaciones que favorezcan la identificación de sus propiedades."
+        },
+        {
+          "id": "mat5-cl-28",
+          "ce": "CE4",
+          "texto": "Reconoce los primeros números primos e indaga las propiedades que le dan identidad en contextos lúdicos e intramatemáticos."
+        },
+        {
+          "id": "mat5-cl-29",
+          "ce": "CE4",
+          "texto": "Predice la paridad o imparidad de la suma de dos números naturales a través de distintos argumentos."
+        },
+        {
+          "id": "mat5-cl-30",
+          "ce": "CE5",
+          "texto": "Comprende el valor de perseverar ante el error en sus procedimientos numéricos o geométricos y los comienza a valorar como parte de sus procesos."
+        },
+        {
+          "id": "mat5-cl-31",
+          "ce": "CE6",
+          "texto": "Realiza cálculos con dinero en su propia divisa y la de otros países, utilizando diferentes estrategias en contextos lúdicos o cotidianos que revistan realismo."
+        },
+        {
+          "id": "mat5-cl-32",
+          "ce": "CE6",
+          "texto": "Aplica porcentajes mayores que 100 al resolver situaciones de su entorno cotidiano."
+        },
+        {
+          "id": "mat5-cl-33",
+          "ce": "CE7",
+          "texto": "Organiza la información estadística en gráficos o tablas identificando las relaciones que se reflejan en esos textos estadísticos para elaborar explicaciones acerca de un hecho o fenómeno."
+        },
+        {
+          "id": "mat5-cl-34",
+          "ce": "CE7",
+          "texto": "Organiza, con distintos formatos, el espacio muestral de un suceso."
+        }
+      ],
+      "fuente": {
+        "archivo": "Matemática_v2 - Tramo 4.pdf",
+        "paginas": [
+          12,
+          13,
+          14
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "mat6-b1",
+          "titulo": "Numeración natural",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b1-1",
+              "texto": "Números a partir de 6 cifras. Aspectos: conteo, representación (producción e interpretación), relación de orden, regularidades: valor posicional, composición y descomposición aditiva, multiplicativa y exponencial."
+            },
+            {
+              "id": "mat6-b1-2",
+              "texto": "Potencias de base 10 y notación científica."
+            },
+            {
+              "id": "mat6-b1-3",
+              "texto": "Divisibilidad: números divisibles entre 9."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat6-b2",
+          "titulo": "Numeración racional",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b2-1",
+              "texto": "Expresiones decimales y fraccionarias: representación, relación de orden, composición y descomposición aditiva y multiplicativa. El valor posicional en las expresiones decimales."
+            },
+            {
+              "id": "mat6-b2-2",
+              "texto": "Propiedad: densidad del conjunto Q."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat6-b3",
+          "titulo": "Operaciones",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b3-1",
+              "texto": "Adición, sustracción, multiplicación, división y potenciación: propiedades, cálculo pensado."
+            },
+            {
+              "id": "mat6-b3-2",
+              "texto": "Operaciones con números racionales. Multiplicación y división por números menores que 1."
+            },
+            {
+              "id": "mat6-b3-3",
+              "texto": "Proporcionalidad inversa."
+            },
+            {
+              "id": "mat6-b3-4",
+              "texto": "Porcentaje: cálculo de IVA, otros impuestos."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat6-b4",
+          "titulo": "Introducción a la estadística y a la probabilidad",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b4-1",
+              "texto": "Gráfico circular."
+            },
+            {
+              "id": "mat6-b4-2",
+              "texto": "Medidas de tendencia central: media, moda y mediana."
+            },
+            {
+              "id": "mat6-b4-3",
+              "texto": "Ley de Laplace."
+            }
+          ],
+          "eje": "Número",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat6-b5",
+          "titulo": "Introducción al álgebra",
+          "ceVinculadas": [
+            "CE3",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b5-1",
+              "texto": "Fórmulas: perímetro, área y volumen. Valor numérico."
+            }
+          ],
+          "eje": "Variable",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat6-b6",
+          "titulo": "Magnitudes y medidas",
+          "ceVinculadas": [
+            "CE3",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b6-1",
+              "texto": "Volumen: metro cúbico y submúltiplos, estimación. Relación entre volumen y masa, relación entre volumen y superficie lateral o total."
+            },
+            {
+              "id": "mat6-b6-2",
+              "texto": "Longitud de circunferencia y longitud de diámetro. Número pi."
+            },
+            {
+              "id": "mat6-b6-3",
+              "texto": "Cálculo de área de superficie lateral de poliedros y no poliedros."
+            },
+            {
+              "id": "mat6-b6-4",
+              "texto": "Sistema sexagesimal."
+            }
+          ],
+          "eje": "Variable",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat6-b7",
+          "titulo": "Geometría en el plano",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b7-1",
+              "texto": "Simetría axial. Propiedades, identificación de ejes de simetría en una figura. Mediatriz de un segmento como lugar geométrico; construcción."
+            },
+            {
+              "id": "mat6-b7-2",
+              "texto": "Teselación del plano con pentágonos y hexágonos."
+            },
+            {
+              "id": "mat6-b7-3",
+              "texto": "Construcción de polígonos. Algoritmo de construcción."
+            }
+          ],
+          "eje": "Figura",
+          "contenidoEstructurante": "Relaciones y funciones"
+        },
+        {
+          "id": "mat6-b8",
+          "titulo": "Geometría en el espacio",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "mat6-b8-1",
+              "texto": "Planos paralelos y planos perpendiculares."
+            },
+            {
+              "id": "mat6-b8-2",
+              "texto": "Prismas y pirámides: propiedad asociada al número de vértices y aristas con el número de lados del polígono de la base."
+            },
+            {
+              "id": "mat6-b8-3",
+              "texto": "Poliedros regulares: características y representaciones."
+            },
+            {
+              "id": "mat6-b8-4",
+              "texto": "No poliedros: cilindro y cono recto, esfera; desarrollos de cilindros y conos."
+            }
+          ],
+          "eje": "Figura",
+          "contenidoEstructurante": "Relaciones y funciones"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "mat6-cl-01",
+          "ce": "CE1",
+          "texto": "Identifica y utiliza números naturales de cualquier cantidad de cifras de forma oral y escrita."
+        },
+        {
+          "id": "mat6-cl-02",
+          "ce": "CE1",
+          "texto": "Construye y formula reglas a partir de la exploración de distintos tramos de la serie numérica en la producción de generalizaciones."
+        },
+        {
+          "id": "mat6-cl-03",
+          "ce": "CE1",
+          "texto": "Expresa números naturales y decimales a través de notación científica en diversos contextos."
+        },
+        {
+          "id": "mat6-cl-04",
+          "ce": "CE1",
+          "texto": "Establece y explica relaciones entre las diferentes representaciones de los números racionales en diferentes contextos."
+        },
+        {
+          "id": "mat6-cl-05",
+          "ce": "CE1",
+          "texto": "Argumenta los procedimientos de construcción de figuras geométricas en el plano o en el espacio."
+        },
+        {
+          "id": "mat6-cl-06",
+          "ce": "CE1",
+          "texto": "Opina con argumentos sencillos al comparar y ordenar distintas cantidades de magnitud utilizando una unidad convencional o no convencional y fracciones de esta al resolver situaciones."
+        },
+        {
+          "id": "mat6-cl-07",
+          "ce": "CE2",
+          "texto": "Explica y fundamenta acerca del valor posicional de las cifras mediante reagrupamiento de órdenes numéricos en la resolución de situaciones."
+        },
+        {
+          "id": "mat6-cl-08",
+          "ce": "CE2",
+          "texto": "Fundamenta sobre la composición y descomposición aditiva o multiplicativa con números naturales o racionales ante situaciones de cálculo."
+        },
+        {
+          "id": "mat6-cl-09",
+          "ce": "CE2",
+          "texto": "Resuelve y fundamenta diferentes situaciones de cálculo utilizando estrategias personales o algoritmos convencionales, con números naturales y racionales."
+        },
+        {
+          "id": "mat6-cl-10",
+          "ce": "CE2",
+          "texto": "Expresa la probabilidad de un suceso a través de una fracción, en diferentes situaciones."
+        },
+        {
+          "id": "mat6-cl-11",
+          "ce": "CE3",
+          "texto": "Explora las propiedades de los poliedros regulares con apoyo de distintas representaciones."
+        },
+        {
+          "id": "mat6-cl-12",
+          "ce": "CE3",
+          "texto": "Explica acerca de los procedimientos en el cálculo de volúmenes en contextos diversos."
+        },
+        {
+          "id": "mat6-cl-13",
+          "ce": "CE3",
+          "texto": "Construye a través de la exploración las fórmulas de área y volumen de diferentes figuras."
+        },
+        {
+          "id": "mat6-cl-14",
+          "ce": "CE3",
+          "texto": "Explora relaciones entre vértices, aristas y bases de prismas y pirámides con apoyo de distintas representaciones."
+        },
+        {
+          "id": "mat6-cl-15",
+          "ce": "CE3",
+          "texto": "Explora y justifica teselaciones en el plano con distintas figuras en diferentes soportes."
+        },
+        {
+          "id": "mat6-cl-16",
+          "ce": "CE3",
+          "texto": "Establece relaciones de posiciones de planos en poliedros con apoyo de representaciones figurales en situaciones contextualizadas."
+        },
+        {
+          "id": "mat6-cl-17",
+          "ce": "CE4",
+          "texto": "Reconoce, describe y crea figuras que tienen simetría utilizando distintos recursos."
+        },
+        {
+          "id": "mat6-cl-18",
+          "ce": "CE4",
+          "texto": "Reconoce y explora distintas posibilidades en la representación de posiciones relativas entre planos."
+        },
+        {
+          "id": "mat6-cl-19",
+          "ce": "CE4",
+          "texto": "Fundamenta sus construcciones de figuras geométricas y desarrolla variadas estrategias para representarlas."
+        },
+        {
+          "id": "mat6-cl-20",
+          "ce": "CE4",
+          "texto": "Produce y justifica afirmaciones sobre relaciones numéricas acerca de la divisibilidad en diferentes contextos."
+        },
+        {
+          "id": "mat6-cl-21",
+          "ce": "CE5",
+          "texto": "Reflexiona sobre el proceso de iteración de los errores cometidos durante la resolución de problemas y valora la importancia de perseverar ante ellos en los procesos de resolución."
+        },
+        {
+          "id": "mat6-cl-22",
+          "ce": "CE6",
+          "texto": "Comprende e interpreta situaciones de la vida real con relación al cálculo de diferentes impuestos."
+        },
+        {
+          "id": "mat6-cl-23",
+          "ce": "CE6",
+          "texto": "Aplica porcentajes menores a 10 y a 1, al resolver situaciones de su entorno cotidiano."
+        },
+        {
+          "id": "mat6-cl-24",
+          "ce": "CE7",
+          "texto": "Explica sus procedimientos al calcular el área y volumen de figuras del espacio."
+        },
+        {
+          "id": "mat6-cl-25",
+          "ce": "CE7",
+          "texto": "Relaciona con pertinencia, los resultados obtenidos a través de mediciones efectivas o mediante el cálculo en función del contexto."
+        },
+        {
+          "id": "mat6-cl-26",
+          "ce": "CE7",
+          "texto": "Interpreta y comunica la información estadística presentada en listas, tablas y gráficas."
+        }
+      ],
+      "fuente": {
+        "archivo": "Matemática_v2 - Tramo 4.pdf",
+        "paginas": [
+          15,
+          16,
+          17
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Trabajar los contenidos de forma interrelacionada, apoyarse en las diferentes tecnologías y relacionarlos con el mundo real del estudiante.",
+    "El listado de contenidos específicos no establece el orden de su abordaje en la unidad curricular ni en el grado.",
+    "Promover metodologías centradas en el estudiante, con participación activa, trabajo colaborativo y cooperativo, desafíos, conexión con la realidad, exploración y comunicación de ideas matemáticas.",
+    "En numeración natural, avanzar en las descomposiciones aditivas y multiplicativas teniendo en cuenta el valor posicional: cada cifra alude a una potencia de base 10.",
+    "En divisibilidad, no comenzar por las reglas: generar condiciones para que los estudiantes, a partir del trabajo exploratorio con regularidades numéricas, formulen afirmaciones sobre los criterios y las propiedades de los múltiplos."
+  ],
+  "metodologiasSugeridas": [
+    "STEAHM",
+    "Actividades lúdicas",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

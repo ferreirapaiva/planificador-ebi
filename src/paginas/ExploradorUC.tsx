@@ -157,7 +157,7 @@ export function ExploradorUC() {
 
 function Explorador({ ucId }: { ucId?: string }) {
   const uc = PROGRAMAS.find((p) => p.id === ucId);
-  const [vista, setVista] = useState<Vista>(3);
+  const [vista, setVista] = useState<Vista>(uc?.grados[0]?.grado ?? 3);
   const [f, setF] = useState<Filtros>({ eje: null, ce: null, texto: '' });
   const [verCE, setVerCE] = useState(false);
   const grados = useMemo(() => uc?.grados ?? [], [uc]);
@@ -226,7 +226,7 @@ function Explorador({ ucId }: { ucId?: string }) {
           {grados.map((g) => (
             <Chip key={g.grado} activo={vista === g.grado} onClick={() => setVista(g.grado)}>{g.grado}.º</Chip>
           ))}
-          <Chip activo={vista === 'comparar'} onClick={() => setVista('comparar')}>Comparar 3.º y 4.º</Chip>
+          <Chip activo={vista === 'comparar'} onClick={() => setVista('comparar')}>Comparar {grados.map((g) => `${g.grado}.º`).join(' y ')}</Chip>
           <input
             type="search"
             value={f.texto}

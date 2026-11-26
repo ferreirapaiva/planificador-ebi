@@ -1,0 +1,520 @@
+{
+  "id": "fisica-quimica-t4",
+  "nombre": "Física-Química",
+  "espacio": "Científico-Matemático",
+  "tramo": 4,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "Los criterios de logro figuran en una tabla aparte, agrupados por competencia; no se vinculan con contenidos concretos."
+  ],
+  "fuente": {
+    "archivo": "Física Química - Tramo 4.pdf",
+    "paginas": [
+      4,
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  "justificacion": "Los niños de este ciclo se expresan y comunican sus emociones y conocimientos a través de diferentes lenguajes (verbales, no verbales, comunicacionales y multimediales) con los que intentan comprender el mundo que los rodea. Desde el asombro, realizan preguntas y vivencias mediante estrategias exploratorias para comprender el mundo natural y social, estableciendo relaciones lógico-matemáticas. El programa explicita ideas orientadoras para que los docentes, con autonomía de centro, diseñen estrategias que habiliten el desarrollo de las competencias específicas del tramo.",
+  "contenidosEstructurantes": [
+    "Sistemas materiales",
+    "Energía",
+    "Transformaciones"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Interpreta los sistemas materiales y sus transformaciones, construyendo tablas sencillas y realizando estudios que impliquen dos o más variables, con la finalidad de argumentar sobre temas de estudio e intercambiar posturas, adecuándolas al contexto.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Plantea preguntas para aclarar e interpretar la información acerca de sistemas materiales y sus transformaciones, explorando causas y consecuencias, utilizando sus experiencias para pensar y adaptar ideas que resultan novedosas en su contexto, generando alternativas y prediciendo posibles resultados en distintos lenguajes técnicos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Propone situaciones acerca de los sistemas materiales y sus transformaciones que le presenten desafíos y las explora de forma colectiva buscando relaciones no aparentes entre los aspectos que las definen, para justificar la toma de decisiones utilizando la planificación y la autoevaluación como herramientas para el aprendizaje.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Indaga, predice y argumenta fenómenos sociales y naturales cotidianos acerca de los sistemas materiales y sus transformaciones para su estudio, buscando caminos alternativos a partir de la recolección de datos o mediante algoritmos para generar soluciones y comprende el valor de perseverar ante el error, con sus reacciones, emociones y actitudes.",
+      "competenciasMCN": [
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Relaciona aplicaciones tecnológicas con el conocimiento científico y reflexiona sobre su influencia en la sociedad y el ambiente reconociendo su carácter temporal; y utiliza medios digitales para producir colaborativamente, presentando la información en formatos adecuados.",
+      "competenciasMCN": [
+        "Pensamiento científico",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "fq5-b1",
+          "titulo": "Electrólisis del agua",
+          "ceVinculadas": [
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b1-1",
+              "texto": "La electrólisis del agua (descomposición). Concepto de sustancia compuesta y simple. Cambios químicos."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b2",
+          "titulo": "Los elementos químicos",
+          "ceVinculadas": [
+            "CE3"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b2-1",
+              "texto": "Los elementos químicos. Propiedades de los metales y los no metales."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b3",
+          "titulo": "Propiedades del agua",
+          "ceVinculadas": [
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b3-1",
+              "texto": "Otras propiedades del agua: la capilaridad, la ósmosis, el agua como solvente. Efecto de la temperatura en la solubilidad."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b4",
+          "titulo": "La destilación",
+          "ceVinculadas": [
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b4-1",
+              "texto": "La destilación como proceso físico y sus aplicaciones en el ámbito industrial."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b5",
+          "titulo": "La refracción de la luz",
+          "ceVinculadas": [
+            "CE1",
+            "CE2"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b5-1",
+              "texto": "La refracción de la luz. Tipos de lentes."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b6",
+          "titulo": "Transferencia de energía",
+          "ceVinculadas": [
+            "CE1"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b6-1",
+              "texto": "La transferencia de energía por calor o trabajo mecánico."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b7",
+          "titulo": "El equilibrio térmico",
+          "ceVinculadas": [
+            "CE2"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b7-1",
+              "texto": "El equilibrio térmico."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b8",
+          "titulo": "Movimiento",
+          "ceVinculadas": [
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b8-1",
+              "texto": "Movimiento. Definición del sistema de referencia."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b9",
+          "titulo": "La estática",
+          "ceVinculadas": [
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b9-1",
+              "texto": "La estática. Cargas positivas y negativas."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b10",
+          "titulo": "Circuitos eléctricos",
+          "ceVinculadas": [
+            "CE3"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b10-1",
+              "texto": "Circuitos eléctricos y las transformaciones de energía."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b11",
+          "titulo": "Magnetismo y electricidad",
+          "ceVinculadas": [
+            "CE1"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b11-1",
+              "texto": "Relación entre magnetismo y electricidad."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b12",
+          "titulo": "Gravitación universal",
+          "ceVinculadas": [
+            "CE2"
+          ],
+          "contenidos": [
+            {
+              "id": "fq5-b12-1",
+              "texto": "La ley de gravitación universal."
+            }
+          ]
+        },
+        {
+          "id": "fq5-b13",
+          "titulo": "Contenidos transversales",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "fq5-b13-1",
+              "texto": "El proceso de medición: cálculo por aproximación. Mediciones. Incertidumbres en las mediciones. Instrumentos de medición. Unidades en el Sistema Internacional y sus conversiones."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "fq5-cl-01",
+          "ce": "CE1",
+          "texto": "Utiliza diversas fuentes de información y obtiene datos relevantes sobre la transferencia de energía por calor o trabajo mecánico, cambios físicos y químicos mediante la evaluación de la calidad y la fiabilidad de dicha información."
+        },
+        {
+          "id": "fq5-cl-02",
+          "ce": "CE1",
+          "texto": "Diseña y lleva a cabo experimentos simples que les permitan comprobar la relación entre el magnetismo y la electricidad, mediante la observación de las diferentes magnitudes electromagnéticas involucradas."
+        },
+        {
+          "id": "fq5-cl-03",
+          "ce": "CE2",
+          "texto": "Interpreta la interacción entre cuerpos por medio de la Ley de Gravitación Universal, utilizando un lenguaje claro y preciso."
+        },
+        {
+          "id": "fq5-cl-04",
+          "ce": "CE2",
+          "texto": "Identifica la existencia del equilibrio térmico entre cuerpos que se encuentran en contacto y relaciona con la transferencia de energía entre ellos, utilizando la información para abordar situaciones cotidianas."
+        },
+        {
+          "id": "fq5-cl-05",
+          "ce": "CE3",
+          "texto": "Diseña un circuito eléctrico sencillo y analiza las transformaciones energéticas involucradas."
+        },
+        {
+          "id": "fq5-cl-06",
+          "ce": "CE3",
+          "texto": "Clasifica metales y no metales a partir de la observación y experimentación con diferentes muestras de su entorno."
+        },
+        {
+          "id": "fq5-cl-07",
+          "ce": "CE4",
+          "texto": "Reconoce la necesidad de definir un sistema de referencia para construir el concepto de movimiento, mediante situaciones lúdicas."
+        },
+        {
+          "id": "fq5-cl-08",
+          "ce": "CE4",
+          "texto": "Ensaya explicaciones en eventos cotidianos que implican fenómenos electrostáticos."
+        },
+        {
+          "id": "fq5-cl-09",
+          "ce": "CE4",
+          "texto": "Identifica al agua como solvente, experimentando con sustancias de la vida cotidiana y expresa sus observaciones contrastándolas con sus ideas previas."
+        },
+        {
+          "id": "fq5-cl-10",
+          "ce": "CE5",
+          "texto": "Reconoce cómo afecta en la sociedad y el ambiente, las transformaciones de los sistemas materiales, identificando el carácter temporal del conocimiento científico en la toma de decisiones."
+        },
+        {
+          "id": "fq5-cl-11",
+          "ce": "CE5",
+          "texto": "Explica el proceso de destilación y los diferentes cambios de estado que allí ocurren a partir de lo que observa, sus ideas previas y el conocimiento científico, valorando sus aplicaciones en el ámbito industrial y su aporte a la sociedad."
+        }
+      ],
+      "fuente": {
+        "archivo": "Física Química - Tramo 4.pdf",
+        "paginas": [
+          12,
+          14
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "fq6-b1",
+          "titulo": "Las soluciones gaseosas",
+          "ceVinculadas": [
+            "CE1",
+            "CE2"
+          ],
+          "contenidos": [
+            {
+              "id": "fq6-b1-1",
+              "texto": "Las soluciones gaseosas. El aire y su composición, causas de la variación de su composición."
+            }
+          ]
+        },
+        {
+          "id": "fq6-b2",
+          "titulo": "El modelo corpuscular de la materia",
+          "ceVinculadas": [
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq6-b2-1",
+              "texto": "El modelo corpuscular de la materia. Moléculas y átomos."
+            }
+          ]
+        },
+        {
+          "id": "fq6-b3",
+          "titulo": "El espectro electromagnético",
+          "ceVinculadas": [
+            "CE1",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq6-b3-1",
+              "texto": "El espectro electromagnético."
+            }
+          ]
+        },
+        {
+          "id": "fq6-b4",
+          "titulo": "La luz",
+          "ceVinculadas": [
+            "CE2"
+          ],
+          "contenidos": [
+            {
+              "id": "fq6-b4-1",
+              "texto": "La composición y la descomposición de la luz."
+            }
+          ]
+        },
+        {
+          "id": "fq6-b5",
+          "titulo": "Las ondas sonoras",
+          "ceVinculadas": [
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "fq6-b5-1",
+              "texto": "Las ondas sonoras, la velocidad de propagación del sonido en distintos medios. Nivel de intensidad del sonido."
+            }
+          ]
+        },
+        {
+          "id": "fq6-b6",
+          "titulo": "La energía y su conservación",
+          "ceVinculadas": [
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq6-b6-1",
+              "texto": "La energía y su conservación, en diferentes sistemas y contextos."
+            }
+          ]
+        },
+        {
+          "id": "fq6-b7",
+          "titulo": "Eficiencia energética",
+          "ceVinculadas": [
+            "CE3"
+          ],
+          "contenidos": [
+            {
+              "id": "fq6-b7-1",
+              "texto": "Eficiencia energética."
+            }
+          ]
+        },
+        {
+          "id": "fq6-b8",
+          "titulo": "Contenidos transversales",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "fq6-b8-1",
+              "texto": "El proceso de medición: cálculo por aproximación, mediciones, incertidumbres en las mediciones, instrumentos de medición, unidades en el Sistema Internacional y sus conversiones."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "fq6-cl-01",
+          "ce": "CE1",
+          "texto": "Explica la composición del aire y analiza su variación con las condiciones ambientales a partir de información y evidencias."
+        },
+        {
+          "id": "fq6-cl-02",
+          "ce": "CE1",
+          "texto": "Comunica de manera efectiva la relación entre las variables frecuencia y longitud de onda en el espectro electromagnético, utilizando un lenguaje preciso clasificando las radiaciones electromagnéticas."
+        },
+        {
+          "id": "fq6-cl-03",
+          "ce": "CE2",
+          "texto": "Identifica situaciones problemáticas relacionadas con la composición y la descomposición de la luz, plantea hipótesis y explora preguntas que permiten abordarlas con un grado sencillo de abstracción."
+        },
+        {
+          "id": "fq6-cl-04",
+          "ce": "CE2",
+          "texto": "Identifica a las soluciones gaseosas como sistemas materiales, reconociendo ejemplos de ellas en la vida cotidiana a través de la observación e información."
+        },
+        {
+          "id": "fq6-cl-05",
+          "ce": "CE3",
+          "texto": "Establece un plan de acción para implementar la eficiencia energética en su contexto, tomando decisiones sobre el consumo responsable de cualquier tipo de energía."
+        },
+        {
+          "id": "fq6-cl-06",
+          "ce": "CE3",
+          "texto": "Representa mediante modelos la estructura corpuscular de los sistemas materiales en los estados de agregación, utilizando diferentes estrategias y recursos."
+        },
+        {
+          "id": "fq6-cl-07",
+          "ce": "CE4",
+          "texto": "Indaga sobre fenómenos que involucren las mediciones de la intensidad del sonido autorregulando sus emociones."
+        },
+        {
+          "id": "fq6-cl-08",
+          "ce": "CE4",
+          "texto": "Aplica el concepto de modelo corpuscular y explica la transformación de los sistemas materiales a partir de la indagación y de la experimentación."
+        },
+        {
+          "id": "fq6-cl-09",
+          "ce": "CE5",
+          "texto": "Identifica y relaciona en el espectro electromagnético el funcionamiento de las aplicaciones tecnológicas."
+        },
+        {
+          "id": "fq6-cl-10",
+          "ce": "CE5",
+          "texto": "Interpreta la relación entre átomos y moléculas en sistemas materiales de uso cotidiano identificando los elementos químicos presentes en ellas."
+        }
+      ],
+      "fuente": {
+        "archivo": "Física Química - Tramo 4.pdf",
+        "paginas": [
+          13,
+          15
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Al iniciar el ciclo, hacer el diagnóstico de la situación de partida y planificar según las progresiones de aprendizaje y los criterios de logro, relacionándolos con los procesos cognitivos.",
+    "Establecer vínculos con otras unidades curriculares para favorecer el trabajo interdisciplinar.",
+    "Considerar el Diseño Universal de Aprendizajes (DUA): múltiples formas de representación, de acción-expresión y de motivación.",
+    "Aprovechar entornos virtuales, materiales de bajo costo, placas programables y equipos de laboratorio.",
+    "Secuenciar actividades que permitan abrir interrogantes, considerar ideas previas, formular hipótesis, observar, clasificar, controlar variables, tabular datos, contrastar evidencias, registrar y comunicar en diferentes soportes, combinando trabajo individual, en grupo pequeño y con el grupo clase.",
+    "Contribuir a la alfabetización científica para leer y producir textos que expliquen y argumenten los fenómenos, con el lenguaje propio de las ciencias; el aspecto lúdico tiene un rol protagónico."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en problemas",
+    "Analogías",
+    "Gamificación",
+    "STEAM",
+    "Pregunta investigable",
+    "Trabajo colaborativo",
+    "Webquest",
+    "Estudio de casos",
+    "Análisis histórico de las ciencias",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

@@ -1,0 +1,1064 @@
+{
+  "id": "lengua-t4",
+  "nombre": "Lengua Española",
+  "espacio": "Comunicación",
+  "tramo": 4,
+  "version": "v2",
+  "revisado": false,
+  "notasRevision": [
+    "5.º grado, «La escucha atenta y el parafraseo de lo escuchado»: el PDF dice «CE, CE2, …» (pág. 10); se interpretó como CE1.",
+    "El PDF señala con color los contenidos que se abordan tanto desde la lectura como desde la escritura; ese color no se conserva en la app.",
+    "Los criterios de logro figuran en tablas aparte por competencia; no se vinculan con contenidos concretos."
+  ],
+  "fuente": {
+    "archivo": "Lengua Española_v2 - Tramo 4.pdf",
+    "paginas": [
+      6,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "justificacion": "El desarrollo y la apropiación gradual de la comunicación a través de la escritura son el eje de la alfabetización primaria. La escritura representa gráficamente la lengua y constituye un sistema diferente de ella: no se adquiere espontáneamente como la oralidad, sino que es un fenómeno cultural que requiere aprendizaje e interactúa con el desarrollo de la lectura. El programa parte de reconocer la necesidad de estimular las competencias básicas definidas por la ANEP y el trabajo en lengua española con atención a la oralidad, la lectura y la escritura en las distintas etapas de su desarrollo.",
+  "contenidosEstructurantes": [
+    "Macrohabilidades",
+    "Reflexión metalingüística"
+  ],
+  "ejes": [
+    "Oralidad",
+    "Lectura",
+    "Escritura",
+    "Gramática",
+    "Ortografía"
+  ],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Narra, expone, describe, argumenta, explica, dialoga a través de la incorporación de vocabulario específico para organizar su discurso con adecuación al contexto.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Metacognitiva",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Reconoce su potencial creativo, vincula ideas propias con las de los otros y enriquece su proceso de creación para participar activamente de situaciones desafiantes.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Indaga sobre significados diversos y desconocidos, formula preguntas, dialoga y justifica sus razones para construir puntos de vista.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Analiza el objeto de estudio, elabora hipótesis y expresa sus saberes de forma oral y escrita para afirmar o refutar su postura mediante vocabulario específico.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Selecciona, analiza y utiliza la nueva información para la resolución de problemas simples y concretos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento computacional",
+        "Intrapersonal",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Profundiza la reflexión sobre su aprendizaje para avanzar en el proceso de conocimiento de la lengua oral y escrita.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Metacognitiva"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Explora y reconoce sus posibilidades expresivas para fortalecer la construcción de su identidad en relación con los otros.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE8",
+      "texto": "Identifica desafíos, manifiesta sus inquietudes, busca estrategias y diseña planes de acción para resolver situaciones individuales y colectivas.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento computacional",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE9",
+      "texto": "Desarrolla sus estrategias comunicativas y el respeto a la diversidad para mejorar sus habilidades sociales, intercambiar experiencias, atender y entender a los otros en los diferentes ámbitos de convivencia.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Intrapersonal",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE10",
+      "texto": "Reconoce y reflexiona sobre los derechos y obligaciones para promover la adecuada convivencia y el respeto a la identidad propia y del otro, a través de recursos lingüísticos y no lingüísticos, en diferentes formatos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "le5-b1",
+          "titulo": "Oralidad: hablar y escuchar",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le5-b1-1",
+              "texto": "La novela en diferentes soportes multimediales.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2"
+              ]
+            },
+            {
+              "id": "le5-b1-2",
+              "texto": "Los recursos lingüísticos y no lingüísticos. Su adecuación al soporte utilizado.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b1-3",
+              "texto": "La elección de los temas y la confrontación de ideas. Los argumentos.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b1-4",
+              "texto": "Las estrategias lingüísticas para la argumentación: palabras para persuadir.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b1-5",
+              "texto": "La descripción y la explicación en actividades interdisciplinarias, apoyadas en modelos materiales o digitales (maquetas, simulaciones, representaciones), adecuadas a los diferentes auditorios.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE4",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b1-6",
+              "texto": "La escucha respetuosa de diversas opiniones y las razones para sostener o modificar las propias.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b1-7",
+              "texto": "La escucha atenta y el parafraseo de lo escuchado.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b1-8",
+              "texto": "Los diferentes registros de la oralidad (coloquial y formal).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE6",
+                "CE7",
+                "CE9",
+                "CE10"
+              ]
+            }
+          ],
+          "eje": "Oralidad",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le5-b2",
+          "titulo": "Lectura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le5-b2-1",
+              "texto": "Las estrategias discursivas micro y macrosemánticas en textos explicativos.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b2-2",
+              "texto": "Las estrategias discursivas. La construcción de sentido: el vínculo entre párrafos.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b2-3",
+              "texto": "Las estrategias discursivas organizacionales.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b2-4",
+              "texto": "La cohesión textual: nexos coordinantes, subordinantes, adversativos, condicionales.",
+              "ceVinculadas": [
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b2-5",
+              "texto": "El mapa mental.",
+              "ceVinculadas": [
+                "CE1",
+                "CE4",
+                "CE6",
+                "CE7"
+              ]
+            },
+            {
+              "id": "le5-b2-6",
+              "texto": "Las reglas de comportamiento en entornos digitales en el ámbito intraescolar: las netiquetas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            }
+          ],
+          "eje": "Lectura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le5-b3",
+          "titulo": "Escritura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le5-b3-1",
+              "texto": "La práctica de escritura: la selección del tema, la progresión del contenido y la cohesión textual.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le5-b3-2",
+              "texto": "La creación de poemas: rimas asonantes y consonantes.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE6",
+                "CE7",
+                "CE9"
+              ]
+            }
+          ],
+          "eje": "Escritura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le5-b4",
+          "titulo": "Gramática",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le5-b4-1",
+              "texto": "Las formas no personales del verbo: gerundio, participio, infinitivo.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b4-2",
+              "texto": "La formación de palabras por prefijación y sufijación.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b4-3",
+              "texto": "La oración gramatical: el sujeto y el predicado.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b4-4",
+              "texto": "La concordancia entre el sustantivo y el verbo.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b4-5",
+              "texto": "La flexión verbal.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b4-6",
+              "texto": "La formación de palabras compuestas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Gramática",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        },
+        {
+          "id": "le5-b5",
+          "titulo": "Ortografía",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le5-b5-1",
+              "texto": "Los signos de puntuación.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b5-2",
+              "texto": "La escritura de las palabras compuestas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le5-b5-3",
+              "texto": "Los usos de la tilde en hiatos y adverbios terminados en -mente.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Ortografía",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        },
+        {
+          "id": "le5-b6",
+          "titulo": "Textos sugeridos en diferentes soportes",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le5-b6-1",
+              "texto": "Textos narrativos: anécdotas, cuentos, fábulas, historietas, leyendas, noticias, novelas, guiones, obras de teatro, biografías."
+            },
+            {
+              "id": "le5-b6-2",
+              "texto": "Textos expositivo-explicativos: afiches, artículos de enciclopedia, folletos, infografías, resúmenes, actas de reuniones. Descripción (esquemas, informes, instructivos, recetas, reglas de juego, cuadros sinópticos, mapas semánticos, retratos), enumeración, comparación y contraste."
+            },
+            {
+              "id": "le5-b6-3",
+              "texto": "Textos argumentativos: afiches, folletos y cortos publicitarios, artículos de opinión."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "le5-cl-01",
+          "ce": "CE1",
+          "texto": "Planifica y expone con adecuación al auditorio sobre temas de estudio en diversas áreas del conocimiento."
+        },
+        {
+          "id": "le5-cl-02",
+          "ce": "CE1",
+          "texto": "Selecciona temas y construye argumentos en la confrontación con las ideas de otros."
+        },
+        {
+          "id": "le5-cl-03",
+          "ce": "CE1",
+          "texto": "Desarrolla la escucha atenta y activa en la producción de contraargumentos."
+        },
+        {
+          "id": "le5-cl-04",
+          "ce": "CE1",
+          "texto": "Reconoce e incorpora estrategias lingüísticas en la persuasión, mediante palabras clave."
+        },
+        {
+          "id": "le5-cl-05",
+          "ce": "CE1",
+          "texto": "Utiliza argumentos fundados y persuasivos en el intercambio con el interlocutor."
+        },
+        {
+          "id": "le5-cl-06",
+          "ce": "CE1",
+          "texto": "Incorpora conectores que permiten la progresión temática tanto en la oralidad como en la escritura."
+        },
+        {
+          "id": "le5-cl-07",
+          "ce": "CE1",
+          "texto": "Identifica y elabora organizadores gráficos como apoyo a la construcción de sus esquemas mentales."
+        },
+        {
+          "id": "le5-cl-08",
+          "ce": "CE2",
+          "texto": "Produce textos originales con ideas propias y colectivas."
+        },
+        {
+          "id": "le5-cl-09",
+          "ce": "CE2",
+          "texto": "Reconoce el valor estético de las rimas en la producción de arte verbal."
+        },
+        {
+          "id": "le5-cl-10",
+          "ce": "CE3",
+          "texto": "Formula preguntas a partir de temas propuestos o de su interés que ponen en juego su pensamiento crítico."
+        },
+        {
+          "id": "le5-cl-11",
+          "ce": "CE3",
+          "texto": "Reconoce y construye verbalmente expresiones con adecuación polisémica adecuadas al contexto."
+        },
+        {
+          "id": "le5-cl-12",
+          "ce": "CE4",
+          "texto": "Elabora hipótesis a partir de sus saberes previos y las comunica con rigurosidad en el proceso de indagación pertinente al objeto de estudio."
+        },
+        {
+          "id": "le5-cl-13",
+          "ce": "CE4",
+          "texto": "Incorpora su vocabulario específico en relación directa con los contenidos de las diversas unidades curriculares."
+        },
+        {
+          "id": "le5-cl-14",
+          "ce": "CE5",
+          "texto": "Selecciona la información pertinente que le permita organizar los pasos de resolución de diversas situaciones."
+        },
+        {
+          "id": "le5-cl-15",
+          "ce": "CE6",
+          "texto": "Identifica y utiliza elementos cohesivos propios de textos narrativos, explicativos y argumentativos en diversas actividades dentro y fuera del aula."
+        },
+        {
+          "id": "le5-cl-16",
+          "ce": "CE6",
+          "texto": "Reconoce y emplea formas no personales del verbo, su valor semántico y la función dentro de la oración."
+        },
+        {
+          "id": "le5-cl-17",
+          "ce": "CE6",
+          "texto": "Valora y generaliza el aspecto semántico de los distintos sufijos y prefijos en la construcción de significado."
+        },
+        {
+          "id": "le5-cl-18",
+          "ce": "CE6",
+          "texto": "Reconoce y construye la relación semántica y sintáctica (concordancia verbal) existente entre el sujeto y el predicado en la producción de textos gramaticales."
+        },
+        {
+          "id": "le5-cl-19",
+          "ce": "CE6",
+          "texto": "Reflexiona respecto a los aportes de las desinencias verbales en la construcción de sentido."
+        },
+        {
+          "id": "le5-cl-20",
+          "ce": "CE7",
+          "texto": "Reconoce las expresiones lingüísticas identitarias, propias y de distintos grupos, en el fortalecimiento de la pertenencia."
+        },
+        {
+          "id": "le5-cl-21",
+          "ce": "CE8",
+          "texto": "Diseña planes de acción personales y grupales a través de expresiones orales y escritas en la resolución de situaciones contextualizadas al entorno y en el marco de propuestas de pensamiento computacional."
+        },
+        {
+          "id": "le5-cl-22",
+          "ce": "CE9",
+          "texto": "Produce sus propias opiniones en el planteo de estrategias resolutivas frente a situaciones sociales del entorno institucional."
+        },
+        {
+          "id": "le5-cl-23",
+          "ce": "CE9",
+          "texto": "Reconoce, acepta, respeta la diversidad social y los límites a través de las opiniones de los otros en las relaciones interpersonales."
+        },
+        {
+          "id": "le5-cl-24",
+          "ce": "CE10",
+          "texto": "Utiliza recursos digitales lingüísticos y gráficos en la comunicación asertiva con los demás."
+        },
+        {
+          "id": "le5-cl-25",
+          "ce": "CE10",
+          "texto": "Reconoce y valora los derechos que favorecen una inserción saludable en la sociedad."
+        }
+      ],
+      "fuente": {
+        "archivo": "Lengua Española_v2 - Tramo 4.pdf",
+        "paginas": [
+          10,
+          11,
+          12,
+          13
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "le6-b1",
+          "titulo": "Oralidad: hablar y escuchar",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le6-b1-1",
+              "texto": "El estilo directo e indirecto en la novela.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2"
+              ]
+            },
+            {
+              "id": "le6-b1-2",
+              "texto": "La escucha atenta y selectiva con la finalidad de tomar notas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE8",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b1-3",
+              "texto": "La escucha analítica de diversas opiniones y las razones para sostener las propias. Las intervenciones oportunas integrando diferentes perspectivas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b1-4",
+              "texto": "La negociación de opiniones para lograr acuerdos en diferentes contextos presenciales, virtuales o mixtos (participación oral asertiva en el marco de la integración de los consejos de participación y otros).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b1-5",
+              "texto": "Los esquemas básicos del razonamiento argumentativo. La elección del tema, la estructura de los discursos (premisas, argumentos).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b1-6",
+              "texto": "El trabajo con la lengua: los marcadores del discurso, las expresiones de refuerzo, las formas de la apelación.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le6-b1-7",
+              "texto": "La descripción y la explicación de distintos temas involucrados en los procesos de resolución de problemas e indagaciones.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE4",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            }
+          ],
+          "eje": "Oralidad",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le6-b2",
+          "titulo": "Lectura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le6-b2-1",
+              "texto": "La profundización en los procesos de lectura autónoma de los textos. El reconocimiento de temas y formas de expresión.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b2-2",
+              "texto": "La selección de fuentes digitales confiables: los criterios de selección.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b2-3",
+              "texto": "La construcción de sentido en artículos de divulgación científica.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE7",
+                "CE8",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b2-4",
+              "texto": "Las estrategias discursivas organizacionales en textos de uso social: correos electrónicos, facturas, resumen de cuentas, contratos y otros.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE5",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b2-5",
+              "texto": "Las inferencias enunciativas en textos argumentativos (comprensión y producción).",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le6-b2-6",
+              "texto": "El mapa conceptual.",
+              "ceVinculadas": [
+                "CE1",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE7"
+              ]
+            },
+            {
+              "id": "le6-b2-7",
+              "texto": "Las reglas de comportamiento en entornos digitales en el ámbito extraescolar: las netiquetas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            }
+          ],
+          "eje": "Lectura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le6-b3",
+          "titulo": "Escritura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le6-b3-1",
+              "texto": "La producción de apuntes.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE4",
+                "CE6",
+                "CE7",
+                "CE8"
+              ]
+            }
+          ],
+          "eje": "Escritura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le6-b4",
+          "titulo": "Gramática",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le6-b4-1",
+              "texto": "Las categorías de palabras y los grupos sintácticos.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le6-b4-2",
+              "texto": "Las oraciones relacionadas: yuxtaposición y coordinación.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le6-b4-3",
+              "texto": "La formación de palabras derivadas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Gramática",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        },
+        {
+          "id": "le6-b5",
+          "titulo": "Ortografía",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le6-b5-1",
+              "texto": "Las realizaciones gráficas a partir del reconocimiento de familias de palabras: -sión, -ción, -cción.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le6-b5-2",
+              "texto": "Los usos de la tilde en interrogaciones y exclamaciones directas e indirectas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Ortografía",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        },
+        {
+          "id": "le6-b6",
+          "titulo": "Textos sugeridos en diferentes soportes",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le6-b6-1",
+              "texto": "Textos narrativos: anécdotas, cuentos, fábulas, historietas, leyendas, biografías, autobiografías, noticias, novelas, guiones, obras de teatro."
+            },
+            {
+              "id": "le6-b6-2",
+              "texto": "Textos expositivo-explicativos: afiches, artículos de enciclopedia, folletos, infografías, resúmenes, actas de reuniones. Descripción (esquemas, informes, instructivos, recetas, reglas de juego, cuadros sinópticos, mapas semánticos), enumeración, comparación y contraste, problema-solución, causa-consecuencia."
+            },
+            {
+              "id": "le6-b6-3",
+              "texto": "Textos argumentativos: afiches, folletos y cortos publicitarios, artículos y rondas de opinión, críticas artísticas y deportivas."
+            }
+          ],
+          "transversal": true
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "le6-cl-01",
+          "ce": "CE1",
+          "texto": "Reconoce los distintos estilos en la narración e identifica diferentes voces con adecuación al contexto."
+        },
+        {
+          "id": "le6-cl-02",
+          "ce": "CE1",
+          "texto": "Utiliza saberes de diversas disciplinas y microhabilidades de la lengua oral (postura, gestos, volumen, velocidad) y los comunica en el entorno intra y extraescolar."
+        },
+        {
+          "id": "le6-cl-03",
+          "ce": "CE1",
+          "texto": "Desarrolla estrategias de escucha atenta y analítica e identifica, selecciona y registra ideas destacadas con adecuación al contexto."
+        },
+        {
+          "id": "le6-cl-04",
+          "ce": "CE1",
+          "texto": "Reflexiona y selecciona el vocabulario pertinente en la comunicación asertiva."
+        },
+        {
+          "id": "le6-cl-05",
+          "ce": "CE1",
+          "texto": "Identifica las palabras derivadas como componentes fundamentales construyendo sentido."
+        },
+        {
+          "id": "le6-cl-06",
+          "ce": "CE1",
+          "texto": "Reconoce en las oraciones relacionadas una estrategia o herramienta que da cuenta de la progresión temática, a través de diferentes formatos."
+        },
+        {
+          "id": "le6-cl-07",
+          "ce": "CE1",
+          "texto": "Reconoce e interpreta la organización del texto en diferentes mensajes de uso social."
+        },
+        {
+          "id": "le6-cl-08",
+          "ce": "CE1",
+          "texto": "Selecciona, interpreta y recrea información relevante de textos de estudio de diversas disciplinas."
+        },
+        {
+          "id": "le6-cl-09",
+          "ce": "CE2",
+          "texto": "Interpreta y crea diálogos originales que enriquecen sus producciones literarias individual y colectivamente."
+        },
+        {
+          "id": "le6-cl-10",
+          "ce": "CE2",
+          "texto": "Incorpora un amplio repertorio de verbos de habla enriqueciendo la producción de los diálogos."
+        },
+        {
+          "id": "le6-cl-11",
+          "ce": "CE3",
+          "texto": "Reconoce y elabora argumentos adecuados a las premisas en la incidencia con el interlocutor."
+        },
+        {
+          "id": "le6-cl-12",
+          "ce": "CE3",
+          "texto": "Analiza e interpreta y toma postura sobre los artículos de opinión."
+        },
+        {
+          "id": "le6-cl-13",
+          "ce": "CE4",
+          "texto": "Incorpora y utiliza vocabulario específico de las ciencias en la comunicación de procedimientos de indagación."
+        },
+        {
+          "id": "le6-cl-14",
+          "ce": "CE4",
+          "texto": "Utiliza conectores propios de los textos argumentativos y explicativos en la vinculación de las hipótesis con los resultados de la indagación."
+        },
+        {
+          "id": "le6-cl-15",
+          "ce": "CE5",
+          "texto": "Construye expresiones que dan cuenta del proceso reflexivo realizado en la resolución de problemas."
+        },
+        {
+          "id": "le6-cl-16",
+          "ce": "CE6",
+          "texto": "Reflexiona metalingüísticamente y construye textos coherentes y cohesivos con adecuada sintaxis."
+        },
+        {
+          "id": "le6-cl-17",
+          "ce": "CE6",
+          "texto": "Analiza la situación discursiva al seleccionar actos de habla y léxico adecuados pragmáticamente desde una escucha crítica."
+        },
+        {
+          "id": "le6-cl-18",
+          "ce": "CE6",
+          "texto": "Reconoce distintos significados a partir de la acentuación de los términos."
+        },
+        {
+          "id": "le6-cl-19",
+          "ce": "CE7",
+          "texto": "Identifica y justifica rasgos identitarios en las expresiones lingüísticas."
+        },
+        {
+          "id": "le6-cl-20",
+          "ce": "CE7",
+          "texto": "Reconoce y verbaliza emociones y sentimientos en favor de su adecuada gestión."
+        },
+        {
+          "id": "le6-cl-21",
+          "ce": "CE8",
+          "texto": "Expresa de forma oral y escrita metas y caminos resolutivos frente a problemas vinculados a su entorno institucional y social inmediato."
+        },
+        {
+          "id": "le6-cl-22",
+          "ce": "CE8",
+          "texto": "Selecciona con argumentos los recursos disponibles en situaciones de desafío en el entorno."
+        },
+        {
+          "id": "le6-cl-23",
+          "ce": "CE9",
+          "texto": "Utiliza responsablemente los medios masivos de comunicación y demuestra respeto a la diversidad en sentido amplio."
+        },
+        {
+          "id": "le6-cl-24",
+          "ce": "CE9",
+          "texto": "Distingue y selecciona vocabulario no discriminatorio que permite vínculos saludables en los diferentes ámbitos de convivencia."
+        },
+        {
+          "id": "le6-cl-25",
+          "ce": "CE10",
+          "texto": "Identifica e interpreta textos de causa-consecuencia en propuestas interdisciplinares."
+        },
+        {
+          "id": "le6-cl-26",
+          "ce": "CE10",
+          "texto": "Incorpora y utiliza en sus producciones escritas distintos conectores que establecen el vínculo entre antecedente y consecuente."
+        }
+      ],
+      "fuente": {
+        "archivo": "Lengua Española_v2 - Tramo 4.pdf",
+        "paginas": [
+          14,
+          15,
+          16,
+          17
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Desarrollar las macrohabilidades (hablar, escuchar, leer y escribir) de forma articulada, con situaciones comunicativas reales y en diferentes soportes.",
+    "Promover la reflexión metalingüística: gramática y ortografía al servicio de la construcción de sentido en los textos.",
+    "Trabajar con una variedad de textos: narrativos, expositivo-explicativos (descripción, enumeración, comparación y contraste, problema-solución, causa-consecuencia) y argumentativos."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

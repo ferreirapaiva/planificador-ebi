@@ -1,0 +1,988 @@
+{
+  "id": "lengua-t2",
+  "nombre": "Lengua Española",
+  "espacio": "Comunicación",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "El PDF presenta una tabla por competencia, cada una con su propia lista de contenidos; aquí cada contenido figura una vez, vinculado a todas las competencias en cuyas filas aparece.",
+    "El PDF indica que los contenidos «señalados con color» se abordan tanto desde la lectura como desde la escritura; ese color no se conserva en la app."
+  ],
+  "fuente": {
+    "archivo": "Lengua Española - Tramo 2.pdf",
+    "paginas": [
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ]
+  },
+  "justificacion": "El desarrollo y la apropiación gradual de la comunicación a través de la escritura son el eje de la alfabetización primaria. La escritura representa gráficamente la lengua y constituye un sistema diferente de ella: no se adquiere espontáneamente como la oralidad, sino que es un fenómeno cultural que requiere aprendizaje e interactúa con el desarrollo de la lectura. El programa parte de reconocer la necesidad de estimular las competencias básicas definidas por la ANEP y el trabajo en lengua española con atención a la oralidad, la lectura y la escritura en las distintas etapas de su desarrollo.",
+  "contenidosEstructurantes": [
+    "Macrohabilidades",
+    "Reflexión metalingüística"
+  ],
+  "ejes": [
+    "Oralidad",
+    "Lectura",
+    "Escritura",
+    "Gramática",
+    "Ortografía"
+  ],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Expresa ideas, emociones, narra mediante diversos lenguajes y adapta los registros lingüísticos para comunicarse según los requerimientos de cada situación.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Organiza ideas e información de forma autónoma para producir textos orales y escritos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Intrapersonal",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Formula preguntas, dialoga, reconoce situaciones problemáticas del entorno intraescolar y da razones para construir sus puntos de vista.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento computacional",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Elabora hipótesis a partir de temas desarrollados en el aula para expresarse en forma oral y escrita.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Opina ante diferentes situaciones del entorno escolar y social e incorpora los porqué para la resolución de problemas.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento computacional",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Utiliza el código alfabético y reflexiona sobre el aprendizaje de la lengua para avanzar en el proceso de apropiación de la lectura y la escritura.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Metacognitiva",
+        "Intrapersonal"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Construye sentido a partir de recursos lingüísticos y paralingüísticos para comunicar sus emociones en relación con los otros en el entorno escolar.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE8",
+      "texto": "Expresa sus inquietudes y toma decisiones de forma creativa y asertiva en distintas situaciones de interacción en el ámbito escolar.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento computacional",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE9",
+      "texto": "Descubre y utiliza estrategias comunicativas orales y escritas para la construcción de vínculos en situaciones intraescolares.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE10",
+      "texto": "Utiliza recursos de la lengua oral y escrita para la participación democrática y el ejercicio de los derechos frente a temas de formación ciudadana.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "le1-b1",
+          "titulo": "Oralidad: hablar y escuchar",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le1-b1-1",
+              "texto": "Las fórmulas de cortesía.",
+              "ceVinculadas": [
+                "CE1",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le1-b1-2",
+              "texto": "La narración oral en contextos cotidianos, lúdicos, en entornos físicos o virtuales.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le1-b1-3",
+              "texto": "Los elementos paralingüísticos de la comunicación oral: gestos, tono, intensidad, velocidad, silencio, mirada, postura.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE7"
+              ]
+            },
+            {
+              "id": "le1-b1-4",
+              "texto": "La expresión de opiniones en variadas situaciones. Razones para sostenerlas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le1-b1-5",
+              "texto": "Pautas para una comunicación asertiva: turnos de palabra, adecuación del léxico, organización de ideas, fórmulas de tratamiento (tú, vos, usted) en interacciones espontáneas y planificadas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le1-b1-6",
+              "texto": "La memorización de textos: adivinanzas, poemas, canciones, retahílas, jitanjáforas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE8"
+              ]
+            }
+          ],
+          "eje": "Oralidad",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le1-b2",
+          "titulo": "Lectura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le1-b2-1",
+              "texto": "La lectura de textos modélicos mediada por el maestro.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE4",
+                "CE6",
+                "CE7",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le1-b2-2",
+              "texto": "La práctica de la lectura en forma autónoma.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE4",
+                "CE6",
+                "CE7",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le1-b2-3",
+              "texto": "La construcción del sentido del texto: el tema, las palabras clave, el orden de las ideas, la información explícita e implícita, recursos no lingüísticos, componentes culturales.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le1-b2-4",
+              "texto": "El abecedario interactivo (diversas representaciones icónicas y palabras variadas).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Lectura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le1-b3",
+          "titulo": "Escritura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le1-b3-1",
+              "texto": "El código escrito: los cuatro tipos de caracteres.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le1-b3-2",
+              "texto": "La escritura presilábica y silábica alfabética.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE4",
+                "CE9"
+              ]
+            },
+            {
+              "id": "le1-b3-3",
+              "texto": "La escritura alfabética: la relación fonema grafema. El autodictado.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Escritura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le1-b4",
+          "titulo": "Gramática",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le1-b4-1",
+              "texto": "La sílaba como unidad rítmica. La combinatoria de vocales y consonantes en la construcción de unidades con significado: el morfema y la palabra. La familia de palabras: procesos de derivación y composición del léxico.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le1-b4-2",
+              "texto": "La palabra y la oración como unidades de reconocimiento primario de los significados y las estructuras.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le1-b4-3",
+              "texto": "La expresión del número: singular y plural.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le1-b4-4",
+              "texto": "Clases de palabras: el adjetivo.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le1-b4-5",
+              "texto": "La expresión de la concordancia en género y número: artículo, sustantivo, adjetivo.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Gramática",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        },
+        {
+          "id": "le1-b5",
+          "titulo": "Ortografía",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le1-b5-1",
+              "texto": "La puntuación: el punto, la coma enumerativa, el signo de exclamación y el signo de interrogación.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le1-b5-2",
+              "texto": "Los usos de las mayúsculas (los nombres propios, los títulos, el inicio de oración simple).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le1-b5-3",
+              "texto": "La reflexión sobre la relación fonema grafema. El autodictado.",
+              "ceVinculadas": [
+                "CE1",
+                "CE4",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Ortografía",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "le1-cl-01",
+          "ce": "CE1",
+          "texto": "Se expresa de forma oral y relaciona ideas con pertinencia a la situación comunicativa."
+        },
+        {
+          "id": "le1-cl-02",
+          "ce": "CE1",
+          "texto": "Utiliza elementos paralingüísticos en la oralidad."
+        },
+        {
+          "id": "le1-cl-03",
+          "ce": "CE2",
+          "texto": "Produce de forma alfabética unidades con significado (segmentación, uso de mayúscula, puntuación) en contextos áulicos."
+        },
+        {
+          "id": "le1-cl-04",
+          "ce": "CE2",
+          "texto": "Construye textos que sirven de apoyo a la exposición oral."
+        },
+        {
+          "id": "le1-cl-05",
+          "ce": "CE3",
+          "texto": "Opina y da razones en situaciones cotidianas."
+        },
+        {
+          "id": "le1-cl-06",
+          "ce": "CE3",
+          "texto": "Establece diálogos sobre temas de interés."
+        },
+        {
+          "id": "le1-cl-07",
+          "ce": "CE4",
+          "texto": "Reconoce e interpreta algunas regularidades del sistema de escritura alfabética en textos modélicos."
+        },
+        {
+          "id": "le1-cl-08",
+          "ce": "CE5",
+          "texto": "Utiliza algunos recursos lingüísticos y establece relaciones causales frente a opiniones."
+        },
+        {
+          "id": "le1-cl-09",
+          "ce": "CE6",
+          "texto": "Lee de forma autónoma o con ayuda del docente y adjudica valor fonológico a los grafemas."
+        },
+        {
+          "id": "le1-cl-10",
+          "ce": "CE6",
+          "texto": "Escribe en forma silábico alfabética y alfabética con intención comunicativa."
+        },
+        {
+          "id": "le1-cl-11",
+          "ce": "CE7",
+          "texto": "Establece comunicación asertiva con sus pares y con adultos del entorno institucional."
+        },
+        {
+          "id": "le1-cl-12",
+          "ce": "CE7",
+          "texto": "Utiliza normas de cortesía en el ámbito escolar."
+        },
+        {
+          "id": "le1-cl-13",
+          "ce": "CE8",
+          "texto": "Incorpora en el lenguaje expresiones metafóricas que favorecen la construcción de sentido."
+        },
+        {
+          "id": "le1-cl-14",
+          "ce": "CE9",
+          "texto": "Resuelve situaciones sencillas con sus pares a través del diálogo."
+        },
+        {
+          "id": "le1-cl-15",
+          "ce": "CE10",
+          "texto": "Expresa opiniones en forma oral y escrita sobre el cuidado de su entorno."
+        }
+      ],
+      "fuente": {
+        "archivo": "Lengua Española - Tramo 2.pdf",
+        "paginas": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "le2-b1",
+          "titulo": "Oralidad: hablar y escuchar",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le2-b1-1",
+              "texto": "Las fórmulas de cortesía.",
+              "ceVinculadas": [
+                "CE1",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b1-2",
+              "texto": "La narración oral en contextos cotidianos, lúdicos, en entornos físicos o virtuales.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b1-3",
+              "texto": "Los elementos paralingüísticos de la comunicación oral: gestos, tono, intensidad, velocidad, silencio, mirada.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE7"
+              ]
+            },
+            {
+              "id": "le2-b1-4",
+              "texto": "La expresión de opiniones en variadas situaciones. Razones para sostenerlas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b1-5",
+              "texto": "Pautas para una comunicación asertiva: turnos de palabra, adecuación del léxico, fórmulas de tratamiento en interacciones espontáneas y planificadas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b1-6",
+              "texto": "La memorización de textos: adivinanzas, poemas, canciones, retahílas, jitanjáforas.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE8"
+              ]
+            },
+            {
+              "id": "le2-b1-7",
+              "texto": "Silabeo. La acentuación fónica.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Oralidad",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le2-b2",
+          "titulo": "Lectura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le2-b2-1",
+              "texto": "La lectura convencional autónoma y mediada por el maestro.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE4",
+                "CE6",
+                "CE7",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b2-2",
+              "texto": "La práctica de la lectura en forma expresiva.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b2-3",
+              "texto": "La construcción del sentido del texto: el tema, las palabras clave, el orden de las ideas, la información explícita e implícita, recursos no lingüísticos, componentes culturales.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b2-4",
+              "texto": "El texto como unidad de sentido y de comunicación: la situación, los participantes, el tema, los modos de decir (sugerencias: cuentos, historietas, entrada de enciclopedia, recetas, tutoriales, índices, invitaciones, afiches).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b2-5",
+              "texto": "El abecedario interactivo (palabras variadas surgidas del vocabulario específico de diferentes unidades curriculares).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Lectura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le2-b3",
+          "titulo": "Escritura",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le2-b3-1",
+              "texto": "La producción de textos en diferentes soportes (convencional y digital) y modalidades (individual y colectiva) representativas de los diversos usos del lenguaje.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6",
+                "CE7",
+                "CE8",
+                "CE9",
+                "CE10"
+              ]
+            },
+            {
+              "id": "le2-b3-2",
+              "texto": "La organización temporal básica para comunicar información: primero, después, finalmente (en narraciones y exposiciones orales).",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE4",
+                "CE6",
+                "CE9"
+              ]
+            }
+          ],
+          "eje": "Escritura",
+          "contenidoEstructurante": "Macrohabilidades"
+        },
+        {
+          "id": "le2-b4",
+          "titulo": "Gramática",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le2-b4-1",
+              "texto": "La palabra y la oración como unidades de reconocimiento primario de los significados y las estructuras.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le2-b4-2",
+              "texto": "Los pronombres personales.",
+              "ceVinculadas": [
+                "CE1",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le2-b4-3",
+              "texto": "La expresión del número: singular y plural.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le2-b4-4",
+              "texto": "La expresión de la concordancia en género y número: artículo, sustantivo, adjetivo.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Gramática",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        },
+        {
+          "id": "le2-b5",
+          "titulo": "Ortografía",
+          "ceVinculadas": [],
+          "contenidos": [
+            {
+              "id": "le2-b5-1",
+              "texto": "La letra imprenta y la letra cursiva: sus cuatro caracteres.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            },
+            {
+              "id": "le2-b5-2",
+              "texto": "La puntuación: el punto, la coma enumerativa, el punto y coma, el signo de exclamación y el signo de interrogación, la raya en diálogos.",
+              "ceVinculadas": [
+                "CE1",
+                "CE2",
+                "CE3",
+                "CE4",
+                "CE5",
+                "CE6"
+              ]
+            }
+          ],
+          "eje": "Ortografía",
+          "contenidoEstructurante": "Reflexión metalingüística"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "le2-cl-01",
+          "ce": "CE1",
+          "texto": "Apoya su oralidad con gestos, uso de silencios y miradas oportunas."
+        },
+        {
+          "id": "le2-cl-02",
+          "ce": "CE1",
+          "texto": "Expresa ideas mediante el lenguaje escrito con adecuación a la sintaxis."
+        },
+        {
+          "id": "le2-cl-03",
+          "ce": "CE2",
+          "texto": "Produce textos escritos con adecuación a los recursos lingüísticos y paralingüísticos."
+        },
+        {
+          "id": "le2-cl-04",
+          "ce": "CE2",
+          "texto": "Organiza información relevante sobre temas abordados en el aula."
+        },
+        {
+          "id": "le2-cl-05",
+          "ce": "CE2",
+          "texto": "Produce textos descriptivos con uno o dos párrafos como mínimo a partir de la observación."
+        },
+        {
+          "id": "le2-cl-06",
+          "ce": "CE3",
+          "texto": "Construye sus puntos de vista mediante una serie de razones a partir de temas de interés."
+        },
+        {
+          "id": "le2-cl-07",
+          "ce": "CE4",
+          "texto": "Reconoce e interpreta regularidades del sistema de escritura alfabética y su segmentación."
+        },
+        {
+          "id": "le2-cl-08",
+          "ce": "CE5",
+          "texto": "Expresa su opinión, brinda razones y relaciona ideas a partir del planteo temático."
+        },
+        {
+          "id": "le2-cl-09",
+          "ce": "CE5",
+          "texto": "Utiliza recursos lingüísticos y reconoce causas y consecuencias en contextos cotidianos de comunicación."
+        },
+        {
+          "id": "le2-cl-10",
+          "ce": "CE5",
+          "texto": "Construye razones y sostiene sus opiniones."
+        },
+        {
+          "id": "le2-cl-11",
+          "ce": "CE6",
+          "texto": "Lee de forma autónoma e interpreta elementos paralingüísticos en diversos textos."
+        },
+        {
+          "id": "le2-cl-12",
+          "ce": "CE6",
+          "texto": "Produce textos en forma alfabética con intención comunicativa."
+        },
+        {
+          "id": "le2-cl-13",
+          "ce": "CE6",
+          "texto": "Reflexiona en relación con la puntuación (punto, coma enumerativa y signos de exclamación e interrogación) en la construcción de sentido."
+        },
+        {
+          "id": "le2-cl-14",
+          "ce": "CE6",
+          "texto": "Establece la concordancia género y número en los sintagmas nominales."
+        },
+        {
+          "id": "le2-cl-15",
+          "ce": "CE7",
+          "texto": "Apoya sus expresiones orales con manifestaciones corporales que favorecen la construcción de sentido."
+        },
+        {
+          "id": "le2-cl-16",
+          "ce": "CE7",
+          "texto": "Establece vínculos con sus pares mediante expresiones lingüísticas y asertivas."
+        },
+        {
+          "id": "le2-cl-17",
+          "ce": "CE8",
+          "texto": "Construye sentido de forma metafórica y aporta información implícita a partir de los textos leídos."
+        },
+        {
+          "id": "le2-cl-18",
+          "ce": "CE8",
+          "texto": "Interpreta información explícita e implícita de textos continuos y discontinuos."
+        },
+        {
+          "id": "le2-cl-19",
+          "ce": "CE9",
+          "texto": "Resuelve situaciones con sus pares mediante la exposición de razones relacionadas entre sí."
+        },
+        {
+          "id": "le2-cl-20",
+          "ce": "CE10",
+          "texto": "Promueve el cuidado medioambiental a través de diversos textos orales y escritos."
+        }
+      ],
+      "fuente": {
+        "archivo": "Lengua Española - Tramo 2.pdf",
+        "paginas": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "La enseñanza de la lectura y la escritura deben desarrollarse en forma articulada, no escindida, con consignas claras e intervenciones oportunas del docente.",
+    "Habilitar interacciones entre pares y espacios de reflexión sobre el lenguaje para profundizar los conocimientos sobre el sistema de escritura.",
+    "Antes de escribir en forma alfabética los niños dibujan, hacen grafismos y trazan letras con intención comunicativa: aprender a escribir es producto de la reflexión sobre la lengua y de la participación en prácticas sociales de lectura y escritura.",
+    "El maestro como modelo lector y escritor es fundamental; cuando los estudiantes escriben por sí mismos avanzan en la comprensión del sistema de escritura.",
+    "Al final del primer ciclo, la ortografía se acota a la intervención explícita y sistemática sobre la relación fonema-grafema, el punto, la coma enumerativa, los signos de exclamación e interrogación, la raya en diálogos y la acentuación."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

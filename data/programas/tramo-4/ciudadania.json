@@ -1,0 +1,965 @@
+{
+  "id": "ciudadania-t4",
+  "nombre": "Formación para la Ciudadanía",
+  "espacio": "Ciencias Sociales y Humanidades",
+  "tramo": 4,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "La justificación del PDF (pág. 7) repite el texto de Historia; se resumió y se agregó una síntesis de los temas del tramo.",
+    "6.º grado, «La libertad de expresión y de opinión»: el PDF indica «CE14», que no existe (la unidad tiene 13 competencias); se vinculó provisoriamente a la CE10 (derechos humanos). Verificar (pág. 17).",
+    "Los contenidos estructurantes son los del espacio Ciencias Sociales y Humanidades (pág. 3)."
+  ],
+  "fuente": {
+    "archivo": "Formación para la Ciudadanía - Tramo 4.pdf",
+    "paginas": [
+      3,
+      7,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "justificacion": "Formación para la Ciudadanía forma ciudadanos críticos en el ejercicio de derechos y obligaciones, pensando los fenómenos sociales en clave de procesos en permanente reconstrucción. En 5.º y 6.º aborda las familias, el trabajo, la participación democrática, la ciudadanía digital, los derechos humanos, la convivencia y la cultura de paz, desde metodologías activas centradas en el estudiante y en problemas de la realidad social.",
+  "contenidosEstructurantes": [
+    "El rol del Estado democrático",
+    "Construcción del concepto de ciudadanía",
+    "Ciudadanía y convivencia en los grupos humanos",
+    "Sociedades y sus interrelaciones históricas",
+    "Democracia",
+    "Los derechos humanos como construcción: logros y tensiones",
+    "Los niños, niñas, adolescentes y jóvenes como sujetos de derecho",
+    "Diversidad cultural: las manifestaciones culturales como signo de identidad",
+    "La violencia y sus distintas manifestaciones",
+    "Cultura y patrimonio"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Define y explica conceptos relacionados a temáticas sociales, a partir del intercambio con sus pares, para vincularse en diferentes contextos cotidianos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Identifica y expone de manera crítica las problemáticas de su comunidad, buscando concientizar y dar a conocer la implicancia de vivir en el marco de los derechos humanos, para su defensa.",
+      "competenciasMCN": [
+        "Pensamiento creativo",
+        "Pensamiento crítico"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Compara, reconoce y valora las diferencias entre su propia producción creativa y la de los demás, en temas que lo desafían.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Intrapersonal"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Reconoce la importancia del uso de determinadas estrategias como ciudadano digital, para un adecuado manejo de los datos personales en internet.",
+      "competenciasMCN": [
+        "Pensamiento computacional",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Toma conciencia de su corporalidad y de sus fortalezas y debilidades para resolver aquellos conflictos donde interviene la violencia, y así tomar decisiones en consecuencia.",
+      "competenciasMCN": [
+        "Metacognitiva",
+        "Intrapersonal"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Comienza a construir su proyecto de realización personal a través de metas alcanzables, teniendo en cuenta sus características personales, para insertarse como ciudadano activo en la sociedad.",
+      "competenciasMCN": [
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Planifica y organiza acciones que le permiten interactuar e incidir en el entorno que lo rodea para la construcción de una ciudadanía activa.",
+      "competenciasMCN": [
+        "Iniciativa y orientación a la acción",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE8",
+      "texto": "Reconoce el respeto por el vínculo con el otro teniendo en cuenta los derechos y las responsabilidades para una convivencia democrática.",
+      "competenciasMCN": [
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE9",
+      "texto": "Identifica derechos y responsabilidades y reconoce su implicancia para la vida democrática.",
+      "competenciasMCN": [
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE10",
+      "texto": "Participa y promueve acciones desde el marco de los derechos humanos en los diferentes grupos que integra, para analizar las problemáticas de su comunidad de manera crítica.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE11",
+      "texto": "Utiliza la tecnología de forma crítica, responsable y creativa en espacios de intercambio y producción, para generar diferentes formatos que sean accesibles y equitativos.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Pensamiento computacional",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE12",
+      "texto": "Participa en espacios digitales de intercambio y producción, para generar diferentes formatos que sean accesibles y equitativos.",
+      "competenciasMCN": [
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE13",
+      "texto": "Respeta derechos y asume responsabilidades proponiendo instancias de toma de decisiones democráticas en su entorno.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "ciu5-b1",
+          "titulo": "Las familias",
+          "ceVinculadas": [
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b1-1",
+              "texto": "Diferentes funciones que cumplen las familias: afectiva, protección social, transmisión cultural, mantenimiento de una historia compartida."
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b2",
+          "titulo": "Los derechos de los trabajadores",
+          "ceVinculadas": [
+            "CE2"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b2-1",
+              "texto": "Los derechos de los trabajadores. El derecho a la seguridad social. Protección en casos de enfermedad, desempleo, retiro."
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b3",
+          "titulo": "Los entornos digitales",
+          "ceVinculadas": [
+            "CE4",
+            "CE12"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b3-1",
+              "texto": "Diversas formas de habitar los entornos digitales: usuarios consumidores, prosumidores y productores."
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b4",
+          "titulo": "La participación democrática",
+          "ceVinculadas": [
+            "CE1",
+            "CE12"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b4-1",
+              "texto": "La participación democrática en espacios de construcción colectiva."
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b5",
+          "titulo": "Ciudadanos y migrantes",
+          "ceVinculadas": [
+            "CE2",
+            "CE10"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b5-1",
+              "texto": "Ciudadanos naturales y legales. Poblaciones migrantes."
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b6",
+          "titulo": "Los vínculos intergeneracionales",
+          "ceVinculadas": [
+            "CE1",
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b6-1",
+              "texto": "Los vínculos intergeneracionales en la sociedad."
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b7",
+          "titulo": "La democracia como forma de gobierno",
+          "ceVinculadas": [
+            "CE9"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b7-1",
+              "texto": "La democracia como forma de gobierno.",
+              "subitems": [
+                {
+                  "id": "ciu5-b7-1a",
+                  "texto": "Las características del gobierno uruguayo. La Constitución de la República."
+                },
+                {
+                  "id": "ciu5-b7-1b",
+                  "texto": "Los principios fundantes: soberanía popular, separación de poderes y sufragio universal."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b8",
+          "titulo": "Ciudadanía digital",
+          "ceVinculadas": [
+            "CE3",
+            "CE11"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b8-1",
+              "texto": "Ciudadanía digital: identidad digital. Conformación de la huella digital. Oportunidades y desafíos."
+            }
+          ]
+        },
+        {
+          "id": "ciu5-b9",
+          "titulo": "Autoidentificación y vínculos afectivos",
+          "ceVinculadas": [
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu5-b9-1",
+              "texto": "Autoidentificación y vínculos afectivos con otras personas."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "ciu5-cl-01",
+          "ce": "CE8",
+          "texto": "Identifica a través de diferentes narrativas las diferentes funciones que cumplen las familias durante el proceso de socialización.",
+          "contenidos": [
+            "ciu5-b1-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-02",
+          "ce": "CE8",
+          "texto": "Analiza distintos tipos de familias teniendo en cuenta los derechos y responsabilidades que les competen.",
+          "contenidos": [
+            "ciu5-b1-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-03",
+          "ce": "CE2",
+          "texto": "Identifica en diversas situaciones de su entorno los derechos de los trabajadores.",
+          "contenidos": [
+            "ciu5-b2-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-04",
+          "ce": "CE2",
+          "texto": "Explica diferentes escenarios vinculados a la protección que brinda la seguridad social a los trabajadores.",
+          "contenidos": [
+            "ciu5-b2-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-05",
+          "ce": [
+            "CE4",
+            "CE12"
+          ],
+          "texto": "Analiza y selecciona los contenidos que se encuentran en los entornos digitales con una actitud crítica, creativa y reflexiva.",
+          "contenidos": [
+            "ciu5-b3-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-06",
+          "ce": [
+            "CE4",
+            "CE12"
+          ],
+          "texto": "Recupera información y contenidos en diferentes formatos reutilizándola en actividades académicas y de su vida social.",
+          "contenidos": [
+            "ciu5-b3-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-07",
+          "ce": [
+            "CE4",
+            "CE12"
+          ],
+          "texto": "Reconoce los riesgos y las oportunidades que se presentan en los entornos digitales.",
+          "contenidos": [
+            "ciu5-b3-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-08",
+          "ce": [
+            "CE1",
+            "CE12"
+          ],
+          "texto": "Se posiciona y argumenta de manera válida en relación con la participación democrática en espacios de construcción colectiva frente a situaciones de su entorno cercano.",
+          "contenidos": [
+            "ciu5-b4-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-09",
+          "ce": [
+            "CE1",
+            "CE12"
+          ],
+          "texto": "Analiza y organiza información relevante para su participación democrática justificando sus elecciones.",
+          "contenidos": [
+            "ciu5-b4-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-10",
+          "ce": [
+            "CE1",
+            "CE12"
+          ],
+          "texto": "Participa en proyectos de su interés que contribuyen a la mejora de su entorno, por medio del trabajo colaborativo.",
+          "contenidos": [
+            "ciu5-b4-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-11",
+          "ce": [
+            "CE2",
+            "CE10"
+          ],
+          "texto": "Identifica derechos y responsabilidades y reconoce su implicancia en la vida democrática.",
+          "contenidos": [
+            "ciu5-b5-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-12",
+          "ce": [
+            "CE2",
+            "CE10"
+          ],
+          "texto": "Analiza en el marco de los derechos humanos las diferentes situaciones que viven los migrantes.",
+          "contenidos": [
+            "ciu5-b5-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-13",
+          "ce": [
+            "CE2",
+            "CE10"
+          ],
+          "texto": "Identifica y promueve la solidaridad entre sus pares y la defensa de los derechos humanos en el aula y el centro educativo.",
+          "contenidos": [
+            "ciu5-b5-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-14",
+          "ce": [
+            "CE1",
+            "CE8"
+          ],
+          "texto": "Identifica y demuestra los vínculos intergeneracionales en la sociedad, por medio de actividades colaborativas.",
+          "contenidos": [
+            "ciu5-b6-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-15",
+          "ce": [
+            "CE1",
+            "CE8"
+          ],
+          "texto": "Utiliza estrategias comunicativas que le permiten generar acuerdos para una convivencia armónica.",
+          "contenidos": [
+            "ciu5-b6-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-16",
+          "ce": [
+            "CE1",
+            "CE8"
+          ],
+          "texto": "Identifica la perspectiva de derechos y se vincula en su vida cotidiana incluyendo todas las opiniones.",
+          "contenidos": [
+            "ciu5-b6-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-17",
+          "ce": "CE9",
+          "texto": "Reconoce relaciones dinámicas entre su entorno cercano y la democracia como forma de gobierno.",
+          "contenidos": [
+            "ciu5-b7-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-18",
+          "ce": "CE9",
+          "texto": "Se identifica como ciudadano activo con derechos y responsabilidades frente a situaciones que implican vivir en democracia.",
+          "contenidos": [
+            "ciu5-b7-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-19",
+          "ce": [
+            "CE3",
+            "CE11"
+          ],
+          "texto": "Identifica las acciones que conforman su huella digital y reflexiona con otros sobre sus oportunidades y desafíos.",
+          "contenidos": [
+            "ciu5-b8-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-20",
+          "ce": [
+            "CE3",
+            "CE11"
+          ],
+          "texto": "Describe situaciones donde el uso de la tecnología puede ser una oportunidad, así como situaciones de riesgo que lo involucran personalmente o a terceras personas.",
+          "contenidos": [
+            "ciu5-b8-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-21",
+          "ce": [
+            "CE3",
+            "CE11"
+          ],
+          "texto": "Utiliza la tecnología de manera creativa y reflexiva en los entornos digitales, por medio de los cuales resuelve problemas, genera ideas, comparte proyectos y participa en la sociedad.",
+          "contenidos": [
+            "ciu5-b8-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-22",
+          "ce": "CE8",
+          "texto": "Interactúa y se vincula con sus pares, tomando conciencia de sus derechos y responsabilidades en situaciones cotidianas, de manera respetuosa y solidaria.",
+          "contenidos": [
+            "ciu5-b9-1"
+          ]
+        },
+        {
+          "id": "ciu5-cl-23",
+          "ce": "CE8",
+          "texto": "Identifica y respeta la diversidad en sí mismo y en el otro.",
+          "contenidos": [
+            "ciu5-b9-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Formación para la Ciudadanía - Tramo 4.pdf",
+        "paginas": [
+          13,
+          14,
+          15
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "ciu6-b1",
+          "titulo": "Los referentes adultos familiares",
+          "ceVinculadas": [
+            "CE7",
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b1-1",
+              "texto": "Los referentes adultos familiares como garantes de los derechos de los NNA."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b2",
+          "titulo": "Ámbitos de negociación salarial",
+          "ceVinculadas": [
+            "CE7",
+            "CE13"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b2-1",
+              "texto": "Ámbitos de negociación salarial. Derechos y garantías para las diferentes partes que intervienen."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b3",
+          "titulo": "La libertad de expresión y de opinión",
+          "ceVinculadas": [
+            "CE10"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b3-1",
+              "texto": "La libertad de expresión y de opinión. Garantías constitucionales."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b4",
+          "titulo": "Cultura de paz",
+          "ceVinculadas": [
+            "CE2",
+            "CE8"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b4-1",
+              "texto": "Cultura de paz como alternativa a diferentes formas de autoritarismo."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b5",
+          "titulo": "Las soberanías nacionales",
+          "ceVinculadas": [
+            "CE7",
+            "CE9"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b5-1",
+              "texto": "Las soberanías nacionales en el contexto internacional.",
+              "subitems": [
+                {
+                  "id": "ciu6-b5-1a",
+                  "texto": "El Gobierno y el Estado. El sistema político uruguayo."
+                },
+                {
+                  "id": "ciu6-b5-1b",
+                  "texto": "Partidos políticos."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b6",
+          "titulo": "Las generaciones de derechos humanos",
+          "ceVinculadas": [
+            "CE2",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b6-1",
+              "texto": "Las generaciones de derechos humanos y los contextos en que se crearon, con énfasis en los derechos humanos de cuarta y quinta generación."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b7",
+          "titulo": "Ciudadanía global",
+          "ceVinculadas": [
+            "CE2"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b7-1",
+              "texto": "Ciudadanía global. Migrantes."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b8",
+          "titulo": "Violencia, exclusión y drogas",
+          "ceVinculadas": [
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b8-1",
+              "texto": "La violencia que genera la exclusión social por efecto de las drogas."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b9",
+          "titulo": "Información y bienestar digital",
+          "ceVinculadas": [
+            "CE4",
+            "CE11"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b9-1",
+              "texto": "Información y desinformación. Bienestar digital. Tiempo de permanencia frente a las pantallas. Uso controlado."
+            }
+          ]
+        },
+        {
+          "id": "ciu6-b10",
+          "titulo": "La construcción de la sexualidad",
+          "ceVinculadas": [
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "ciu6-b10-1",
+              "texto": "La construcción de la sexualidad en el marco del proyecto de vida personal."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "ciu6-cl-01",
+          "ce": [
+            "CE7",
+            "CE8"
+          ],
+          "texto": "Propone soluciones como ciudadano frente a situaciones de la vida cotidiana considerando los recursos y el contexto.",
+          "contenidos": [
+            "ciu6-b1-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-02",
+          "ce": [
+            "CE7",
+            "CE8"
+          ],
+          "texto": "Analiza situaciones y ensaya respuestas en casos de estudio donde los derechos de los NNA se ven vulnerados.",
+          "contenidos": [
+            "ciu6-b1-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-03",
+          "ce": [
+            "CE7",
+            "CE8"
+          ],
+          "texto": "Genera vínculos asertivos con sus pares responsables de hacer efectivos y garantizar los derechos de los NNA.",
+          "contenidos": [
+            "ciu6-b1-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-04",
+          "ce": [
+            "CE7",
+            "CE8"
+          ],
+          "texto": "Integra y reconoce redes de apoyo más allá de su entorno cercano, a las que podría recurrir frente a diferentes situaciones, con mediación docente.",
+          "contenidos": [
+            "ciu6-b1-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-05",
+          "ce": [
+            "CE7",
+            "CE13"
+          ],
+          "texto": "Reconoce a trabajadores y empleadores como sujetos de derechos y obligaciones en el ámbito laboral.",
+          "contenidos": [
+            "ciu6-b2-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-06",
+          "ce": [
+            "CE7",
+            "CE13"
+          ],
+          "texto": "Identifica los intereses de las diferentes partes frente a una situación de negociación.",
+          "contenidos": [
+            "ciu6-b2-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-07",
+          "ce": [
+            "CE7",
+            "CE13"
+          ],
+          "texto": "Explica con argumentos válidos las posturas de unos y otros por medio de la interacción con sus pares.",
+          "contenidos": [
+            "ciu6-b2-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-08",
+          "ce": [
+            "CE7",
+            "CE13"
+          ],
+          "texto": "Aporta su visión e impronta personal atendiendo a los derechos y responsabilidades, valorando la opinión del otro y el respeto mutuo.",
+          "contenidos": [
+            "ciu6-b2-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-09",
+          "ce": "CE10",
+          "texto": "Ejemplifica con problemáticas reales estas libertades desde un marco de derechos humanos acorde a su edad e intereses.",
+          "contenidos": [
+            "ciu6-b3-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-10",
+          "ce": "CE10",
+          "texto": "Justifica y toma postura frente a situaciones donde existen censuras a la libertad de expresión, a través de casos de estudio.",
+          "contenidos": [
+            "ciu6-b3-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-11",
+          "ce": [
+            "CE2",
+            "CE8"
+          ],
+          "texto": "Identifica y desarrolla saberes y actitudes frente a situaciones singulares que emergen de la cotidianeidad escolar que generan malestares y violencia.",
+          "contenidos": [
+            "ciu6-b4-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-12",
+          "ce": [
+            "CE2",
+            "CE8"
+          ],
+          "texto": "Reconoce y promueve una cultura para la paz, a través de la participación en espacios de diálogo colectivo, donde se construyen acuerdos desde la confianza, el disfrute y la pertenencia.",
+          "contenidos": [
+            "ciu6-b4-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-13",
+          "ce": [
+            "CE7",
+            "CE9"
+          ],
+          "texto": "Selecciona y organiza la información relativa al Gobierno y los partidos políticos, identificando cómo funcionan los espacios de participación.",
+          "contenidos": [
+            "ciu6-b5-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-14",
+          "ce": [
+            "CE7",
+            "CE9"
+          ],
+          "texto": "Analiza diferentes situaciones y expone las características de un Estado soberano y sus vinculaciones con otros estados.",
+          "contenidos": [
+            "ciu6-b5-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-15",
+          "ce": [
+            "CE2",
+            "CE7"
+          ],
+          "texto": "Integra saberes acerca del contexto en que surgen las generaciones de derechos humanos y su incidencia en la vida cotidiana.",
+          "contenidos": [
+            "ciu6-b6-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-16",
+          "ce": [
+            "CE2",
+            "CE7"
+          ],
+          "texto": "Vincula los diferentes derechos humanos con problemáticas de la vida cotidiana y reflexiona acerca de su impacto.",
+          "contenidos": [
+            "ciu6-b6-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-17",
+          "ce": "CE2",
+          "texto": "Analiza con una mirada crítica las situaciones que viven las personas migrantes en el marco de los derechos humanos.",
+          "contenidos": [
+            "ciu6-b7-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-18",
+          "ce": "CE2",
+          "texto": "Identifica de forma empática y solidaria las situaciones que viven los migrantes con relación al acceso en el cumplimiento de sus derechos.",
+          "contenidos": [
+            "ciu6-b7-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-19",
+          "ce": "CE5",
+          "texto": "Identifica y reflexiona sobre los riesgos que implica el uso de drogas, por medio de actividades colaborativas.",
+          "contenidos": [
+            "ciu6-b8-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-20",
+          "ce": "CE5",
+          "texto": "Reflexiona y actúa de manera crítica y responsable en situaciones con sus pares donde se presentan conflictos bajo los efectos de sustancias nocivas.",
+          "contenidos": [
+            "ciu6-b8-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-21",
+          "ce": [
+            "CE4",
+            "CE11"
+          ],
+          "texto": "Reconoce y distingue entre información confiable, engañosa y falsa en diferentes formatos textuales.",
+          "contenidos": [
+            "ciu6-b9-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-22",
+          "ce": [
+            "CE4",
+            "CE11"
+          ],
+          "texto": "Identifica diferentes momentos del día y la noche para realizar actividades, en los que el uso de las pantallas es imprescindible y otros en los que no lo es.",
+          "contenidos": [
+            "ciu6-b9-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-23",
+          "ce": [
+            "CE4",
+            "CE11"
+          ],
+          "texto": "Hace un uso racional y crítico del tiempo de exposición frente a los dispositivos móviles.",
+          "contenidos": [
+            "ciu6-b9-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-24",
+          "ce": "CE6",
+          "texto": "Incorpora y desarrolla una actitud responsable por el cuidado de su cuerpo y el de las otras personas.",
+          "contenidos": [
+            "ciu6-b10-1"
+          ]
+        },
+        {
+          "id": "ciu6-cl-25",
+          "ce": "CE6",
+          "texto": "Comienza a tomar decisiones en la construcción de su sexualidad a nivel personal para alcanzar las metas que se propone.",
+          "contenidos": [
+            "ciu6-b10-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Formación para la Ciudadanía - Tramo 4.pdf",
+        "paginas": [
+          16,
+          17,
+          18
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Situar al estudiante en el centro de los procesos de aprendizaje para lograr aprendizajes significativos que se relacionen con lo ya adquirido y con su entorno.",
+    "Trabajar por centros de interés, a partir de problemas de la realidad social, en escenarios reales.",
+    "Partir de una visión compleja del entorno y de situaciones auténticas que orientan a la acción, con un clima de aula de participación auténtica, confianza y respeto por opiniones divergentes.",
+    "Adecuar las metodologías activas a los intereses y habilidades de los niños de esta franja etaria."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en problemas",
+    "Aula invertida",
+    "Trabajo colaborativo/cooperativo",
+    "Debate",
+    "Trabajos de indagación",
+    "Gamificación",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

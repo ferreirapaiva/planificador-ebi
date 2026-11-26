@@ -1,6 +1,7 @@
 import { forwardRef, useRef } from 'react';
 import { MESES_LECTIVOS, NOMBRE_MES, type PlanAnual } from '../datos/db';
 import { buscarUC } from '../datos/consultas';
+import { textoTramo } from '../datos/programas';
 import { diasDeClase } from '../datos/calendario';
 import { ESTILOS_DOCUMENTO, fecha } from '../componentes/Documento';
 import { AreaTexto } from '../componentes/ui';
@@ -18,7 +19,7 @@ export const DocumentoAnual = forwardRef<HTMLDivElement, { plan: PlanAnual }>(fu
           {plan.docente && (<tr><th>Docente</th><td>{plan.docente}</td></tr>)}
           {plan.escuela && (<tr><th>Escuela</th><td>{plan.escuela}</td></tr>)}
           {plan.grupo && (<tr><th>Grupo</th><td>{plan.grupo}</td></tr>)}
-          <tr><th>Grado</th><td>{plan.grados.map((g) => `${g}.º`).join(' y ')}{plan.grados.length > 1 ? ' (multigrado)' : ''} · Tramo 3</td></tr>
+          <tr><th>Grado</th><td>{plan.grados.map((g) => `${g}.º`).join(' y ')}{plan.grados.length > 1 ? ' (multigrado)' : ''} · {textoTramo(plan.grados)}</td></tr>
           <tr><th>Año lectivo</th><td>Del {fecha(cal.inicio)} al {fecha(cal.fin)}</td></tr>
         </tbody>
       </table>
@@ -115,7 +116,7 @@ export const DocumentoAnual = forwardRef<HTMLDivElement, { plan: PlanAnual }>(fu
           {plan.notas.split('\n').filter((l) => l.trim()).map((l, i) => <p key={i}>{l}</p>)}
         </section>
       )}
-      <p className="doc-pie">Elaborado a partir de los Programas de Educación Básica Integrada (ANEP), Tramo 3.</p>
+      <p className="doc-pie">Elaborado a partir de los Programas de Educación Básica Integrada (ANEP), {textoTramo(plan.grados)}.</p>
     </div>
   );
 });

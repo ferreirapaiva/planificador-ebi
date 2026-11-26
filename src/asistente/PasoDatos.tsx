@@ -1,6 +1,7 @@
 import { TIPOS, type TipoPlanificacion } from '../datos/db';
-import { ESPACIOS, PROGRAMAS } from '../datos/programas';
-import { Aviso, Campo, Pildora, TarjetaCasilla } from '../componentes/ui';
+import { ESPACIOS, programasDeGrados, ucIdsParaGrados } from '../datos/programas';
+import { Aviso, Campo, TarjetaCasilla } from '../componentes/ui';
+import { SelectorGrado } from '../componentes/SelectorGrado';
 import { alternar, type PropsPaso } from './tipos';
 import { Icono } from '../componentes/Iconos';
 import { CampoGrupo } from '../componentes/CampoGrupo';
@@ -52,11 +53,7 @@ export function PasoDatos({ plan, cambiar }: PropsPaso) {
 
       <section>
         <h3 className="mb-2 font-semibold text-slate-900">Grado</h3>
-        <div className="flex flex-wrap gap-2">
-          <Pildora activa={!multigrado && plan.grados[0] === 3} onClick={() => cambiar({ grados: [3] })}>3.º</Pildora>
-          <Pildora activa={!multigrado && plan.grados[0] === 4} onClick={() => cambiar({ grados: [4] })}>4.º</Pildora>
-          <Pildora activa={multigrado} onClick={() => cambiar({ grados: [3, 4] })}>3.º y 4.º (multigrado)</Pildora>
-        </div>
+        <SelectorGrado grados={plan.grados} onCambio={(grados) => cambiar({ grados, ucIds: ucIdsParaGrados(plan.ucIds, grados) })} />
         {multigrado && (
           <p className="mt-2 text-sm text-slate-600">En los pasos siguientes vas a elegir criterios y contenidos de cada grado por separado.</p>
         )}
@@ -72,7 +69,7 @@ export function PasoDatos({ plan, cambiar }: PropsPaso) {
                 <span className={`h-2.5 w-2.5 rounded-full ${esp.color}`} aria-hidden /> {esp.nombre}
               </p>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-                {PROGRAMAS.filter((p) => p.espacio === esp.nombre).map((p) => (
+                {programasDeGrados(plan.grados).filter((p) => p.espacio === esp.nombre).map((p) => (
                   <TarjetaCasilla key={p.id} marcada={plan.ucIds.includes(p.id)} onCambio={(v) => cambiar({ ucIds: alternar(plan.ucIds, p.id, v) })}>
                     {p.nombre}
                   </TarjetaCasilla>

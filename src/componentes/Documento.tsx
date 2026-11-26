@@ -1,6 +1,7 @@
 import { forwardRef, type ReactNode } from 'react';
 import { TIPOS, type Planificacion } from '../datos/db';
 import { buscarContenido, buscarCriterio, buscarUC, competenciasMovilizadas } from '../datos/consultas';
+import { textoTramo } from '../datos/programas';
 
 export const fecha = (iso: string) => (iso ? iso.split('-').reverse().join('/') : '');
 
@@ -57,7 +58,7 @@ export const Documento = forwardRef<HTMLDivElement, { plan: Planificacion }>(fun
           {plan.docente && (<tr><th>Docente</th><td>{plan.docente}</td></tr>)}
           {plan.escuela && (<tr><th>Escuela</th><td>{plan.escuela}</td></tr>)}
           {plan.grupo && (<tr><th>Grupo</th><td>{plan.grupo}</td></tr>)}
-          <tr><th>Grado</th><td>{plan.grados.map((g) => `${g}.º`).join(' y ')}{plan.grados.length > 1 ? ' (multigrado)' : ''} · Tramo 3</td></tr>
+          <tr><th>Grado</th><td>{plan.grados.map((g) => `${g}.º`).join(' y ')}{plan.grados.length > 1 ? ' (multigrado)' : ''} · {textoTramo(plan.grados)}</td></tr>
           {ucs && (<tr><th>Unidades curriculares</th><td>{ucs}</td></tr>)}
           {periodo && (<tr><th>Período</th><td>{periodo}</td></tr>)}
         </tbody>
@@ -182,7 +183,7 @@ export const Documento = forwardRef<HTMLDivElement, { plan: Planificacion }>(fun
       {plan.diversidad && (<Seccion titulo="Atención a la diversidad"><Parrafos texto={plan.diversidad} /></Seccion>)}
       {plan.notas && (<Seccion titulo="Observaciones"><Parrafos texto={plan.notas} /></Seccion>)}
 
-      <p className="doc-pie">Elaborado a partir de los Programas de Educación Básica Integrada (ANEP), Tramo 3.</p>
+      <p className="doc-pie">Elaborado a partir de los Programas de Educación Básica Integrada (ANEP), {textoTramo(plan.grados)}.</p>
     </div>
   );
 });

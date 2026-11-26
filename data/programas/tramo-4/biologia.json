@@ -1,0 +1,640 @@
+{
+  "id": "biologia-t4",
+  "nombre": "Ciencias del Ambiente (Biología)",
+  "espacio": "Científico-Matemático",
+  "tramo": 4,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "La asignación de los «contenidos para la profundización y contextualización» a cada contenido se hizo por la posición en la tabla del PDF; verificar en las págs. 14 y 15 (en especial «Autocuidado y prevención de enfermedades», 6.º grado, Anatomía).",
+    "Las competencias de cada fila se tomaron de la última columna; en 5.º grado, Anatomía y fisiología, la celda continúa en la fila siguiente (CE1, CE4, CE5 y CE7)."
+  ],
+  "fuente": {
+    "archivo": "Ciencias del Ambiente (Biología) - Tramo 4.pdf",
+    "paginas": [
+      4,
+      8,
+      9,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  "justificacion": "Un currículum mixto que abarca competencias y contenidos permite globalizar los esquemas conceptuales de la ciencia sin dejar de lado el contenido científico ni los diversos ámbitos de la cultura, y aborda la formación integral del estudiante. El docente podrá recrear el modo en que la ciencia adquiere el conocimiento de la naturaleza, entre el pensamiento inductivo y deductivo, para que las teorías se visualicen como un modelo en permanente construcción. Los contenidos no son contenidos agotados y se respeta la autonomía del docente. En biología es necesaria la revisión de las relaciones evolutivas de los seres vivos y se incluyen contenidos que resaltan el respeto hacia las personas y el cuidado del ambiente. Se prioriza el aprender haciendo, la experimentación y el trabajo sobre el ambiente cercano («la vida natural como escuela», Figari).",
+  "contenidosEstructurantes": [
+    "Ser vivo",
+    "Ambiente",
+    "Salud"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Organiza, reorganiza y planifica sus argumentaciones de forma colaborativa, ante hechos y fenómenos del mundo natural para tomar decisiones respecto al cuidado de sí mismo y del ambiente.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Reflexiona, planifica y expone estrategias de resolución de forma colaborativa para anticipar resultados posibles en problemas socioambientales, causas, consecuencias y la incidencia de la acción humana.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Valora y acepta consensos y disensos en referencia a conocimientos científicos y fenómenos concretos a través del análisis de variables, para explicar fenómenos naturales cotidianos.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Internaliza con mediación y explica las etapas en diferentes procesos naturales de su entorno sin mediación, demostrando mayor autonomía para responder a situaciones cotidianas o de su entorno cultural.",
+      "competenciasMCN": [
+        "Pensamiento computacional",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Usa datos e información, para predecir, relacionar y argumentar sus opiniones con relación en temáticas biológicas o ambientales presentando y visualizando información a través de herramientas digitales.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Pensamiento computacional"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Reflexiona valorando el error como parte del proceso de construcción de soluciones para dar respuesta a problemas de la vida cotidiana y del ambiente, pudiendo utilizar medios digitales.",
+      "competenciasMCN": [
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Analiza sus actitudes y la de los demás, para reconocer y comprender las reacciones, sentimientos y actitudes propias, y de los demás para el cuidado de sí y del entorno, participando con autonomía de forma colaborativa o cooperativa en la resolución de conflictos.",
+      "competenciasMCN": [
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 5,
+      "bloques": [
+        {
+          "id": "bio5-b1",
+          "titulo": "Nutrición",
+          "ceVinculadas": [
+            "CE1",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "bio5-b1-1",
+              "texto": "Respiración: en animales, los órganos y aparatos respiratorios y su relación con el ambiente donde vive; en vegetales, los estomas en el intercambio gaseoso."
+            },
+            {
+              "id": "bio5-b1-2",
+              "texto": "Los nutrientes: el transporte a través de la sangre hasta las células.",
+              "profundizacion": [
+                "Dieta y salud."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Nutrición"
+        },
+        {
+          "id": "bio5-b2",
+          "titulo": "Ecosistema y conciencia ambiental",
+          "ceVinculadas": [
+            "CE2",
+            "CE3",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "bio5-b2-1",
+              "texto": "Áreas protegidas.",
+              "profundizacion": [
+                "Especies en peligro."
+              ]
+            },
+            {
+              "id": "bio5-b2-2",
+              "texto": "Forestación."
+            },
+            {
+              "id": "bio5-b2-3",
+              "texto": "Alteraciones de la atmósfera: causas y consecuencias."
+            }
+          ],
+          "contenidoEstructurante": "Ecosistema y conciencia ambiental"
+        },
+        {
+          "id": "bio5-b3",
+          "titulo": "Reproducción",
+          "ceVinculadas": [
+            "CE1",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "bio5-b3-1",
+              "texto": "Células reproductoras humanas."
+            },
+            {
+              "id": "bio5-b3-2",
+              "texto": "Reproducción celular."
+            }
+          ],
+          "contenidoEstructurante": "Reproducción"
+        },
+        {
+          "id": "bio5-b4",
+          "titulo": "Anatomía y fisiología",
+          "ceVinculadas": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "bio5-b4-1",
+              "texto": "Aparato circulatorio: órganos.",
+              "profundizacion": [
+                "Tipos de circulación."
+              ]
+            },
+            {
+              "id": "bio5-b4-2",
+              "texto": "Sistema nervioso: el encéfalo.",
+              "profundizacion": [
+                "Comparación del órgano en diferentes animales. Disección."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Anatomía y fisiología"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "bio5-cl-01",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Organiza y construye interpretaciones a partir de datos relevantes y evidencias sobre los diferentes procesos respiratorios.",
+          "contenidos": [
+            "bio5-b1-1",
+            "bio5-b1-2"
+          ]
+        },
+        {
+          "id": "bio5-cl-02",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Argumenta y organiza la información referida al transporte de los nutrientes empleando lenguaje multimodal.",
+          "contenidos": [
+            "bio5-b1-1",
+            "bio5-b1-2"
+          ]
+        },
+        {
+          "id": "bio5-cl-03",
+          "ce": [
+            "CE2",
+            "CE3",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Elabora, argumenta y expone estrategias vinculadas al cuidado de áreas protegidas en intercambio con sus pares.",
+          "contenidos": [
+            "bio5-b2-1",
+            "bio5-b2-2",
+            "bio5-b2-3"
+          ]
+        },
+        {
+          "id": "bio5-cl-04",
+          "ce": [
+            "CE2",
+            "CE3",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Identifica y analiza variables vinculadas al impacto de la forestación en el ambiente y en su medio cercano.",
+          "contenidos": [
+            "bio5-b2-1",
+            "bio5-b2-2",
+            "bio5-b2-3"
+          ]
+        },
+        {
+          "id": "bio5-cl-05",
+          "ce": [
+            "CE2",
+            "CE3",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Identifica y expone las acciones humanas que alteran la atmósfera del planeta, de forma colaborativa.",
+          "contenidos": [
+            "bio5-b2-1",
+            "bio5-b2-2",
+            "bio5-b2-3"
+          ]
+        },
+        {
+          "id": "bio5-cl-06",
+          "ce": [
+            "CE1",
+            "CE4"
+          ],
+          "texto": "Identifica e internaliza con mediación la estructura de las células reproductoras construyendo modelos en diferentes formatos.",
+          "contenidos": [
+            "bio5-b3-1",
+            "bio5-b3-2"
+          ]
+        },
+        {
+          "id": "bio5-cl-07",
+          "ce": [
+            "CE1",
+            "CE4"
+          ],
+          "texto": "Internaliza las etapas de la reproducción celular con mediación docente.",
+          "contenidos": [
+            "bio5-b3-1",
+            "bio5-b3-2"
+          ]
+        },
+        {
+          "id": "bio5-cl-08",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "texto": "Identifica y describe los órganos del aparato circulatorio con autonomía.",
+          "contenidos": [
+            "bio5-b4-1",
+            "bio5-b4-2"
+          ]
+        },
+        {
+          "id": "bio5-cl-09",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "texto": "Organiza y utiliza la información sobre el encéfalo a partir de simuladores.",
+          "contenidos": [
+            "bio5-b4-1",
+            "bio5-b4-2"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias del Ambiente (Biología) - Tramo 4.pdf",
+        "paginas": [
+          14
+        ]
+      }
+    },
+    {
+      "grado": 6,
+      "bloques": [
+        {
+          "id": "bio6-b1",
+          "titulo": "Nutrición",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "bio6-b1-1",
+              "texto": "Autótrofa en vegetales: fotosíntesis.",
+              "profundizacion": [
+                "Autótrofa en otros seres vivos."
+              ]
+            },
+            {
+              "id": "bio6-b1-2",
+              "texto": "Heterótrofa: cadenas, redes y pirámides tróficas."
+            }
+          ],
+          "contenidoEstructurante": "Nutrición"
+        },
+        {
+          "id": "bio6-b2",
+          "titulo": "Ecosistema y conciencia ambiental",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "bio6-b2-1",
+              "texto": "Formas de organización ecosistémica: especie, población y comunidad. Asociaciones biológicas interespecíficas. Relaciones intraespecíficas.",
+              "profundizacion": [
+                "Manipulación genética en plantas y animales. Transgénicos."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Ecosistema y conciencia ambiental"
+        },
+        {
+          "id": "bio6-b3",
+          "titulo": "Seres vivos: clasificación",
+          "ceVinculadas": [
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "contenidos": [
+            {
+              "id": "bio6-b3-1",
+              "texto": "Seres vivos unicelulares representados en los reinos: fungi, monera y protista."
+            },
+            {
+              "id": "bio6-b3-2",
+              "texto": "Estructura y funciones de la célula."
+            }
+          ],
+          "contenidoEstructurante": "Seres vivos: clasificación"
+        },
+        {
+          "id": "bio6-b4",
+          "titulo": "Reproducción",
+          "ceVinculadas": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "bio6-b4-1",
+              "texto": "Fecundación y desarrollo del embrión en mamíferos.",
+              "profundizacion": [
+                "Desarrollo embrionario en aves y anfibios."
+              ]
+            },
+            {
+              "id": "bio6-b4-2",
+              "texto": "Gestación del embrión humano.",
+              "profundizacion": [
+                "El parto."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Reproducción"
+        },
+        {
+          "id": "bio6-b5",
+          "titulo": "Anatomía",
+          "ceVinculadas": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "bio6-b5-1",
+              "texto": "Aparato genital humano.",
+              "profundizacion": [
+                "Autocuidado y prevención de enfermedades."
+              ]
+            }
+          ],
+          "contenidoEstructurante": "Anatomía"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "bio6-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Organiza, explica y expone las etapas de la fotosíntesis con autonomía.",
+          "contenidos": [
+            "bio6-b1-1",
+            "bio6-b1-2"
+          ]
+        },
+        {
+          "id": "bio6-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Reflexiona sobre redes tróficas asociando los seres presentes en cada nivel al tipo de nutrición.",
+          "contenidos": [
+            "bio6-b1-1",
+            "bio6-b1-2"
+          ]
+        },
+        {
+          "id": "bio6-cl-03",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Explica y argumenta opiniones con relación en los niveles ecológicos tomando conciencia de la relación entre acciones cotidianas y el cuidado del ambiente.",
+          "contenidos": [
+            "bio6-b2-1"
+          ]
+        },
+        {
+          "id": "bio6-cl-04",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Reflexiona sobre situaciones que afectan su salud, desarrollando estrategias de intervención que dan respuesta a problemas socioambientales.",
+          "contenidos": [
+            "bio6-b2-1"
+          ]
+        },
+        {
+          "id": "bio6-cl-05",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Utiliza datos e información diferenciando asociaciones biológicas presentes en los ecosistemas.",
+          "contenidos": [
+            "bio6-b2-1"
+          ]
+        },
+        {
+          "id": "bio6-cl-06",
+          "ce": [
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Explica y argumenta sobre la clasificación de los diferentes seres vivos, utilizando datos recabados.",
+          "contenidos": [
+            "bio6-b3-1",
+            "bio6-b3-2"
+          ]
+        },
+        {
+          "id": "bio6-cl-07",
+          "ce": [
+            "CE4",
+            "CE5",
+            "CE6"
+          ],
+          "texto": "Explica las funciones de la célula usando datos con relación al funcionamiento del sistema.",
+          "contenidos": [
+            "bio6-b3-1",
+            "bio6-b3-2"
+          ]
+        },
+        {
+          "id": "bio6-cl-08",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "texto": "Organiza el proceso de fecundación modelizando con dispositivos digitales.",
+          "contenidos": [
+            "bio6-b4-1",
+            "bio6-b4-2"
+          ]
+        },
+        {
+          "id": "bio6-cl-09",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE7"
+          ],
+          "texto": "Reconoce las etapas de la gestación humana, procesos y cuidados de forma autónoma.",
+          "contenidos": [
+            "bio6-b4-1",
+            "bio6-b4-2"
+          ]
+        },
+        {
+          "id": "bio6-cl-10",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Organiza información relacionada al aparato genital humano que le permite el cuidado de sí y del otro.",
+          "contenidos": [
+            "bio6-b5-1"
+          ]
+        },
+        {
+          "id": "bio6-cl-11",
+          "ce": [
+            "CE1",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Reflexiona sobre la importancia del autoconocimiento y autocuidado como forma de preservar la salud sexual y reproductiva propia y de sus pares.",
+          "contenidos": [
+            "bio6-b5-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Ciencias del Ambiente (Biología) - Tramo 4.pdf",
+        "paginas": [
+          15
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Plantear el aprendizaje de la ciencia desde la problematización: observación, comunicación e interpretación de datos, hipótesis, experimentación, reconocimiento y control de variables.",
+    "Diseñar propuestas en el marco del ABP y metodologías activas interdisciplinares basadas en el estudio de hechos y fenómenos observables, para descubrir propiedades, establecer relaciones y modelizar.",
+    "Explicitar las relaciones causales mediante el andamiaje docente, para favorecer la generalización y la transferencia.",
+    "Partir de procedimientos sencillos que se complejizan, desde operaciones de orden inferior (mediciones, gráficos, uso de instrumentos) hacia otras de orden superior.",
+    "Diseñar experiencias de aula que ofrezcan un espacio de seguridad para equivocarse, un ambiente estimulante, actividades desafiantes y accesibles y creciente autonomía, con un sistema de ayudas.",
+    "Valorar el trabajo científico y la historia de la ciencia (datos curiosos, narraciones, preguntas investigables, actividades metacognitivas)."
+  ],
+  "metodologiasSugeridas": [
+    "Indagación",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

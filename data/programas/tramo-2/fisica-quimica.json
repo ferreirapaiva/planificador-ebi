@@ -1,0 +1,794 @@
+{
+  "id": "fisica-quimica-t2",
+  "nombre": "Física-Química",
+  "espacio": "Científico-Matemático",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "Los criterios que el PDF repite en varias filas del mismo grado se cargaron una sola vez, vinculados a todas esas filas y sus competencias.",
+    "1.er grado, fila «Cuerpos luminosos»: el PDF (pág. 14) tiene una viñeta vacía entre los dos criterios."
+  ],
+  "fuente": {
+    "archivo": "Física Química - Tramo 2.pdf",
+    "paginas": [
+      4,
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "justificacion": "Los niños de este ciclo se expresan y comunican sus emociones y conocimientos a través de diferentes lenguajes (verbales, no verbales, comunicacionales y multimediales) con los que intentan comprender el mundo que los rodea. Desde el asombro, realizan sus primeras preguntas y vivencias mediante estrategias exploratorias para comprender el mundo natural y social, estableciendo relaciones lógico-matemáticas. El programa explicita ideas orientadoras para que los docentes, con autonomía de centro, diseñen estrategias que habiliten el desarrollo de las competencias específicas del tramo.",
+  "contenidosEstructurantes": [
+    "Sistemas materiales",
+    "Energía",
+    "Transformaciones"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Explora, ensaya, juega y experimenta, individual o colectivamente, con objetos de su entorno para establecer similitudes y diferencias.",
+      "competenciasMCN": [
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Observa fenómenos concretos, abre interrogantes, recopila información, interpreta y comunica basado en evidencias recogidas en situaciones de experimentación.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Observa el ambiente, formula preguntas, elabora hipótesis y propone explicaciones sencillas mediante el proceso de experimentación, la indagación y la búsqueda de evidencias, mediante el trabajo individual y colectivo, para comprender fenómenos naturales.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Identifica y comprende las emociones personales al enfrentarse a retos, fomentando la confianza en sus propias habilidades para la toma de decisiones y la resolución de problemas vinculados con los sistemas materiales y la energía, valorando el error como parte del proceso de aprendizaje.",
+      "competenciasMCN": [
+        "Metacognitiva",
+        "Intrapersonal"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Desarrolla y aplica el pensamiento lógico y creativo al explorar, organizar datos, descomponer en partes y reconocer patrones para comprender fenómenos físico-químicos y comunicar a través de diferentes códigos y soportes.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento crítico",
+        "Pensamiento computacional"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "fq1-b1",
+          "titulo": "Estados de agregación de la materia",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq1-b1-1",
+              "texto": "Los estados de agregación de la materia: sólido, líquido y gaseoso."
+            }
+          ]
+        },
+        {
+          "id": "fq1-b2",
+          "titulo": "Propiedades de los materiales",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq1-b2-1",
+              "texto": "Propiedades de los materiales: estado físico, dureza, fragilidad, conductividad térmica."
+            }
+          ]
+        },
+        {
+          "id": "fq1-b3",
+          "titulo": "Cambios de estado, soluciones y separación de fases",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq1-b3-1",
+              "texto": "Cambios de estado de la materia."
+            },
+            {
+              "id": "fq1-b3-2",
+              "texto": "Soluciones acuosas: líquido-líquido, líquido-sólido."
+            },
+            {
+              "id": "fq1-b3-3",
+              "texto": "La decantación como método de separación de fases."
+            }
+          ]
+        },
+        {
+          "id": "fq1-b4",
+          "titulo": "Manifestaciones de la energía",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq1-b4-1",
+              "texto": "Manifestaciones de la energía."
+            },
+            {
+              "id": "fq1-b4-2",
+              "texto": "Medición de temperatura y su diferencia con la sensación térmica."
+            }
+          ]
+        },
+        {
+          "id": "fq1-b5",
+          "titulo": "Cuerpos luminosos",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq1-b5-1",
+              "texto": "Cuerpos luminosos (clasificación: naturales y artificiales)."
+            }
+          ]
+        },
+        {
+          "id": "fq1-b6",
+          "titulo": "La luz",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq1-b6-1",
+              "texto": "La luz. Los colores primarios y secundarios aditivos."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "fq1-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Comunica, a través de sencillas explicaciones, los resultados apoyado en las evidencias recogidas durante la fase experimental, vinculadas al análisis de los sistemas en relación con el ambiente.",
+          "contenidos": [
+            "fq1-b1-1",
+            "fq1-b3-1",
+            "fq1-b3-2",
+            "fq1-b3-3"
+          ]
+        },
+        {
+          "id": "fq1-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Identifica retos y busca estrategias junto a otros con confianza en sus propias habilidades para resolver problemas de la vida cotidiana vinculados a fenómenos físico químicos.",
+          "contenidos": [
+            "fq1-b1-1",
+            "fq1-b2-1",
+            "fq1-b3-1",
+            "fq1-b3-2",
+            "fq1-b3-3"
+          ]
+        },
+        {
+          "id": "fq1-cl-03",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Reconoce, ordena variables y compara datos, vinculados al estudio de los sistemas homogéneos y heterogéneos.",
+          "contenidos": [
+            "fq1-b2-1"
+          ]
+        },
+        {
+          "id": "fq1-cl-04",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Interroga en actividades experimentales, vinculando la incidencia de la variable cantidad de soluto para una cantidad de solvente constante, asociando la variable temperatura al proceso de disolución.",
+          "contenidos": [
+            "fq1-b3-1",
+            "fq1-b3-2",
+            "fq1-b3-3"
+          ]
+        },
+        {
+          "id": "fq1-cl-05",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Explora, ensaya y experimenta junto a otros, con soluciones acuosas, propiedades de los sistemas materiales y manifestaciones de la energía, y registra las evidencias de sus observaciones en diferentes formatos.",
+          "contenidos": [
+            "fq1-b3-1",
+            "fq1-b3-2",
+            "fq1-b3-3"
+          ]
+        },
+        {
+          "id": "fq1-cl-06",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Explora y anticipa resultados durante procesos de indagación vinculados a diferentes métodos de separación de fases.",
+          "contenidos": [
+            "fq1-b3-1",
+            "fq1-b3-2",
+            "fq1-b3-3"
+          ]
+        },
+        {
+          "id": "fq1-cl-07",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Expresa las observaciones cualitativas y cuantitativas a partir del uso de sus sentidos y diferentes instrumentos incorporando paulatinamente vocabulario específico.",
+          "contenidos": [
+            "fq1-b4-1",
+            "fq1-b4-2"
+          ]
+        },
+        {
+          "id": "fq1-cl-08",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Registra variables de sistemas, a través de la programación utilizando diferentes recursos tecnológicos.",
+          "contenidos": [
+            "fq1-b4-1",
+            "fq1-b4-2"
+          ]
+        },
+        {
+          "id": "fq1-cl-09",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Anticipa, y observa de manera cualitativa, la formación de sombras en relación con diferentes objetos.",
+          "contenidos": [
+            "fq1-b5-1"
+          ]
+        },
+        {
+          "id": "fq1-cl-10",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Establece relaciones vinculadas a la distancia entre foco-objeto y la formación de su sombra a través de la experimentación.",
+          "contenidos": [
+            "fq1-b5-1"
+          ]
+        },
+        {
+          "id": "fq1-cl-11",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Organiza las etapas y registra con apoyo gráfico los procesos vinculados a la adición de colores con luces monocromáticas.",
+          "contenidos": [
+            "fq1-b6-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Física Química - Tramo 2.pdf",
+        "paginas": [
+          13,
+          14
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "fq2-b1",
+          "titulo": "Propiedades de los materiales",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b1-1",
+              "texto": "Propiedades de los materiales: flexibilidad, transparencia, corrosión, conductividad eléctrica."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b2",
+          "titulo": "Sistemas homogéneos y métodos de separación",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b2-1",
+              "texto": "Sistemas homogéneos: soluciones acuosas líquido-líquido, líquido-sólido, líquido-gaseoso."
+            },
+            {
+              "id": "fq2-b2-2",
+              "texto": "La filtración como método de separación de fases."
+            },
+            {
+              "id": "fq2-b2-3",
+              "texto": "La cristalización como método de fraccionamiento."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b3",
+          "titulo": "Manifestaciones de la energía",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b3-1",
+              "texto": "Manifestaciones de la energía."
+            },
+            {
+              "id": "fq2-b3-2",
+              "texto": "Cambios de estado de la materia."
+            },
+            {
+              "id": "fq2-b3-3",
+              "texto": "Calor y variación de la temperatura."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b4",
+          "titulo": "Cuerpos luminosos",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b4-1",
+              "texto": "Cuerpos luminosos (incandescentes y luminiscentes)."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b5",
+          "titulo": "Energía eléctrica",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b5-1",
+              "texto": "Energía eléctrica."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b6",
+          "titulo": "Magnetismo",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b6-1",
+              "texto": "Magnetismo."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b7",
+          "titulo": "La incidencia de la luz en diferentes materiales",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b7-1",
+              "texto": "La incidencia de la luz en diferentes materiales (descripción cualitativa y cuantitativa)."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b8",
+          "titulo": "La luz",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b8-1",
+              "texto": "La luz: síntesis aditiva de luces monocromáticas."
+            }
+          ]
+        },
+        {
+          "id": "fq2-b9",
+          "titulo": "Sombras",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3"
+          ],
+          "contenidos": [
+            {
+              "id": "fq2-b9-1",
+              "texto": "Sombra y la variación con la posición relativa entre el objeto y la fuente luminosa."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "fq2-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Reconoce, ordena variables y compara datos, vinculados al estudio de los sistemas homogéneos y heterogéneos.",
+          "contenidos": [
+            "fq2-b1-1"
+          ]
+        },
+        {
+          "id": "fq2-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Explora, ensaya y experimenta junto a otros, con soluciones acuosas, propiedades de los sistemas materiales y manifestaciones de la energía, registrando las evidencias de sus observaciones en diferentes formatos.",
+          "contenidos": [
+            "fq2-b2-1",
+            "fq2-b2-2",
+            "fq2-b2-3"
+          ]
+        },
+        {
+          "id": "fq2-cl-03",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Interroga en actividades experimentales, vinculando la incidencia de la variable cantidad de soluto para una cantidad de solvente constante, asociando la variable temperatura al proceso de disolución.",
+          "contenidos": [
+            "fq2-b2-1",
+            "fq2-b2-2",
+            "fq2-b2-3",
+            "fq2-b3-1",
+            "fq2-b3-2",
+            "fq2-b3-3"
+          ]
+        },
+        {
+          "id": "fq2-cl-04",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Explora y anticipa resultados durante procesos de indagación vinculados a diferentes métodos de separación de fases y de fraccionamiento.",
+          "contenidos": [
+            "fq2-b2-1",
+            "fq2-b2-2",
+            "fq2-b2-3"
+          ]
+        },
+        {
+          "id": "fq2-cl-05",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Identifica retos y busca estrategias junto a otros, con confianza en sus propias habilidades para resolver problemas de la vida cotidiana vinculados a fenómenos físico-químicos.",
+          "contenidos": [
+            "fq2-b2-1",
+            "fq2-b2-2",
+            "fq2-b2-3"
+          ]
+        },
+        {
+          "id": "fq2-cl-06",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Explora y anticipa resultados durante procesos de indagación vinculados a diferentes manifestaciones de la energía.",
+          "contenidos": [
+            "fq2-b3-1",
+            "fq2-b3-2",
+            "fq2-b3-3"
+          ]
+        },
+        {
+          "id": "fq2-cl-07",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Comunica, a través de sencillas explicaciones, los resultados a partir de las evidencias recogidas durante la fase experimental en el análisis de los sistemas en relación con el ambiente.",
+          "contenidos": [
+            "fq2-b3-1",
+            "fq2-b3-2",
+            "fq2-b3-3"
+          ]
+        },
+        {
+          "id": "fq2-cl-08",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Registra variables de sistemas, a través de la programación utilizando diferentes recursos tecnológicos.",
+          "contenidos": [
+            "fq2-b3-1",
+            "fq2-b3-2",
+            "fq2-b3-3"
+          ]
+        },
+        {
+          "id": "fq2-cl-09",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Observa, compara y clasifica cuerpos luminosos según su origen o la manifestación de energía.",
+          "contenidos": [
+            "fq2-b4-1"
+          ]
+        },
+        {
+          "id": "fq2-cl-10",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Formula preguntas y propone explicaciones en el uso de la energía eléctrica en situaciones de la vida cotidiana.",
+          "contenidos": [
+            "fq2-b5-1"
+          ]
+        },
+        {
+          "id": "fq2-cl-11",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4"
+          ],
+          "texto": "Expresa las observaciones a partir del uso de sus sentidos y diferentes instrumentos incorporando paulatinamente vocabulario específico.",
+          "contenidos": [
+            "fq2-b6-1"
+          ]
+        },
+        {
+          "id": "fq2-cl-12",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Comunica y explica a partir de las observaciones cualitativas y cuantitativas y el uso de sus sentidos y de diferentes instrumentos.",
+          "contenidos": [
+            "fq2-b7-1"
+          ]
+        },
+        {
+          "id": "fq2-cl-13",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE5"
+          ],
+          "texto": "Organiza las etapas y registra con apoyo gráfico los procesos vinculados a la adición de colores con luces monocromáticas.",
+          "contenidos": [
+            "fq2-b8-1"
+          ]
+        },
+        {
+          "id": "fq2-cl-14",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3"
+          ],
+          "texto": "Anticipa, y observa de manera cualitativa, la formación de sombras en relación con diferentes objetos.",
+          "contenidos": [
+            "fq2-b9-1"
+          ]
+        },
+        {
+          "id": "fq2-cl-15",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE3"
+          ],
+          "texto": "Establece relaciones vinculadas a la distancia entre foco-objeto y la formación de su sombra a través de la experimentación.",
+          "contenidos": [
+            "fq2-b9-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Física Química - Tramo 2.pdf",
+        "paginas": [
+          15,
+          16
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Al hacer el diagnóstico de situación de partida, determinar qué competencias específicas o desempeños necesitan desarrollar los estudiantes y planificar situaciones de aprendizaje habilitantes; atender los verbos de las progresiones de aprendizaje al diseñar las consignas.",
+    "Brindar oportunidades regulares y cotidianas de jugar a aquello que se está enseñando: el juego está en la base del modo en que los niños se apropian del conocimiento.",
+    "Establecer vínculos con contenidos de biología (alimentos-alimentación) y de geología en geografía (suelo-agua): observar y clasificar, describir cambios físicos y químicos de los alimentos al prepararlos, separar fases en sistemas heterogéneos.",
+    "Incluir las TIC: acceso a información relevante, simuladores y laboratorios virtuales, sensores e interfaces para recolectar datos.",
+    "Abordar la dimensión metodológica de las ciencias combinando trabajo individual, en grupo pequeño y con el grupo clase: abrir interrogantes, formular hipótesis, observar, clasificar, controlar variables, tabular, contrastar evidencias, registrar y comunicar en diferentes soportes.",
+    "Promover el aprendizaje cooperativo en grupo pequeño y la apropiación del código específico de la disciplina para leer y escribir textos expositivos, explicativos y argumentativos."
+  ],
+  "metodologiasSugeridas": [
+    "Indagación",
+    "Actividades lúdicas",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

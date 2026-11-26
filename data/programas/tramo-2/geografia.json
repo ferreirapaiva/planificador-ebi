@@ -1,0 +1,578 @@
+{
+  "id": "geografia-t2",
+  "nombre": "Geografía",
+  "espacio": "Ciencias Sociales y Humanidades",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "Este PDF no incluye la lista de contenidos estructurantes del espacio; se cargaron como tales los cuatro ejes transversales de la unidad curricular (pág. 3).",
+    "1.er grado: la fila de «Actividades productivas y culturales» indica «CE3, CE6 y CE7» (pág. 7)."
+  ],
+  "fuente": {
+    "archivo": "Geografía - Tramo 2.pdf",
+    "paginas": [
+      3,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  "justificacion": "La Geografía permite al estudiante conocer, comprender y maravillarse con su entorno, entramando los saberes de las demás ciencias sociales. Situarlo en la realidad ambiental, con un enfoque interdisciplinario en clave de competencia, promueve el pensamiento global y local para actuar local y globalmente. Conocer el ambiente desde una mirada integral acerca al estudiante a experiencias que trascienden lo cotidiano y forma individuos conscientes del cuidado de su entorno. En la construcción de ciudadanía es necesario conocer y sensibilizar sobre cómo se habita el espacio y generar sustentabilidades que resalten la diversidad de los territorios, el disfrute y el cuidado de los bienes comunes ambientales. Los ejes transversales de la unidad curricular son: alfabetización cartográfica y social, sustentabilidades humanas, ordenamiento ambiental y humano del territorio y bienes comunes ambientales.",
+  "contenidosEstructurantes": [
+    "Alfabetización cartográfica y social",
+    "Sustentabilidades humanas",
+    "Ordenamiento ambiental y humano del territorio",
+    "Bienes comunes ambientales"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Explora, anticipa, percibe e indaga en situaciones lúdicas y cotidianas los elementos y características de su entorno para el disfrute, de acuerdo con intereses y motivaciones propias y de y con otros.",
+      "competenciasMCN": [
+        "Pensamiento creativo",
+        "Pensamiento científico",
+        "Intrapersonal",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Experimenta, sigue indicaciones, plantea y construye relaciones espaciales respecto de sí mismo, de los objetos y en los recorridos, para aprehender una visión integral del espacio y la noción de lugar.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Intrapersonal",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Distingue, interpreta, escribe y vincula los bienes naturales y culturales del entorno y sus usos, para interactuar con el ambiente de forma armónica.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento científico",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Infiere, interroga, recopila información y describe características de los diferentes territorios (escuela, barrio, localidad, comunidad) para construir representaciones espaciales.",
+      "competenciasMCN": [
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Identifica situaciones ambientales en su entorno, propone preguntas y respuestas alternativas, combina ideas propias y de otras personas para encontrar explicaciones provisorias, intercambiando información.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Pensamiento científico",
+        "Metacognitiva",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE6",
+      "texto": "Selecciona, toma decisiones y utiliza los recursos tecnológicos disponibles para recopilar información, comunicar, expresar y representar hechos, conceptos y procesos del medio socionatural.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento científico",
+        "Pensamiento computacional",
+        "Iniciativa y orientación a la acción",
+        "Ciudadanía local, global y digital"
+      ]
+    },
+    {
+      "codigo": "CE7",
+      "texto": "Escucha opiniones, dialoga y participa en actividades colaborativas, cooperativas y solidarias, mediadas por el docente para reconocer la diversidad.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Pensamiento creativo",
+        "Pensamiento crítico",
+        "Metacognitiva",
+        "Intrapersonal",
+        "Iniciativa y orientación a la acción",
+        "Relacionamiento con los otros",
+        "Ciudadanía local, global y digital"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "geo1-b1",
+          "titulo": "Orientación y localización",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo1-b1-1",
+              "texto": "Orientación y localización en planos, maquetas y dioramas."
+            }
+          ]
+        },
+        {
+          "id": "geo1-b2",
+          "titulo": "Lenguaje cartográfico",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo1-b2-1",
+              "texto": "Lenguaje cartográfico: referencias convencionales y no convencionales."
+            }
+          ]
+        },
+        {
+          "id": "geo1-b3",
+          "titulo": "Bienes comunes ambientales",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo1-b3-1",
+              "texto": "Usos y gestión de los recursos hídricos locales. Impacto ambiental."
+            },
+            {
+              "id": "geo1-b3-2",
+              "texto": "Las consecuencias de las actividades humanas en los cambios del tiempo atmosférico: inundaciones y sequías."
+            }
+          ]
+        },
+        {
+          "id": "geo1-b4",
+          "titulo": "Actividades productivas y culturales en el lugar",
+          "ceVinculadas": [
+            "CE3",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo1-b4-1",
+              "texto": "El trabajo artesanal y la organización cooperativa."
+            }
+          ]
+        },
+        {
+          "id": "geo1-b5",
+          "titulo": "La dinámica del paisaje",
+          "ceVinculadas": [
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "geo1-b5-1",
+              "texto": "La dinámica del paisaje: influencia de los factores ambientales y antrópicos en su configuración."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "geo1-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Infiere, interpreta, reconoce y comunica la ubicación y localización de objetos del entorno en planos, maquetas y dioramas.",
+          "contenidos": [
+            "geo1-b1-1"
+          ]
+        },
+        {
+          "id": "geo1-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Identifica, toma decisiones y crea, combinando ideas propias y de otras personas, referencias convencionales y no convencionales en representaciones espaciales individuales y colaborativas con mediación.",
+          "contenidos": [
+            "geo1-b2-1"
+          ]
+        },
+        {
+          "id": "geo1-cl-03",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Recopila información y comunica datos recabados optando entre múltiples modos de representación y soportes.",
+          "contenidos": [
+            "geo1-b2-1"
+          ]
+        },
+        {
+          "id": "geo1-cl-04",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Distingue, valora, disfruta y utiliza los bienes comunes ambientales en actividades cotidianas y de indagación grupal.",
+          "contenidos": [
+            "geo1-b3-1",
+            "geo1-b3-2"
+          ]
+        },
+        {
+          "id": "geo1-cl-05",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Propone y participa en acciones tendientes al cuidado y disfrute de los bienes comunes ambientales de su entorno con mediación.",
+          "contenidos": [
+            "geo1-b3-1",
+            "geo1-b3-2"
+          ]
+        },
+        {
+          "id": "geo1-cl-06",
+          "ce": [
+            "CE3",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Observa y comunica información respecto a las actividades productivas y culturales del entorno, a través de diferentes lenguajes y soportes.",
+          "contenidos": [
+            "geo1-b4-1"
+          ]
+        },
+        {
+          "id": "geo1-cl-07",
+          "ce": [
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Explora, experimenta e identifica las dinámicas del paisaje en relación con los factores ambientales y antrópicos con o sin mediación.",
+          "contenidos": [
+            "geo1-b5-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Geografía - Tramo 2.pdf",
+        "paginas": [
+          7
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "geo2-b1",
+          "titulo": "Los sistemas de localización",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo2-b1-1",
+              "texto": "Los sistemas de localización. Orientación: puntos cardinales (Este, Oeste, Norte y Sur)."
+            }
+          ]
+        },
+        {
+          "id": "geo2-b2",
+          "titulo": "Lenguaje cartográfico",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo2-b2-1",
+              "texto": "Lenguaje cartográfico: referencias, símbolos, leyendas cartográficas en el plano y el mapa."
+            }
+          ]
+        },
+        {
+          "id": "geo2-b3",
+          "titulo": "Bienes comunes ambientales",
+          "ceVinculadas": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo2-b3-1",
+              "texto": "Usos y gestión de los suelos, preservación o erosión por acciones antrópicas."
+            },
+            {
+              "id": "geo2-b3-2",
+              "texto": "Las consecuencias de las actividades humanas productivas en los cambios del tiempo atmosférico: prevenir y minimizar."
+            }
+          ]
+        },
+        {
+          "id": "geo2-b4",
+          "titulo": "Actividades productivas en el lugar",
+          "ceVinculadas": [
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "contenidos": [
+            {
+              "id": "geo2-b4-1",
+              "texto": "Agricultura, ganadería o pesca."
+            },
+            {
+              "id": "geo2-b4-2",
+              "texto": "Agricultura: monocultivos y policultivo (plantaciones y huertas)."
+            },
+            {
+              "id": "geo2-b4-3",
+              "texto": "Cooperativismo."
+            },
+            {
+              "id": "geo2-b4-4",
+              "texto": "Incidencia de la tecnología."
+            }
+          ]
+        },
+        {
+          "id": "geo2-b5",
+          "titulo": "La dinámica del paisaje urbano y rural",
+          "ceVinculadas": [
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "geo2-b5-1",
+              "texto": "La dinámica del paisaje urbano y rural: elementos que los conforman y los modos de vida."
+            }
+          ]
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "geo2-cl-01",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Sigue indicaciones, explora e identifica la importancia de los puntos cardinales como sistema de referencia con o sin mediación.",
+          "contenidos": [
+            "geo2-b1-1"
+          ]
+        },
+        {
+          "id": "geo2-cl-02",
+          "ce": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Identifica, toma decisiones y crea, combinando ideas propias y de otras personas, referencias convencionales y no convencionales en representaciones espaciales individuales y colaborativas con mediación.",
+          "contenidos": [
+            "geo2-b2-1"
+          ]
+        },
+        {
+          "id": "geo2-cl-03",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Compara los usos del suelo y expresa y da razones sobre la gestión sustentable en situaciones de intercambio con otros.",
+          "contenidos": [
+            "geo2-b3-1",
+            "geo2-b3-2"
+          ]
+        },
+        {
+          "id": "geo2-cl-04",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Interroga, valora y disfruta los bienes comunes ambientales en actividades cotidianas y de indagación grupal.",
+          "contenidos": [
+            "geo2-b3-1",
+            "geo2-b3-2"
+          ]
+        },
+        {
+          "id": "geo2-cl-05",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Propone acciones tendientes al cuidado y disfrute de los bienes comunes ambientales de su entorno.",
+          "contenidos": [
+            "geo2-b3-1",
+            "geo2-b3-2"
+          ]
+        },
+        {
+          "id": "geo2-cl-06",
+          "ce": [
+            "CE1",
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Cuestiona, pide explicaciones y escucha opiniones de otros sobre la relación entre los cambios del tiempo y la actividad humana, con o sin mediación.",
+          "contenidos": [
+            "geo2-b3-1",
+            "geo2-b3-2"
+          ]
+        },
+        {
+          "id": "geo2-cl-07",
+          "ce": [
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Observa, interroga, describe, organiza y comunica información respecto a las actividades culturales y productivas a través de diferentes lenguajes y soportes.",
+          "contenidos": [
+            "geo2-b4-1",
+            "geo2-b4-2",
+            "geo2-b4-3",
+            "geo2-b4-4"
+          ]
+        },
+        {
+          "id": "geo2-cl-08",
+          "ce": [
+            "CE3",
+            "CE4",
+            "CE5",
+            "CE6",
+            "CE7"
+          ],
+          "texto": "Reconoce y plantea la influencia de la tecnología en las actividades productivas y culturales que tienen lugar en su entorno.",
+          "contenidos": [
+            "geo2-b4-1",
+            "geo2-b4-2",
+            "geo2-b4-3",
+            "geo2-b4-4"
+          ]
+        },
+        {
+          "id": "geo2-cl-09",
+          "ce": [
+            "CE4",
+            "CE5"
+          ],
+          "texto": "Anticipa y compara los elementos que conforman los entornos rural y urbano a través de diferentes soportes y medios de representación.",
+          "contenidos": [
+            "geo2-b5-1"
+          ]
+        }
+      ],
+      "fuente": {
+        "archivo": "Geografía - Tramo 2.pdf",
+        "paginas": [
+          8,
+          9
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Trabajar desde una visión problematizadora y crítica de la realidad, superando la relación causa-efecto e incorporando procesos multicausales, multiperspectivas y multidimensionales para construir conceptos geográficos.",
+    "Poner al estudiante y sus aprendizajes en el centro: que le permitan entenderse, situarse, comprender y actuar en y sobre su realidad y proyectarse hacia el futuro.",
+    "Abordar la sustentabilidad (económica, ecológica, social, política y cultural) como entramado de interrelaciones entre sistemas naturales y sociales.",
+    "Cada docente, según su contexto, decide lo que vale la pena enseñar para que los estudiantes comprendan y expliquen procesos territoriales complejos, contradictorios y cambiantes."
+  ],
+  "metodologiasSugeridas": [
+    "Salida de campo",
+    "Casos de estudio",
+    "Método de indagación",
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}

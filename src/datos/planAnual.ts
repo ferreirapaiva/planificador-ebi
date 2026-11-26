@@ -2,7 +2,7 @@ import { calendarioPorDefecto } from './calendario';
 import { claveUCGrado, buscarUC } from './consultas';
 import { nuevoId, type PlanAnual, type Planificacion } from './db';
 import type { Contenido, CriterioLogro, UnidadCurricular } from './esquema';
-import { PROGRAMAS } from './programas';
+import { programasDelTramo } from './programas';
 
 /** El plan anual por defecto: el año lectivo que viene si ya pasó octubre, si no el actual. */
 export function planAnualVacio(perfil: Pick<PlanAnual, 'docente' | 'escuela' | 'grupo'>): PlanAnual {
@@ -14,7 +14,7 @@ export function planAnualVacio(perfil: Pick<PlanAnual, 'docente' | 'escuela' | '
     anio,
     ...perfil,
     grados: [3],
-    ucIds: PROGRAMAS.map((p) => p.id),
+    ucIds: programasDelTramo(3).map((p) => p.id),
     calendario: calendarioPorDefecto(anio),
     distribucion: {},
     fundamentacion: '',

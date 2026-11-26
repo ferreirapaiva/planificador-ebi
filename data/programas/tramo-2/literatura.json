@@ -1,0 +1,393 @@
+{
+  "id": "literatura-t2",
+  "nombre": "Literatura",
+  "espacio": "Creativo-Artístico",
+  "tramo": 2,
+  "version": "v1",
+  "revisado": false,
+  "notasRevision": [
+    "El PDF organiza la tabla por competencia; cada criterio se cargó con su competencia (CL1 → CE1, etc.) y los géneros quedaron vinculados a las competencias de las filas donde aparecen.",
+    "2.º grado, CL4.3: el texto del PDF termina en «…lo que le permite construir» (pág. 15); se cargó así."
+  ],
+  "fuente": {
+    "archivo": "Literatura - Tramo 2.pdf",
+    "paginas": [
+      7,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  "justificacion": "Las habilidades literarias se desarrollan antes de la adquisición de la lectura y la escritura: los primeros encuentros de los niños con los cuentos, las rimas, las canciones de cuna y otras expresiones literarias son determinantes para el desarrollo posterior del habla, la lectura, la escritura y la competencia interpretativa de los hechos de la realidad. El programa aspira a ser una herramienta para las planificaciones de los docentes de Literatura y de cada maestra y maestro, reconociendo a los libros como los mejores colaboradores de los maestros en la educación literaria (Colomer, 2005).",
+  "contenidosEstructurantes": [
+    "Género narrativo",
+    "Género poético",
+    "Género dramático"
+  ],
+  "ejes": [],
+  "competenciasEspecificas": [
+    {
+      "codigo": "CE1",
+      "texto": "Desarrolla procesos cognitivos durante la recepción de un cuento. Desarrolla su conciencia narrativa: expresa y desarrolla expectativas sobre la conducta de los personajes, anticipa y realiza inferencias a partir del código verbal o no verbal, identifica similitudes en hechos ficcionales provenientes de dos obras diferentes, construye y expresa la secuencia de hechos presentes en un libro.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Iniciativa y orientación a la acción"
+      ]
+    },
+    {
+      "codigo": "CE2",
+      "texto": "Expresa sus ideas, sentimientos y emociones utilizando y modificando el lenguaje para darles nuevas formas o fines. Combina ideas propias y otras obtenidas en las obras literarias para generar nuevas alternativas.",
+      "competenciasMCN": [
+        "Pensamiento creativo"
+      ]
+    },
+    {
+      "codigo": "CE3",
+      "texto": "Ordena con detalle los hechos de un cuento que posee una estructura narrativa clásica.",
+      "competenciasMCN": [
+        "Pensamiento computacional"
+      ]
+    },
+    {
+      "codigo": "CE4",
+      "texto": "Combina ideas propias con las de sus pares para así crear, desde la escritura o la oralidad, una nueva rima, un nuevo cuento o una variación al cuento ya conocido por todos. Expresa sus preferencias, gustos, necesidades.",
+      "competenciasMCN": [
+        "Pensamiento crítico",
+        "Intrapersonal",
+        "Relacionamiento con los otros"
+      ]
+    },
+    {
+      "codigo": "CE5",
+      "texto": "Desarrolla procesos afectivos durante la recepción de una obra literaria. Se identifica y empatiza con ciertos personajes y rechaza la aparición de otros. Expresa su empatía o rechazo con los personajes a través de comentarios o creaciones plásticas después de la lectura.",
+      "competenciasMCN": [
+        "Comunicación",
+        "Relacionamiento con los otros"
+      ]
+    }
+  ],
+  "grados": [
+    {
+      "grado": 1,
+      "bloques": [
+        {
+          "id": "lit1-b1",
+          "titulo": "Género narrativo",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "lit1-b1-1",
+              "texto": "El cuento realista."
+            },
+            {
+              "id": "lit1-b1-2",
+              "texto": "El cuento fantástico."
+            },
+            {
+              "id": "lit1-b1-3",
+              "texto": "El libro imagen."
+            },
+            {
+              "id": "lit1-b1-4",
+              "texto": "La fábula."
+            },
+            {
+              "id": "lit1-b1-5",
+              "texto": "Elementos realistas."
+            },
+            {
+              "id": "lit1-b1-6",
+              "texto": "Elementos constitutivos de lo fantástico."
+            },
+            {
+              "id": "lit1-b1-7",
+              "texto": "Conectores temporales."
+            },
+            {
+              "id": "lit1-b1-8",
+              "texto": "Distinción: personajes y objetos."
+            },
+            {
+              "id": "lit1-b1-9",
+              "texto": "Moraleja."
+            }
+          ],
+          "contenidoEstructurante": "Género narrativo"
+        },
+        {
+          "id": "lit1-b2",
+          "titulo": "Género poético",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "lit1-b2-1",
+              "texto": "Los haikus."
+            },
+            {
+              "id": "lit1-b2-2",
+              "texto": "Adivinanzas en verso."
+            },
+            {
+              "id": "lit1-b2-3",
+              "texto": "Canciones creadas para público infantil."
+            },
+            {
+              "id": "lit1-b2-4",
+              "texto": "Verso."
+            },
+            {
+              "id": "lit1-b2-5",
+              "texto": "Rima."
+            },
+            {
+              "id": "lit1-b2-6",
+              "texto": "La presencia de los cinco sentidos en la poesía."
+            },
+            {
+              "id": "lit1-b2-7",
+              "texto": "Tópico de la naturaleza."
+            }
+          ],
+          "contenidoEstructurante": "Género poético"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "lit1-cl-01",
+          "ce": "CE1",
+          "texto": "Construye alternativas para nuevos finales de un cuento o la sustitución de rimas en una canción."
+        },
+        {
+          "id": "lit1-cl-02",
+          "ce": "CE2",
+          "texto": "Plasma y expresa en obras sus emociones, sentimientos e ideas, explorando las posibilidades de los diferentes materiales."
+        },
+        {
+          "id": "lit1-cl-03",
+          "ce": "CE3",
+          "texto": "Relata los sucesos presentes en un libro-imagen."
+        },
+        {
+          "id": "lit1-cl-04",
+          "ce": "CE4",
+          "texto": "Desarrolla diferentes lenguajes verbales y no verbales en el momento de expresar los hechos de un relato y la descripción física o del carácter de un personaje."
+        },
+        {
+          "id": "lit1-cl-05",
+          "ce": "CE4",
+          "texto": "Identifica y sustituye palabras que generan la rima de un poema."
+        },
+        {
+          "id": "lit1-cl-06",
+          "ce": "CE5",
+          "texto": "Reconoce y expresa los mismos personajes en diversos cuentos."
+        },
+        {
+          "id": "lit1-cl-07",
+          "ce": "CE5",
+          "texto": "Reconoce como características culturales foráneas aquellos significantes regionales presentes en los textos, como, por ejemplo, localismos."
+        }
+      ],
+      "fuente": {
+        "archivo": "Literatura - Tramo 2.pdf",
+        "paginas": [
+          12,
+          13
+        ]
+      }
+    },
+    {
+      "grado": 2,
+      "bloques": [
+        {
+          "id": "lit2-b1",
+          "titulo": "Género narrativo",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE3",
+            "CE4",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "lit2-b1-1",
+              "texto": "Cuentos (voz narrativa interna y voz narrativa externa)."
+            },
+            {
+              "id": "lit2-b1-2",
+              "texto": "El cuento clásico nacional."
+            },
+            {
+              "id": "lit2-b1-3",
+              "texto": "La historieta."
+            }
+          ],
+          "contenidoEstructurante": "Género narrativo"
+        },
+        {
+          "id": "lit2-b2",
+          "titulo": "Género poético",
+          "ceVinculadas": [
+            "CE1",
+            "CE2",
+            "CE5"
+          ],
+          "contenidos": [
+            {
+              "id": "lit2-b2-1",
+              "texto": "Canciones creadas para público infantil."
+            },
+            {
+              "id": "lit2-b2-2",
+              "texto": "Retahílas."
+            },
+            {
+              "id": "lit2-b2-3",
+              "texto": "Verso."
+            },
+            {
+              "id": "lit2-b2-4",
+              "texto": "Rima."
+            },
+            {
+              "id": "lit2-b2-5",
+              "texto": "Repetición (recurso literario)."
+            }
+          ],
+          "contenidoEstructurante": "Género poético"
+        },
+        {
+          "id": "lit2-b3",
+          "titulo": "Género dramático",
+          "ceVinculadas": [
+            "CE1",
+            "CE4"
+          ],
+          "contenidos": [
+            {
+              "id": "lit2-b3-1",
+              "texto": "El guion en la obra de títeres."
+            },
+            {
+              "id": "lit2-b3-2",
+              "texto": "Parlamento."
+            },
+            {
+              "id": "lit2-b3-3",
+              "texto": "Diálogo."
+            },
+            {
+              "id": "lit2-b3-4",
+              "texto": "Personaje."
+            },
+            {
+              "id": "lit2-b3-5",
+              "texto": "Escena."
+            }
+          ],
+          "contenidoEstructurante": "Género dramático"
+        }
+      ],
+      "criteriosLogro": [
+        {
+          "id": "lit2-cl-01",
+          "ce": "CE1",
+          "texto": "Infiere significados implícitos en las obras literarias."
+        },
+        {
+          "id": "lit2-cl-02",
+          "ce": "CE1",
+          "texto": "Reconoce y expresa las mismas situaciones en diversos cuentos."
+        },
+        {
+          "id": "lit2-cl-03",
+          "ce": "CE1",
+          "texto": "Relata los sucesos presentes en un libro-imagen, incluyendo, a solicitud del docente, conectores temporales."
+        },
+        {
+          "id": "lit2-cl-04",
+          "ce": "CE2",
+          "texto": "Opina y brinda razones en situaciones grupales."
+        },
+        {
+          "id": "lit2-cl-05",
+          "ce": "CE2",
+          "texto": "Plasma y expresa en obras sus emociones, sentimientos e ideas, explorando las posibilidades de los diferentes materiales."
+        },
+        {
+          "id": "lit2-cl-06",
+          "ce": "CE2",
+          "texto": "Construye alternativas para nuevos finales de un cuento o la sustitución de rimas en una canción."
+        },
+        {
+          "id": "lit2-cl-07",
+          "ce": "CE3",
+          "texto": "Logra ordenar no solo la estructura narrativa, sino también la secuencia de hechos que conforman cada uno de los tres momentos."
+        },
+        {
+          "id": "lit2-cl-08",
+          "ce": "CE4",
+          "texto": "Se sensibiliza frente a sus propias creaciones, la de sus pares y las producciones culturales en general."
+        },
+        {
+          "id": "lit2-cl-09",
+          "ce": "CE4",
+          "texto": "Genera nuevas ideas o combina ideas de otros para crear algo nuevo."
+        },
+        {
+          "id": "lit2-cl-10",
+          "ce": "CE4",
+          "texto": "Intercambia experiencias y desarrolla relaciones con sus pares, lo que le permite construir."
+        },
+        {
+          "id": "lit2-cl-11",
+          "ce": "CE5",
+          "texto": "Aumenta su capacidad de recepción y expresión de ideas, creencias y sentimientos."
+        },
+        {
+          "id": "lit2-cl-12",
+          "ce": "CE5",
+          "texto": "Reconoce como características culturales foráneas aquellos significantes regionales presentes en los textos, como, por ejemplo, localismos o sinónimos no utilizados en nuestra variedad lingüística."
+        }
+      ],
+      "fuente": {
+        "archivo": "Literatura - Tramo 2.pdf",
+        "paginas": [
+          14,
+          15
+        ]
+      }
+    }
+  ],
+  "orientacionesMetodologicas": [
+    "Seleccionar con cuidado el corpus de obras de literatura infantil y juvenil (LIJ): el programa incluye sugerencias de autores y sitios web; se recomienda el vínculo con el proyecto Biblioteca Solidaria de DGEIP.",
+    "La literatura en la escuela no es un mero entretenimiento sino una experiencia imprescindible para desarrollar las competencias interpretativas; no basta con «dar de leer» ni con disponer un rincón literario.",
+    "En este tramo, en el que se desarrolla la lectoescritura, promover la lectura entre pares y la expresión creativa mediante el código escrito.",
+    "Ante una obra traducida al español, explicitar su lengua original y quién la tradujo.",
+    "Planificar proyectos interdisciplinarios con aplicación real (por ejemplo, subgrupos que preparan la lectura de un cuento para otros grupos), con autoevaluación y reflexión posterior."
+  ],
+  "metodologiasSugeridas": [
+    "Aprendizaje basado en proyectos",
+    "Análisis de casos",
+    "Aprendizaje en servicio solidario",
+    "Resolución de problemas",
+    "Aprendizaje por experiencias"
+  ]
+}
