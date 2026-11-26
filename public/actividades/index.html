@@ -3835,6 +3835,148 @@ Object.assign(DESC, {
   hojaEscuela:'Hoja rayada, cuadriculada o lisa con el encabezado de la escuela.',
 });
 
+/* =========================================================
+   TICKETS DE SALIDA: marcapáginas (5 por hoja A4) con preguntas u operaciones
+   sobre los temas elegidos, para cortar y entregar al terminar la clase.
+   ========================================================= */
+const TK_TEMAS=[
+  { id:'sumas', t:'Sumas', act:'sumas', sel:{ formato:'linea', dif:['con'], cifras:[2], sumandos:[2] } },
+  { id:'restas', t:'Restas', act:'restas', sel:{ formato:'linea', dif:['con'], cifras:[2] } },
+  { id:'mult', t:'Multiplicaciones', act:'mult', sel:{ formato:'linea', cifrasA:[2], cifrasB:[1] } },
+  { id:'div', t:'Divisiones', act:'div', sel:{ formato:'linea', dividendo:[2], divisor:[1], resto:['exacta'] } },
+  { id:'mental', t:'Cálculo mental', act:'mental', sel:{ tipo:['tablas','dobles','complementos'], tablas:[2,3,4,5,6,7,8,9,10], nivel:'basico' } },
+  { id:'tablas', t:'Tablas de multiplicar', act:'tablas', sel:{ tipo:['completar','faltante'], tablas:[2,3,4,5,6,7,8,9], hasta:10 } },
+  { id:'numeracion', t:'Numeración', act:'numeracion', sel:{ tipo:['antpos'], cifras:[3] } },
+  { id:'escribir', t:'Escribir números', act:'escribir', sel:{ tipo:['aPalabras','aNumero','descomponer'], cifras:[3] } },
+  { id:'fracciones', t:'Fracciones', act:'fracciones', sel:{ tipo:['equivalentes','comparar','sumar'], nivel:'basico' } },
+  { id:'decimales', t:'Decimales', act:'fracciones', sel:{ tipo:['decimal','compDec'] } },
+  { id:'medidas', t:'Medidas', act:'medidas', sel:{ tipo:['conversion'], unidades:['long','masa','cap'] } },
+  { id:'patrones', t:'Series y patrones', act:'patrones', sel:{ tipo:['suma','resta','regla'], nivel:'chico' } },
+  { id:'hora', t:'La hora', act:'hora', sel:{ tipo:['cuanto','calendario'], precision:'cuarto' } },
+  { id:'ortografia', t:'Ortografía', act:'ortografia', sel:{ modo:'completar', tipo:['bv','csz','gj','lly'] } },
+  { id:'acentos', t:'Tildes', act:'acentos', sel:{ tipo:['tilde'], clases:['aguda','grave','esdrújula'] } },
+  { id:'clases', t:'Plural y género', act:'clases', sel:{ tipo:['plural','genero'] } },
+  { id:'verbos', t:'Verbos', act:'verbos', sel:{ modo:['frase','tiempo'], tiempo:['presente','pasado','futuro'], conj:['ar','er','ir'] } },
+  { id:'vf', t:'Verdadero o falso', act:'vf', sel:{ corregir:'no' }, banco:true },
+  { id:'definiciones', t:'Definiciones', act:'completar', sel:{ modo:'definicion', banco:'no' }, banco:true },
+  { id:'propias', t:'Mis preguntas' },
+];
+/* Pasa un ejercicio de cualquier actividad a una pregunta corta: {parts} (con espacios en blanco) o {abierta} */
+function tkConvertir(it){
+  if (it.kind==='vert' || it.kind==='div' || it.kind==='linea'){
+    const parts=[it.expr, B(it.ans,14)]; if (it.resto) parts.push('resto', B(it.ansR,8)); return { parts }; }
+  switch (it.type){
+    case 'fill': return { parts:it.parts };
+    case 'vf': return { parts:[it.text, '(V o F)', B(it.ok?'V':'F',7)] };
+    case 'definicion': return { parts:[it.clue, '→', B(it.answer,26)] };
+    case 'letras': { const i=it.hide[0], c=it.chars; return { parts:[it.clue||'', c.slice(0,i).join(''), B(c[i],7), c.slice(i+1).join('')].filter(p=>typeof p!=='string' || p) }; }
+    case 'elegirOrt': return { parts:['Corregí:', it.mal, '→', B(it.bien,22)] };
+    case 'antpos': return { parts:[B(it.n-1,9), String(it.n), B(it.n+1,9)] };
+    case 'serie': return { parts: it.seq.flatMap((n,k)=>{ const t= it.blanks.includes(k) ? B(n,8) : String(n); return k ? ['·',t] : [t]; }) };
+    default: return null;
+  }
+}
+function tkGenerar(id,n,nivel,bank){
+  const T=TK_TEMAS.find(x=>x.id===id), A=ACTIVITIES[T.act], sel={};
+  A.groups.forEach(g=>{ sel[g.id]=Array.isArray(g.def)?[...g.def]:g.def; });
+  Object.assign(sel, T.sel||{});
+  if (nivel && DIF[T.act] && DIF[T.act][nivel]){ const d={...DIF[T.act][nivel]}; delete d.tipo; Object.assign(sel,d); }
+  const out=[];
+  for (let intento=0; intento<5 && out.length<n; intento++){
+    const res=GEN[T.act](sel, n*3+2, { bank, comp:null }), lista=Array.isArray(res) ? res : (res.items||[]);
+    out.length=0; lista.forEach(it=>{ if (out.length<n){ const q=tkConvertir(it); if (q) out.push(q); } });
+  }
+  return out;
+}
+GEN.tickets = function(sel,count,ctx){
+  const temas=sel.temas, T=temas.length, distintos=sel.variantes==='distintos', nivel=sel._n||null; let aviso='';
+  const propias=(sel.propias||'').split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{ const [q,...r]=l.split('|'); return { abierta:true, texto:q.trim(), resp:(r.join('|')||'').trim() }; });
+  if (temas.includes('propias') && !propias.length) aviso='Escribí tus preguntas en "Mis preguntas" (una por renglón).';
+  if (temas.some(id=>(TK_TEMAS.find(x=>x.id===id)||{}).banco) && (!ctx.bank || !ctx.bank.entries.length)) aviso='Elegí un tema para las preguntas de palabras.';
+  const hacer=t=>{
+    const pregs=[];
+    temas.forEach((id,i)=>{ const n=Math.floor(count/T)+(i<count%T?1:0); if (!n) return;
+      if (id==='propias'){ for (let k=0;k<n && propias.length;k++) pregs.push(propias[((distintos?t*n:0)+k)%propias.length]); }
+      else tkGenerar(id,n,nivel,ctx.bank).forEach(q=>pregs.push(q)); });
+    return pregs;
+  };
+  const base=hacer(0);
+  const tickets=Array.from({length:5},(_,t)=>({ pregs: distintos && t ? hacer(t) : JSON.parse(JSON.stringify(base)) }));
+  const rotulo=temas.map(id=>TK_TEMAS.find(x=>x.id===id).t).join(' · ');
+  return { kind:'blocks', cols:1, limpia:true, items:[{ type:'marcapaginas', tickets, rotulo, alto:sel.alto, reflexion:sel.reflexion==='si' }], warn:aviso };
+};
+/* Dibuja (o mide) una pregunta; devuelve su altura */
+function tkPregunta(els,q,x,y,w,size,isKey){
+  const lh=size*.3528*1.6;
+  if (q.abierta){
+    const L=wrapText(q.texto,size,w);
+    if (els){ L.forEach((ln,j)=>els.push({t:'text', x, y:y+size*.3528+j*lh, s:size, str:ln}));
+      const cy=y+L.length*lh;
+      for (let k=0;k<2;k++) els.push({t:'line', x1:x, y1:cy+(k+1)*6.2, x2:x+w, y2:cy+(k+1)*6.2, w:.25, c:'#888'});
+      if (isKey && q.resp) wrapText(q.resp,size-1.5,w-2).slice(0,6).forEach((ln,j)=>els.push({t:'text', x:x+.5, y:cy+17+j*4, s:size-1.5, str:ln, c:RED, b:true})); }
+    return L.length*lh+13;
+  }
+  const parts=q.parts.map(p=> (p && p.b!==undefined) ? { ...p, w:Math.min(typeof p.w==='number'?p.w:24, w-1) } : typeof p==='string' ? p.replace(/\/ (\d)/g,'/$1') : p);
+  const L=fillLines(parts,w,size);
+  if (els) L.forEach((ln,j)=>{ const by=y+size*.3528+j*lh;
+    ln.forEach(k=>{ const kx=x+k.x;
+      if (!k.blank){ els.push({t:'text', x:kx, y:by, s:size, str:k.t, b:!!k.bold}); return; }
+      els.push({t:'line', x1:kx, y1:by+.9, x2:kx+k.tw, y2:by+.9, w:.3, c:'#444'});
+      if (isKey) els.push({t:'text', x:kx+k.tw/2, y:by, s:Math.min(size, size*(k.tw-1.5)/Math.max(1,measure(k.ans,size))), str:k.ans, a:'center', c:RED, b:true}); }); });
+  return L.length*lh+1;
+}
+BLOCKS.marcapaginas = { full:true,
+  h:(it,w)=> it.alto==='completo' ? areaAvail(false)-6 : 200,
+  draw(els,it,idx,x,y,w,isKey){
+    const sw=Math.min(38,(W-6)/5), x0=(W-5*sw)/2, alto=it.alto==='completo' ? areaAvail(false)-6 : 200, iw=sw-7;
+    for (let i=0;i<=5;i++) els.push({t:'line', x1:x0+i*sw, y1:y, x2:x0+i*sw, y2:y+alto, w:.3, c:'#9aa3b5', dash:true});
+    [y,y+alto].forEach(ly=> els.push({t:'line', x1:x0, y1:ly, x2:x0+5*sw, y2:ly, w:.3, c:'#9aa3b5', dash:true}));
+    it.tickets.forEach((tk,k)=>{
+      const tx=x0+k*sw, cx=tx+sw/2;
+      els.push({t:'rect', x:tx+2.5, y:y+3.5, w:sw-5, h:19, r:3, stroke:'#8a82d6', lw:.4, fill:CLARO});
+      els.push({t:'text', x:cx, y:y+11, s:10, str:'TICKET', a:'center', b:true, c:'#3b2db8'});
+      els.push({t:'text', x:cx, y:y+17.2, s:10, str:'DE SALIDA', a:'center', b:true, c:'#3b2db8'});
+      const rl=wrapText(it.rotulo,7.5,iw), rot= rl.length>2 ? ['Varios temas'] : rl;
+      rot.forEach((ln,j)=> els.push({t:'text', x:cx, y:y+27.5+j*3.4, s:7.5, str:ln, a:'center', c:'#666'}));
+      let cy=y+38;
+      els.push({t:'text', x:tx+3.5, y:cy, s:8.5, str:'Nombre:', b:true});
+      els.push({t:'line', x1:tx+3.5, y1:cy+6.5, x2:tx+sw-3.5, y2:cy+6.5, w:.3, c:'#444'});
+      els.push({t:'text', x:tx+3.5, y:cy+13.5, s:8.5, str:'Fecha:', b:true});
+      els.push({t:'line', x1:tx+3.5+measure('Fecha:',8.5)+1.5, y1:cy+14.3, x2:tx+sw-3.5, y2:cy+14.3, w:.3, c:'#444'});
+      cy+=22;
+      const fin=y+alto-(it.reflexion?35:6), disp=fin-cy, qw=iw-5; let size=10;
+      while (size>6.5 && tk.pregs.reduce((t,q)=>t+tkPregunta(null,q,0,0,qw,size)+4.5,0)>disp) size-=.5;
+      // las preguntas se reparten a lo largo del marcapáginas: queda lugar para resolver
+      const usado=tk.pregs.reduce((t,q)=>t+tkPregunta(null,q,0,0,qw,size)+4.5,0), extra=tk.pregs.length ? Math.min(30,(disp-usado)/tk.pregs.length) : 0;
+      let qy=cy;
+      tk.pregs.forEach((q,i)=>{
+        els.push({t:'text', x:tx+3.5, y:qy+size*.3528, s:size, str:(i+1)+'.', b:true, c:'#5B4BF5'});
+        qy+=tkPregunta(els,q,tx+3.5+5,qy,qw,size,isKey)+4.5+Math.max(0,extra); });
+      if (it.reflexion){
+        const ry=y+alto-32;
+        els.push({t:'line', x1:tx+3.5, y1:ry, x2:tx+sw-3.5, y2:ry, w:.25, c:'#bbb'});
+        els.push({t:'text', x:cx, y:ry+5, s:8, str:'¿Cómo me fue?', a:'center', b:true});
+        ['Lo entendí','Más o menos','Necesito ayuda'].forEach((t,j)=>{ const by=ry+10+j*7.6;
+          els.push({t:'rect', x:tx+4, y:by-3.2, w:4.6, h:4.6, r:2.3, stroke:'#555', lw:.4});
+          els.push({t:'text', x:tx+10.5, y:by+.2, s:Math.min(8, 8*(sw-14)/Math.max(1,measure(t,8))), str:t}); });
+      }
+    });
+  } };
+
+/* ---------- Catálogo y opciones ---------- */
+CATALOG.find(a=>a.id==='repaso').items.splice(1,0,{ id:'tickets', name:'Tickets de salida', ready:true });
+Object.assign(ACTIVITIES, {
+  tickets:{ title:'Tickets de salida', consigna:'', single:true, cols:1,
+    count:{ label:'Preguntas en cada ticket', options:[2,3,4,5], def:3 }, groups:[
+    { id:'temas', label:'Temas del ticket', type:'multi', options:TK_TEMAS.map(x=>({ v:x.id, t:x.t })), def:['sumas','fracciones'] },
+    { id:'propias', label:'Mis preguntas', type:'texto', rows:5, placeholder:'¿Qué es una fracción?\nEscribí un ejemplo de verbo | respuesta de ejemplo', help:'Una pregunta por renglón. Si querés, escribí la respuesta después de una barra ( | ): aparece en la hoja de respuestas.', def:'', showIf:s=>s.temas.includes('propias') },
+    { id:'tema', label:'Tema para las preguntas de palabras', type:'bank', def:'b-digestivo', showIf:s=>TK_TEMAS.some(x=>x.banco && s.temas.includes(x.id)) },
+    { id:'variantes', label:'Los 5 tickets de la hoja', type:'single', options:[ {v:'iguales',t:'Iguales (después imprimís las copias que necesites)'},{v:'distintos',t:'Con números o preguntas distintos en cada uno'} ], def:'iguales' },
+    { id:'alto', label:'Largo del marcapáginas', type:'single', options:[ {v:'medio',t:'Mediano (20 cm)'},{v:'completo',t:'Largo (toda la hoja)'} ], def:'medio' },
+    { id:'reflexion', label:'Agregar "¿Cómo me fue?" (lo entendí, más o menos, necesito ayuda)', type:'single', options:SINO, def:'si' } ] },
+});
+DESC.tickets='Marcapáginas para cortar (5 por hoja A4) con preguntas u operaciones de los temas trabajados, para que respondan al salir de clase.';
+
 const BILL_W=25, BILL_H=12.5, COIN_D=11.5;
 function moneyRows(money,w){
   const rows=[[]]; let x=0;
@@ -4316,6 +4458,7 @@ const DIF={
   sopaN:{ facil:{tam:10,dir:['h','v'],cifras:[2,3]}, dificil:{tam:15,dir:['h','v','d'],cifras:[4,5]} },
   sopaL:{ facil:{tam:10,dir:['h','v']}, dificil:{tam:15,dir:['h','v','d','r']} },
   evaluacion:{ facil:{ _n:'facil' }, dificil:{ _n:'dificil' } },
+  tickets:{ facil:{ _n:'facil' }, dificil:{ _n:'dificil' } },
 };
 function syncNivelUI(){
   const hay=!!DIF[state.activity], nv=OPT.nivel, h=$('nivelHelp');
