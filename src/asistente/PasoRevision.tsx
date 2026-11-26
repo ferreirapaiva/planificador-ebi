@@ -43,7 +43,7 @@ export function PasoRevision({ plan, cambiar, irAPaso }: PropsPaso & { irAPaso: 
         <BotonesExportar documento={ref} titulo={plan.titulo} />
         <AreaTexto etiqueta="Observaciones" valor={plan.notas} onCambio={(v) => cambiar({ notas: v })} filas={4} />
       </aside>
-      <div className="rounded-[20px] border-[1.5px] border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">
+      <div className="papel rounded-[20px] border-[1.5px] border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">
         <Documento ref={ref} plan={plan} />
       </div>
     </div>

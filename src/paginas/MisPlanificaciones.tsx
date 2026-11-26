@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { borrarBorradoresVacios, db, leerPerfil, planificacionVacia, TIPOS, type PlanAnual, type Planificacion } from '../datos/db';
+import { borrarBorradoresVacios, db, TIPOS, type PlanAnual, type Planificacion } from '../datos/db';
 import { buscarContenido, buscarUC } from '../datos/consultas';
-import { datosGrupoActivo, perteneceAlGrupo, useGrupos } from '../datos/grupos';
+import { perteneceAlGrupo, useGrupos } from '../datos/grupos';
 import { claveGrupo, marcarContenidos } from '../datos/seguimiento';
 import { DialogoReutilizar } from '../componentes/Reutilizar';
 import { normalizar } from '../datos/programas';
@@ -15,22 +15,6 @@ import { ListaPlanesSemanales } from './PlanSemanal';
 
 const cuando = (ms: number) =>
   new Date(ms).toLocaleDateString('es-UY', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-
-/** Crea una planificación vacía (con los datos del docente recordados) y abre el asistente. */
-export function NuevaPlanificacion() {
-  const navegar = useNavigate();
-  const creada = useRef(false);
-  useEffect(() => {
-    if (creada.current) return; // StrictMode ejecuta los efectos dos veces en desarrollo
-    creada.current = true;
-    datosGrupoActivo().then(async (g) => {
-      const p = { ...planificacionVacia(), ...leerPerfil(), ...(g ?? {}) };
-      await db.planificaciones.add(p);
-      navegar(`/planificacion/${p.id}`, { replace: true });
-    });
-  }, [navegar]);
-  return <p className="text-slate-500">Creando planificación…</p>;
-}
 
 function Tarjeta({ p }: { p: Planificacion }) {
   const navegar = useNavigate();

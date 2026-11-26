@@ -28,15 +28,15 @@ export const PASOS_GUIA: Paso[] = [
     icono: 'nueva',
     color: 'bg-coral-500 text-white',
     titulo: 'Planificá',
-    texto: 'En «Nueva planificación» un asistente te guía paso a paso desde los criterios de logro del programa. En «Plan anual» repartís los contenidos en el año. Y podés copiar la planificación del año pasado y ajustarla.',
+    texto: 'En «Nueva planificación» elegís qué armar: una unidad, un proyecto o una secuencia (un asistente te guía desde los criterios de logro del programa), el plan anual, o el plan de la semana o del día. Y podés copiar lo del año pasado y ajustarlo.',
     enlace: { to: '/nueva', texto: 'Crear una planificación' },
   },
   {
     icono: 'reloj',
     color: 'bg-menta-500 text-white',
     titulo: 'Organizá la semana',
-    texto: 'En «Plan diario y semanal» armás el horario con las clases de tus planificaciones. Después lo imprimís en una sola hoja, listo para pegar en el aula.',
-    enlace: { to: '/plan-semanal', texto: 'Armar un horario' },
+    texto: 'En «Nueva planificación» elegís «Plan semanal» o «Plan diario» y armás el horario con las clases de tus planificaciones. Después lo imprimís en una sola hoja, listo para pegar en el aula.',
+    enlace: { to: '/nueva', texto: 'Ir a Nueva planificación' },
   },
   {
     icono: 'hoja',

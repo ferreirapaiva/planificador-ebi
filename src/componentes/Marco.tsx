@@ -1,15 +1,15 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Icono, type NombreIcono } from './Iconos';
 import { SelectorGrupo } from './SelectorGrupo';
+import { BotonTema, SelectorTema } from './SelectorTema';
 import { GuiaInicial } from './GuiaInicial';
 import { RespaldoAutomatico, TarjetaCopia } from './TarjetaCopia';
 
 const SECCIONES: { to: string; etiqueta: string; icono: NombreIcono; activa?: (ruta: string) => boolean }[] = [
   { to: '/', etiqueta: 'Inicio', icono: 'inicio', activa: (r) => r === '/' },
-  { to: '/nueva', etiqueta: 'Nueva planificación', icono: 'nueva', activa: (r) => r.startsWith('/planificacion/') || r === '/nueva' },
-  { to: '/mis-planificaciones', etiqueta: 'Mis planificaciones', icono: 'carpeta' },
+  { to: '/nueva', etiqueta: 'Nueva planificación', icono: 'nueva', activa: (r) => r.startsWith('/planificacion/') || r.startsWith('/nueva') || r === '/nuevo-plan-semanal' },
+  { to: '/mis-planificaciones', etiqueta: 'Mis planificaciones', icono: 'carpeta', activa: (r) => r.startsWith('/mis-planificaciones') || r.startsWith('/plan-semanal') },
   { to: '/plan-anual', etiqueta: 'Plan anual', icono: 'calendario', activa: (r) => r.startsWith('/plan-anual') || r === '/nuevo-plan-anual' },
-  { to: '/plan-semanal', etiqueta: 'Plan diario y semanal', icono: 'reloj', activa: (r) => r.startsWith('/plan-semanal') || r === '/nuevo-plan-semanal' },
   { to: '/actividades', etiqueta: 'Hojas de actividades', icono: 'hoja' },
   { to: '/seguimiento', etiqueta: 'Avance del programa', icono: 'grafico' },
   { to: '/programas', etiqueta: 'Programas', icono: 'libro' },
@@ -61,6 +61,7 @@ export function Marco() {
           ))}
         </nav>
         <div className="flex-1" />
+        <SelectorTema />
         <TarjetaCopia />
       </aside>
 
@@ -71,6 +72,7 @@ export function Marco() {
           <div className="ml-auto min-w-0 max-w-44 flex-1">
             <SelectorGrupo compacto />
           </div>
+          <BotonTema />
         </div>
         <nav aria-label="Principal" className="flex gap-1.5 overflow-x-auto px-4 pb-3 [scrollbar-width:none]">
           {SECCIONES.map((s) => (

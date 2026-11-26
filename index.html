@@ -9,6 +9,14 @@
     <link rel="icon" href="./icono.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./apple-touch-icon-180x180.png" />
     <title>Planificador EBI</title>
+    <script>
+      /* Tema claro u oscuro antes de que cargue la app, para que no haya un destello. */
+      try {
+        var t = localStorage.getItem('planificador-ebi:tema') || 'auto';
+        var oscuro = t === 'oscuro' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = oscuro ? 'dark' : 'light';
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

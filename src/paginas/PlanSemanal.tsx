@@ -390,7 +390,7 @@ export function EditorPlanSemanal() {
             <BotonesExportar documento={documento} titulo={`${plan.alcance === 'dia' ? 'plan-diario' : 'plan-semanal'}-${plan.fecha}-${plan.grupo}`} />
             <AreaTexto etiqueta="Observaciones" valor={plan.notas} onCambio={(v) => cambiar({ notas: v })} filas={4} />
           </aside>
-          <div className="rounded-[20px] border-[1.5px] border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">
+          <div className="papel rounded-[20px] border-[1.5px] border-slate-200 bg-white p-6 shadow-sm sm:p-10 print:border-0 print:p-0 print:shadow-none">
             <DocumentoSemanal ref={documento} plan={plan} avisos={avisos} />
           </div>
         </div>
@@ -410,7 +410,7 @@ export function EditorPlanSemanal() {
             </Boton>
           </div>
           {plan.dias.every((d) => d.bloques.length === 0) && <Aviso tono="alerta">Todavía no cargaste momentos en el horario. Volvé a «Armar el horario» para agregarlos.</Aviso>}
-          <div className="no-imprimir overflow-x-auto rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+          <div className="papel no-imprimir overflow-x-auto rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4 shadow-sm sm:p-6">
             <div style={{ minWidth: '820px' }}>
               <HorarioImpreso plan={plan} />
             </div>

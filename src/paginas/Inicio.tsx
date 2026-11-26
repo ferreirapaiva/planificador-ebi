@@ -21,7 +21,7 @@ const COLOR_ESPACIO: Record<string, { suave: string; texto: string; barra: strin
 const colorDe = (p: Planificacion) => COLOR_ESPACIO[buscarUC(p.ucIds[0])?.espacio ?? ''] ?? { suave: 'bg-blue-100', texto: 'text-blue-800', barra: 'bg-blue-600' };
 
 const ACCESOS: { to: string; titulo: string; texto: string; icono: NombreIcono; fondo: string; tile: string; flecha: string; desc: string }[] = [
-  { to: '/nueva', titulo: 'Nueva planificación', texto: 'Unidad, proyecto o secuencia, paso a paso.', icono: 'nueva', fondo: 'bg-blue-100', tile: 'bg-blue-600 text-white', flecha: 'text-blue-600', desc: 'text-slate-600' },
+  { to: '/nueva', titulo: 'Nueva planificación', texto: 'Unidad, proyecto, secuencia, plan anual, semanal o diario.', icono: 'nueva', fondo: 'bg-blue-100', tile: 'bg-blue-600 text-white', flecha: 'text-blue-600', desc: 'text-slate-600' },
   { to: '/plan-anual', titulo: 'Plan anual', texto: 'Repartí los contenidos en el año escolar.', icono: 'calendario', fondo: 'bg-coral-50', tile: 'bg-coral-500 text-white', flecha: 'text-coral-700', desc: 'text-slate-600' },
   { to: '/mis-planificaciones', titulo: 'Mis planificaciones', texto: 'Retomá, duplicá o descargá en Word y PDF.', icono: 'carpeta', fondo: 'bg-menta-50', tile: 'bg-menta-500 text-white', flecha: 'text-menta-700', desc: 'text-slate-600' },
   { to: '/programas', titulo: 'Explorar programas', texto: 'Contenidos y criterios de 3.º y 4.º.', icono: 'libro', fondo: 'bg-amarillo-50', tile: 'bg-amarillo-400 text-slate-900', flecha: 'text-slate-900', desc: 'text-amarillo-800' },

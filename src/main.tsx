@@ -10,7 +10,8 @@ import { Programas } from './paginas/Programas';
 import { ExploradorUC } from './paginas/ExploradorUC';
 import { Asistente } from './paginas/Asistente';
 import { AbrirPlanAnual, EditorPlanAnual, NuevoPlanAnual } from './paginas/EditorPlanAnual';
-import { MisPlanificaciones, NuevaPlanificacion } from './paginas/MisPlanificaciones';
+import { MisPlanificaciones } from './paginas/MisPlanificaciones';
+import { CrearPlanificacion, NuevaPlanificacion } from './paginas/Nueva';
 import { EditorPlanSemanal, NuevoPlanSemanal, PlanesSemanales } from './paginas/PlanSemanal';
 import { HojasActividades } from './paginas/HojasActividades';
 import { Grupos } from './paginas/Grupos';
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="programas" element={<Programas />} />
           <Route path="programas/:ucId" element={<ExploradorUC />} />
           <Route path="nueva" element={<NuevaPlanificacion />} />
+          <Route path="nueva/:tipo" element={<CrearPlanificacion />} />
           <Route path="mis-planificaciones" element={<MisPlanificaciones />} />
           <Route path="planificacion/:id" element={<Asistente />} />
           <Route path="nuevo-plan-anual" element={<NuevoPlanAnual />} />

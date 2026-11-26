@@ -98,3 +98,95 @@ body {
     page: horario;
   }
 }
+
+/*
+ * Tema oscuro (data-theme="dark" en <html>, ver src/datos/tema.ts). Solo en pantalla: al imprimir siempre es claro.
+ * La paleta se invierte con las mismas variables de Tailwind; lo que no se puede resolver con variables se ajusta clase por clase.
+ */
+@media screen {
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --color-slate-50: #12102a;
+    --color-slate-100: #26234f;
+    --color-slate-200: #34306a;
+    --color-slate-300: #4a4680;
+    --color-slate-400: #7f7cab;
+    --color-slate-500: #a29fc7;
+    --color-slate-600: #bdbadb;
+    --color-slate-700: #d0cdea;
+    --color-slate-800: #e4e2f4;
+    --color-slate-900: #f2f1fb;
+    --color-slate-950: #ffffff;
+    --color-blue-50: #1f1c4d;
+    --color-blue-100: #2a2666;
+    --color-coral-50: #3d1f1b;
+    --color-menta-50: #123a30;
+    --color-amarillo-50: #3a3010;
+    --color-amber-50: #3a3010;
+    --color-amber-100: #4a3d12;
+    --color-sky-100: #14344a;
+    --color-fuchsia-100: #44183a;
+    --color-emerald-50: #123a30;
+    --color-emerald-100: #174a3b;
+    --color-red-50: #3d1b22;
+    --color-red-200: #6b2b35;
+    --shadow-suave: 0 4px 16px rgb(0 0 0 / 0.35);
+    --shadow-elevada: 0 16px 40px rgb(0 0 0 / 0.55);
+  }
+  html[data-theme="dark"] .bg-white {
+    background-color: #1d1a42;
+  }
+  html[data-theme="dark"] .bg-white\/95 {
+    background-color: rgb(29 26 66 / 0.95);
+  }
+  html[data-theme="dark"] .bg-slate-900 {
+    background-color: #2a2666;
+  }
+  html[data-theme="dark"] .bg-slate-900[aria-pressed="true"] {
+    background-color: #5b4bf5;
+  }
+  html[data-theme="dark"] .bg-slate-900\/40,
+  html[data-theme="dark"] .bg-slate-900\/50 {
+    background-color: rgb(0 0 0 / 0.6);
+  }
+  html[data-theme="dark"] .text-blue-600,
+  html[data-theme="dark"] .text-blue-700,
+  html[data-theme="dark"] .text-blue-800,
+  html[data-theme="dark"] .text-blue-900,
+  html[data-theme="dark"] .hover\:text-blue-700:hover,
+  html[data-theme="dark"] .hover\:text-blue-900:hover {
+    color: #b7aeff;
+  }
+  html[data-theme="dark"] .text-menta-700 { color: #5fe0bf; }
+  html[data-theme="dark"] .text-coral-700 { color: #ffa58a; }
+  html[data-theme="dark"] .text-amarillo-800,
+  html[data-theme="dark"] .text-amber-700,
+  html[data-theme="dark"] .text-amber-800,
+  html[data-theme="dark"] .text-amber-900 { color: #ffd66b; }
+  html[data-theme="dark"] .text-emerald-700,
+  html[data-theme="dark"] .text-emerald-800 { color: #6fe3b0; }
+  html[data-theme="dark"] .text-sky-700 { color: #7cc8f5; }
+  html[data-theme="dark"] .text-fuchsia-700 { color: #f09fd0; }
+  html[data-theme="dark"] .text-red-700,
+  html[data-theme="dark"] .hover\:text-red-600:hover { color: #ff9a9a; }
+  html[data-theme="dark"] .border-amber-300 { border-color: #7a6014; }
+
+  /* Hojas que representan papel (documentos y horario para imprimir): siguen claras. */
+  html[data-theme="dark"] .papel {
+    background-color: #fff;
+    color: #1b1840;
+    --color-slate-50: #f6f5fb;
+    --color-slate-100: #efeef7;
+    --color-slate-200: #e7e5f3;
+    --color-slate-300: #d3d0e6;
+    --color-slate-400: #a6a2c2;
+    --color-slate-500: #6b6890;
+    --color-slate-600: #5f5c84;
+    --color-slate-700: #45426a;
+    --color-slate-800: #2e2b55;
+    --color-slate-900: #1b1840;
+  }
+  html[data-theme="dark"] .papel .bg-white {
+    background-color: #fff;
+  }
+}

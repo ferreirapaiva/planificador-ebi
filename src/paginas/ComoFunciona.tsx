@@ -22,8 +22,8 @@ const SECCIONES: Seccion[] = [
     tile: 'bg-blue-600 text-white',
     titulo: 'Planificaciones',
     puntos: [
-      '«Nueva planificación» te guía paso a paso: qué querés lograr (criterios de logro), qué vas a enseñar, cómo sabrás que lo lograron y cómo lo vas a enseñar.',
-      'Podés hacer unidades didácticas, proyectos o secuencias, con una o varias unidades curriculares.',
+      '«Nueva planificación» es el punto de partida: elegís qué armar (unidad didáctica, proyecto, secuencia, plan anual, plan semanal o plan diario).',
+      'Las unidades, proyectos y secuencias tienen un asistente paso a paso: qué querés lograr (criterios de logro), qué vas a enseñar, cómo sabrás que lo lograron y cómo lo vas a enseñar.',
       'Descargá el resultado en Word o PDF, o imprimilo.',
       'En «Mis planificaciones» las encontrás todas, con buscador.',
     ],
@@ -55,12 +55,13 @@ const SECCIONES: Seccion[] = [
     tile: 'bg-menta-500 text-white',
     titulo: 'Plan diario y semanal',
     puntos: [
+      'Se crean desde «Nueva planificación» y se encuentran después en «Mis planificaciones».',
       'Armá el horario del día o de la semana trayendo las clases de tus planificaciones, o agregando actividades y rutinas.',
       'La app junta los materiales que tenés que preparar.',
       '«Horario para pegar en el aula» lo muestra en una sola hoja A4 horizontal, con colores por área, listo para imprimir.',
       'Desde cada momento podés abrir una hoja de actividades del tema.',
     ],
-    enlaces: [{ to: '/plan-semanal', texto: 'Plan diario y semanal' }],
+    enlaces: [{ to: '/nueva', texto: 'Nueva planificación' }, { to: '/plan-semanal', texto: 'Mis planes del día y la semana' }],
   },
   {
     icono: 'grafico',
