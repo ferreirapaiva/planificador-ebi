@@ -45,6 +45,32 @@ const TRAZOS = {
     </>
   ),
   descargar: <path d="M12 4v12M6 10l6 6 6-6M5 20h14" />,
+  ayuda: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01" />
+    </>
+  ),
+  grupo: (
+    <>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+      <circle cx="17.5" cy="9" r="2.5" />
+      <path d="M17 14.2c2.4.3 4 2.2 4 4.8" />
+    </>
+  ),
+  imprimir: (
+    <>
+      <path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2" />
+      <rect x="7" y="14" width="10" height="7" />
+    </>
+  ),
+  copiar: (
+    <>
+      <rect x="9" y="9" width="11" height="11" rx="2" />
+      <path d="M5 15V6a2 2 0 0 1 2-2h9" />
+    </>
+  ),
 };
 
 export type NombreIcono = keyof typeof TRAZOS;

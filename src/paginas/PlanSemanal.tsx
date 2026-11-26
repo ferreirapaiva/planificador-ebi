@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, guardarPerfil, leerPerfil, type BloqueHorario, type DiaPlan, type PlanSemanal, type Planificacion } from '../datos/db';
@@ -23,6 +24,10 @@ import { BotonesExportar } from '../componentes/BotonesExportar';
 import { useConfirmar } from '../componentes/Confirmar';
 import { Icono } from '../componentes/Iconos';
 import { DocumentoSemanal } from '../planSemanal/DocumentoSemanal';
+import { HorarioImpreso } from '../planSemanal/HorarioImpreso';
+import { DialogoReutilizar } from '../componentes/Reutilizar';
+import { CampoGrupo } from '../componentes/CampoGrupo';
+import { datosGrupoActivo, perteneceAlGrupo, useGrupos } from '../datos/grupos';
 
 const cuando = (ms: number) => new Date(ms).toLocaleDateString('es-UY', { day: 'numeric', month: 'short', year: 'numeric' });
 const diaCorto = (iso: string) => nombreDia(iso).split(' ').slice(0, 2).join(' ').replace(',', '');
@@ -43,81 +48,80 @@ export function NuevoPlanSemanal() {
   useEffect(() => {
     if (creado.current) return;
     creado.current = true;
-    const p = planSemanalVacio(leerPerfil(), parametros.get('alcance') === 'dia' ? 'dia' : 'semana');
-    db.planesSemanales.add(p).then(() => navegar(`/plan-semanal/${p.id}`, { replace: true }));
+    datosGrupoActivo().then(async (g) => {
+      const base = planSemanalVacio(leerPerfil(), parametros.get('alcance') === 'dia' ? 'dia' : 'semana');
+      const p = g ? { ...base, grupoId: g.grupoId, grupo: g.grupo, escuela: g.escuela ?? base.escuela, docente: g.docente ?? base.docente } : base;
+      await db.planesSemanales.add(p);
+      navegar(`/plan-semanal/${p.id}`, { replace: true });
+    });
   }, [navegar, parametros]);
   return <p className="text-slate-500">Creando plan…</p>;
 }
 
-/** Tarjetas de los planes diarios y semanales guardados (se usa en su página y en Mis planificaciones). */
-export function ListaPlanesSemanales({ limite }: { limite?: number }) {
-  const planes = useLiveQuery(() => db.planesSemanales.orderBy('fecha').reverse().toArray(), []);
+function TarjetaSemanal({ p }: { p: PlanSemanal }) {
   const navegar = useNavigate();
   const confirmar = useConfirmar();
-  if (!planes) return null;
+  const [reutilizando, setReutilizando] = useState(false);
+  const bloques = p.dias.reduce((n, d) => n + d.bloques.length, 0);
+  return (
+    <article className="flex flex-col rounded-[24px] bg-menta-50 p-5">
+      <p className="m-0 flex items-center gap-2 text-[11px] font-extrabold tracking-[0.08em] text-menta-700 uppercase">
+        <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-white text-menta-700">
+          <Icono nombre="reloj" tamano={18} />
+        </span>
+        {p.alcance === 'dia' ? 'Plan diario' : 'Plan semanal'}
+        {p.grupo && ` · ${p.grupo}`}
+      </p>
+      <Link to={`/plan-semanal/${p.id}`} className="mt-2 text-lg leading-snug font-extrabold text-slate-900 hover:text-blue-700">
+        {tituloPlan(p)}
+      </Link>
+      <p className="mt-1 text-sm text-slate-600">
+        {bloques} {bloques === 1 ? 'momento' : 'momentos'} en el horario · {materialesParaPreparar(p).length} materiales
+      </p>
+      <p className="mt-auto pt-3 text-xs text-slate-400">Modificado: {cuando(p.modificada)}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        <Boton onClick={() => navegar(`/plan-semanal/${p.id}`)}>Abrir</Boton>
+        <Boton variante="secundario" onClick={() => navegar(`/plan-semanal/${p.id}?vista=horario`)} title="Ver el horario en una sola hoja para imprimir y pegar en el aula">
+          <Icono nombre="imprimir" tamano={16} grosor={2.2} />
+          Horario para imprimir
+        </Boton>
+        <Boton variante="secundario" onClick={() => setReutilizando(true)} title="Copiar este horario para otra fecha o pasarlo a otro grupo">
+          <Icono nombre="copiar" tamano={16} grosor={2.2} />
+          Reutilizar
+        </Boton>
+        <Boton
+          variante="peligro"
+          onClick={async () => {
+            const ok = await confirmar({
+              titulo: `¿Eliminar el plan «${tituloPlan(p)}»?`,
+              mensaje: 'Se borra de este equipo y no se puede deshacer. Las clases de tus planificaciones no se borran.',
+              aceptar: 'Eliminar',
+              peligro: true,
+            });
+            if (ok) await db.planesSemanales.delete(p.id);
+          }}
+        >
+          Eliminar
+        </Boton>
+      </div>
+      {reutilizando && <DialogoReutilizar tipo="semanal" item={p} onCerrar={() => setReutilizando(false)} />}
+    </article>
+  );
+}
+
+/** Tarjetas de los planes diarios y semanales guardados (se usa en su página y en Mis planificaciones). */
+export function ListaPlanesSemanales({ limite }: { limite?: number }) {
+  const { activo } = useGrupos();
+  const todos = useLiveQuery(() => db.planesSemanales.orderBy('fecha').reverse().toArray(), []);
+  if (!todos) return null;
+  const planes = todos.filter((p) => perteneceAlGrupo(p, activo));
   if (planes.length === 0)
-    return <p className="text-sm text-slate-600">Todavía no armaste ningún plan del día o de la semana.</p>;
+    return <p className="text-sm text-slate-600">Todavía no armaste ningún plan del día o de la semana{activo ? ` para ${activo.nombre}` : ''}.</p>;
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {planes.slice(0, limite).map((p) => {
-        const bloques = p.dias.reduce((n, d) => n + d.bloques.length, 0);
-        return (
-          <article key={p.id} className="flex flex-col rounded-[24px] bg-menta-50 p-5">
-            <p className="m-0 flex items-center gap-2 text-[11px] font-extrabold tracking-[0.08em] text-menta-700 uppercase">
-              <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-white text-menta-700">
-                <Icono nombre="reloj" tamano={18} />
-              </span>
-              {p.alcance === 'dia' ? 'Plan diario' : 'Plan semanal'}
-              {p.grupo && ` · ${p.grupo}`}
-            </p>
-            <Link to={`/plan-semanal/${p.id}`} className="mt-2 text-lg leading-snug font-extrabold text-slate-900 hover:text-blue-700">
-              {tituloPlan(p)}
-            </Link>
-            <p className="mt-1 text-sm text-slate-600">
-              {bloques} {bloques === 1 ? 'momento' : 'momentos'} en el horario · {materialesParaPreparar(p).length} materiales
-            </p>
-            <p className="mt-auto pt-3 text-xs text-slate-400">Modificado: {cuando(p.modificada)}</p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <Boton onClick={() => navegar(`/plan-semanal/${p.id}`)}>Abrir</Boton>
-              <Boton
-                variante="secundario"
-                onClick={async () => {
-                  // Duplicar: el mismo horario para el día o la semana siguiente.
-                  const ahora = Date.now();
-                  const salto = p.alcance === 'dia' ? 1 : 7;
-                  const copia: PlanSemanal = {
-                    ...structuredClone(p),
-                    id: crypto.randomUUID(),
-                    fecha: sumarDias(p.fecha, salto),
-                    dias: p.dias.map((d) => ({ fecha: sumarDias(d.fecha, salto), bloques: d.bloques.map((b) => ({ ...b, id: crypto.randomUUID() })) })),
-                    creada: ahora,
-                    modificada: ahora,
-                  };
-                  await db.planesSemanales.add(copia);
-                  navegar(`/plan-semanal/${copia.id}`);
-                }}
-                title={p.alcance === 'dia' ? 'Copia este horario para el día siguiente' : 'Copia este horario para la semana siguiente'}
-              >
-                Reusar {p.alcance === 'dia' ? 'mañana' : 'la semana que viene'}
-              </Boton>
-              <Boton
-                variante="peligro"
-                onClick={async () => {
-                  const ok = await confirmar({
-                    titulo: `¿Eliminar el plan «${tituloPlan(p)}»?`,
-                    mensaje: 'Se borra de este equipo y no se puede deshacer. Las clases de tus planificaciones no se borran.',
-                    aceptar: 'Eliminar',
-                    peligro: true,
-                  });
-                  if (ok) await db.planesSemanales.delete(p.id);
-                }}
-              >
-                Eliminar
-              </Boton>
-            </div>
-          </article>
-        );
-      })}
+      {planes.slice(0, limite).map((p) => (
+        <TarjetaSemanal key={p.id} p={p} />
+      ))}
     </div>
   );
 }
@@ -259,7 +263,8 @@ export function EditorPlanSemanal() {
   const { id } = useParams();
   const [plan, setPlan] = useState<PlanSemanal | null | undefined>(undefined);
   const [estado, setEstado] = useState<'guardado' | 'guardando'>('guardado');
-  const [vista, setVista] = useState<'armar' | 'documento'>('armar');
+  const [parametros] = useSearchParams();
+  const [vista, setVista] = useState<'armar' | 'horario' | 'documento'>(parametros.get('vista') === 'horario' ? 'horario' : 'armar');
   const [diaSel, setDiaSel] = useState(0);
   const [eligiendo, setEligiendo] = useState(false);
   const temporizador = useRef<number | undefined>(undefined);
@@ -336,9 +341,22 @@ export function EditorPlanSemanal() {
     cambiar({ dias });
   };
   const materiales = materialesParaPreparar(plan);
+  /** Imprime solo el horario: la hoja A4 horizontal que está fuera de la app (ver index.css). */
+  const imprimirHorario = () => {
+    document.body.classList.add('imprimir-horario');
+    const fin = () => document.body.classList.remove('imprimir-horario');
+    window.addEventListener('afterprint', fin, { once: true });
+    window.setTimeout(() => window.print(), 80);
+  };
 
   return (
     <div className="space-y-6">
+      {createPortal(
+        <div className="solo-impresion">
+          <HorarioImpreso plan={plan} />
+        </div>,
+        document.body,
+      )}
       <datalist id="areas-ebi">
         {UC_TRAMO_3.map((u) => (
           <option key={u.id} value={u.nombre} />
@@ -359,8 +377,9 @@ export function EditorPlanSemanal() {
         </span>
       </header>
 
-      <div className="no-imprimir flex gap-2" role="group" aria-label="Vista">
+      <div className="no-imprimir flex flex-wrap gap-2" role="group" aria-label="Vista">
         <Pildora activa={vista === 'armar'} onClick={() => setVista('armar')}>Armar el horario</Pildora>
+        <Pildora activa={vista === 'horario'} onClick={() => setVista('horario')}>Horario para pegar en el aula</Pildora>
         <Pildora activa={vista === 'documento'} onClick={() => setVista('documento')}>Ver documento y descargar</Pildora>
       </div>
 
@@ -375,6 +394,28 @@ export function EditorPlanSemanal() {
             <DocumentoSemanal ref={documento} plan={plan} avisos={avisos} />
           </div>
         </div>
+      ) : vista === 'horario' ? (
+        <section className="space-y-4">
+          <div className="no-imprimir flex flex-wrap items-center gap-3 rounded-[28px] bg-white p-5 shadow-suave sm:p-6">
+            <div className="mr-auto">
+              <h2 className="text-[21px] font-extrabold text-slate-900">Horario para pegar en el aula</h2>
+              <p className="mt-1 max-w-2xl text-sm text-slate-600">
+                Sale en una sola hoja A4 horizontal, con cada momento en su hora y un color por área. Si tu navegador no la pone horizontal, elegí «Horizontal» en las
+                opciones de impresión.
+              </p>
+            </div>
+            <Boton onClick={imprimirHorario}>
+              <Icono nombre="imprimir" tamano={18} grosor={2.2} />
+              Imprimir el horario
+            </Boton>
+          </div>
+          {plan.dias.every((d) => d.bloques.length === 0) && <Aviso tono="alerta">Todavía no cargaste momentos en el horario. Volvé a «Armar el horario» para agregarlos.</Aviso>}
+          <div className="no-imprimir overflow-x-auto rounded-[20px] border-[1.5px] border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div style={{ minWidth: '820px' }}>
+              <HorarioImpreso plan={plan} />
+            </div>
+          </div>
+        </section>
       ) : (
         <>
           {/* Datos */}
@@ -407,7 +448,7 @@ export function EditorPlanSemanal() {
                 </button>
               </div>
               <div className="min-w-32 flex-1">
-                <Campo etiqueta="Grupo" valor={plan.grupo} onCambio={(v) => cambiar({ grupo: v })} placeholder="Ej.: 3.º A" />
+                <CampoGrupo valor={plan} onCambio={cambiar} />
               </div>
               <div className="min-w-40 flex-1">
                 <Campo etiqueta="Docente" valor={plan.docente} onCambio={(v) => cambiar({ docente: v })} />

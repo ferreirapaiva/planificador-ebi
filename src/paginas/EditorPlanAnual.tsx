@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { calendarioPorDefecto } from '../datos/calendario';
 import { db, guardarPerfil, leerPerfil, type PlanAnual } from '../datos/db';
 import { planAnualVacio } from '../datos/planAnual';
+import { datosGrupoActivo, leerGrupoActivo, perteneceAlGrupo } from '../datos/grupos';
 import { Boton } from '../componentes/ui';
 import { Pasos } from '../componentes/Pasos';
 import { Icono } from '../componentes/Iconos';
@@ -24,8 +25,11 @@ export function NuevoPlanAnual() {
   useEffect(() => {
     if (creado.current) return;
     creado.current = true;
-    const p = planAnualVacio(leerPerfil());
-    db.planesAnuales.add(p).then(() => navegar(`/plan-anual/${p.id}`, { replace: true }));
+    datosGrupoActivo().then(async (g) => {
+      const p = { ...planAnualVacio(leerPerfil()), ...(g ?? {}) };
+      await db.planesAnuales.add(p);
+      navegar(`/plan-anual/${p.id}`, { replace: true });
+    });
   }, [navegar]);
   return <p className="text-slate-500">Creando plan anual…</p>;
 }
@@ -34,10 +38,10 @@ export function NuevoPlanAnual() {
 export function AbrirPlanAnual() {
   const navegar = useNavigate();
   useEffect(() => {
-    db.planesAnuales
-      .orderBy('modificada')
-      .last()
-      .then((p) => navegar(p ? `/plan-anual/${p.id}` : '/nuevo-plan-anual', { replace: true }));
+    leerGrupoActivo().then(async (g) => {
+      const p = await db.planesAnuales.orderBy('modificada').reverse().filter((x) => perteneceAlGrupo(x, g)).first();
+      navegar(p ? `/plan-anual/${p.id}` : '/nuevo-plan-anual', { replace: true });
+    });
   }, [navegar]);
   return <p className="text-slate-500">Abriendo plan anual…</p>;
 }

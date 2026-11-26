@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { borrarBorradoresVacios, db, leerPerfil, NOMBRE_MES, TIPOS, type Planificacion } from '../datos/db';
 import { buscarUC } from '../datos/consultas';
 import { calendarioPorDefecto } from '../datos/calendario';
 import { cobertura, porcentaje } from '../datos/planAnual';
+import { perteneceAlGrupo, useGrupos } from '../datos/grupos';
+import { PROGRAMAS } from '../datos/programas';
+import { claveGrupo, progresoUC, useSeguimiento } from '../datos/seguimiento';
 import { Icono, type NombreIcono } from '../componentes/Iconos';
 
 /** Colores de cada espacio curricular para tarjetas y barras. */
@@ -29,8 +32,10 @@ export function Inicio() {
   useEffect(() => {
     borrarBorradoresVacios();
   }, []);
-  const planificaciones = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []) ?? [];
-  const planAnual = useLiveQuery(() => db.planesAnuales.orderBy('modificada').last(), []);
+  const { activo } = useGrupos();
+  const todas = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
+  const planificaciones = useMemo(() => (todas ?? []).filter((p) => perteneceAlGrupo(p, activo)), [todas, activo]);
+  const planAnual = useLiveQuery(() => db.planesAnuales.orderBy('modificada').reverse().filter((p) => perteneceAlGrupo(p, activo)).first(), [activo?.id, activo?.nombre]);
   const perfil = leerPerfil();
   const nombre = perfil.docente.trim().split(/\s+/)[0];
   const hoy = new Date();
@@ -40,6 +45,12 @@ export function Inicio() {
   const contenidos = cob.flatMap((c) => c.contenidos.filter((x) => !x.transversal));
   const ubicados = contenidos.filter((x) => x.meses.length).length;
   const criteriosTrabajados = new Set(planificaciones.flatMap((p) => p.criterios)).size;
+
+  const gradoAvance = activo?.grados[0] ?? planAnual?.grados[0] ?? 3;
+  const estadosAvance = useSeguimiento(claveGrupo(activo));
+  const avances = PROGRAMAS.map((uc) => progresoUC(uc, gradoAvance, estadosAvance, planificaciones, activo)).filter((x): x is NonNullable<typeof x> => !!x);
+  const totalProg = avances.reduce((n, a) => n + a.total, 0);
+  const dadosProg = avances.reduce((n, a) => n + a.dados, 0);
 
   const isoHoy = hoy.toISOString().slice(0, 10);
   const calendario = planAnual?.calendario ?? calendarioPorDefecto(hoy.getMonth() >= 10 ? hoy.getFullYear() + 1 : hoy.getFullYear());
@@ -195,17 +206,30 @@ export function Inicio() {
               : { icono: 'objetivo' as const, tile: 'bg-blue-100 text-blue-600', valor: '—', texto: 'todavía sin plan anual' },
             { icono: 'check' as const, tile: 'bg-menta-50 text-menta-700', valor: String(criteriosTrabajados), texto: 'criterios de logro trabajados' },
             { icono: 'grafico' as const, tile: 'bg-coral-50 text-coral-700', valor: String(planificaciones.length), texto: 'planificaciones guardadas' },
-          ].map((s) => (
-            <div key={s.texto} className="flex items-center gap-3.5 rounded-[20px] bg-white px-[18px] py-4 shadow-suave">
-              <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] ${s.tile}`}>
-                <Icono nombre={s.icono} tamano={22} grosor={2.2} />
-              </span>
-              <span className="flex flex-col">
-                <span className="text-[30px] leading-tight font-extrabold">{s.valor}</span>
-                <span className="text-[13px] font-semibold text-slate-500">{s.texto}</span>
-              </span>
-            </div>
-          ))}
+            { icono: 'grafico' as const, tile: 'bg-menta-50 text-menta-700', valor: `${porcentaje(dadosProg, totalProg)}%`, texto: `del programa de ${gradoAvance}.º trabajado${activo ? ` con ${activo.nombre}` : ''} · ver el avance`, to: '/seguimiento' },
+          ].map((s) => {
+            const cuerpo = (
+              <>
+                <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] ${s.tile}`}>
+                  <Icono nombre={s.icono} tamano={22} grosor={2.2} />
+                </span>
+                <span className="flex flex-col">
+                  <span className="text-[30px] leading-tight font-extrabold">{s.valor}</span>
+                  <span className="text-[13px] font-semibold text-slate-500">{s.texto}</span>
+                </span>
+              </>
+            );
+            const clase = 'flex items-center gap-3.5 rounded-[20px] bg-white px-[18px] py-4 shadow-suave';
+            return 'to' in s && s.to ? (
+              <Link key={s.texto} to={s.to} className={`${clase} transition hover:-translate-y-0.5`}>
+                {cuerpo}
+              </Link>
+            ) : (
+              <div key={s.texto} className={clase}>
+                {cuerpo}
+              </div>
+            );
+          })}
           {proximas.length > 0 && (
             <div className={`${TARJETA} flex flex-col gap-3.5 p-5`}>
               <h3 className="m-0 text-[17px] font-bold">Próximas fechas</h3>

@@ -13,10 +13,15 @@ import { AbrirPlanAnual, EditorPlanAnual, NuevoPlanAnual } from './paginas/Edito
 import { MisPlanificaciones, NuevaPlanificacion } from './paginas/MisPlanificaciones';
 import { EditorPlanSemanal, NuevoPlanSemanal, PlanesSemanales } from './paginas/PlanSemanal';
 import { HojasActividades } from './paginas/HojasActividades';
+import { Grupos } from './paginas/Grupos';
+import { Seguimiento } from './paginas/Seguimiento';
+import { ComoFunciona } from './paginas/ComoFunciona';
+import { GruposProvider } from './datos/grupos';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ConfirmarProvider>
+    <GruposProvider>
     <HashRouter>
       <Routes>
         <Route element={<Marco />}>
@@ -33,9 +38,13 @@ createRoot(document.getElementById('root')!).render(
           <Route path="plan-semanal/:id" element={<EditorPlanSemanal />} />
           <Route path="nuevo-plan-semanal" element={<NuevoPlanSemanal />} />
           <Route path="actividades" element={<HojasActividades />} />
+          <Route path="grupos" element={<Grupos />} />
+          <Route path="seguimiento" element={<Seguimiento />} />
+          <Route path="como-funciona" element={<ComoFunciona />} />
         </Route>
       </Routes>
     </HashRouter>
+    </GruposProvider>
     </ConfirmarProvider>
   </StrictMode>,
 );

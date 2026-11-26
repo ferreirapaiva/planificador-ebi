@@ -41,6 +41,8 @@ export type Planificacion = {
   docente: string;
   escuela: string;
   grupo: string;
+  /** Grupo de la lista de grupos (si no, solo el texto de `grupo`). */
+  grupoId?: string;
   grados: number[];
   ucIds: string[];
   desde: string;
@@ -86,6 +88,7 @@ export type PlanAnual = {
   docente: string;
   escuela: string;
   grupo: string;
+  grupoId?: string;
   grados: number[];
   ucIds: string[];
   calendario: CalendarioEscolar;
@@ -121,6 +124,7 @@ export type PlanSemanal = {
   docente: string;
   escuela: string;
   grupo: string;
+  grupoId?: string;
   dias: DiaPlan[];
   materiales: string;
   notas: string;
@@ -128,15 +132,49 @@ export type PlanSemanal = {
   modificada: number;
 };
 
+/** Un grupo de la docente (4.º A, 5.º B…): reúne sus planificaciones, planes y avance del programa. */
+export type Grupo = {
+  id: string;
+  nombre: string;
+  grados: number[];
+  escuela: string;
+  docente: string;
+  creada: number;
+  modificada: number;
+};
+
+/**
+ * Avance del programa: qué contenidos ya se trabajaron (o se están trabajando) con cada grupo.
+ * `grupoKey` es el id del grupo o "general" cuando no se usan grupos.
+ */
+export type Seguimiento = {
+  id: string;
+  grupoKey: string;
+  contenidoId: string;
+  ucId: string;
+  estado: 'en-curso' | 'dado';
+  fecha: string;
+  modificada: number;
+};
+
 export const db = new Dexie('planificador-ebi') as Dexie & {
   planificaciones: EntityTable<Planificacion, 'id'>;
   planesAnuales: EntityTable<PlanAnual, 'id'>;
   planesSemanales: EntityTable<PlanSemanal, 'id'>;
+  grupos: EntityTable<Grupo, 'id'>;
+  seguimiento: EntityTable<Seguimiento, 'id'>;
 };
 
 db.version(1).stores({ planificaciones: 'id, modificada, tipo' });
 db.version(2).stores({ planificaciones: 'id, modificada, tipo', planesAnuales: 'id, modificada, anio' });
 db.version(3).stores({ planificaciones: 'id, modificada, tipo', planesAnuales: 'id, modificada, anio', planesSemanales: 'id, modificada, fecha' });
+db.version(4).stores({
+  planificaciones: 'id, modificada, tipo',
+  planesAnuales: 'id, modificada, anio',
+  planesSemanales: 'id, modificada, fecha',
+  grupos: 'id, nombre',
+  seguimiento: 'id, grupoKey, ucId',
+});
 
 export const nuevoId = () => crypto.randomUUID();
 

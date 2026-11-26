@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { borrarBorradoresVacios, db, leerPerfil, nuevoId, planificacionVacia, TIPOS, type Planificacion } from '../datos/db';
-import { buscarUC } from '../datos/consultas';
+import { borrarBorradoresVacios, db, leerPerfil, planificacionVacia, TIPOS, type PlanAnual, type Planificacion } from '../datos/db';
+import { buscarContenido, buscarUC } from '../datos/consultas';
+import { datosGrupoActivo, perteneceAlGrupo, useGrupos } from '../datos/grupos';
+import { claveGrupo, marcarContenidos } from '../datos/seguimiento';
+import { DialogoReutilizar } from '../componentes/Reutilizar';
 import { normalizar } from '../datos/programas';
 import { Boton } from '../componentes/ui';
 import { useConfirmar } from '../componentes/Confirmar';
@@ -20,8 +23,11 @@ export function NuevaPlanificacion() {
   useEffect(() => {
     if (creada.current) return; // StrictMode ejecuta los efectos dos veces en desarrollo
     creada.current = true;
-    const p = { ...planificacionVacia(), ...leerPerfil() };
-    db.planificaciones.add(p).then(() => navegar(`/planificacion/${p.id}`, { replace: true }));
+    datosGrupoActivo().then(async (g) => {
+      const p = { ...planificacionVacia(), ...leerPerfil(), ...(g ?? {}) };
+      await db.planificaciones.add(p);
+      navegar(`/planificacion/${p.id}`, { replace: true });
+    });
   }, [navegar]);
   return <p className="text-slate-500">Creando planificación…</p>;
 }
@@ -29,12 +35,10 @@ export function NuevaPlanificacion() {
 function Tarjeta({ p }: { p: Planificacion }) {
   const navegar = useNavigate();
   const confirmar = useConfirmar();
-  const duplicar = async () => {
-    const ahora = Date.now();
-    const copia: Planificacion = { ...structuredClone(p), id: nuevoId(), titulo: `${p.titulo || 'Sin título'} (copia)`, creada: ahora, modificada: ahora, paso: 0 };
-    await db.planificaciones.add(copia);
-    navegar(`/planificacion/${copia.id}`);
-  };
+  const { grupos, activo } = useGrupos();
+  const [reutilizando, setReutilizando] = useState(false);
+  const [aviso, setAviso] = useState('');
+  const grupoDe = grupos.find((g) => perteneceAlGrupo(p, g)) ?? activo ?? null;
   const borrar = async () => {
     const ok = await confirmar({
       titulo: `¿Eliminar «${p.titulo || 'Sin título'}»?`,
@@ -44,6 +48,27 @@ function Tarjeta({ p }: { p: Planificacion }) {
     });
     if (ok) await db.planificaciones.delete(p.id);
   };
+  /** Pasa los contenidos de esta planificación al avance del programa del grupo. */
+  const darPorTrabajados = async () => {
+    const porUC = new Map<string, string[]>();
+    for (const id of p.contenidos) {
+      const uc = buscarContenido(id)?.uc.id;
+      if (uc) porUC.set(uc, [...(porUC.get(uc) ?? []), id]);
+    }
+    const n = [...porUC.values()].reduce((t, l) => t + l.length, 0);
+    if (!n) {
+      setAviso('Esta planificación todavía no tiene contenidos elegidos.');
+      return;
+    }
+    const ok = await confirmar({
+      titulo: `¿Marcar ${n} ${n === 1 ? 'contenido' : 'contenidos'} como trabajados?`,
+      mensaje: `Se agregan al avance del programa${grupoDe ? ` de ${grupoDe.nombre}` : ''}. Los podés cambiar cuando quieras en «Avance del programa».`,
+      aceptar: 'Marcar como trabajados',
+    });
+    if (!ok) return;
+    for (const [uc, ids] of porUC) await marcarContenidos(claveGrupo(grupoDe), uc, ids, 'dado');
+    setAviso(`Listo: ${n} ${n === 1 ? 'contenido marcado' : 'contenidos marcados'} en el avance del programa.`);
+  };
   return (
     <article className="flex flex-col rounded-[24px] bg-white p-5 shadow-suave">
       <p className="m-0 flex items-center gap-2 text-[11px] font-extrabold tracking-[0.08em] text-blue-600 uppercase">
@@ -51,6 +76,7 @@ function Tarjeta({ p }: { p: Planificacion }) {
           <Icono nombre={TIPOS[p.tipo].icono} tamano={18} />
         </span>
         {TIPOS[p.tipo].nombre} · {p.grados.map((g) => `${g}.º`).join(' y ')}
+        {p.grupo.trim() && ` · ${p.grupo}`}
       </p>
       <Link to={`/planificacion/${p.id}`} className="mt-2 text-lg font-extrabold text-slate-900 hover:text-blue-700">
         {p.titulo || 'Sin título'}
@@ -62,18 +88,69 @@ function Tarjeta({ p }: { p: Planificacion }) {
       <p className="mt-auto pt-3 text-xs text-slate-400">Modificada: {cuando(p.modificada)}</p>
       <div className="mt-2 flex flex-wrap gap-2">
         <Boton onClick={() => navegar(`/planificacion/${p.id}`)}>Abrir</Boton>
-        <Boton variante="secundario" onClick={duplicar}>Duplicar</Boton>
+        <Boton variante="secundario" onClick={() => setReutilizando(true)} title="Hacer una copia para ajustarla o pasarla a otro grupo">
+          <Icono nombre="copiar" tamano={16} grosor={2.2} />
+          Reutilizar
+        </Boton>
+        <Boton variante="secundario" onClick={darPorTrabajados} title="Marcar sus contenidos en el avance del programa">Dar por trabajados</Boton>
         <Boton variante="peligro" onClick={borrar}>Eliminar</Boton>
       </div>
+      {aviso && <p className="mt-2 text-sm font-semibold text-menta-700" role="status">{aviso}</p>}
+      {reutilizando && <DialogoReutilizar tipo="planificacion" item={p} onCerrar={() => setReutilizando(false)} />}
+    </article>
+  );
+}
+
+function TarjetaAnual({ p }: { p: PlanAnual }) {
+  const navegar = useNavigate();
+  const confirmar = useConfirmar();
+  const [reutilizando, setReutilizando] = useState(false);
+  const ubicados = Object.values(p.distribucion).filter((m) => m.length).length;
+  return (
+    <article className="flex flex-col rounded-[24px] bg-gradient-to-br from-blue-100 to-coral-50 p-5">
+      <p className="m-0 flex items-center gap-2 text-[11px] font-extrabold tracking-[0.08em] text-coral-700 uppercase">
+        <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-white text-coral-700">
+          <Icono nombre="calendario" tamano={18} />
+        </span>
+        Plan anual · {p.grados.map((g) => `${g}.º`).join(' y ')}
+      </p>
+      <Link to={`/plan-anual/${p.id}`} className="mt-1 text-[21px] font-extrabold text-slate-900 hover:text-blue-700">
+        {p.anio}
+        {p.grupo && ` · ${p.grupo}`}
+      </Link>
+      <p className="text-sm text-slate-600">{p.ucIds.length} unidades curriculares · {ubicados} contenidos ubicados</p>
+      <p className="mt-auto pt-3 text-xs text-slate-400">Modificado: {cuando(p.modificada)}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        <Boton onClick={() => navegar(`/plan-anual/${p.id}`)}>Abrir</Boton>
+        <Boton variante="secundario" onClick={() => setReutilizando(true)} title="Copiarlo para otro año o pasarlo a otro grupo">
+          <Icono nombre="copiar" tamano={16} grosor={2.2} />
+          Reutilizar
+        </Boton>
+        <Boton
+          variante="peligro"
+          onClick={async () => {
+            const ok = await confirmar({
+              titulo: `¿Eliminar el plan anual ${p.anio}${p.grupo ? ` de ${p.grupo}` : ''}?`,
+              mensaje: 'Se borra de este equipo y no se puede deshacer. Tus unidades, proyectos y secuencias no se borran.',
+              aceptar: 'Eliminar',
+              peligro: true,
+            });
+            if (ok) await db.planesAnuales.delete(p.id);
+          }}
+        >
+          Eliminar
+        </Boton>
+      </div>
+      {reutilizando && <DialogoReutilizar tipo="anual" item={p} onCerrar={() => setReutilizando(false)} />}
     </article>
   );
 }
 
 function PlanesAnuales() {
-  const planes = useLiveQuery(() => db.planesAnuales.orderBy('modificada').reverse().toArray(), []);
-  const navegar = useNavigate();
-  const confirmar = useConfirmar();
-  if (!planes) return null;
+  const { activo } = useGrupos();
+  const todos = useLiveQuery(() => db.planesAnuales.orderBy('modificada').reverse().toArray(), []);
+  if (!todos) return null;
+  const planes = todos.filter((p) => perteneceAlGrupo(p, activo));
   return (
     <section className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
@@ -87,45 +164,12 @@ function PlanesAnuales() {
         </Link>
       </div>
       {planes.length === 0 ? (
-        <p className="text-sm text-slate-600">Todavía no tenés un plan anual. Te ayuda a repartir los contenidos en el año y a ver qué te falta planificar.</p>
+        <p className="text-sm text-slate-600">Todavía no tenés un plan anual{activo ? ` para ${activo.nombre}` : ''}. Te ayuda a repartir los contenidos en el año y a ver qué te falta planificar.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {planes.map((p) => {
-            const ubicados = Object.values(p.distribucion).filter((m) => m.length).length;
-            return (
-              <article key={p.id} className="flex flex-col rounded-[24px] bg-gradient-to-br from-blue-100 to-coral-50 p-5">
-                <p className="m-0 flex items-center gap-2 text-[11px] font-extrabold tracking-[0.08em] text-coral-700 uppercase">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-white text-coral-700">
-                    <Icono nombre="calendario" tamano={18} />
-                  </span>
-                  Plan anual · {p.grados.map((g) => `${g}.º`).join(' y ')}
-                </p>
-                <Link to={`/plan-anual/${p.id}`} className="mt-1 text-[21px] font-extrabold text-slate-900 hover:text-blue-700">
-                  {p.anio}
-                  {p.grupo && ` · ${p.grupo}`}
-                </Link>
-                <p className="text-sm text-slate-600">{p.ucIds.length} unidades curriculares · {ubicados} contenidos ubicados</p>
-                <p className="mt-auto pt-3 text-xs text-slate-400">Modificado: {cuando(p.modificada)}</p>
-                <div className="mt-2 flex gap-2">
-                  <Boton onClick={() => navegar(`/plan-anual/${p.id}`)}>Abrir</Boton>
-                  <Boton
-                    variante="peligro"
-                    onClick={async () => {
-                      const ok = await confirmar({
-                        titulo: `¿Eliminar el plan anual ${p.anio}${p.grupo ? ` de ${p.grupo}` : ''}?`,
-                        mensaje: 'Se borra de este equipo y no se puede deshacer. Tus unidades, proyectos y secuencias no se borran.',
-                        aceptar: 'Eliminar',
-                        peligro: true,
-                      });
-                      if (ok) await db.planesAnuales.delete(p.id);
-                    }}
-                  >
-                    Eliminar
-                  </Boton>
-                </div>
-              </article>
-            );
-          })}
+          {planes.map((p) => (
+            <TarjetaAnual key={p.id} p={p} />
+          ))}
         </div>
       )}
     </section>
@@ -146,7 +190,7 @@ function Respaldo() {
         <Boton
           onClick={async () => {
             const n = await descargarRespaldo();
-            setMensaje({ texto: `Copia descargada: ${n.planificaciones} planificaciones, ${n.planesAnuales} planes anuales y ${n.planesSemanales} planes del día o la semana.` });
+            setMensaje({ texto: `Copia descargada: ${n.planificaciones} planificaciones, ${n.planesAnuales} planes anuales, ${n.planesSemanales} planes del día o la semana y ${n.grupos} grupos (con el avance del programa).` });
           }}
         >
           <Icono nombre="descargar" tamano={18} grosor={2.4} />
@@ -178,7 +222,9 @@ function Respaldo() {
 }
 
 export function MisPlanificaciones() {
-  const lista = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
+  const { activo, elegir } = useGrupos();
+  const todas = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
+  const lista = todas?.filter((p) => perteneceAlGrupo(p, activo));
   const [texto, setTexto] = useState('');
   const { hash } = useLocation();
   // Borradores vacíos que quedaron de tocar «Nueva planificación» sin escribir nada.
@@ -194,7 +240,15 @@ export function MisPlanificaciones() {
   const visibles = lista.filter((p) => !q || normalizar(`${p.titulo} ${p.ucIds.map((id) => buscarUC(id)?.nombre).join(' ')}`).includes(q));
   return (
     <div className="space-y-5">
-      <h1 className="text-[30px] font-extrabold tracking-tight text-slate-900">Mis planificaciones</h1>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="mr-auto text-[30px] font-extrabold tracking-tight text-slate-900">Mis planificaciones</h1>
+        {activo && (
+          <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3.5 py-1.5 text-sm font-extrabold text-blue-800">
+            Grupo: {activo.nombre}
+            <button type="button" onClick={() => elegir(null)} className="rounded-full px-1.5 text-blue-700 underline hover:text-blue-900">ver todos</button>
+          </span>
+        )}
+      </div>
       <PlanesAnuales />
       <div className="flex flex-wrap items-center gap-3 border-t border-slate-200 pt-5">
         <h2 className="mr-auto text-[21px] font-extrabold text-slate-900">Unidades, proyectos y secuencias</h2>

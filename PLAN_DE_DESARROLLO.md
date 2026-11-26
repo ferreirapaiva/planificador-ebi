@@ -236,4 +236,11 @@ Anotadas por la docente; todavía no están desarrolladas.
 
 - [ ] **Modo oscuro.** Opción para cambiar entre tema claro y oscuro (idealmente siguiendo la preferencia del equipo), aplicada a toda la app, incluida la pantalla de Hojas de actividades.
 - [ ] **Plan diario y semanal dentro de «Nueva planificación».** Hoy es una entrada aparte en el menú lateral. Pasarlo a ser una opción más al crear una planificación, junto a las demás (secuencia, unidad, proyecto, plan anual).
-- [ ] **Menú «Cómo funciona».** Una sección nueva que explique todo lo que se puede hacer con la app: programas, nueva planificación, plan anual, plan diario y semanal, hojas de actividades, copia de seguridad y uso sin conexión.
+- [x] **Menú «Cómo funciona».** Una sección nueva que explique todo lo que se puede hacer con la app: programas, nueva planificación, plan anual, plan diario y semanal, hojas de actividades, copia de seguridad y uso sin conexión. *(Hecho: pantalla «Cómo funciona» y guía de primer uso.)*
+
+### Hecho desde esa lista
+- [x] **Duplicar y reutilizar.** «Reutilizar» en planificaciones, planes anuales y horarios: copia para ajustar (sin fechas, para otro año o semana) o pasa el elemento a otro grupo.
+- [x] **Varios grupos.** Lista de grupos (4.º A, 5.º B…), selector en la barra lateral y filtro de planificaciones, planes anuales y horarios por grupo.
+- [x] **Seguimiento de lo dado.** «Avance del programa»: contenidos «en curso» o «trabajados» por grupo y porcentaje por unidad curricular.
+- [x] **Guía de primer uso** y pantalla «Cómo funciona».
+- [x] **Horario semanal en una sola hoja** A4 horizontal, con colores por área, para pegar en el aula.
