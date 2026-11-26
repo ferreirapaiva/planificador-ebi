@@ -181,6 +181,10 @@
   .panel .lead{margin:-6px 0 12px; color:var(--muted); font-size:.92rem}
 
   .items{display:flex; flex-wrap:wrap; gap:8px}
+  .grado-bar{background:var(--card); border:1.5px solid var(--line); border-radius:18px; padding:12px 14px 10px; margin-bottom:12px; --c:var(--mate)}
+  .grado-bar > b{display:block; margin:0 0 8px; font-family:var(--display); font-size:1rem}
+  .grado-bar .item{padding:7px 14px; min-width:56px}
+  .grado-bar .help{margin-top:8px}
   .item{border:2px solid var(--line); background:#fff; border-radius:12px; padding:9px 14px; font-weight:700; cursor:pointer; transition:border-color .15s, background .15s}
   .item:hover:not([disabled]){border-color:var(--c)}
   .item.sel{border-color:var(--c); background:var(--c); color:#fff}
@@ -359,6 +363,11 @@
       <button type="button" class="mini" id="introOk">Entendido</button>
     </div>
     <div>
+      <div class="grado-bar" aria-label="Grado">
+        <b>¿Para qué grado?</b>
+        <div class="items" id="grados" role="group" aria-label="Elegí el grado"></div>
+        <p class="help" id="gradoHelp"></p>
+      </div>
       <div class="folders" id="areas" role="tablist" aria-label="Áreas"></div>
       <div class="panel activity">
         <h2><span class="n">1</span>Elegí la actividad</h2>
@@ -1316,7 +1325,7 @@ const CATALOG = [
 ];
 
 const OPS_COUNT = { label:'Cantidad de ejercicios', options:[6,9,12,15,18,24,30,45], def:12 };
-const CIFRAS = [ {v:1,t:'1 cifra'},{v:2,t:'2 cifras'},{v:3,t:'3 cifras'},{v:4,t:'4 cifras'} ];
+const CIFRAS = [ {v:1,t:'1 cifra'},{v:2,t:'2 cifras'},{v:3,t:'3 cifras'},{v:4,t:'4 cifras'},{v:5,t:'5 cifras'} ];
 const FORMATO_V = { id:'formato', label:'Formato', type:'single', options:[
   { v:'vertical', t:'En vertical (cuenta parada)' }, { v:'linea', t:'En línea' } ], def:'vertical' };
 
@@ -1463,7 +1472,7 @@ function bankGroupUI(g, P){
   const opt = b => `<option value="${b.id}" ${b.id===bank.id?'selected':''}>${esc(b.name)} (${b.entries.length})</option>`;
   wrap.innerHTML = `
     <select id="bankSel" class="bank-sel">
-      <optgroup label="Temas incluidos">${BUILTIN_BANKS.map(opt).join('')}</optgroup>
+      <optgroup label="Temas incluidos${OPT.grado?' para '+OPT.grado+'.º':''}">${BUILTIN_BANKS.filter(b=>bancoVisible(b)||b.id===bank.id).map(opt).join('')}</optgroup>
       ${userBanks.length?`<optgroup label="Mis temas">${userBanks.map(opt).join('')}</optgroup>`:''}
     </select>
     <div class="bank-btns">
@@ -4599,6 +4608,233 @@ function vincular(){
     b.textContent=nombreActividad(ch.id)+(ch.tema ? ' · '+findBank(ch.tema).name : ''); b.onclick=()=>aplicar(ch); wrap.appendChild(b); });
   aplicar(chips[0]);
 }
+
+
+/* =========================================================
+   GRADO: filtro previo (1.º a 6.º), actividades y ajustes propios de cada grado
+   según los programas de EBI, temas nuevos y opciones detalladas de la evaluación.
+   ========================================================= */
+BUILTIN_BANKS.push(...[
+  { id:'b-luz', name:'La luz y las sombras', grados:[1,2], entries:[
+    ['luz','Nos permite ver los objetos que nos rodean.'],['sombra','Zona oscura que se forma detrás de un objeto que tapa la luz.'],
+    ['sol','Cuerpo luminoso natural que nos da luz y calor.'],['linterna','Cuerpo luminoso artificial que llevamos en la mano.'],
+    ['vela','Cuerpo luminoso que da luz al quemarse.'],['transparente','Material que deja pasar la luz, como el vidrio.'],
+    ['opaco','Material que no deja pasar la luz, como la madera.'],['espejo','Superficie que refleja la luz y nuestra imagen.'],
+    ['arcoíris','Colores que aparecen cuando la luz del sol atraviesa gotas de agua.'],['lámpara','Fuente de luz artificial que usa electricidad.'] ] },
+  { id:'b-reproduccion', name:'Cómo nacen los animales', grados:[1,2], entries:[
+    ['ovíparo','Animal que nace de un huevo puesto fuera del cuerpo de la madre.'],['vivíparo','Animal que se desarrolla dentro del cuerpo de la madre.'],
+    ['huevo','Lo ponen las aves y los reptiles; de él nace la cría.'],['cría','Animal recién nacido.'],
+    ['renacuajo','Cría de la rana que vive en el agua y tiene cola.'],['metamorfosis','Gran cambio de forma, como el de renacuajo a rana.'],
+    ['nido','Lugar que preparan las aves para poner sus huevos.'],['mamífero','Animal que se alimenta de la leche de su madre al nacer.'],
+    ['larva','Primera etapa de algunos insectos después de salir del huevo.'],['ornitorrinco','Mamífero que pone huevos.'] ] },
+  { id:'b-suelo', name:'El suelo y el agua', grados:[1,2], entries:[
+    ['suelo','Capa de tierra donde crecen las plantas.'],['lombriz','Animal que vive en el suelo y lo vuelve más fértil.'],
+    ['arena','Suelo de granos sueltos que deja pasar el agua.'],['arcilla','Suelo pegajoso que retiene mucho el agua.'],
+    ['humus','Parte del suelo formada por restos de seres vivos.'],['erosión','Desgaste del suelo por el agua o el viento.'],
+    ['río','Corriente de agua dulce que corre sobre la superficie.'],['lluvia','Agua que cae de las nubes.'],
+    ['piedra','Material duro que forma parte del suelo.'],['raíces','Parte de las plantas que se sostiene en el suelo.'] ] },
+  { id:'b-familia', name:'Familias, trabajo y comunidad', grados:[1,2], entries:[
+    ['familia','Grupo de personas que conviven y se cuidan.'],['abuelos','Padres de nuestro padre o de nuestra madre.'],
+    ['vecino','Persona que vive cerca de nuestra casa.'],['maestra','Persona que enseña en la escuela.'],
+    ['médico','Persona que cuida nuestra salud.'],['panadero','Persona que hace el pan.'],
+    ['bombero','Persona que apaga incendios y ayuda en emergencias.'],['barrio','Lugar donde vivimos junto a otras familias.'],
+    ['fiesta','Celebración que compartimos en la comunidad.'],['oficio','Trabajo que se aprende haciendo.'] ] },
+  { id:'b-celula', name:'La célula y los seres vivos', grados:[5,6], entries:[
+    ['célula','Unidad más pequeña que forma a los seres vivos.'],['núcleo','Parte de la célula que guarda la información.'],
+    ['membrana','Envoltura que rodea a la célula.'],['citoplasma','Líquido del interior de la célula.'],
+    ['unicelular','Ser vivo formado por una sola célula.'],['pluricelular','Ser vivo formado por muchas células.'],
+    ['hongo','Ser vivo del reino fungi, como el moho.'],['bacteria','Ser vivo unicelular sin núcleo, del reino monera.'],
+    ['fotosíntesis','Proceso por el cual las plantas fabrican su alimento con la luz.'],['población','Grupo de seres vivos de la misma especie en un lugar.'],
+    ['comunidad','Conjunto de poblaciones que viven en un mismo lugar.'],['especie','Seres vivos parecidos que pueden tener crías fértiles.'] ] },
+  { id:'b-electricidad', name:'Electricidad y magnetismo', grados:[5,6], entries:[
+    ['circuito','Camino cerrado por el que circula la corriente eléctrica.'],['pila','Fuente de energía eléctrica de un circuito.'],
+    ['interruptor','Abre o cierra el circuito.'],['conductor','Material que deja pasar la corriente, como el cobre.'],
+    ['aislante','Material que no deja pasar la corriente, como el plástico.'],['imán','Objeto que atrae al hierro.'],
+    ['brújula','Instrumento con una aguja imantada que señala el norte.'],['polo','Extremo de un imán, norte o sur.'],
+    ['cable','Hilo de metal que conduce la electricidad.'],['bombita','Se enciende cuando pasa la corriente.'] ] },
+  { id:'b-tierra', name:'La Tierra por dentro', grados:[5,6], entries:[
+    ['corteza','Capa exterior y sólida de la Tierra.'],['manto','Capa intermedia de la Tierra, con roca caliente.'],
+    ['núcleo','Capa central de la Tierra.'],['placa','Gran pedazo de la corteza que se mueve.'],
+    ['volcán','Abertura por la que sale magma del interior de la Tierra.'],['sismo','Movimiento brusco de la corteza terrestre.'],
+    ['magma','Roca fundida del interior de la Tierra.'],['fósil','Resto de un ser vivo antiguo conservado en las rocas.'],
+    ['falla','Rotura de la corteza donde los bloques se desplazan.'],['cordillera','Cadena de montañas, como los Andes.'] ] },
+  { id:'b-universo', name:'El universo', grados:[5,6], entries:[
+    ['galaxia','Enorme conjunto de estrellas, gas y polvo.'],['estrella','Astro que tiene luz propia, como el Sol.'],
+    ['planeta','Astro que gira alrededor de una estrella.'],['satélite','Astro u objeto que gira alrededor de un planeta.'],
+    ['cometa','Astro de hielo y polvo que forma una cola al acercarse al Sol.'],['telescopio','Instrumento para observar astros lejanos.'],
+    ['órbita','Camino que recorre un astro alrededor de otro.'],['eclipse','Cuando un astro tapa la luz de otro.'],
+    ['marea','Subida y bajada del mar por la atracción de la Luna.'],['astronauta','Persona que viaja al espacio.'] ] },
+  { id:'b-democracia', name:'Gobierno y democracia', grados:[5,6], entries:[
+    ['democracia','Forma de gobierno en la que el pueblo elige a sus gobernantes.'],['constitución','Ley más importante del país.'],
+    ['ciudadano','Persona con derechos y deberes en su país.'],['voto','Forma de elegir a nuestros representantes.'],
+    ['parlamento','Lugar donde se hacen las leyes.'],['presidente','Persona elegida para dirigir el Poder Ejecutivo.'],
+    ['derechos','Lo que todas las personas pueden exigir que se respete.'],['soberanía','Poder que reside en la nación.'],
+    ['ley','Norma que todos deben cumplir.'],['plebiscito','Consulta en la que la ciudadanía vota sí o no.'] ] },
+].map(b=>({ ...b, builtin:true, entries:b.entries.map(([word,clue])=>({word,clue})) })));
+const GRADOS_BANCO={ 'b-digestivo':[3,4,5,6], 'b-solar':[3,4,5,6], 'b-geometria':[1,2,3,4,5,6], 'b-animales':[1,2,3,4], 'b-plantas':[1,2,3,4,6],
+  'b-agua':[2,3,4], 'b-materia':[1,2,3,4,5,6], 'b-respiratorio':[2,3,4,5], 'b-circulatorio':[4,5,6], 'b-patrios':[1,2,3,4,5], 'b-departamentos':[3,4,5,6] };
+BUILTIN_BANKS.forEach(b=>{ if (!b.grados) b.grados=GRADOS_BANCO[b.id]||[1,2,3,4,5,6]; });
+const TEMA_GRADO={ 1:'b-reproduccion', 2:'b-luz', 3:'b-digestivo', 4:'b-materia', 5:'b-electricidad', 6:'b-celula' };
+function bancoVisible(b){ return !OPT.grado || !b.builtin || (b.grados||[]).includes(OPT.grado); }
+
+/* En qué grados tiene sentido cada actividad (las demás se ocultan al elegir un grado). */
+const RANGO={ mult:[2,6], div:[2,6], tablas:[2,6], medidas:[2,6], logica:[2,6], ortografia:[2,6], acentos:[3,6], verbos:[3,6],
+  cadenas:[2,6], lineas:[2,6], mapas:[3,6], crucigrama:[2,6] };
+const paraGrado = id => { const r=RANGO[id]; return !OPT.grado || !r || (OPT.grado>=r[0] && OPT.grado<=r[1]); };
+
+/* Ajustes de cada actividad para cada grado (se aplican al elegir el grado; después se pueden cambiar). */
+const PRESET={
+  sumas:{ 1:{dif:['sin'],cifras:[1,2],sumandos:[2]}, 2:{dif:['sin','con'],cifras:[2,3],sumandos:[2]}, 3:{dif:['con'],cifras:[3,4],sumandos:[2]},
+    4:{dif:['con'],cifras:[4],sumandos:[2,3]}, 5:{dif:['con'],cifras:[4,5],sumandos:[2,3]}, 6:{dif:['con'],cifras:[5],sumandos:[3]} },
+  restas:{ 1:{dif:['sin'],cifras:[1,2]}, 2:{dif:['sin','con'],cifras:[2,3]}, 3:{dif:['con'],cifras:[3,4]}, 4:{dif:['con'],cifras:[4]}, 5:{dif:['con'],cifras:[4,5]}, 6:{dif:['con'],cifras:[5]} },
+  mult:{ 2:{cifrasA:[1],cifrasB:[1]}, 3:{cifrasA:[2,3],cifrasB:[1]}, 4:{cifrasA:[3,4],cifrasB:[1,2]}, 5:{cifrasA:[3,4],cifrasB:[2]}, 6:{cifrasA:[4,5],cifrasB:[2]} },
+  div:{ 2:{dividendo:[2],divisor:[1],resto:['exacta']}, 3:{dividendo:[2,3],divisor:[1],resto:['exacta']}, 4:{dividendo:[3,4],divisor:[1],resto:['exacta','con']},
+    5:{dividendo:[3,4],divisor:[1,2],resto:['exacta','con']}, 6:{dividendo:[4,5],divisor:[2],resto:['exacta','con']} },
+  numeracion:{ 1:{cifras:[2],tipo:['antpos','creciente','serie']}, 2:{cifras:[3],tipo:['antpos','creciente','serie']}, 3:{cifras:[4]}, 4:{cifras:[5]}, 5:{cifras:[5],tipo:['antpos','creciente','decreciente']}, 6:{cifras:[5],tipo:['creciente','decreciente','serie']} },
+  escribir:{ 1:{cifras:[2],tipo:['aNumero','descomponer']}, 2:{cifras:[3]}, 3:{cifras:[4]}, 4:{cifras:[5]}, 5:{cifras:[5],tipo:['aPalabras','aNumero','descomponer','componer']}, 6:{cifras:[5],tipo:['aPalabras','aNumero','descomponer','componer']} },
+  problemas:{ 1:{op:['suma','resta'],hasta:100}, 2:{op:['suma','resta','mult'],hasta:1000}, 3:{op:['suma','resta','mult','div'],hasta:1000},
+    4:{op:['mult','div','comb'],hasta:10000}, 5:{op:['suma','resta','mult','div','comb'],hasta:10000}, 6:{op:['mult','div','comb'],hasta:10000} },
+  mental:{ 1:{tipo:['dobles','complementos','diezmas'],nivel:'basico'}, 2:{tipo:['tablas','dobles','diezmas'],tablas:[2,5,10],nivel:'basico'},
+    3:{tipo:['tablas','dobles','complementos'],tablas:[2,3,4,5,6],nivel:'basico'}, 4:{tipo:['tablas','dobles','complementos'],tablas:[2,3,4,5,6,7,8,9],nivel:'avanzado'},
+    5:{tipo:['tablas','complementos','diezmas'],tablas:[6,7,8,9],nivel:'avanzado'}, 6:{tipo:['tablas','complementos','diezmas'],tablas:[6,7,8,9],nivel:'avanzado'} },
+  dinero:{ 1:{tipo:['contar'],hasta:100}, 2:{tipo:['contar','pagar'],hasta:100}, 3:{tipo:['contar','vuelto'],hasta:1000}, 4:{tipo:['vuelto','pagar'],hasta:1000}, 5:{tipo:['vuelto','pagar'],hasta:5000}, 6:{tipo:['vuelto','pagar'],hasta:5000} },
+  hora:{ 1:{tipo:['leer','dibujar','calendario'],precision:'media'}, 2:{tipo:['leer','dibujar','calendario'],precision:'cuarto'}, 3:{tipo:['leer','dibujar','cuanto'],precision:'cuarto'},
+    4:{tipo:['leer','cuanto'],precision:'5'}, 5:{tipo:['cuanto','calendario'],precision:'5'}, 6:{tipo:['cuanto','calendario'],precision:'5'} },
+  fracciones:{ 1:{tipo:['pintar','leer'],nivel:'basico'}, 2:{tipo:['pintar','leer','equivalentes'],nivel:'basico'}, 3:{tipo:['leer','pintar','equivalentes','comparar'],nivel:'basico'},
+    4:{tipo:['equivalentes','comparar','sumar','decimal'],nivel:'basico'}, 5:{tipo:['comparar','sumar','decimal','compDec'],nivel:'amplio'}, 6:{tipo:['equivalentes','sumar','decimal','compDec'],nivel:'amplio'} },
+  tablas:{ 2:{tipo:['completar'],tablas:[2,5,10],hasta:10}, 3:{tipo:['completar','faltante'],tablas:[2,3,4,5,6],hasta:10}, 4:{tipo:['completar','faltante','dividir'],tablas:[2,3,4,5,6,7,8,9,10],hasta:10},
+    5:{tipo:['faltante','dividir','cuadro'],tablas:[6,7,8,9],hasta:12}, 6:{tipo:['faltante','dividir','cuadro'],tablas:[6,7,8,9],hasta:12} },
+  medidas:{ 2:{tipo:['conversion'],unidades:['long','masa']}, 3:{tipo:['conversion','perimetro'],unidades:['long']}, 4:{tipo:['conversion','perimetro','area'],unidades:['long','masa','cap']},
+    5:{tipo:['conversion','area','angulos'],unidades:['long','masa','cap']}, 6:{tipo:['conversion','perimetro','area','angulos'],unidades:['long','masa','cap']} },
+  patrones:{ 1:{tipo:['suma','letras'],nivel:'chico'}, 2:{tipo:['suma','resta'],nivel:'chico'}, 3:{tipo:['suma','resta','regla'],nivel:'medio'}, 4:{tipo:['suma','mult','regla'],nivel:'medio'},
+    5:{tipo:['mult','alterna','regla'],nivel:'grande'}, 6:{tipo:['mult','alterna','regla'],nivel:'grande'} },
+  logica:{ 2:{tipo:['piramide'],nivel:'facil'}, 3:{tipo:['magico','piramide'],nivel:'facil'}, 4:{tipo:['magico','piramide'],nivel:'medio'},
+    5:{tipo:['magico','piramide','laberinto'],nivel:'dificil'}, 6:{tipo:['magico','piramide','laberinto'],nivel:'dificil'} },
+  graficos:{ 1:{formato:'barras',cats:4,hasta:10,preg:['leer','mayor','menor']}, 2:{formato:'barras',cats:4,hasta:10,preg:['leer','mayor','menor','total']},
+    3:{formato:'barras',cats:5,hasta:20,preg:['leer','mayor','total','dif']}, 4:{formato:'tabla',cats:5,hasta:20,preg:['leer','total','dif','suma2']},
+    5:{formato:'pasar',cats:6,hasta:50,preg:['total','dif','suma2']}, 6:{formato:'pasar',cats:6,hasta:50,preg:['total','dif','suma2']} },
+  ortografia:{ 2:{modo:'elegir',tipo:['bv','lly']}, 3:{modo:'completar',tipo:['bv','csz']}, 4:{modo:'completar',tipo:['bv','csz','gj']}, 5:{modo:'completar',tipo:['bv','csz','gj','lly','h']}, 6:{modo:'completar',tipo:['bv','csz','gj','lly','h']} },
+  acentos:{ 3:{tipo:['tonica'],clases:['aguda','grave']}, 4:{tipo:['tonica','clase'],clases:['aguda','grave','esdrújula']}, 5:{tipo:['clase','tilde'],clases:['aguda','grave','esdrújula']}, 6:{tipo:['clase','tilde'],clases:['aguda','grave','esdrújula']} },
+  ordenarOr:{ 1:{tipo:['oracion']}, 2:{tipo:['oracion','alfabetico'],nivel:'facil'}, 3:{tipo:['oracion','secuencia','alfabetico'],nivel:'facil'}, 4:{tipo:['secuencia','alfabetico'],nivel:'dificil'},
+    5:{tipo:['secuencia','alfabetico'],nivel:'dificil'}, 6:{tipo:['secuencia','alfabetico'],nivel:'dificil'} },
+  clases:{ 1:{tipo:['plural','genero']}, 2:{tipo:['identificar','plural','genero']}, 3:{tipo:['clasificar','identificar'],palabras:9}, 4:{tipo:['clasificar','identificar'],palabras:12},
+    5:{tipo:['clasificar','identificar'],palabras:12}, 6:{tipo:['clasificar','identificar'],palabras:12} },
+  verbos:{ 3:{modo:['frase','tiempo'],tiempo:['presente','pasado','futuro'],conj:['ar']}, 4:{modo:['tabla','frase'],tiempo:['presente','pasado','futuro'],conj:['ar','er','ir']},
+    5:{modo:['tabla','frase','tiempo'],tiempo:['presente','pasado','imperfecto','futuro'],conj:['ar','er','ir']}, 6:{modo:['tabla','frase','tiempo'],tiempo:['presente','pasado','imperfecto','futuro'],conj:['ar','er','ir']} },
+  sopaN:{ 1:{tam:10,cifras:[2],dir:['h','v'],pista:'numeros'}, 2:{tam:10,cifras:[2,3],dir:['h','v']}, 3:{tam:12,cifras:[3,4],dir:['h','v']}, 4:{tam:12,cifras:[4],dir:['h','v','d']},
+    5:{tam:15,cifras:[4,5],dir:['h','v','d'],pista:'cuentas'}, 6:{tam:15,cifras:[5],dir:['h','v','d'],pista:'cuentas'} },
+  sopaL:{ 1:{tam:10,dir:['h','v']}, 2:{tam:10,dir:['h','v']}, 3:{tam:12,dir:['h','v']}, 4:{tam:12,dir:['h','v','d']}, 5:{tam:15,dir:['h','v','d','r']}, 6:{tam:15,dir:['h','v','d','r']} },
+  mapas:{ 3:{mapa:'uruguay'}, 4:{mapa:'uruguay'}, 5:{mapa:'sudamerica'}, 6:{mapa:'sudamerica'} },
+  lineas:{ 2:{modo:'ordenar',anios:'si'}, 3:{tema:'uruguay',modo:'ordenar'}, 4:{tema:'uruguay',modo:'linea'}, 5:{tema:'uruguay',modo:'linea'}, 6:{tema:'inventos',modo:'linea'} },
+  cadenas:{ 2:{huecos:1,roles:'si'}, 3:{huecos:2}, 4:{huecos:2}, 5:{huecos:3}, 6:{huecos:3,roles:'no'} },
+  comprension:{ 1:{grado:'1º y 2º'}, 2:{grado:'1º y 2º'}, 3:{grado:'3º y 4º'}, 4:{grado:'3º y 4º'}, 5:{grado:'5º y 6º'}, 6:{grado:'5º y 6º'} },
+};
+/* Secciones de la evaluación que se proponen para cada grado. */
+const EVAL_GRADO={ 1:['sumas','restas','numeracion','escribir'], 2:['sumas','restas','numeracion','problemas'], 3:['sumas','restas','mult','fracciones'],
+  4:['mult','div','fracciones','problemas'], 5:['div','fracciones','decimales','geometria'], 6:['div','decimales','problemas','geometria'] };
+
+/* ---------- Evaluación: elegir cómo es cada sección (cifras, tipo de cuenta, resto…) ---------- */
+const SUB = (sec,gid)=> sec.id+'~'+gid;
+const subSel = (s,sec)=>{ const o={}; Object.keys(s).forEach(k=>{ if (k.startsWith(sec.id+'~')) o[k.slice(sec.id.length+1)]=s[k]; }); return o; };
+(()=>{
+  const E=ACTIVITIES.evaluacion, extra=[];
+  EVAL_SECC.filter(sec=>!sec.banco && ACTIVITIES[sec.act]).forEach(sec=>{
+    ACTIVITIES[sec.act].groups.filter(g=>g.options && ['multi','single'].includes(g.type)).forEach(g=>{
+      const def = sec.sel && sec.sel[g.id]!==undefined ? sec.sel[g.id] : g.def;
+      extra.push({ ...g, id:SUB(sec,g.id), label:`${sec.titulo} · ${g.label}`, sub:sec.id, def:Array.isArray(def)?[...def]:def,
+        showIf:s=> s.secciones.includes(sec.id) && (!g.showIf || g.showIf({ ...(sec.sel||{}), ...subSel(s,sec) })) });
+    });
+  });
+  const i=E.groups.findIndex(g=>g.id==='tema');
+  E.groups.splice(i, 0, ...extra);
+})();
+evalSeccion = function(sec,n,nivel,bank,propias){
+  const A=ACTIVITIES[sec.act], sel={};
+  A.groups.forEach(g=>{ sel[g.id]=Array.isArray(g.def)?[...g.def]:g.def; });
+  Object.assign(sel, sec.sel||{});
+  if (propias) Object.assign(sel, propias);
+  // El nivel fácil o difícil de la hoja manda sobre lo elegido.
+  if (nivel && DIF[sec.act] && DIF[sec.act][nivel]) Object.assign(sel, DIF[sec.act][nivel]);
+  const res=GEN[sec.act](sel,n,{ bank, comp:null });
+  if (Array.isArray(res)){
+    res.sort((a,b)=>(a.diff||0)-(b.diff||0));
+    return res[0] && res[0].type ? { items:res, cols:A.cols||2 } : { ops:res, fmt:sel.formato||'vertical' };
+  }
+  return { items:[...(res.top?[{...res.top, full:true}]:[]), ...res.items], cols:res.cols||1 };
+};
+GEN.evaluacion = function(sel,count,ctx){
+  const secs=EVAL_SECC.filter(s=>sel.secciones.includes(s.id)), items=[], rub=[], letras='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let base=0, aviso='';
+  secs.forEach((sec,i)=>{
+    const g=evalSeccion(sec, Math.max(1,Math.round(count*(sec.m||1))), sel._n||null, ctx.bank, subSel(sel,sec));
+    const n = g.ops ? g.ops.length : g.items.some(x=>x.type==='unir') ? g.items.find(x=>x.type==='unir').left.length : g.items.filter(isEj).length;
+    items.push({ type:'grupo', base, ops:g.ops, fmt:g.fmt, items:g.items, cols:g.cols, letra:letras[i], titulo:sec.titulo, n, puntaje:sel.puntaje==='si' });
+    base += g.ops ? g.ops.length : g.items.filter(isEj).length;
+    rub.push({ letra:letras[i], titulo:sec.titulo, criterio:sec.criterio, n });
+  });
+  if (sel.rubrica==='si') items.push({ type:'rubricaEval', secs:rub, tipo:sel.tipoRubrica });
+  if (secs.some(s=>s.banco) && (!ctx.bank || !ctx.bank.entries.length)) aviso='Elegí un tema para las secciones de palabras.';
+  return { kind:'blocks', cols:1, items, fit: sel.hojas==='una', warn:aviso };
+};
+
+/* ---------- Aplicar el grado ---------- */
+OPT.grado=0;
+try{ const g=Number(localStorage.getItem('hojas-grado')); if (g>=1 && g<=6) OPT.grado=g; }catch(e){}
+function presetDe(id,g){
+  const A=ACTIVITIES[id], P=(PRESET[id]||{})[g], o={};
+  if (P) Object.keys(P).forEach(k=>{ if (A.groups.some(x=>x.id===k)) o[k]=Array.isArray(P[k])?[...P[k]]:P[k]; });
+  if (A.groups.some(x=>x.type==='bank') && TEMA_GRADO[g]) A.groups.filter(x=>x.type==='bank').forEach(x=>{ o[x.id]=TEMA_GRADO[g]; });
+  return o;
+}
+function aplicarGradoA(id, P){
+  const g=OPT.grado; if (!g || !ACTIVITIES[id]) return;
+  Object.assign(P.sel, presetDe(id,g));
+  if (id==='evaluacion'){
+    P.sel.secciones=[...(EVAL_GRADO[g]||P.sel.secciones)];
+    EVAL_SECC.forEach(sec=>{ const p=presetDe(sec.act,g); Object.keys(p).forEach(k=>{ if (P.sel[SUB(sec,k)]!==undefined) P.sel[SUB(sec,k)]=p[k]; }); });
+  }
+}
+const ensurePerBase = ensurePer;
+ensurePer = function(id){ const nuevo=!state.per[id]; const P=ensurePerBase(id); if (nuevo) aplicarGradoA(id,P); return P; };
+
+renderItems = function(){
+  const area=CATALOG.find(a=>a.id===state.area), box=$('items'); box.innerHTML='';
+  const visibles=area.items.filter(it=>paraGrado(it.id));
+  visibles.forEach(it=>{
+    const b=document.createElement('button'); b.type='button';
+    b.className='item'+(it.id===state.activity?' sel':'');
+    b.innerHTML = it.name + (it.ready?'':'<span class="soon">Pronto</span>');
+    if (!it.ready) b.disabled=true; else b.onclick=()=>selectActivity(it.id);
+    box.appendChild(b);
+  });
+  const ocultas=area.items.length-visibles.length;
+  if (ocultas && OPT.grado){ const p=document.createElement('p'); p.className='help'; p.style.width='100%';
+    p.textContent=`${ocultas===1?'Hay 1 actividad':'Hay '+ocultas+' actividades'} de esta carpeta para otros grados. Elegí «Todos» arriba para verlas.`; box.appendChild(p); }
+};
+
+function renderGrados(){
+  const box=$('grados'); box.innerHTML='';
+  [0,1,2,3,4,5,6].forEach(g=>{
+    const b=document.createElement('button'); b.type='button'; b.className='item'+(OPT.grado===g?' sel':'');
+    b.setAttribute('aria-pressed', OPT.grado===g); b.textContent = g ? g+'.º' : 'Todos';
+    b.onclick=()=>elegirGrado(g); box.appendChild(b);
+  });
+  $('gradoHelp').textContent = OPT.grado
+    ? `Se muestran las actividades de ${OPT.grado}.º y cada una ya viene ajustada a ese grado (cifras, tipos de ejercicio, tema). Podés cambiar cualquier opción en el paso 2.`
+    : 'Elegí un grado para ver solo sus actividades, ya ajustadas a los contenidos de ese grado.';
+}
+function elegirGrado(g){
+  OPT.grado=g; try{ localStorage.setItem('hojas-grado', String(g)); }catch(e){}
+  if (g) Object.keys(state.per).forEach(id=>aplicarGradoA(id, state.per[id]));
+  if (g) aplicarGradoA(state.activity, ensurePer(state.activity));
+  if (!paraGrado(state.activity)){
+    const area=CATALOG.find(a=>a.id===state.area), it=area.items.find(i=>i.ready && paraGrado(i.id));
+    if (it) state.activity=it.id; else { state.area='mate'; state.activity='sumas'; }
+  }
+  renderGrados(); renderAreas(); selectActivity(state.activity); save();
+  if (g) flash(`Listo: actividades ajustadas para ${g}.º.`,'ok');
+}
+renderGrados();
 
 loadBanks();
 loadCombo();
