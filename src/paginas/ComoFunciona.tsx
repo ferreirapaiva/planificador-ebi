@@ -96,9 +96,11 @@ const SECCIONES: Seccion[] = [
     titulo: 'Tus datos y la copia de seguridad',
     puntos: [
       'Todo se guarda en este navegador y funciona sin conexión; se puede instalar como aplicación.',
-      'Descargá una copia de seguridad de vez en cuando: incluye planificaciones, planes, grupos y avance. Con ese archivo recuperás todo o lo pasás a otro equipo.',
+      'En «Respaldo y seguridad» descargás una copia con todo: planificaciones, planes, grupos y avance. Podés protegerla con contraseña.',
+      'La app te recuerda hacer la copia cada cierto tiempo, y en Chrome o Edge puede guardar sola una copia por día en una carpeta que elijas (por ejemplo, la de Drive o OneDrive).',
+      'Antes de restaurar, te muestra lo que tiene la copia y comprueba que no esté dañada. Con ese archivo recuperás todo o lo pasás a otro equipo.',
     ],
-    enlaces: [{ to: '/mis-planificaciones#copia', texto: 'Copia de seguridad' }],
+    enlaces: [{ to: '/respaldo', texto: 'Respaldo y seguridad' }],
   },
 ];
 

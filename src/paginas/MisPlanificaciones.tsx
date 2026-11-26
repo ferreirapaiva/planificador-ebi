@@ -10,7 +10,7 @@ import { normalizar } from '../datos/programas';
 import { Boton } from '../componentes/ui';
 import { useConfirmar } from '../componentes/Confirmar';
 import { Icono } from '../componentes/Iconos';
-import { descargarRespaldo, restaurarRespaldo } from '../datos/respaldo';
+import { haceCuanto, useEstadoCopia } from '../datos/copias';
 import { ListaPlanesSemanales } from './PlanSemanal';
 
 const cuando = (ms: number) =>
@@ -177,46 +177,21 @@ function PlanesAnuales() {
 }
 
 function Respaldo() {
-  const entrada = useRef<HTMLInputElement>(null);
-  const [mensaje, setMensaje] = useState<{ texto: string; error?: boolean } | null>(null);
+  const { ultima, dias, vencida } = useEstadoCopia();
   return (
-    <section id="copia" className="scroll-mt-24 rounded-[24px] bg-white p-5 shadow-suave">
+    <section id="copia" className={`scroll-mt-24 rounded-[24px] p-5 shadow-suave ${vencida ? 'bg-amarillo-50' : 'bg-white'}`}>
       <h2 className="font-semibold text-slate-900">Copia de seguridad</h2>
       <p className="mt-1 text-sm text-slate-600">
-        Tus planificaciones se guardan solo en este navegador y en este equipo. Descargá una copia de vez en cuando y guardala en tu
-        computadora, un pendrive o tu correo. Con ese archivo podés recuperarlas o pasarlas a otro equipo.
+        Tus planificaciones se guardan solo en este navegador y en este equipo. Hacé una copia de vez en cuando —podés protegerla con contraseña o dejar que se guarde sola en
+        una carpeta— y así las recuperás o las pasás a otro equipo.
+        {ultima && dias !== null && <> Última copia: {haceCuanto(dias)}.</>}
       </p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        <Boton
-          onClick={async () => {
-            const n = await descargarRespaldo();
-            setMensaje({ texto: `Copia descargada: ${n.planificaciones} planificaciones, ${n.planesAnuales} planes anuales, ${n.planesSemanales} planes del día o la semana y ${n.grupos} grupos (con el avance del programa).` });
-          }}
-        >
+      <div className="mt-3">
+        <Link to="/respaldo" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-blue-600 px-5 text-sm font-extrabold text-white shadow-[0_8px_20px_rgb(91_75_245/0.28)] hover:bg-blue-700">
           <Icono nombre="descargar" tamano={18} grosor={2.4} />
-          Descargar copia
-        </Boton>
-        <Boton variante="secundario" onClick={() => entrada.current?.click()}>Restaurar desde una copia</Boton>
-        <input
-          ref={entrada}
-          type="file"
-          accept=".json,application/json"
-          className="hidden"
-          aria-label="Elegir archivo de copia de seguridad"
-          onChange={async (e) => {
-            const archivo = e.target.files?.[0];
-            e.target.value = '';
-            if (!archivo) return;
-            try {
-              const r = await restaurarRespaldo(archivo);
-              setMensaje({ texto: `Listo: ${r.agregadas} agregadas y ${r.actualizadas} actualizadas. No se borró nada.` });
-            } catch (err) {
-              setMensaje({ texto: (err as Error).message, error: true });
-            }
-          }}
-        />
+          Respaldo y seguridad
+        </Link>
       </div>
-      {mensaje && <p className={`mt-2 text-sm ${mensaje.error ? 'text-red-700' : 'text-emerald-700'}`} role="status">{mensaje.texto}</p>}
     </section>
   );
 }

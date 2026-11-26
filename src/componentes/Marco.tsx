@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Icono, type NombreIcono } from './Iconos';
 import { SelectorGrupo } from './SelectorGrupo';
 import { GuiaInicial } from './GuiaInicial';
+import { RespaldoAutomatico, TarjetaCopia } from './TarjetaCopia';
 
 const SECCIONES: { to: string; etiqueta: string; icono: NombreIcono; activa?: (ruta: string) => boolean }[] = [
   { to: '/', etiqueta: 'Inicio', icono: 'inicio', activa: (r) => r === '/' },
@@ -35,6 +36,7 @@ export function Marco() {
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <GuiaInicial />
+      <RespaldoAutomatico />
       {/* Escritorio: barra lateral */}
       <aside className="no-imprimir hidden w-[264px] shrink-0 flex-col gap-1.5 border-r border-slate-200 bg-white px-6 pt-7 pb-6 lg:sticky lg:top-0 lg:flex lg:h-screen">
         <div className="px-1.5 pb-4">
@@ -59,19 +61,7 @@ export function Marco() {
           ))}
         </nav>
         <div className="flex-1" />
-        <div className="flex flex-col gap-2.5 rounded-[22px] bg-gradient-to-br from-blue-100 to-coral-50 p-[18px]">
-          <span className="text-coral-700">
-            <Icono nombre="estrella" tamano={24} />
-          </span>
-          <p className="m-0 text-[15px] leading-snug font-extrabold text-slate-900">¿Hiciste tu copia de seguridad?</p>
-          <p className="m-0 text-[13px] leading-snug font-semibold text-slate-600">Tus planificaciones viven en este equipo. Guardá una copia cada tanto.</p>
-          <Link
-            to="/mis-planificaciones#copia"
-            className="inline-flex min-h-11 items-center self-start rounded-full bg-white px-[18px] text-sm font-extrabold text-blue-800 hover:bg-blue-50"
-          >
-            Descargar copia
-          </Link>
-        </div>
+        <TarjetaCopia />
       </aside>
 
       {/* Celular y tablet: barra superior con navegación desplazable */}
