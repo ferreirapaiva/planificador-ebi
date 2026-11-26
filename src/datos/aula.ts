@@ -3,6 +3,7 @@ import { db, nuevoId, NIVELES_POR_DEFECTO, type Alumno, type Asistencia, type En
 import { buscarCriterio } from './consultas';
 import { normalizar } from './programas';
 import { hoyIso, sumarDias } from './planSemanal';
+import { feriadoOficial } from './calendario';
 
 /* ---------- Lista de alumnos ---------- */
 
@@ -142,13 +143,14 @@ export async function guardarEntradaDiario(e: EntradaDiario) {
   return modificada;
 }
 
-/** El día de clase que sigue: salta sábados y domingos. */
+/** El día de clase que sigue: salta fines de semana y los feriados oficiales cargados (las vacaciones no se tienen en cuenta). */
 export function diaSiguiente(fecha: string) {
   let d = sumarDias(fecha, 1);
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 10; i++) {
     const [a, m, dd] = d.split('-').map(Number);
     const sem = new Date(a, m - 1, dd).getDay();
-    if (sem === 0 || sem === 6) d = sumarDias(d, 1);
+    if (sem === 0 || sem === 6 || feriadoOficial(d)) d = sumarDias(d, 1);
+    else break;
   }
   return d;
 }
