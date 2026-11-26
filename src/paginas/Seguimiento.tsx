@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Grupo } from '../datos/db';
 import { useGrupos } from '../datos/grupos';
-import { PROGRAMAS } from '../datos/programas';
+import { GRADOS, PROGRAMAS } from '../datos/programas';
 import { claveGrupo, marcarContenidos, progresoUC, siguienteEstado, useSeguimiento, type EstadoSeg, type FilaBloque } from '../datos/seguimiento';
 import { Boton, Pildora } from '../componentes/ui';
 import { Icono } from '../componentes/Iconos';
@@ -136,8 +136,8 @@ export function Seguimiento() {
         )}
         <div>
           <span className="text-sm font-bold text-slate-700">Grado</span>
-          <div className="mt-1.5 flex gap-2">
-            {[3, 4].map((g) => (
+          <div className="mt-1.5 flex flex-wrap gap-2">
+            {GRADOS.map((g) => (
               <Pildora key={g} activa={grado === g} onClick={() => setGrado(g)}>{g}.º</Pildora>
             ))}
           </div>

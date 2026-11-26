@@ -101,7 +101,7 @@ const SECCIONES: Seccion[] = [
     icono: 'libro',
     tile: 'bg-amarillo-400 text-slate-900',
     titulo: 'Programas',
-    puntos: ['Explorá los contenidos y criterios de logro de cada unidad curricular de 3.º y 4.º, con búsqueda.'],
+    puntos: ['Explorá los contenidos y criterios de logro de cada unidad curricular de 1.º a 6.º, con búsqueda.'],
     enlaces: [{ to: '/programas', texto: 'Programas' }],
   },
   {

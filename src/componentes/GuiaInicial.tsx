@@ -15,7 +15,7 @@ export const PASOS_GUIA: Paso[] = [
     icono: 'check',
     color: 'bg-blue-600 text-white',
     titulo: 'Te damos la bienvenida',
-    texto: 'El Planificador EBI te ayuda a planificar con los programas del Tramo 3, organizar la semana y preparar el material. En un minuto te mostramos lo principal.',
+    texto: 'El Planificador EBI te ayuda a planificar con los programas de 1.º a 6.º (tramos 2, 3 y 4), organizar la semana y preparar el material. En un minuto te mostramos lo principal.',
   },
   {
     icono: 'grupo',

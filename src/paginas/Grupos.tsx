@@ -4,17 +4,17 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, leerPerfil, type Grupo } from '../datos/db';
 import { grupoNuevo, perteneceAlGrupo, useGrupos } from '../datos/grupos';
 import { normalizar } from '../datos/programas';
-import { AreaTexto, Aviso, Boton, Campo, Pildora } from '../componentes/ui';
+import { AreaTexto, Aviso, Boton, Campo } from '../componentes/ui';
 import { alumnosATexto, textoAAlumnos } from '../datos/aula';
 import { useConfirmar } from '../componentes/Confirmar';
 import { Icono } from '../componentes/Iconos';
+import { SelectorGrado } from '../componentes/SelectorGrado';
 
 function Formulario({ inicial, onGuardar, onCancelar }: { inicial: Grupo; onGuardar: (g: Grupo) => void; onCancelar: () => void }) {
   const [g, setG] = useState(inicial);
   const [lista, setLista] = useState(() => alumnosATexto(inicial.alumnos));
   const nAlumnos = textoAAlumnos(lista).length;
   const set = (p: Partial<Grupo>) => setG((x) => ({ ...x, ...p }));
-  const multi = g.grados.length > 1;
   return (
     <form
       className="space-y-4 rounded-[24px] bg-white p-5 shadow-suave"
@@ -27,10 +27,8 @@ function Formulario({ inicial, onGuardar, onCancelar }: { inicial: Grupo; onGuar
         <Campo etiqueta="Nombre del grupo" valor={g.nombre} onCambio={(v) => set({ nombre: v })} placeholder="Ej.: 4.º A" />
         <div>
           <span className="text-sm font-bold text-slate-700">Grado</span>
-          <div className="mt-1.5 flex flex-wrap gap-2">
-            <Pildora activa={!multi && g.grados[0] === 3} onClick={() => set({ grados: [3] })}>3.º</Pildora>
-            <Pildora activa={!multi && g.grados[0] === 4} onClick={() => set({ grados: [4] })}>4.º</Pildora>
-            <Pildora activa={multi} onClick={() => set({ grados: [3, 4] })}>Multigrado</Pildora>
+          <div className="mt-1.5">
+            <SelectorGrado grados={g.grados} onCambio={(grados) => set({ grados })} />
           </div>
         </div>
         <Campo etiqueta="Escuela (opcional)" valor={g.escuela} onCambio={(v) => set({ escuela: v })} placeholder="Ej.: Escuela N.º 123" />
