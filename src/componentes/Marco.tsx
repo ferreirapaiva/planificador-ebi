@@ -1,5 +1,7 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Icono, type NombreIcono } from './Iconos';
+import { SelectorGrupo } from './SelectorGrupo';
+import { GuiaInicial } from './GuiaInicial';
 
 const SECCIONES: { to: string; etiqueta: string; icono: NombreIcono; activa?: (ruta: string) => boolean }[] = [
   { to: '/', etiqueta: 'Inicio', icono: 'inicio', activa: (r) => r === '/' },
@@ -8,7 +10,9 @@ const SECCIONES: { to: string; etiqueta: string; icono: NombreIcono; activa?: (r
   { to: '/plan-anual', etiqueta: 'Plan anual', icono: 'calendario', activa: (r) => r.startsWith('/plan-anual') || r === '/nuevo-plan-anual' },
   { to: '/plan-semanal', etiqueta: 'Plan diario y semanal', icono: 'reloj', activa: (r) => r.startsWith('/plan-semanal') || r === '/nuevo-plan-semanal' },
   { to: '/actividades', etiqueta: 'Hojas de actividades', icono: 'hoja' },
+  { to: '/seguimiento', etiqueta: 'Avance del programa', icono: 'grafico' },
   { to: '/programas', etiqueta: 'Programas', icono: 'libro' },
+  { to: '/como-funciona', etiqueta: 'Cómo funciona', icono: 'ayuda' },
 ];
 
 function Logo() {
@@ -30,10 +34,14 @@ export function Marco() {
   const esActiva = (s: (typeof SECCIONES)[number]) => (s.activa ? s.activa(pathname) : pathname.startsWith(s.to));
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
+      <GuiaInicial />
       {/* Escritorio: barra lateral */}
       <aside className="no-imprimir hidden w-[264px] shrink-0 flex-col gap-1.5 border-r border-slate-200 bg-white px-6 pt-7 pb-6 lg:sticky lg:top-0 lg:flex lg:h-screen">
-        <div className="px-1.5 pb-6">
+        <div className="px-1.5 pb-4">
           <Logo />
+        </div>
+        <div className="pb-3">
+          <SelectorGrupo />
         </div>
         <nav aria-label="Principal" className="flex flex-col gap-1.5">
           {SECCIONES.map((s) => (
@@ -68,8 +76,11 @@ export function Marco() {
 
       {/* Celular y tablet: barra superior con navegación desplazable */}
       <header className="no-imprimir sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur lg:hidden">
-        <div className="flex items-center px-4 pt-3 pb-2">
+        <div className="flex items-center gap-3 px-4 pt-3 pb-2">
           <Logo />
+          <div className="ml-auto min-w-0 max-w-44 flex-1">
+            <SelectorGrupo compacto />
+          </div>
         </div>
         <nav aria-label="Principal" className="flex gap-1.5 overflow-x-auto px-4 pb-3 [scrollbar-width:none]">
           {SECCIONES.map((s) => (

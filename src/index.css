@@ -80,3 +80,21 @@ body {
   outline: 3px solid var(--color-blue-600);
   outline-offset: 2px;
 }
+
+/* Horario semanal para pegar en el aula: se imprime solo, en una hoja A4 horizontal. */
+.solo-impresion {
+  display: none;
+}
+@page horario {
+  size: A4 landscape;
+  margin: 8mm;
+}
+@media print {
+  body.imprimir-horario #root {
+    display: none !important;
+  }
+  body.imprimir-horario .solo-impresion {
+    display: block;
+    page: horario;
+  }
+}

@@ -3,6 +3,7 @@ import { ESPACIOS, PROGRAMAS } from '../datos/programas';
 import { Aviso, Campo, Pildora, TarjetaCasilla } from '../componentes/ui';
 import { alternar, type PropsPaso } from './tipos';
 import { Icono } from '../componentes/Iconos';
+import { CampoGrupo } from '../componentes/CampoGrupo';
 
 export function PasoDatos({ plan, cambiar }: PropsPaso) {
   const multigrado = plan.grados.length > 1;
@@ -42,7 +43,7 @@ export function PasoDatos({ plan, cambiar }: PropsPaso) {
         </div>
         <Campo etiqueta="Docente" valor={plan.docente} onCambio={(v) => cambiar({ docente: v })} />
         <Campo etiqueta="Escuela" valor={plan.escuela} onCambio={(v) => cambiar({ escuela: v })} placeholder="Ej.: Escuela N.º 123, Montevideo" />
-        <Campo etiqueta="Grupo" valor={plan.grupo} onCambio={(v) => cambiar({ grupo: v })} placeholder="Ej.: 4.º A" />
+        <CampoGrupo valor={plan} onCambio={cambiar} />
         <div className="grid grid-cols-2 gap-3">
           <Campo etiqueta="Desde" tipo="date" valor={plan.desde} onCambio={(v) => cambiar({ desde: v })} />
           <Campo etiqueta="Hasta" tipo="date" valor={plan.hasta} onCambio={(v) => cambiar({ hasta: v })} />

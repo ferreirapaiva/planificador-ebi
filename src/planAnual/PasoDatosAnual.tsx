@@ -5,6 +5,7 @@ import { AreaTexto, Aviso, Boton, Campo, Pildora, TarjetaCasilla } from '../comp
 import { fecha } from '../componentes/Documento';
 import { alternar } from '../asistente/tipos';
 import { useConfirmar } from '../componentes/Confirmar';
+import { CampoGrupo } from '../componentes/CampoGrupo';
 
 export type PropsAnual = { plan: PlanAnual; cambiar: (p: Partial<PlanAnual>) => void };
 
@@ -29,7 +30,7 @@ export function PasoDatosAnual({ plan, cambiar }: PropsAnual) {
         </label>
         <Campo etiqueta="Docente" valor={plan.docente} onCambio={(v) => cambiar({ docente: v })} />
         <Campo etiqueta="Escuela" valor={plan.escuela} onCambio={(v) => cambiar({ escuela: v })} />
-        <Campo etiqueta="Grupo" valor={plan.grupo} onCambio={(v) => cambiar({ grupo: v })} placeholder="Ej.: 3.º B" />
+        <CampoGrupo valor={plan} onCambio={cambiar} />
       </section>
 
       <section>
