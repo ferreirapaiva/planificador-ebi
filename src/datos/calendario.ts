@@ -37,6 +37,35 @@ const EFEMERIDES_FIJAS: [string, string][] = [
 ];
 
 /**
+ * Feriados oficiales por año (fecha, nombre). Solo están los años ya confirmados; para los demás se usan las fechas habituales de abajo.
+ * 2027: 15 feriados (Carnaval y Semana de Turismo cuentan dos días cada uno); 5 son no laborables pagos.
+ */
+const FERIADOS_OFICIALES: Record<number, [string, string][]> = {
+  2027: [
+    ['2027-01-01', 'Año Nuevo'],
+    ['2027-01-06', 'Día de los Niños (Reyes)'],
+    ['2027-02-08', 'Carnaval'],
+    ['2027-02-09', 'Carnaval'],
+    ['2027-03-25', 'Semana de Turismo'],
+    ['2027-03-26', 'Semana de Turismo'],
+    ['2027-04-19', 'Desembarco de los Treinta y Tres Orientales'],
+    ['2027-05-01', 'Día de los Trabajadores'],
+    ['2027-05-17', 'Batalla de Las Piedras'],
+    ['2027-06-19', 'Natalicio de José Artigas'],
+    ['2027-07-18', 'Jura de la Constitución'],
+    ['2027-08-25', 'Declaratoria de la Independencia'],
+    ['2027-10-11', 'Día de la Diversidad Cultural'],
+    ['2027-11-02', 'Día de los Difuntos'],
+    ['2027-12-25', 'Navidad / Día de la Familia'],
+  ],
+};
+
+/** Nombre del feriado oficial de esa fecha, o null (también null en los años sin lista oficial cargada). */
+export function feriadoOficial(fecha: string): string | null {
+  return FERIADOS_OFICIALES[Number(fecha.slice(0, 4))]?.find(([f]) => f === fecha)?.[1] ?? null;
+}
+
+/**
  * Calendario de partida para un año. Las fechas de inicio, fin y vacaciones son aproximadas
  * (cada año las fija ANEP): el docente las ajusta en la pantalla de datos del plan anual.
  * Carnaval y Semana de Turismo se calculan a partir de la Pascua.
@@ -47,10 +76,16 @@ export function calendarioPorDefecto(anio: number): CalendarioEscolar {
   const lunesCarnaval = sumarDias(p, -48);
   const julio = proximo(new Date(anio, 6, 1), 1);
   const primavera = proximo(new Date(anio, 8, 22), 1);
+  const oficiales = FERIADOS_OFICIALES[anio];
+  const nombresOficiales = new Set((oficiales ?? []).map(([, n]) => n));
   const efemerides: Efemeride[] = [
     { fecha: iso(lunesCarnaval), nombre: 'Carnaval' },
     ...EFEMERIDES_FIJAS.map(([md, nombre]) => ({ fecha: `${anio}-${md}`, nombre })),
-  ].sort((a, b) => a.fecha.localeCompare(b.fecha));
+  ]
+    // Con la lista oficial del año, las fechas habituales de esos feriados se reemplazan por las oficiales.
+    .filter((e) => !nombresOficiales.has(e.nombre))
+    .concat((oficiales ?? []).map(([fecha, nombre]) => ({ fecha, nombre, feriado: true })))
+    .sort((a, b) => a.fecha.localeCompare(b.fecha));
   return {
     inicio: iso(proximo(new Date(anio, 2, 1), 1)),
     fin: iso(proximo(new Date(anio, 11, 8), 5)),
@@ -63,16 +98,18 @@ export function calendarioPorDefecto(anio: number): CalendarioEscolar {
   };
 }
 
-/** Días hábiles (lunes a viernes) de clase en un mes, descontando los períodos sin clases. Aproximado: no descuenta feriados. */
+/** Días hábiles (lunes a viernes) de clase en un mes, descontando los períodos sin clases y los feriados oficiales cargados en el calendario. */
 export function diasDeClase(cal: CalendarioEscolar, anio: number, mes: number): number {
   if (!cal.inicio || !cal.fin) return 0;
   const inicio = desdeIso(cal.inicio), fin = desdeIso(cal.fin);
   const sinClases = cal.sinClases.filter((p) => p.desde && p.hasta).map((p) => [desdeIso(p.desde), desdeIso(p.hasta)] as const);
+  const feriados = new Set(cal.efemerides.filter((e) => e.feriado).map((e) => e.fecha));
   let n = 0;
   for (let d = new Date(anio, mes - 1, 1); d.getMonth() === mes - 1; d = sumarDias(d, 1)) {
     const dia = d.getDay();
     if (dia === 0 || dia === 6 || d < inicio || d > fin) continue;
     if (sinClases.some(([a, b]) => d >= a && d <= b)) continue;
+    if (feriados.has(iso(d))) continue;
     n++;
   }
   return n;

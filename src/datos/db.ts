@@ -68,7 +68,8 @@ export type Planificacion = {
 };
 
 export type Periodo = { id: string; nombre: string; desde: string; hasta: string };
-export type Efemeride = { fecha: string; nombre: string };
+/** `feriado`: día sin clases por feriado oficial (los demás son fechas para recordar y trabajar en clase). */
+export type Efemeride = { fecha: string; nombre: string; feriado?: boolean };
 
 export type CalendarioEscolar = {
   inicio: string;
