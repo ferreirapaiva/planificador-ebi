@@ -4,7 +4,7 @@
   "espacio": "Científico-Matemático",
   "tramo": 4,
   "version": "v2",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "El contenido estructurante («Sistemas de la Tierra y el Espacio») se tomó del programa del Tramo 3; este PDF no lo explicita.",
     "5.º grado: el criterio sobre océanos y glaciares figura con «(CE6)» en el PDF (pág. 12), pero la unidad tiene cinco competencias y está en la fila de la CE4; se cargó como CE4."

@@ -49,6 +49,8 @@ export type Planificacion = {
   hasta: string;
   /** Paso 2: ¿qué quiero lograr? */
   criterios: string[];
+  /** Meta de aprendizaje de cada criterio (id → texto), escrita o ajustada por el docente. Si falta, se usa la sugerida. */
+  metas?: Record<string, string>;
   /** Paso 3: ¿qué voy a enseñar? */
   contenidos: string[];
   /** Paso 4: ¿cómo sabré que lo lograron? */

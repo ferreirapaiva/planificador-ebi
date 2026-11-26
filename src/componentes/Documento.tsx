@@ -1,6 +1,6 @@
 import { forwardRef, type ReactNode } from 'react';
 import { TIPOS, type Planificacion } from '../datos/db';
-import { buscarContenido, buscarCriterio, buscarUC, competenciasMovilizadas } from '../datos/consultas';
+import { buscarContenido, buscarCriterio, buscarUC, competenciasMovilizadas, metaDe } from '../datos/consultas';
 import { textoTramo } from '../datos/programas';
 
 export const fecha = (iso: string) => (iso ? iso.split('-').reverse().join('/') : '');
@@ -98,6 +98,21 @@ export const Documento = forwardRef<HTMLDivElement, { plan: Planificacion }>(fun
                   </li>
                 ))}
               </ul>
+            </div>
+          ))}
+        </Seccion>
+      )}
+
+      {criterios.length > 0 && (
+        <Seccion titulo="Metas de aprendizaje">
+          {criterios.map((g) => (
+            <div key={g.titulo}>
+              <h3>{g.titulo}</h3>
+              <ol>
+                {g.items.map((r) => (
+                  <li key={r.criterio.id}>{metaDe(plan, r.criterio.id)}</li>
+                ))}
+              </ol>
             </div>
           ))}
         </Seccion>

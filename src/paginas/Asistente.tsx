@@ -31,6 +31,7 @@ function depurar(p: Planificacion): Planificacion {
   return {
     ...p,
     criterios,
+    metas: p.metas && Object.fromEntries(Object.entries(p.metas).filter(([id]) => criterios.includes(id))),
     contenidos: p.contenidos.filter((id) => vale(buscarContenido(id))),
     instrumentos: p.instrumentos.map((i) => ({ ...i, filas: i.filas.filter((f) => criterios.includes(f.criterioId)) })),
   };

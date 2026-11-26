@@ -4,7 +4,7 @@
   "espacio": "Científico-Matemático",
   "tramo": 2,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "En el PDF las competencias específicas figuran por eje (columna de la tabla), no por criterio: cada criterio quedó vinculado a todas las competencias de su eje y a los contenidos de su fila.",
     "1.er grado, Introducción a la estadística y a la probabilidad: el criterio «Organiza información a través de listas, tablas y gráficos en la interpretación de situaciones concretas» aparece dos veces en el PDF (pág. 12); se cargó una sola vez.",

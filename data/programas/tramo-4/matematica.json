@@ -4,7 +4,7 @@
   "espacio": "Científico-Matemático",
   "tramo": 4,
   "version": "v2",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "Las tablas de contenidos indican las competencias por eje (columna), no por contenido; los criterios figuran en tablas aparte agrupados por competencia y no se vinculan con contenidos concretos.",
     "5.º grado, CE3: el criterio «Descubre la suma de las amplitudes de los ángulos interiores de un polígono convexo…» aparece dos veces en el PDF (pág. 14); se cargó una sola vez.",

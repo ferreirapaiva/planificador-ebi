@@ -1,10 +1,55 @@
 import { useState } from 'react';
 import { cesDe, type CriterioLogro } from '../datos/esquema';
-import { buscarCriterio, competenciasMovilizadas } from '../datos/consultas';
+import { buscarCriterio, competenciasMovilizadas, metaDe, metaSugerida } from '../datos/consultas';
 import { normalizar } from '../datos/programas';
 import { Aviso, Pildora, TarjetaCasilla } from '../componentes/ui';
 import { PestanasUC, type Combinacion } from './PestanasUC';
 import { alternar, type PropsPaso } from './tipos';
+
+/** Metas de aprendizaje de los criterios elegidos en esta pestaña: una por criterio, editable. */
+function Metas({ combinacion, plan, cambiar }: PropsPaso & { combinacion: Combinacion }) {
+  const elegidos = plan.criterios.map(buscarCriterio).filter((r) => r && r.uc.id === combinacion.uc.id && r.grado === combinacion.grado);
+  if (!elegidos.length) return null;
+  const escribir = (id: string, texto: string | undefined) => {
+    const metas = { ...(plan.metas ?? {}) };
+    if (texto === undefined) delete metas[id];
+    else metas[id] = texto;
+    cambiar({ metas });
+  };
+  return (
+    <section className="rounded-[20px] border-[1.5px] border-blue-200 bg-blue-50 p-4">
+      <h4 className="m-0 text-[15px] font-extrabold text-slate-900">Metas de aprendizaje ({elegidos.length})</h4>
+      <p className="mt-1 mb-3 text-sm text-slate-600">
+        Cada meta une el criterio de logro con su competencia específica. Te proponemos una redacción: cambiala a tu gusto.
+      </p>
+      <ol className="m-0 flex list-none flex-col gap-3 p-0">
+        {elegidos.map((r) => {
+          const id = r!.criterio.id;
+          const propia = plan.metas?.[id] !== undefined && plan.metas[id] !== metaSugerida(id);
+          return (
+            <li key={id} className="rounded-[14px] bg-white p-3">
+              <p className="m-0 text-xs text-slate-500">
+                <strong className="text-blue-800">{r!.ces.join(' · ')}</strong> · Criterio: {r!.criterio.texto}
+              </p>
+              <textarea
+                rows={2}
+                value={metaDe(plan, id)}
+                onChange={(e) => escribir(id, e.target.value)}
+                aria-label={`Meta para el criterio: ${r!.criterio.texto}`}
+                className="mt-2 w-full rounded-[12px] border-[1.5px] border-slate-200 bg-white px-3 py-2 text-[15px] focus:border-blue-500 focus:outline-none"
+              />
+              {propia && (
+                <button type="button" className="mt-1 text-xs font-semibold text-blue-700 hover:underline" onClick={() => escribir(id, undefined)}>
+                  Volver a la redacción sugerida
+                </button>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
 
 function ListaCriterios({ combinacion, plan, cambiar }: PropsPaso & { combinacion: Combinacion }) {
   const { uc, grado } = combinacion;
@@ -23,6 +68,7 @@ function ListaCriterios({ combinacion, plan, cambiar }: PropsPaso & { combinacio
 
   return (
     <div className="space-y-4">
+      <Metas combinacion={combinacion} plan={plan} cambiar={cambiar} />
       <div className="flex flex-wrap items-center gap-2">
         <Pildora activa={!ce} onClick={() => setCe(null)}>Todas</Pildora>
         {uc.competenciasEspecificas.map((c) => (
@@ -77,7 +123,7 @@ export function PasoLogros(props: PropsPaso) {
       <div>
         <Aviso>
           Empezamos por el final: elegí los <strong>criterios de logro</strong> que querés que tus estudiantes alcancen. En el paso siguiente
-          te sugerimos los contenidos que se vinculan con ellos.
+          te sugerimos los contenidos que se vinculan con ellos. Por cada criterio elegido aparece su <strong>meta</strong>, que podés redactar a tu gusto.
         </Aviso>
         <div className="mt-4">
           <PestanasUC ucIds={plan.ucIds} grados={plan.grados} contar={(c) => plan.criterios.filter((id) => {

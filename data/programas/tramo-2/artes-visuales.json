@@ -4,7 +4,7 @@
   "espacio": "Creativo-Artístico",
   "tramo": 2,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "Todas las filas de la tabla tienen su propia lista de competencias; los títulos en mayúscula del PDF (Lenguajes del espacio, del plano, etc.) se cargaron como contenido estructurante de cada bloque.",
     "1.er grado, Géneros: el PDF lista también «Género cinematográfico: la ciencia ficción» pero no tiene criterio propio para ese contenido (pág. 16)."

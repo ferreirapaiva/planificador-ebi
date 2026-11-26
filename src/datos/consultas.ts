@@ -115,3 +115,25 @@ export function descriptoresSugeridos(texto: string, niveles: number): string[] 
     `${base}, con autonomía, y transfiere lo aprendido a nuevas situaciones.`,
   ];
 }
+
+/**
+ * Meta de aprendizaje sugerida: une el criterio de logro con la finalidad de su competencia específica
+ * («El estudiante … , para …»). El docente la puede reescribir a su gusto.
+ */
+export function metaSugerida(criterioId: string): string {
+  const ref = criterios.get(criterioId);
+  if (!ref) return '';
+  const texto = ref.criterio.texto.trim().replace(/\.$/, '');
+  const accion = texto.charAt(0).toLowerCase() + texto.slice(1);
+  const ce = ref.uc.competenciasEspecificas.find((c) => c.codigo === ref.ces[0]);
+  if (!ce) return `El estudiante ${accion}.`;
+  const ceTexto = ce.texto.trim().replace(/\.$/, '').replace(/^Competencia [^:]+:\s*/i, '');
+  const i = ceTexto.search(/ para (?!.* para )/);
+  const primera = ceTexto.split(/\.\s/)[0];
+  const finalidad = i >= 0 ? ceTexto.slice(i + 1) : `en el marco de la ${ce.codigo}: ${primera.charAt(0).toLowerCase() + primera.slice(1)}`;
+  const ya = normalizar(accion).includes(normalizar(finalidad));
+  return `El estudiante ${accion}${ya ? '' : `, ${finalidad}`} (${ref.ces.join(', ')}).`;
+}
+
+/** La meta de un criterio en una planificación: la del docente o, si no la escribió, la sugerida. */
+export const metaDe = (plan: { metas?: Record<string, string> }, criterioId: string) => plan.metas?.[criterioId] ?? metaSugerida(criterioId);

@@ -4,7 +4,7 @@
   "espacio": "Creativo-Artístico",
   "tramo": 2,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "El PDF organiza la tabla por competencia; cada criterio se cargó con su competencia (CL1 → CE1, etc.) y los géneros quedaron vinculados a las competencias de las filas donde aparecen.",
     "2.º grado, CL4.3: el texto del PDF termina en «…lo que le permite construir» (pág. 15); se cargó así."

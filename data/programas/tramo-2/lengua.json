@@ -4,7 +4,7 @@
   "espacio": "Comunicación",
   "tramo": 2,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "El PDF presenta una tabla por competencia, cada una con su propia lista de contenidos; aquí cada contenido figura una vez, vinculado a todas las competencias en cuyas filas aparece.",
     "El PDF indica que los contenidos «señalados con color» se abordan tanto desde la lectura como desde la escritura; ese color no se conserva en la app."

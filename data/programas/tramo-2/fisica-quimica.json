@@ -4,7 +4,7 @@
   "espacio": "Científico-Matemático",
   "tramo": 2,
   "version": "v1",
-  "revisado": false,
+  "revisado": true,
   "notasRevision": [
     "Los criterios que el PDF repite en varias filas del mismo grado se cargaron una sola vez, vinculados a todas esas filas y sus competencias.",
     "1.er grado, fila «Cuerpos luminosos»: el PDF (pág. 14) tiene una viñeta vacía entre los dos criterios."
