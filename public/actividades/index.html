@@ -6,6 +6,20 @@
 <title>Hojas de actividades · Planificador EBI</title>
 <script src="jspdf.umd.min.js"></script>
 <script>if (window.self !== window.top) document.documentElement.classList.add("embebido");</script>
+<script>
+/* Tema claro u oscuro: el mismo que eligió la app (se guarda en este navegador). */
+(function(){
+  var K='planificador-ebi:tema';
+  function aplicar(){ try{
+    var t=localStorage.getItem(K)||'auto';
+    var o = t==='oscuro' || (t==='auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.dataset.theme = o ? 'dark' : 'light';
+  }catch(e){} }
+  aplicar();
+  window.addEventListener('storage', function(e){ if (!e.key || e.key===K) aplicar(); });
+  try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', aplicar); }catch(e){}
+})();
+</script>
 <style>
   @font-face{font-family:'Nunito Variable'; font-style:normal; font-display:swap; font-weight:200 1000;
     src:url(nunito-latin-ext-wght-normal.woff2) format('woff2-variations');
@@ -63,6 +77,28 @@
   .embebido .intro p{color:var(--muted)}
   .embebido .intro .mini{border-radius:999px}
   .embebido .btn.ghost{border-width:1.5px}
+  /* ---------- Tema oscuro (solo en pantalla: la hoja de vista previa y el PDF siguen claros) ---------- */
+  @media screen{
+    html[data-theme="dark"]{ color-scheme:dark;
+      --paper:#12102a; --grid:#1b1840; --ink:#f2f1fb; --muted:#a29fc7; --line:#34306a; --card:#1d1a42; --desk:#26224f;
+      --mate-soft:#2a2666; --sopas-soft:#3a3010; --cruci-soft:#123a30; --repaso-soft:#3d1f1b; --lengua-soft:#1d2f57; --ciencias-soft:#3d1b33; }
+    html[data-theme="dark"] .fav-new input, html[data-theme="dark"] .fav-list li, html[data-theme="dark"] .txt-area,
+    html[data-theme="dark"] .item:not(.sel):not([disabled]), html[data-theme="dark"] .opt input:not(:checked) + span,
+    html[data-theme="dark"] label.field input[type=text], html[data-theme="dark"] label.field select, html[data-theme="dark"] .bank-sel,
+    html[data-theme="dark"] .btn.ghost, html[data-theme="dark"] .mini:not(.primary), html[data-theme="dark"] .bank-editor textarea,
+    html[data-theme="dark"] .tabs, html[data-theme="dark"] .combo-banner, html[data-theme="dark"] .comp-text, html[data-theme="dark"] .week-row select,
+    html.embebido[data-theme="dark"] .area:not(.sel), html.embebido[data-theme="dark"] .intro { background:var(--card); }
+    html.embebido[data-theme="dark"] .preview { background:var(--desk); }
+    html[data-theme="dark"] .opt span::before { background:var(--card); border-color:#6b6890; }
+    html[data-theme="dark"] .opt input:checked + span::before { box-shadow:inset 0 0 0 2px var(--card); }
+    html[data-theme="dark"] .item[disabled] { background:#1b1840; color:#6b6890; }
+    html[data-theme="dark"] .group, html[data-theme="dark"] .combo-list li { border-color:var(--line); }
+    html[data-theme="dark"] .mbar { background:rgba(29,26,66,.96); }
+    html[data-theme="dark"]:not(.embebido) .intro { background:#2a2666; }
+    html[data-theme="dark"] .mini.primary { background:#5B4BF5; border-color:#5B4BF5; }
+    html[data-theme="dark"] #msg { background:#34306a; }
+    html[data-theme="dark"] #msg.err { background:var(--err); } html[data-theme="dark"] #msg.ok { background:var(--ok); }
+  }
   .subfold{margin:12px 0 0; border:1.5px solid var(--line); border-radius:14px; padding:2px 12px 12px}
   .subfold summary{cursor:pointer; font-weight:800; padding:10px 0; list-style:none}
   .subfold summary::-webkit-details-marker{display:none}

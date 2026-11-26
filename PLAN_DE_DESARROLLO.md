@@ -234,8 +234,8 @@ Las planificaciones guardan **referencias** a los ítems del programa + la versi
 
 Anotadas por la docente; todavía no están desarrolladas.
 
-- [ ] **Modo oscuro.** Opción para cambiar entre tema claro y oscuro (idealmente siguiendo la preferencia del equipo), aplicada a toda la app, incluida la pantalla de Hojas de actividades.
-- [ ] **Plan diario y semanal dentro de «Nueva planificación».** Hoy es una entrada aparte en el menú lateral. Pasarlo a ser una opción más al crear una planificación, junto a las demás (secuencia, unidad, proyecto, plan anual).
+- [x] **Modo oscuro.** Opción para cambiar entre tema claro y oscuro (idealmente siguiendo la preferencia del equipo), aplicada a toda la app, incluida la pantalla de Hojas de actividades. *(Hecho: claro, oscuro o automático; se elige en el menú lateral y se aplica también a Hojas de actividades. Al imprimir siempre sale en claro.)*
+- [x] **Plan diario y semanal dentro de «Nueva planificación».** Hoy es una entrada aparte en el menú lateral. Pasarlo a ser una opción más al crear una planificación, junto a las demás (secuencia, unidad, proyecto, plan anual). *(Hecho: «Nueva planificación» ofrece unidad, proyecto, secuencia, plan anual, semanal y diario.)*
 - [x] **Menú «Cómo funciona».** Una sección nueva que explique todo lo que se puede hacer con la app: programas, nueva planificación, plan anual, plan diario y semanal, hojas de actividades, copia de seguridad y uso sin conexión. *(Hecho: pantalla «Cómo funciona» y guía de primer uso.)*
 
 ### Hecho desde esa lista

@@ -127,8 +127,9 @@ export function PasoEnsenanza({ plan, cambiar }: PropsPaso) {
         )}
         {plan.clases.length > 0 && (
           <p className="text-sm text-slate-600">
-            Poné fecha a las clases y después ubicalas en tu horario desde{' '}
-            <Link to="/plan-semanal" className="font-bold text-blue-700 underline">Plan diario y semanal</Link>.
+            Poné fecha a las clases y después ubicalas en tu horario con un{' '}
+            <Link to="/nuevo-plan-semanal?alcance=semana" className="font-bold text-blue-700 underline">plan semanal</Link> o un{' '}
+            <Link to="/nuevo-plan-semanal?alcance=dia" className="font-bold text-blue-700 underline">plan diario</Link>.
           </p>
         )}
         {plan.clases.map((c, i) => (
