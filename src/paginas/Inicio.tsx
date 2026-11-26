@@ -8,6 +8,7 @@ import { cobertura, porcentaje } from '../datos/planAnual';
 import { perteneceAlGrupo, useGrupos } from '../datos/grupos';
 import { PROGRAMAS } from '../datos/programas';
 import { claveGrupo, progresoUC, useSeguimiento } from '../datos/seguimiento';
+import { posponerRecordatorio, useEstadoCopia } from '../datos/copias';
 import { Icono, type NombreIcono } from '../componentes/Iconos';
 
 /** Colores de cada espacio curricular para tarjetas y barras. */
@@ -33,6 +34,7 @@ export function Inicio() {
     borrarBorradoresVacios();
   }, []);
   const { activo } = useGrupos();
+  const copia = useEstadoCopia();
   const todas = useLiveQuery(() => db.planificaciones.orderBy('modificada').reverse().toArray(), []);
   const planificaciones = useMemo(() => (todas ?? []).filter((p) => perteneceAlGrupo(p, activo)), [todas, activo]);
   const planAnual = useLiveQuery(() => db.planesAnuales.orderBy('modificada').reverse().filter((p) => perteneceAlGrupo(p, activo)).first(), [activo?.id, activo?.nombre]);
@@ -73,6 +75,20 @@ export function Inicio() {
 
   return (
     <div className="flex flex-col gap-7">
+      {copia.vencida && (
+        <section aria-label="Copia de seguridad" className="flex flex-wrap items-center gap-3 rounded-[24px] bg-amarillo-50 px-5 py-4">
+          <span className="min-w-60 flex-1 text-[15px] font-semibold text-amarillo-800">
+            <strong>{copia.ultima ? `Hace ${copia.dias} días que no hacés una copia de seguridad.` : 'Todavía no hiciste una copia de seguridad.'}</strong> Tus datos están solo en este
+            equipo: una copia los protege si algo falla.
+          </span>
+          <Link to="/respaldo" className="inline-flex min-h-11 items-center rounded-full bg-blue-600 px-5 text-sm font-extrabold text-white hover:bg-blue-700">
+            Hacer la copia ahora
+          </Link>
+          <button type="button" onClick={() => posponerRecordatorio(1)} className="min-h-11 rounded-full px-3 text-sm font-extrabold text-amarillo-800 hover:underline">
+            Recordármelo mañana
+          </button>
+        </section>
+      )}
       {/* Bienvenida */}
       <section
         aria-label="Bienvenida"

@@ -16,6 +16,7 @@ import { HojasActividades } from './paginas/HojasActividades';
 import { Grupos } from './paginas/Grupos';
 import { Seguimiento } from './paginas/Seguimiento';
 import { ComoFunciona } from './paginas/ComoFunciona';
+import { RespaldoYSeguridad } from './paginas/RespaldoYSeguridad';
 import { GruposProvider } from './datos/grupos';
 
 createRoot(document.getElementById('root')!).render(
@@ -41,6 +42,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="grupos" element={<Grupos />} />
           <Route path="seguimiento" element={<Seguimiento />} />
           <Route path="como-funciona" element={<ComoFunciona />} />
+          <Route path="respaldo" element={<RespaldoYSeguridad />} />
         </Route>
       </Routes>
     </HashRouter>

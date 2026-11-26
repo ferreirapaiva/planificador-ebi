@@ -244,3 +244,4 @@ Anotadas por la docente; todavía no están desarrolladas.
 - [x] **Seguimiento de lo dado.** «Avance del programa»: contenidos «en curso» o «trabajados» por grupo y porcentaje por unidad curricular.
 - [x] **Guía de primer uso** y pantalla «Cómo funciona».
 - [x] **Horario semanal en una sola hoja** A4 horizontal, con colores por área, para pegar en el aula.
+- [x] **Respaldo seguro de los datos.** Pantalla «Respaldo y seguridad»: recordatorio de copia, copia con contraseña (AES-256), verificación de que el archivo no esté dañado antes de restaurar, copia automática diaria en una carpeta elegida (Chrome y Edge) y protección del almacenamiento del navegador.

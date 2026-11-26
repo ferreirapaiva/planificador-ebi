@@ -14,7 +14,7 @@ export function Campo({
   ayuda?: string;
   valor: string;
   onCambio: (v: string) => void;
-  tipo?: 'text' | 'date';
+  tipo?: 'text' | 'date' | 'password';
   placeholder?: string;
 }) {
   return (

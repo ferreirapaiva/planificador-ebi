@@ -56,8 +56,8 @@ export const PASOS_GUIA: Paso[] = [
     icono: 'descargar',
     color: 'bg-coral-500 text-white',
     titulo: 'Tus datos quedan en este equipo',
-    texto: 'La app funciona sin conexión y guarda todo en este navegador. Descargá una copia de seguridad de vez en cuando desde «Mis planificaciones». Cuando quieras repasar esto, abrí «Cómo funciona».',
-    enlace: { to: '/como-funciona', texto: 'Abrir «Cómo funciona»' },
+    texto: 'La app funciona sin conexión y guarda todo en este navegador. En «Respaldo y seguridad» descargás una copia (con contraseña, si querés) o elegís una carpeta para que se guarde sola. Cuando quieras repasar esto, abrí «Cómo funciona».',
+    enlace: { to: '/respaldo', texto: 'Ir a Respaldo y seguridad' },
   },
 ];
 
