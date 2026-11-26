@@ -60,6 +60,11 @@ const FERIADOS_OFICIALES: Record<number, [string, string][]> = {
   ],
 };
 
+/** Calendario lectivo oficial de ANEP por año (Educación Inicial y Primaria). Para los demás años las fechas son aproximadas. */
+const LECTIVO_OFICIAL: Record<number, { inicio: string; fin: string; invierno: [string, string]; primavera: [string, string] }> = {
+  2027: { inicio: '2027-03-01', fin: '2027-12-17', invierno: ['2027-06-28', '2027-07-02'], primavera: ['2027-09-20', '2027-09-24'] },
+};
+
 /** Nombre del feriado oficial de esa fecha, o null (también null en los años sin lista oficial cargada). */
 export function feriadoOficial(fecha: string): string | null {
   return FERIADOS_OFICIALES[Number(fecha.slice(0, 4))]?.find(([f]) => f === fecha)?.[1] ?? null;
@@ -86,13 +91,16 @@ export function calendarioPorDefecto(anio: number): CalendarioEscolar {
     .filter((e) => !nombresOficiales.has(e.nombre))
     .concat((oficiales ?? []).map(([fecha, nombre]) => ({ fecha, nombre, feriado: true })))
     .sort((a, b) => a.fecha.localeCompare(b.fecha));
+  const lectivo = LECTIVO_OFICIAL[anio];
+  const invierno = lectivo?.invierno ?? [iso(julio), iso(sumarDias(julio, 11))];
+  const vacPrimavera = lectivo?.primavera ?? [iso(primavera), iso(sumarDias(primavera, 4))];
   return {
-    inicio: iso(proximo(new Date(anio, 2, 1), 1)),
-    fin: iso(proximo(new Date(anio, 11, 8), 5)),
+    inicio: lectivo?.inicio ?? iso(proximo(new Date(anio, 2, 1), 1)),
+    fin: lectivo?.fin ?? iso(proximo(new Date(anio, 11, 8), 5)),
     sinClases: [
       { id: nuevoId(), nombre: 'Semana de Turismo', desde: iso(lunesTurismo), hasta: iso(sumarDias(lunesTurismo, 4)) },
-      { id: nuevoId(), nombre: 'Vacaciones de julio', desde: iso(julio), hasta: iso(sumarDias(julio, 11)) },
-      { id: nuevoId(), nombre: 'Vacaciones de primavera', desde: iso(primavera), hasta: iso(sumarDias(primavera, 4)) },
+      { id: nuevoId(), nombre: lectivo ? 'Vacaciones de invierno' : 'Vacaciones de julio', desde: invierno[0], hasta: invierno[1] },
+      { id: nuevoId(), nombre: 'Vacaciones de primavera', desde: vacPrimavera[0], hasta: vacPrimavera[1] },
     ],
     efemerides,
   };
