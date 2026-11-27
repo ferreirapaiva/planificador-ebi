@@ -4207,7 +4207,7 @@ function layoutBlocks(d, isKey){
   const rows=[]; let curRow=[];
   let num=0;
   ITEMS.forEach((it,i)=>{
-    const o={it, idx: (it.type==='texto'||it.type==='grafico'||it.type==='seccion') ? -1 : num++};
+    const o={it, idx: (it.type==='texto'||it.type==='grafico'||it.type==='seccion'||it.type==='pictograma') ? -1 : num++};
     if (cols===1 || it.full || BLOCKS[it.type].full){ if (curRow.length){ rows.push(curRow); curRow=[]; } rows.push([o]); }
     else { curRow.push(o); if (curRow.length===cols){ rows.push(curRow); curRow=[]; } }
   });
@@ -6305,6 +6305,399 @@ Object.assign(DIF, {
   nombrarDib:{ facil:{modo:'casillas',ayuda:'inicial',nivel:'facil'}, dificil:{modo:'linea',ayuda:'ninguna',nivel:'dificil'} },
 });
 
+/* =========================================================
+   PRIMEROS PASOS (1.º y 2.º), etapas 2 y 3: lectura inicial, numeración hasta 100, contar y comparar,
+   sumas y restas con dibujos, partes de la unidad, figuras y cuerpos, medidas y datos.
+   ========================================================= */
+const FEM=new Set(['luna','estrella','nube','flor','rosa','casa','mesa','silla','cama','cuna','taza','llave','bota','pelota','bicicleta','manzana','pera','banana','uva','naranja','sandia','mariposa','vaca','abeja']);
+const artDe=(d,def)=> FEM.has(d.id) ? (def?'la':'una') : (def?'el':'un');
+const plural=p=>{ if (p==='paraguas') return p; if (/ón$/.test(p)) return p.slice(0,-2)+'ones'; if (/z$/.test(p)) return p.slice(0,-1)+'ces'; if (/[aeiou]$/.test(p)) return p+'s'; return p+'es'; };
+const PALABRAS_CONTAR=['manzana','pelota','flor','estrella','pez','mariposa','uva','naranja','auto','casa','sol','pera'].map(id=>DIBP[id]);
+const NUM_PAL=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez'];
+const pastilla=(els,x,y,w,h,txt,marca)=>{ els.push({t:'rect', x, y, w, h, r:h/2, stroke:marca?RED:'#666', lw:marca?.9:.4, fill:marca?CLARO_R:'#ffffff'});
+  els.push({t:'text', x:x+w/2, y:y+h*.68, s:Math.min(11.5, 11.5*(w-3)/Math.max(1,measure(txt,11.5))), a:'center', b:!!marca, c:marca?RED:'#111', str:txt}); };
+function repetirDib(els,id,n,x,y,w,tam,tachar){
+  const per=Math.max(1,Math.floor((w+2)/(tam+2)));
+  if (els) for (let k=0;k<n;k++){ const cx=x+(k%per)*(tam+2), cy=y+Math.floor(k/per)*(tam+2); pintarDib(els,id,cx,cy,tam);
+    if (tachar && k>=n-tachar){ els.push({t:'line', x1:cx+2, y1:cy+2, x2:cx+tam-2, y2:cy+tam-2, w:.9, c:'#111'}); els.push({t:'line', x1:cx+tam-2, y1:cy+2, x2:cx+2, y2:cy+tam-2, w:.9, c:'#111'}); } }
+  return Math.ceil(n/per)*(tam+2);
+}
+const cajita=(els,x,y,w,h,txt,isKey)=>{ els.push({t:'rect', x, y, w, h, r:2, stroke:'#555', lw:.55}); if (txt!==undefined && isKey) els.push({t:'text', x:x+w/2, y:y+h*.7, s:13, a:'center', b:true, c:RED, str:String(txt)}); };
+
+/* ---------- Lectura inicial ---------- */
+GEN.lecturaIni=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['plural','vf','unir'];
+  const pool=()=>shuffle([...DIBS]);
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length];
+    if (t==='unir'){ const ds=pool().slice(0,3), plantillas=['Veo {a} {p}.','Hay {a} {p}.','Aquí está {def} {p}.'];
+      const frases=ds.map((d,k)=>plantillas[k%3].replace('{a}',artDe(d)).replace('{def}',artDe(d,true)).replace('{p}',d.pal));
+      out.push({ type:'dibUnir', frases, dibs:ds.map(d=>d.id), orden:shuffle([0,1,2]), diff:2 }); }
+    else if (t==='vf'){ const [d,otro]=pool(), verdadero=Math.random()<.5, x=verdadero?d:otro;
+      out.push({ type:'dibVF', d:d.id, frase:`Es ${artDe(x)} ${x.pal}.`, ok:verdadero, diff:1 }); }
+    else { const d=pick(DIBS.filter(x=>x.id!=='paraguas')), n=rnd(2,4);
+      out.push({ type:'dibPlural', d:d.id, n, uno:`${artDe(d)} ${d.pal}`, num:NUM_PAL[n], plural:plural(d.pal), diff:0 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.dibUnir={ full:true, h:()=>86,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Leé cada oración y unila con su dibujo.'});
+    it.frases.forEach((f,k)=>{ const fy=y+16+k*26; els.push({t:'text', x:x+10, y:fy+9, s:13, str:f}); PUNTO(els,x+w*.5,fy+7,1.4); });
+    it.orden.forEach((j,k)=>{ const dy=y+9+k*26; pintarDib(els,it.dibs[j],x+w*.62,dy,22); PUNTO(els,x+w*.62-3,dy+11,1.4);
+      if (isKey){ const fy=y+16+j*26+7; els.push({t:'line', x1:x+w*.5, y1:fy, x2:x+w*.62-3, y2:dy+11, w:.9, c:RED}); } });
+  } };
+BLOCKS.dibVF={ full:true, h:()=>32,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá el dibujo. ¿La oración es verdadera?'});
+    pintarDib(els,it.d,x+8,y+8,22); els.push({t:'text', x:x+38, y:y+17, s:13, str:it.frase});
+    pastilla(els,x+38,y+22,22,8,'Verdadero',isKey&&it.ok); pastilla(els,x+64,y+22,22,8,'Falso',isKey&&!it.ok);
+  } };
+BLOCKS.dibPlural={ full:true, h:(it)=>36,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá los dibujos y completá.'});
+    pintarDib(els,it.d,x+8,y+9,18); els.push({t:'text', x:x+8, y:y+32, s:12, b:true, str:it.uno[0].toUpperCase()+it.uno.slice(1)+'.'});
+    const bx=x+70; repetirDib(els,it.d,it.n,bx,y+9,86,18);
+    els.push({t:'text', x:bx, y:y+32, s:12, b:true, str:it.num[0].toUpperCase()+it.num.slice(1)}); const lx=bx+measure(it.num,12)*1.1+3; lineaEsc(els,lx,lx+36,y+32.8,'#555');
+    if (isKey) els.push({t:'text', x:lx+1, y:y+32, s:12, b:true, c:RED, str:it.plural});
+  } };
+
+/* ---------- Numeración hasta 100 ---------- */
+GEN.numCien=function(sel,count){
+  const nv=sel.nivel, top= nv==='facil'?20:nv==='medio'?50:100, tipos=shuffle([...sel.tipo]), out=[], vistos=new Set(); let g=0, i=0;
+  const orden=['cuadro','antpos','serie','recta','comparar','decenas','pares'];
+  while (out.length<count && g++<count*80){
+    const t=tipos[i%tipos.length]; let it, key;
+    if (t==='cuadro'){ key='c'+out.length; const filas= nv==='facil'?2:nv==='medio'?5:10, desde= top>20 && Math.random()<.4 && filas<10 ? 1+10*rnd(0,(10-filas)) : 1;
+      const cant=filas*10, ocultas=shuffle(rango(desde,desde+cant-1)).slice(0,Math.round(cant*(nv==='facil'?.35:.45)));
+      it={ type:'cuadro100', desde, filas, ocultas, full:true }; }
+    else if (t==='antpos'){ const n=rnd(2,top-1); key='a'+n; it=FL([B(n-1,9), {t:String(n),bold:true}, B(n+1,9), '(anterior · número · posterior)']); }
+    else if (t==='serie'){ const paso= nv==='facil'?pick([1,2]) : pick([1,2,5,10]), ini=rnd(0,Math.max(0,top-paso*5)), seq=rango(0,4).map(k=>ini+k*paso), ocultos=shuffle([1,2,3,4]).slice(0,2); key='s'+ini+'-'+paso;
+      it=FL(seq.flatMap((n,k)=>{ const tk= ocultos.includes(k) ? B(n,9) : String(n); return k?['·',tk]:[tk]; })); }
+    else if (t==='recta'){ const max= nv==='facil'?10:20, ocultos=shuffle(rango(1,max-1)).slice(0,3); key='r'+ocultos.join(); it={ type:'recta', titulo:'Completá los números que faltan en la recta.', min:0, max, ocultos, marcar:[] }; }
+    else if (t==='comparar'){ const a=rnd(1,top), b=rnd(1,top); if (a===b) continue; key='cp'+a+'-'+b; it=FL([{t:String(a),bold:true}, B(a<b?'<':'>',8), {t:String(b),bold:true}]); }
+    else if (t==='decenas'){ const n=rnd(11,top-1); key='d'+n; it=FL([`${n} =`, B(Math.floor(n/10),6), 'decenas y', B(n%10,6), 'unidades']); }
+    else { const n=rnd(1,top); key='p'+n; it=FL([`${n} es un número`, B(n%2?'impar':'par',14), '(par o impar)']); }
+    if (vistos.has(key)) continue; vistos.add(key); i++; it.diff=orden.indexOf(t); out.push(it);
+  }
+  return out;
+};
+BLOCKS.cuadro100={ full:true, h:(it)=> 16+it.filas*Math.min(15,(W-2*M)/10),
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Completá los números que faltan.'});
+    const cw=Math.min(15,(w-2)/10), gx=x+(w-cw*10)/2, gy=y+10;
+    for (let f=0;f<it.filas;f++) for (let c=0;c<10;c++){ const n=it.desde+f*10+c, oc=it.ocultas.includes(n), bx=gx+c*cw, by=gy+f*cw;
+      els.push({t:'rect', x:bx, y:by, w:cw, h:cw, stroke:'#444', lw:.4, fill: oc?undefined:CLARO});
+      if (!oc) els.push({t:'text', x:bx+cw/2, y:by+cw*.66, s:Math.min(15,cw*1.05), a:'center', str:String(n)}); else if (isKey) els.push({t:'text', x:bx+cw/2, y:by+cw*.66, s:Math.min(15,cw*1.05), a:'center', b:true, c:RED, str:String(n)}); }
+  } };
+
+/* ---------- Contar y comparar con dibujos ---------- */
+GEN.conteoDib=function(sel,count){
+  const nv=sel.nivel, top= nv==='facil'?8:nv==='medio'?12:20, tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['contar','dibujar','comparar'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length], d=pick(PALABRAS_CONTAR);
+    if (t==='contar') out.push({ type:'conteoDib', modo:'contar', d:d.id, n:rnd(2,top), diff:0 });
+    else if (t==='dibujar'){ const n=rnd(2,Math.min(top,10)); out.push({ type:'conteoDib', modo:'dibujar', d:d.id, n, texto:`Dibujá ${NUM_PAL[n]||n} ${plural(d.pal)}.`, diff:1 }); }
+    else { let d2=pick(PALABRAS_CONTAR.filter(x=>x.id!==d.id)), a=rnd(2,top), b=rnd(2,top); if (a===b) b=a+1>top?a-1:a+1; out.push({ type:'conteoDib', modo:'comparar', d:d.id, a, d2:d2.id, b, diff:2 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.conteoDib={ full:true,
+  h:(it,w)=> it.modo==='comparar' ? 14+repetirDib(null,it.d,it.a,0,0,w-40,13)+repetirDib(null,it.d2,it.b,0,0,w-40,13)+6 : it.modo==='dibujar' ? 36 : 12+Math.max(20,repetirDib(null,it.d,it.n,0,0,w-50,13)),
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='contar'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Contá y escribí cuántos hay.'});
+      repetirDib(els,it.d,it.n,x+8,y+9,w-50,13); cajita(els,x+w-32,y+11,24,14,it.n,isKey); }
+    else if (it.modo==='dibujar'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:it.texto}); els.push({t:'rect', x:x+8, y:y+9, w:w-8, h:23, r:2, stroke:'#9aa3b5', lw:.4});
+      if (isKey) repetirDib(els,it.d,it.n,x+10,y+11,w-12,9); }
+    else {
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'¿Dónde hay más? Marcá el grupo que tiene más.'});
+      const h1=repetirDib(els,it.d,it.a,x+8,y+9,w-40,13); pastilla(els,x+w-24,y+9+h1/2-4,16,8,'Más',isKey&&it.a>it.b);
+      const y2=y+11+h1; const h2=repetirDib(els,it.d2,it.b,x+8,y2,w-40,13); pastilla(els,x+w-24,y2+h2/2-4,16,8,'Más',isKey&&it.b>it.a); }
+  } };
+
+/* ---------- Sumas y restas con dibujos y material concreto ---------- */
+GEN.cuentaDib=function(sel,count){
+  const nv=sel.nivel, top= nv==='facil'?10:nv==='medio'?15:20, tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['suma','resta','marco10','decena'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length], d=pick(PALABRAS_CONTAR);
+    if (t==='suma'){ const a=rnd(1,top-1), b=rnd(1,top-a); out.push({ type:'cuentaDib', modo:'suma', d:d.id, a, b, diff:0 }); }
+    else if (t==='resta'){ const a=rnd(3,top), b=rnd(1,a-1); out.push({ type:'cuentaDib', modo:'resta', d:d.id, a, b, diff:1 }); }
+    else if (t==='marco10'){ const k=rnd(1,9); out.push({ type:'cuentaDib', modo:'marco10', k, diff:2 }); }
+    else { const dec=rnd(1,nv==='facil'?3:9), uni=rnd(0,9); out.push({ type:'cuentaDib', modo:'decena', dec, uni, diff:3 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.cuentaDib={ full:true,
+  h:(it,w)=> it.modo==='marco10' ? 36 : it.modo==='decena' ? 44 : it.modo==='suma' ? 9+Math.ceil((it.a+it.b+1)/Math.max(1,Math.floor((w-8)/14)))*14+16 : 9+Math.max(12,repetirDib(null,it.d,it.a,0,0,w-16,12))+16,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='suma'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Contá, sumá y escribí el resultado.'});
+      const per=Math.max(1,Math.floor((w-8)/14)), celdas=[...Array(it.a).fill('d'),'+',...Array(it.b).fill('d')];
+      celdas.forEach((c,k)=>{ const cx=x+8+(k%per)*14, cy=y+9+Math.floor(k/per)*14; if (c==='d') pintarDib(els,it.d,cx,cy,12); else els.push({t:'text', x:cx+6, y:cy+9, s:18, a:'center', b:true, str:'+'}); });
+      const yy=y+9+Math.ceil(celdas.length/per)*14+4, eq=`${it.a} + ${it.b} =`;
+      els.push({t:'text', x:x+8, y:yy+6.5, s:13, b:true, str:eq}); cajita(els,x+8+measure(eq,13)*1.1+3,yy,22,9,it.a+it.b,isKey); }
+    else if (it.modo==='resta'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Se tachan los que se van. ¿Cuántos quedan?'});
+      const h1=repetirDib(els,it.d,it.a,x+8,y+9,(w-70)/2*.9*2,12,it.b), yy=y+9+Math.max(h1,12)+6, eq=`${it.a} − ${it.b} =`;
+      els.push({t:'text', x:x+8, y:yy+6.5, s:13, b:true, str:eq}); cajita(els,x+8+measure(eq,13)*1.1+3,yy,22,9,it.a-it.b,isKey); }
+    else if (it.modo==='marco10'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'¿Cuántos puntos faltan para completar 10?'});
+      for (let k=0;k<10;k++){ const bx=x+8+(k%5)*13, by=y+9+Math.floor(k/5)*13; els.push({t:'rect', x:bx, y:by, w:13, h:13, stroke:'#444', lw:.5}); if (k<it.k) PUNTO(els,bx+6.5,by+6.5,4.2);
+        else if (isKey) PUNTO(els,bx+6.5,by+6.5,4.2,RED); }
+      const e1=`${it.k} + `; els.push({t:'text', x:x+88, y:y+21, s:13, b:true, str:e1}); const cx=x+88+measure(e1,13)*1.1; cajita(els,cx,y+13,20,11,10-it.k,isKey); els.push({t:'text', x:cx+24, y:y+21, s:13, b:true, str:'= 10'}); }
+    else {
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Cada barra es una decena (10) y cada cuadradito es una unidad. ¿Qué número es?'});
+      for (let k=0;k<it.dec;k++){ const bx=x+8+k*7; els.push({t:'rect', x:bx, y:y+9, w:5, h:26, stroke:'#444', lw:.5, fill:CLARO}); for (let j=1;j<10;j++) els.push({t:'line', x1:bx, y1:y+9+j*2.6, x2:bx+5, y2:y+9+j*2.6, w:.2, c:'#555'}); }
+      const ux=x+16+it.dec*7; for (let k=0;k<it.uni;k++) els.push({t:'rect', x:ux+(k%5)*5.6, y:y+9+Math.floor(k/5)*5.6, w:4.6, h:4.6, stroke:'#444', lw:.4, fill:CLARO});
+      const tx=Math.max(x+96,ux+30); els.push({t:'text', x:tx, y:y+17, s:11.5, b:true, str:'decenas:'}); cajita(els,tx+22,y+10,12,9,it.dec,isKey);
+      els.push({t:'text', x:tx+38, y:y+17, s:11.5, b:true, str:'unidades:'}); cajita(els,tx+62,y+10,12,9,it.uni,isKey);
+      els.push({t:'text', x:tx, y:y+31, s:11.5, b:true, str:'El número es'}); cajita(els,tx+32,y+24,18,10,it.dec*10+it.uni,isKey); }
+  } };
+
+/* ---------- Partes de la unidad: mitad, cuarta parte, octavo ---------- */
+function figDividida(els,forma,n,pintadas,x,y,tam,iguales,pintar){
+  const R=tam/2, cx=x+R, cy=y+R;
+  const cel= forma==='rect' ? (n===2?[[0,0,.5,1],[.5,0,.5,1]] : n===4?[[0,0,.5,.5],[.5,0,.5,.5],[0,.5,.5,.5],[.5,.5,.5,.5]] : n===3?[[0,0,1/3,1],[1/3,0,1/3,1],[2/3,0,1/3,1]] : rango(0,7).map(k=>[(k%4)/4,Math.floor(k/4)/2,.25,.5])) : [];
+  if (forma==='rect'){
+    const ww=tam*1.4;
+    if (!iguales) { els.push({t:'rect', x, y, w:ww, h:tam, stroke:'#222', lw:.8}); els.push({t:'line', x1:x+ww*.3, y1:y, x2:x+ww*.3, y2:y+tam, w:.6, c:'#222'}); return; }
+    cel.forEach(([a,b,c,d],k)=>els.push({t:'rect', x:x+a*ww, y:y+b*tam, w:c*ww, h:d*tam, stroke:'#222', lw:.7, fill: pintar && k<pintadas ? '#cfc8ff' : undefined}));
+  } else {
+    els.push({t:'rect', x, y, w:tam, h:tam, r:R, stroke:'#222', lw:.8});
+    const ang0=-Math.PI/2, ang=k=>ang0+k*2*Math.PI/n;
+    if (!iguales){ els.push({t:'line', x1:cx-R, y1:cy-R*.4, x2:cx+R, y2:cy-R*.4, w:.6, c:'#222'}); return; }
+    if (n===2) els.push({t:'line', x1:cx, y1:cy-R, x2:cx, y2:cy+R, w:.6, c:'#222'}); else for (let k=0;k<n;k++) els.push({t:'line', x1:cx, y1:cy, x2:cx+R*Math.cos(ang(k)), y2:cy+R*Math.sin(ang(k)), w:.6, c:'#222'});
+    if (pintar) for (let k=0;k<pintadas;k++){ const a0=n===2? (k===0?-Math.PI/2:Math.PI/2) : ang(k), a1=n===2? a0+Math.PI : ang(k+1);
+      for (let a=a0+.05; a<a1-.03; a+=.11) els.push({t:'line', x1:cx+2*Math.cos(a), y1:cy+2*Math.sin(a), x2:cx+(R-.6)*Math.cos(a), y2:cy+(R-.6)*Math.sin(a), w:.55, c:'#b9b0f5'}); }
+  }
+}
+GEN.partesUnidad=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0; const ns= sel.nivel==='facil'?[2,4]:[2,4,8];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length], forma=pick(['circulo','rect']), n=pick(ns);
+    if (t==='pintar'){ const k=forma==='circulo' && n===2 ? 1 : rnd(1,n-1); out.push({ type:'fraccionFig', modo:'pintar', forma, n:forma==='rect'&&n===8?8:n, k, diff:0 }); }
+    else if (t==='leer'){ const k=rnd(1,n-1); out.push({ type:'fraccionFig', modo:'leer', forma, n, k, diff:1 }); }
+    else out.push({ type:'fraccionFig', modo:'iguales', forma, n:2, iguales:Math.random()<.5, diff:2 });
+  }
+  return { kind:'blocks', cols:2, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+const NOM_FRAC={ '1/2':'la mitad','1/4':'la cuarta parte','3/4':'tres cuartos','1/8':'un octavo','2/4':'dos cuartos','3/8':'tres octavos' };
+BLOCKS.fraccionFig={ h:()=>56,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5); const tam=30, fx=x+10;
+    if (it.modo==='iguales'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Las partes son iguales?'}); figDividida(els,it.forma,2,0,fx,y+11,tam,it.iguales,false);
+      pastilla(els,x+8,y+46,20,7,'Sí',isKey&&it.iguales); pastilla(els,x+32,y+46,20,7,'No',isKey&&!it.iguales); return; }
+    if (it.modo==='pintar'){
+      const f=it.k+'/'+it.n; els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:`Pintá ${NOM_FRAC[f]||f} (${f}).`}); figDividida(els,it.forma,it.n,it.k,fx,y+11,tam,true,isKey); return; }
+    els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Qué parte está pintada?'}); figDividida(els,it.forma,it.n,it.k,fx,y+11,tam,true,true);
+    const bx=x+8; els.push({t:'text', x:bx, y:y+52, s:11, b:true, str:'Pintadas:'}); cajita(els,bx+20,y+46,9,8,it.k,isKey); els.push({t:'text', x:bx+31, y:y+52, s:11, b:true, str:'de'}); cajita(els,bx+39,y+46,9,8,it.n,isKey);
+  } };
+
+/* ---------- Figuras y cuerpos geométricos ---------- */
+const POLIG=[ ['triángulo',3,p=>[[50,12],[92,86],[8,86]]],['cuadrado',4,p=>[[16,16],[84,16],[84,84],[16,84]]],['rectángulo',4,p=>[[8,28],[92,28],[92,72],[8,72]]],
+  ['rombo',4,p=>[[50,8],[90,50],[50,92],[10,50]]],['pentágono',5,p=>Array.from({length:5},(_,k)=>[50+42*Math.cos(-Math.PI/2+k*2*Math.PI/5),52+42*Math.sin(-Math.PI/2+k*2*Math.PI/5)])],
+  ['hexágono',6,p=>Array.from({length:6},(_,k)=>[50+42*Math.cos(k*Math.PI/3),50+42*Math.sin(k*Math.PI/3)])] ];
+const NO_POLIG={
+  circulo:D=>D.c(50,50,38), ovalo:D=>D.e(50,50,42,26), semicirculo:D=>{ D.p([...arco(50,62,40,180,360,16)],false); D.l(10,62,90,62); },
+  abierta:D=>D.p([[16,84],[16,16],[84,16],[84,84]]), curva:D=>{ D.p([[14,80],[14,20],[60,20]]); D.a(60,50,30,-90,90); D.l(60,80,14,80); },
+};
+const CUERPOS={
+  cubo:[true,D=>{ D.p([[14,36],[64,36],[64,86],[14,86]],true); D.p([[14,36],[36,14],[86,14],[64,36]]); D.p([[86,14],[86,64],[64,86]]); D.p([[14,86],[36,64],[36,14]]); D.l(36,64,86,64); }],
+  caja:[true,D=>{ D.p([[10,44],[70,44],[70,84],[10,84]],true); D.p([[10,44],[30,24],[90,24],[70,44]]); D.p([[90,24],[90,64],[70,84]]); }],
+  piramide:[true,D=>{ D.p([[10,76],[56,86],[90,66],[40,56]],true); D.p([[50,10],[10,76]]); D.p([[50,10],[56,86]]); D.p([[50,10],[90,66]]); D.l(50,10,40,56); }],
+  esfera:[false,D=>{ D.c(50,50,38); D.a(50,50,38,0,180); D.e(50,50,38,10); }],
+  cilindro:[false,D=>{ D.e(50,24,30,9); D.l(20,24,20,76); D.l(80,24,80,76); D.a(50,76,30,0,180); }],
+  cono:[false,D=>{ D.l(50,10,18,76); D.l(50,10,82,76); D.e(50,76,32,10); }],
+};
+GEN.geoIni=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['lados','poligonos','cuerpos','cuadricula'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length];
+    if (t==='poligonos'){ if (Math.random()<.5){ const f=pick(POLIG); out.push({ type:'figIni', modo:'poligono', id:f[0], es:true, diff:1 }); } else out.push({ type:'figIni', modo:'poligono', id:pick(Object.keys(NO_POLIG)), es:false, diff:1 }); }
+    else if (t==='lados'){ const f=pick(sel.nivel==='facil'?POLIG.slice(0,3):POLIG); out.push({ type:'figIni', modo:'lados', id:f[0], n:f[1], diff:0 }); }
+    else if (t==='cuerpos'){ const id=pick(Object.keys(CUERPOS)); out.push({ type:'figIni', modo:'cuerpo', id, es:CUERPOS[id][0], diff:2 }); }
+    else { const k=pick([0,1,2]), pts=[ [[1,1],[4,1],[4,4]], [[1,1],[5,1],[5,4],[1,4]], [[1,4],[3,1],[5,4]] ][k]; out.push({ type:'figIni', modo:'cuadricula', pts, diff:3 }); }
+  }
+  return { kind:'blocks', cols:2, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+function dibFig(els,id,x,y,tam){
+  const k=tam/100, T=(px,py)=>[x+px*k,y+py*k], D=ayudasDib(dibujo(T,els));
+  const f=POLIG.find(p=>p[0]===id); if (f){ D.p(f[2](),true); return; }
+  if (NO_POLIG[id]) NO_POLIG[id](D); else CUERPOS[id][1](D);
+}
+BLOCKS.figIni={ h:(it)=> it.modo==='cuadricula' ? 64 : 58,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='cuadricula'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'Copiá la figura en la otra cuadrícula.'});
+      const c=5.4, g1=x+8, g2=x+8+7*c+8, gy=y+10;
+      [g1,g2].forEach(gx=>{ for (let k=0;k<=7;k++){ els.push({t:'line', x1:gx+k*c, y1:gy, x2:gx+k*c, y2:gy+7*c, w:.2, c:'#aaa'}); els.push({t:'line', x1:gx, y1:gy+k*c, x2:gx+7*c, y2:gy+k*c, w:.2, c:'#aaa'}); } });
+      const dib=(gx,col,wd)=>it.pts.forEach((p,k)=>{ const q=it.pts[(k+1)%it.pts.length]; els.push({t:'line', x1:gx+p[0]*c, y1:gy+p[1]*c, x2:gx+q[0]*c, y2:gy+q[1]*c, w:wd, c:col}); });
+      dib(g1,'#111',.9); if (isKey) dib(g2,RED,.9); return; }
+    const tam=34, fx=x+10;
+    if (it.modo==='poligono'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Es un polígono?'}); dibFig(els,it.id,fx,y+9,tam);
+      pastilla(els,x+8,y+46,26,7,'Polígono',isKey&&it.es); pastilla(els,x+37,y+46,32,7,'No polígono',isKey&&!it.es); return; }
+    if (it.modo==='lados'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'Contá los lados y los vértices.'}); dibFig(els,it.id,fx,y+9,tam);
+      els.push({t:'text', x:x+8, y:y+51, s:10.5, b:true, str:'Lados:'}); cajita(els,x+20,y+45,9,8,it.n,isKey); els.push({t:'text', x:x+33, y:y+51, s:10.5, b:true, str:'Vértices:'}); cajita(els,x+51,y+45,9,8,it.n,isKey); return; }
+    els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Es un poliedro?'}); dibFig(els,it.id,fx,y+9,tam);
+    pastilla(els,x+8,y+46,26,7,'Poliedro',isKey&&it.es); pastilla(els,x+37,y+46,32,7,'No poliedro',isKey&&!it.es);
+  } };
+
+/* ---------- Medir y comparar ---------- */
+GEN.medidasIni=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0; const orden=['regla','comparar','vasos','balanza'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length];
+    if (t==='regla'){ const lens=shuffle(rango(sel.nivel==='facil'?2:3, sel.nivel==='facil'?9:14)).slice(0,4); out.push({ type:'reglaMedir', lens, diff:0 }); }
+    else if (t==='comparar'){ const a=rnd(30,90), b=a+pick([-1,1])*rnd(15,40); out.push({ type:'medIni', modo:'largo', a, b:Math.max(20,Math.min(100,b)), diff:1 }); }
+    else if (t==='vasos'){ const a=rnd(2,9), b=rnd(2,9); out.push({ type:'medIni', modo:'vasos', a:a===b?a+1:a, b, diff:2 }); }
+    else { const P=[['casa',1000],['auto',800],['vaca',600],['perro',20],['gato',5],['manzana',.2],['pez',.1],['pelota',.4]], [a,b]=shuffle([...P]).slice(0,2); if (Math.max(a[1],b[1])/Math.min(a[1],b[1])<2) continue; out.push({ type:'medIni', modo:'balanza', a:a[0], b:b[0], mas:a[1]>b[1]?0:1, diff:3 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.reglaMedir={ full:true, h:(it)=> 28+it.lens.length*14,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Medí cada línea con la regla y escribí cuántos centímetros mide.'});
+    const rx=x+8, ry=y+9; els.push({t:'rect', x:rx, y:ry, w:140, h:11, stroke:'#444', lw:.5, fill:'#f4f1ff'});
+    for (let k=0;k<=14;k++){ const px=rx+k*10; els.push({t:'line', x1:px, y1:ry, x2:px, y2:ry+(k%1===0?5:3), w:.4, c:'#333'}); if (k<14) els.push({t:'line', x1:px+5, y1:ry, x2:px+5, y2:ry+3, w:.25, c:'#333'}); if (k) els.push({t:'text', x:px, y:ry+9.5, s:7.5, a:'center', str:String(k)}); }
+    it.lens.forEach((L,k)=>{ const ly=y+30+k*14; els.push({t:'line', x1:rx, y1:ly, x2:rx+L*10, y2:ly, w:1.4, c:'#111'}); els.push({t:'line', x1:rx, y1:ly-2, x2:rx, y2:ly+2, w:.6, c:'#111'}); els.push({t:'line', x1:rx+L*10, y1:ly-2, x2:rx+L*10, y2:ly+2, w:.6, c:'#111'});
+      cajita(els,rx+148,ly-5,16,10,L,isKey); els.push({t:'text', x:rx+166, y:ly+2, s:11, b:true, str:'cm'}); });
+  } };
+BLOCKS.medIni={ full:true, h:(it)=> it.modo==='largo' ? 42 : it.modo==='vasos' ? 52 : 70,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='largo'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Marcá la cinta más larga.'});
+      [[it.a,y+10],[it.b,y+25]].forEach(([L,cy],k)=>{ els.push({t:'rect', x:x+8, y:cy, w:L*1.4, h:9, stroke:'#222', lw:.6, fill:CLARO}); pastilla(els,x+w-26,cy+1,18,7,'Más larga',false);
+        const mas = (k===0?it.a>it.b:it.b>it.a); if (isKey && mas) pastilla(els,x+w-26,cy+1,18,7,'Más larga',true); });
+      return; }
+    if (it.modo==='vasos'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'¿Qué vaso tiene más agua? Marcalo.'});
+      [it.a,it.b].forEach((nv,k)=>{ const vx=x+20+k*60, vy=y+10; els.push({t:'line', x1:vx, y1:vy, x2:vx+6, y2:vy+34, w:.8, c:'#222'}); els.push({t:'line', x1:vx+30, y1:vy, x2:vx+24, y2:vy+34, w:.8, c:'#222'}); els.push({t:'line', x1:vx+6, y1:vy+34, x2:vx+24, y2:vy+34, w:.8, c:'#222'});
+        els.push({t:'rect', x:vx+6.5, y:vy+34-nv*3.4, w:17, h:nv*3.4, fill:'#cfe6ff'});
+        pastilla(els,vx+6,vy+38,18,7,'Más',isKey && (k===0?it.a>it.b:it.b>it.a)); });
+      return; }
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá la balanza. Marcá lo que pesa más.'});
+    const cx=x+w/2-10, by=y+30, inc=it.mas===0?-7:7;
+    els.push({t:'line', x1:cx, y1:by, x2:cx, y2:by+34, w:1, c:'#222'}); els.push({t:'line', x1:cx-14, y1:by+34, x2:cx+14, y2:by+34, w:1, c:'#222'});
+    els.push({t:'line', x1:cx-34, y1:by-inc, x2:cx+34, y2:by+inc, w:1.2, c:'#222'});
+    [[-34,-inc,it.a],[34,inc,it.b]].forEach(([dx,dy,id],k)=>{ const px=cx+dx, py=by+dy; els.push({t:'line', x1:px, y1:py, x2:px-10, y2:py+14, w:.5, c:'#555'}); els.push({t:'line', x1:px, y1:py, x2:px+10, y2:py+14, w:.5, c:'#555'}); els.push({t:'line', x1:px-12, y1:py+14, x2:px+12, y2:py+14, w:1, c:'#222'});
+      pintarDib(els,id,px-9,py-14,18); pastilla(els,px-12,py+19,24,7,DIBP[id].pal,isKey&&it.mas===k); });
+  } };
+
+/* ---------- Datos y azar ---------- */
+const AZAR=[['Al tirar un dado sale un número menor que 7.','seguro'],['Al tirar un dado sale el número 8.','imposible'],['Al tirar una moneda sale cara.','posible'],['Mañana sale el sol.','seguro'],
+  ['En una bolsa hay solo pelotas rojas. Sacás una azul.','imposible'],['Mañana llueve.','posible'],['Un pez vive en el agua.','seguro'],['Un perro sabe volar como un pájaro.','imposible'],
+  ['En una bolsa hay manzanas rojas y verdes. Sacás una roja.','posible'],['Después del lunes viene el martes.','seguro'],['Hoy es sábado y mañana es miércoles.','imposible'],['Al tirar un dado sale un número par.','posible']];
+const MASCOTAS=[['perro','perros'],['gato','gatos'],['pez','peces'],['pajaro','pájaros'],['pato','patos'],['mariposa','mariposas']];
+GEN.datosIni=function(sel,count){
+  const out=[], tipos=shuffle([...sel.tipo]);
+  if (tipos.includes('pictograma')){
+    const cats=shuffle([...MASCOTAS]).slice(0,sel.nivel==='facil'?3:4), cant=cats.map(()=>rnd(1,sel.nivel==='facil'?5:7)); const total=cant.reduce((a,b)=>a+b,0), mx=Math.max(...cant), cuentan=cant.filter(c=>c===mx).length===1;
+    out.push({ type:'pictograma', cats, cant });
+    const k=rnd(0,cats.length-1); out.push(FL([`¿Cuántos ${cats[k][1]} hay?`, B(cant[k],8)],0));
+    if (cuentan) out.push(FL(['¿Qué animal hay más?', B(cats[cant.indexOf(mx)][1],20)],0));
+    out.push(FL(['¿Cuántos animales hay en total?', B(total,8)],0));
+  }
+  if (tipos.includes('azar')) shuffle([...AZAR]).slice(0,count).forEach(a=>out.push({ type:'azarOpc', texto:a[0], ok:a[1] }));
+  return { kind:'blocks', cols:1, items:out };
+};
+BLOCKS.pictograma={ full:true, h:(it)=> 14+it.cats.length*15,
+  draw(els,it,idx,x,y,w,isKey){
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá el gráfico: cada dibujo es un animal de la clase.'});
+    it.cats.forEach(([id,pl],k)=>{ const ry=y+10+k*15; els.push({t:'rect', x:x+8, y:ry, w:w-8, h:14, stroke:'#9aa3b5', lw:.4}); els.push({t:'text', x:x+11, y:ry+9, s:11, b:true, str:pl});
+      for (let j=0;j<it.cant[k];j++) pintarDib(els,id,x+44+j*14,ry+1,12); });
+  } };
+BLOCKS.azarOpc={ full:true, h:(it,w)=> wrapText(it.texto,FSB,w-8).length*LHB+14,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4); const L=wrapText(it.texto,FSB,w-8); L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln}));
+    const by=y+L.length*LHB+1; ['seguro','posible','imposible'].forEach((o,k)=>pastilla(els,x+8+k*36,by,32,7.5,o,isKey&&it.ok===o));
+  } };
+
+/* ---------- Catálogo, opciones, niveles y notas ---------- */
+CATALOG.find(a=>a.id==='inicial').items.push(
+  { id:'lecturaIni', name:'Lectura inicial con dibujos', ready:true },
+  { id:'numCien', name:'Números hasta 100', ready:true },
+  { id:'conteoDib', name:'Contar y comparar', ready:true },
+  { id:'cuentaDib', name:'Sumas y restas con dibujos', ready:true },
+  { id:'partesUnidad', name:'Mitad y partes iguales', ready:true },
+  { id:'geoIni', name:'Figuras y cuerpos', ready:true },
+  { id:'medidasIni', name:'Medir y comparar', ready:true },
+  { id:'datosIni', name:'Datos y azar', ready:true } );
+const NIV3I=[ {v:'facil',t:'Fácil'},{v:'medio',t:'Medio'},{v:'dificil',t:'Más difícil'} ];
+Object.assign(ACTIVITIES, {
+  lecturaIni:{ title:'Leo y miro los dibujos', consigna:'Leé y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'plural',t:'Uno y varios (singular y plural)'},{v:'vf',t:'¿Verdadero o falso?'},{v:'unir',t:'Unir la oración con el dibujo'} ], def:['plural','vf','unir'] } ] },
+  numCien:{ title:'Números hasta 100', consigna:'Resolvé.', cols:2, count:CNT('Cantidad de ejercicios',[1,2,4,6,8,10],6), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'cuadro',t:'Cuadro de números para completar'},{v:'antpos',t:'Anterior y posterior'},{v:'serie',t:'Series (de 1, 2, 5 o 10 en 10)'},{v:'recta',t:'Recta numérica'},{v:'comparar',t:'Comparar (< o >)'},{v:'decenas',t:'Decenas y unidades'},{v:'pares',t:'Pares e impares'} ], def:['antpos','serie','comparar','decenas'] },
+    { id:'nivel', label:'Hasta', type:'single', options:[ {v:'facil',t:'20'},{v:'medio',t:'50'},{v:'dificil',t:'100'} ], def:'facil' } ] },
+  conteoDib:{ title:'Contar y comparar', consigna:'Mirá los dibujos y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'contar',t:'Contar y escribir cuántos hay'},{v:'dibujar',t:'Dibujar una cantidad'},{v:'comparar',t:'Dónde hay más'} ], def:['contar','comparar','dibujar'] },
+    { id:'nivel', label:'Cantidades', type:'single', options:[ {v:'facil',t:'Hasta 8'},{v:'medio',t:'Hasta 12'},{v:'dificil',t:'Hasta 20'} ], def:'facil' } ] },
+  cuentaDib:{ title:'Sumas y restas con dibujos', consigna:'Mirá los dibujos y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'suma',t:'Juntar (suma)'},{v:'resta',t:'Sacar (resta)'},{v:'marco10',t:'Completar 10'},{v:'decena',t:'Decenas y unidades con barras y cubitos'} ], def:['suma','resta','marco10'] },
+    { id:'nivel', label:'Números', type:'single', options:[ {v:'facil',t:'Hasta 10'},{v:'medio',t:'Hasta 15'},{v:'dificil',t:'Hasta 20'} ], def:'facil' } ] },
+  partesUnidad:{ title:'Mitad y partes iguales', consigna:'Mirá las figuras y resolvé.', cols:2, count:CNT('Cantidad de ejercicios',[4,6,8,10],6), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'pintar',t:'Pintar la mitad, la cuarta parte…'},{v:'leer',t:'Escribir qué parte está pintada'},{v:'iguales',t:'¿Las partes son iguales?'} ], def:['pintar','leer','iguales'] },
+    { id:'nivel', label:'Partes', type:'single', options:[ {v:'facil',t:'Mitades y cuartos'},{v:'dificil',t:'También octavos'} ], def:'facil' } ] },
+  geoIni:{ title:'Figuras y cuerpos', consigna:'Mirá las figuras y resolvé.', cols:2, count:CNT('Cantidad de ejercicios',[4,6,8,10],6), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'lados',t:'Contar lados y vértices'},{v:'poligonos',t:'¿Polígono o no?'},{v:'cuerpos',t:'¿Poliedro o no? (cuerpos)'},{v:'cuadricula',t:'Copiar una figura en la cuadrícula'} ], def:['lados','poligonos','cuerpos'] },
+    { id:'nivel', label:'Figuras', type:'single', options:[ {v:'facil',t:'Triángulo, cuadrado y rectángulo'},{v:'dificil',t:'También pentágono, hexágono y rombo'} ], def:'facil' } ] },
+  medidasIni:{ title:'Medir y comparar', consigna:'Mirá y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[2,3,4,5],3), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'regla',t:'Medir con la regla (en centímetros)'},{v:'comparar',t:'Largo y corto'},{v:'vasos',t:'Más y menos agua'},{v:'balanza',t:'Pesa más y pesa menos'} ], def:['regla','comparar','vasos','balanza'] },
+    { id:'nivel', label:'Longitudes', type:'single', options:[ {v:'facil',t:'De 2 a 9 cm'},{v:'dificil',t:'De 3 a 14 cm'} ], def:'facil' } ] },
+  datosIni:{ title:'Datos y azar', consigna:'Mirá y resolvé.', single:true, cols:1, count:CNT('Cantidad de afirmaciones',[2,3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'pictograma',t:'Gráfico con dibujos (pictograma)'},{v:'azar',t:'Seguro, posible o imposible'} ], def:['pictograma','azar'] },
+    { id:'nivel', label:'Datos', type:'single', options:[ {v:'facil',t:'3 animales, hasta 5'},{v:'dificil',t:'4 animales, hasta 7'} ], def:'facil', showIf:s=>s.tipo.includes('pictograma') } ] },
+});
+Object.assign(DESC, {
+  lecturaIni:'Oraciones cortas para unir con su dibujo, verdadero o falso, y uno y varios.',
+  numCien:'Cuadro del 1 al 100 para completar, series, anterior y posterior, recta, decenas y pares.',
+  conteoDib:'Contar dibujos, dibujar una cantidad y decidir dónde hay más.',
+  cuentaDib:'Sumas y restas con dibujos, completar 10 y decenas y unidades con barras y cubitos.',
+  partesUnidad:'Círculos y rectángulos divididos para pintar la mitad, la cuarta parte y el octavo.',
+  geoIni:'Lados y vértices, polígonos, cuerpos geométricos y copiar figuras en una cuadrícula.',
+  medidasIni:'Regla en centímetros (a tamaño real), largo y corto, más y menos agua, y balanzas.',
+  datosIni:'Un gráfico con dibujos para leer y afirmaciones seguras, posibles o imposibles.',
+});
+Object.assign(NOTAS, {
+  lecturaIni:'Leemos oraciones cortas con dibujos. Pueden leer en voz alta y señalar con el dedo.',
+  numCien:'Practicamos los números hasta 100. Contar de 10 en 10 y de 5 en 5 ayuda mucho.',
+  conteoDib:'Contamos y comparamos. Pueden contar objetos de la casa: cucharas, zapatos, botones.',
+  cuentaDib:'Sumamos y restamos con dibujos. Si pueden, usen tapitas o porotos para comprobar.',
+  partesUnidad:'Trabajamos con mitades y cuartos. Pueden doblar una hoja de papel para verlo.',
+  geoIni:'Conocemos figuras y cuerpos. Busquen en casa objetos con forma de cubo, caja o pelota.',
+  medidasIni:'Medimos y comparamos. Pueden medir objetos con una regla en casa.',
+  datosIni:'Leemos un gráfico con dibujos y pensamos qué es seguro, posible o imposible.',
+});
+Object.assign(CORTA, { lecturaIni:3, numCien:4, conteoDib:3, cuentaDib:3, partesUnidad:4, geoIni:4, medidasIni:2, datosIni:3 });
+Object.assign(DIF, {
+  lecturaIni:{ facil:{tipo:['plural','vf']}, dificil:{tipo:['vf','unir']} },
+  numCien:{ facil:{nivel:'facil',tipo:['antpos','serie','comparar']}, dificil:{nivel:'dificil',tipo:['serie','comparar','decenas','pares']} },
+  conteoDib:{ facil:{nivel:'facil',tipo:['contar','dibujar']}, dificil:{nivel:'dificil',tipo:['contar','comparar','dibujar']} },
+  cuentaDib:{ facil:{nivel:'facil',tipo:['suma','resta']}, dificil:{nivel:'dificil',tipo:['suma','resta','marco10','decena']} },
+  partesUnidad:{ facil:{nivel:'facil',tipo:['pintar','iguales']}, dificil:{nivel:'dificil',tipo:['pintar','leer','iguales']} },
+  geoIni:{ facil:{nivel:'facil',tipo:['lados','poligonos']}, dificil:{nivel:'dificil',tipo:['lados','poligonos','cuerpos','cuadricula']} },
+  medidasIni:{ facil:{nivel:'facil',tipo:['regla','comparar']}, dificil:{nivel:'dificil',tipo:['regla','balanza','vasos']} },
+  datosIni:{ facil:{nivel:'facil',tipo:['pictograma','azar']}, dificil:{nivel:'dificil',tipo:['pictograma','azar']} },
+});
+
 function syncNivelUI(){
   const hay=!!DIF[state.activity], nv=OPT.nivel, h=$('nivelHelp');
   let t='';
@@ -6572,13 +6965,21 @@ GEN.evaluacion = function(sel,count,ctx){
   return { kind:'blocks', cols:1, items, fit: sel.hojas==='una', warn:aviso };
 };
 
-Object.assign(RANGO,{ fonologica:[1,2], silabasPal:[1,2], letras:[1,2], caligrafia:[1,2], nombrarDib:[1,2] });
+Object.assign(RANGO,{ fonologica:[1,2], silabasPal:[1,2], letras:[1,2], caligrafia:[1,2], nombrarDib:[1,2], lecturaIni:[1,2], numCien:[1,2], conteoDib:[1,2], cuentaDib:[1,2], partesUnidad:[1,2], geoIni:[1,2], medidasIni:[1,2], datosIni:[1,2] });
 Object.assign(PRESET,{
   fonologica:{ 1:{tipo:['vocal','silabas','inicial'],nivel:'facil'}, 2:{tipo:['inicial','rima','silabas'],nivel:'dificil'} },
   silabasPal:{ 1:{tipo:['armar','completar'],nivel:'facil'}, 2:{tipo:['armar','completar','combinar'],nivel:'dificil'} },
   letras:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
   caligrafia:{ 1:{tipo:'trazos',tam:'grande',modelo:'gris'}, 2:{tipo:'letras',tam:'mediano',modelo:'gris'} },
   nombrarDib:{ 1:{modo:'casillas',ayuda:'inicial',nivel:'facil'}, 2:{modo:'linea',ayuda:'ninguna',nivel:'dificil'} },
+  lecturaIni:{ 1:{tipo:['plural','vf']}, 2:{tipo:['vf','unir','plural']} },
+  numCien:{ 1:{nivel:'facil',tipo:['antpos','serie','comparar','decenas']}, 2:{nivel:'dificil',tipo:['serie','comparar','decenas','pares']} },
+  conteoDib:{ 1:{nivel:'facil'}, 2:{nivel:'medio'} },
+  cuentaDib:{ 1:{nivel:'facil',tipo:['suma','resta','marco10']}, 2:{nivel:'dificil',tipo:['suma','resta','decena']} },
+  partesUnidad:{ 1:{nivel:'facil',tipo:['pintar','iguales']}, 2:{nivel:'dificil',tipo:['pintar','leer','iguales']} },
+  geoIni:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
+  medidasIni:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
+  datosIni:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
 });
 /* ---------- Aplicar el grado ---------- */
 OPT.grado=0;
