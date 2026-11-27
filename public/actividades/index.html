@@ -133,6 +133,7 @@
   body[data-area="cruci"]{ --c:var(--cruci); --c-soft:var(--cruci-soft); }
   body[data-area="repaso"]{ --c:var(--repaso); --c-soft:var(--repaso-soft); }
   body[data-area="lengua"]{ --c:var(--lengua); --c-soft:var(--lengua-soft); }
+  body[data-area="inicial"]{ --c:var(--menta,#1fbf9a); --c-soft:var(--lengua-soft); }
   body[data-area="ciencias"]{ --c:var(--ciencias); --c-soft:var(--ciencias-soft); }
 
   *{box-sizing:border-box}
@@ -175,6 +176,7 @@
   .area[data-a="cruci"]{--ac:var(--cruci); --as:var(--cruci-soft)}
   .area[data-a="repaso"]{--ac:var(--repaso); --as:var(--repaso-soft)}
   .area[data-a="lengua"]{--ac:var(--lengua); --as:var(--lengua-soft)}
+  .area[data-a="inicial"]{--ac:var(--lengua); --as:var(--lengua-soft)}
   .area[data-a="ciencias"]{--ac:var(--ciencias); --as:var(--ciencias-soft)}
   .area:hover{transform:translateY(-2px)}
   .area .ic{width:30px; height:30px; border-radius:9px; display:grid; place-items:center; background:var(--ac); color:#fff}
@@ -1738,6 +1740,7 @@ function renderAreas(){
   const box=$('areas'); box.innerHTML='';
   document.body.dataset.area=state.area;
   CATALOG.forEach(a=>{
+    if (OPT.grado && typeof paraGrado==='function' && a.items.every(i=>!paraGrado(i.id))) return;   // carpeta sin actividades para este grado
     const b=document.createElement('button'); b.type='button';
     b.className='area'+(a.id===state.area?' sel':''); b.dataset.a=a.id;
     b.setAttribute('role','tab'); b.setAttribute('aria-selected', a.id===state.area);
@@ -4204,7 +4207,7 @@ function layoutBlocks(d, isKey){
   const rows=[]; let curRow=[];
   let num=0;
   ITEMS.forEach((it,i)=>{
-    const o={it, idx: (it.type==='texto'||it.type==='grafico'||it.type==='seccion') ? -1 : num++};
+    const o={it, idx: (it.type==='texto'||it.type==='grafico'||it.type==='seccion'||it.type==='pictograma') ? -1 : num++};
     if (cols===1 || it.full || BLOCKS[it.type].full){ if (curRow.length){ rows.push(curRow); curRow=[]; } rows.push([o]); }
     else { curRow.push(o); if (curRow.length===cols){ rows.push(curRow); curRow=[]; } }
   });
@@ -5968,6 +5971,733 @@ $('pkBuild').onclick=()=>{
   doDownload(snaps,'paquete_de_la_semana');
 };
 
+/* =========================================================
+   PRIMEROS PASOS (1.º y 2.º): dibujos simples, conciencia fonológica, sílabas,
+   letras, caligrafía con trazos guiados y escritura del nombre de un dibujo.
+   Los dibujos son de contorno (para pintar) y se arman con líneas y círculos.
+   ========================================================= */
+const arco=(cx,cy,r,a0,a1,n=14)=>Array.from({length:n+1},(_,k)=>{ const a=(a0+(a1-a0)*k/n)*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; });
+const girar=(pts,cx,cy,deg)=>{ const a=deg*Math.PI/180, c=Math.cos(a), s=Math.sin(a); return pts.map(([x,y])=>[cx+(x-cx)*c-(y-cy)*s, cy+(x-cx)*s+(y-cy)*c]); };
+/* Creciente (luna, banana): arco exterior de radio R y arco interior que deja el grosor g */
+function crecientePts(cx,cy,R,g,deg){
+  const x1=cx-R+g, ex=cx+R*.5, ey=R*.866, r2=((ex-x1)*(ex-x1)+ey*ey)/(2*(ex-x1)), c2=x1+r2, ang=Math.atan2(ey,ex-c2)*180/Math.PI;
+  const fuera=arco(cx,cy,R,-60,-300,18), dentro=arco(c2,cy,r2,ang,360-ang,18);
+  return girar([...fuera,...dentro],cx,cy,deg);
+}
+const DIB={};
+function ayudasDib(E){
+  const W=.8;
+  return {
+    l:(a,b,c,d)=>E.line(a,b,c,d,W), p:(pts,cerrar)=>E.poly(pts,!!cerrar,W), c:(x,y,r,f)=>E.circle(x,y,r,f,W),
+    e:(x,y,rx,ry,rot=0)=>E.poly(elipse(x,y,rx,ry,rot,30),true,W), a:(x,y,r,a0,a1)=>E.poly(arco(x,y,r,a0,a1),false,W),
+    pt:(x,y,r=1.7)=>E.circle(x,y,r,'#111',.4),
+    // contorno de varios círculos que se superponen (nubes, copas, peras…); corta con un piso en y si se pide
+    union:(cs,piso)=>cs.forEach(([cx,cy,r],i)=>{ const pts=arco(cx,cy,r,0,360,72);
+      for (let k=0;k<72;k++){ const a=pts[k], b=pts[k+1], fuera=q=>cs.every(([x2,y2,r2],j)=>j===i || Math.hypot(q[0]-x2,q[1]-y2)>r2-.2) && (piso===undefined || q[1]<=piso+.01);
+        if (fuera(a) && fuera(b)) E.line(a[0],a[1],b[0],b[1],W); } }),
+  };
+}
+const star=(cx,cy,R,r)=>Array.from({length:10},(_,k)=>{ const a=-Math.PI/2+k*Math.PI/5, q=k%2?r:R; return [cx+q*Math.cos(a), cy+q*Math.sin(a)]; });
+Object.assign(DIB,{
+  sol:D=>{ D.c(50,50,17); for (let k=0;k<8;k++){ const a=k*Math.PI/4; D.l(50+25*Math.cos(a),50+25*Math.sin(a),50+39*Math.cos(a),50+39*Math.sin(a)); } D.pt(43,46,1.4); D.pt(57,46,1.4); D.a(50,52,8,30,150); },
+  luna:D=>{ D.p(crecientePts(50,50,36,17,0),true); D.pt(36,46,1.5); },
+  estrella:D=>D.p(star(50,54,42,17),true),
+  nube:D=>{ D.union([[30,60,15],[50,46,20],[72,58,16]],75); D.l(30,75,72,75); },
+  flor:D=>{ for (let k=0;k<6;k++){ const a=k*Math.PI/3; D.e(50+17*Math.cos(a),34+17*Math.sin(a),10,7,a); } D.c(50,34,7); D.l(50,52,50,94); D.e(64,76,12,5,-.6); D.e(36,66,11,5,.6); },
+  rosa:D=>{ D.c(50,34,22); D.a(50,34,14,180,450); D.a(50,34,7,0,270); D.l(50,56,50,94); D.e(66,76,13,5,-.6); D.e(34,68,12,5,.6); D.p([[44,58],[40,62]]); },
+  arbol:D=>{ D.union([[50,30,20],[32,46,17],[68,46,17]]); D.p([[43,58],[43,92],[57,92],[57,58]]); D.l(30,92,70,92); },
+  casa:D=>{ D.p([[20,50],[20,90],[80,90],[80,50]]); D.p([[12,54],[50,16],[88,54]]); D.p([[44,90],[44,66],[58,66],[58,90]]); D.p([[26,58],[38,58],[38,70],[26,70]],true); D.l(32,58,32,70); D.l(26,64,38,64); D.p([[68,34],[68,18],[78,18],[78,42]]); },
+  mesa:D=>{ D.p([[12,40],[88,40],[88,50],[12,50]],true); D.l(20,50,20,90); D.l(80,50,80,90); D.l(26,50,26,62); D.l(74,50,74,62); },
+  silla:D=>{ D.p([[30,50],[30,14],[70,14],[70,50]]); D.p([[24,50],[76,50],[76,60],[24,60]],true); D.l(28,60,28,90); D.l(72,60,72,90); D.l(40,22,40,44); D.l(50,22,50,44); D.l(60,22,60,44); },
+  cama:D=>{ D.p([[10,30],[10,86]]); D.p([[90,50],[90,86]]); D.p([[10,56],[90,56],[90,68],[10,68]],true); D.e(26,48,13,6); D.p([[40,48],[90,48],[90,56],[40,56]]); D.l(10,30,16,30); },
+  cuna:D=>{ D.p([[20,40],[20,70],[80,70],[80,40]]); D.l(20,40,80,40); [30,40,50,60,70].forEach(x=>D.l(x,40,x,70)); D.a(50,50,45,40,140); D.l(14,36,20,40); D.l(86,36,80,40); },
+  taza:D=>{ D.p([[22,34],[22,66],[28,78],[56,78],[62,66],[62,34]],true); D.a(66,50,13,-90,90); D.a(66,50,8,-90,90); D.l(30,22,30,28); D.l(42,18,42,28); D.l(54,22,54,28); D.l(20,82,66,82); },
+  vaso:D=>{ D.p([[28,24],[72,24],[64,88],[36,88]],true); D.l(31,46,69,46); D.a(50,46,19,10,170); },
+  llave:D=>{ D.c(26,50,16); D.c(26,50,7); D.l(42,50,90,50); D.p([[78,50],[78,66],[84,66],[84,50]]); D.p([[88,50],[88,60]]); D.l(60,50,60,60); },
+  libro:D=>{ D.p([[26,14],[78,14],[78,86],[26,86]],true); D.l(36,14,36,86); D.l(46,34,68,34); D.l(46,44,68,44); D.l(46,54,60,54); D.l(26,86,18,82); D.l(18,82,18,18); D.l(18,18,26,14); },
+  lapiz:D=>{ D.p([[22,70],[66,26],[78,38],[34,82]],true); D.p([[22,70],[16,90],[34,82]],true); D.pt(19,85,1.2); D.p([[66,26],[72,20],[84,32],[78,38]],true); D.l(56,36,68,48); },
+  reloj:D=>{ D.c(50,50,38); D.c(50,50,2,'#111'); for (let k=0;k<12;k++){ const a=k*Math.PI/6; D.l(50+32*Math.cos(a),50+32*Math.sin(a),50+36*Math.cos(a),50+36*Math.sin(a)); } D.l(50,50,50,26); D.l(50,50,66,56); },
+  zapato:D=>{ D.p([[14,40],[14,76],[90,76],[90,62],[62,58],[46,40]],true); D.l(14,66,90,68); D.l(50,40,56,30); D.l(36,44,44,36); D.l(30,50,38,44); },
+  bota:D=>{ D.p([[34,12],[34,66],[16,70],[16,88],[80,88],[80,74],[56,66],[56,12]],true); D.l(34,24,56,24); D.l(16,80,80,80); },
+  paraguas:D=>{ D.p(arco(50,52,40,180,360),false); D.a(23,52,9,0,180); D.a(41,52,9,0,180); D.a(59,52,9,0,180); D.a(77,52,9,0,180); D.l(50,12,50,8); D.l(50,52,50,84); D.a(58,84,8,180,0); },
+  pelota:D=>{ D.c(50,50,38); D.p(Array.from({length:5},(_,k)=>[50+13*Math.cos(-Math.PI/2+k*2*Math.PI/5),50+13*Math.sin(-Math.PI/2+k*2*Math.PI/5)]),true); for (let k=0;k<5;k++){ const a=-Math.PI/2+k*2*Math.PI/5; D.l(50+13*Math.cos(a),50+13*Math.sin(a),50+37*Math.cos(a),50+37*Math.sin(a)); } },
+  bicicleta:D=>{ D.c(24,66,18); D.c(76,66,18); D.l(24,66,38,40); D.l(38,40,46,66); D.l(24,66,46,66); D.l(38,40,66,40); D.l(46,66,66,40); D.l(66,40,76,66); D.l(66,40,62,28); D.l(58,28,70,30); D.l(32,38,44,38); },
+  auto:D=>{ D.p([[8,64],[8,50],[26,46],[36,30],[66,30],[78,46],[94,50],[94,64]],true); D.c(28,66,10); D.c(74,66,10); D.p([[38,34],[38,46],[50,46],[50,34]],true); D.p([[54,34],[54,46],[70,46],[62,34]],true); },
+  barco:D=>{ D.p([[10,60],[90,60],[74,84],[26,84]],true); D.l(50,60,50,14); D.p([[54,16],[54,54],[82,54]],true); D.p([[46,24],[46,54],[22,54]],true); D.l(50,14,62,18); },
+  avion:D=>{ D.e(50,50,38,8); D.p([[16,50],[6,30],[22,30],[32,47]]); D.p([[44,46],[34,16],[50,16],[64,46]]); D.p([[44,54],[34,84],[50,84],[64,54]]); D.c(70,49,2); D.c(60,49,2); D.c(80,49,2); },
+  manzana:D=>{ D.union([[37,58,24],[63,58,24]]); D.l(50,38,52,18); D.e(63,24,11,4.5,-.5); D.a(34,52,10,200,250); },
+  pera:D=>{ D.union([[50,66,24],[50,36,13]]); D.l(50,23,52,10); D.e(62,14,9,4,-.4); },
+  banana:D=>{ D.p(crecientePts(46,50,38,11,-62),true); D.p([[70,30],[78,20],[84,22]]); D.l(14,72,10,76); },
+  uva:D=>{ [[38,36],[58,36],[30,52],[48,52],[66,52],[39,68],[57,68],[48,84]].forEach(([x,y])=>D.c(x,y,9)); D.l(48,27,48,12); D.e(60,14,9,4,-.4); },
+  naranja:D=>{ D.c(50,56,34); D.l(50,22,50,14); D.e(60,16,9,4,-.5); D.pt(40,50,1.2); D.pt(58,44,1.2); D.pt(62,62,1.2); D.pt(44,68,1.2); },
+  sandia:D=>{ D.p([...arco(50,34,42,0,180),[8,34]],false); D.l(8,34,92,34); D.a(50,34,32,0,180); [[36,48],[50,56],[64,48],[44,40],[58,40]].forEach(([x,y])=>D.e(x,y,2.2,3.6,.4)); },
+  queso:D=>{ D.p([[10,56],[90,34],[90,72],[10,72]],true); D.p([[10,56],[24,50],[90,34]]); D.c(34,62,4); D.c(62,56,5); D.c(48,66,3); D.c(76,52,3); },
+  perro:D=>{ D.e(56,56,28,14); D.c(24,40,14); D.e(32,26,6,11,.4); D.e(10,46,8,5.5); D.pt(5,44,2); D.pt(22,36,1.8); D.a(10,50,5,20,160); D.p([[36,68],[36,90],[44,90],[44,68]]); D.p([[66,68],[66,90],[74,90],[74,68]]); D.p([[84,52],[92,38],[96,40]]); },
+  gato:D=>{ D.c(50,52,26); D.p([[30,36],[28,12],[46,28]]); D.p([[70,36],[72,12],[54,28]]); D.pt(40,48,2); D.pt(60,48,2); D.p([[46,58],[54,58],[50,63]],true); D.a(46,64,4,0,160); D.a(54,64,4,20,180); D.l(24,56,40,60); D.l(24,64,40,63); D.l(76,56,60,60); D.l(76,64,60,63); },
+  pez:D=>{ D.e(44,50,32,20); D.p([[72,50],[92,32],[92,68]],true); D.pt(28,44,2); D.a(24,52,6,20,100); D.p([[40,30],[50,18],[58,31]]); D.a(46,50,10,200,320); D.a(56,50,10,200,320); },
+  pajaro:D=>{ D.c(44,56,24); D.c(66,34,12); D.p([[76,32],[92,36],[76,41]],true); D.pt(68,31,1.6); D.p([[22,64],[6,74],[10,58]],true); D.a(44,54,13,200,330); D.l(40,80,40,92); D.l(52,80,52,92); D.l(34,92,46,92); D.l(46,92,58,92); },
+  mariposa:D=>{ D.e(30,34,20,14,-.4); D.e(70,34,20,14,.4); D.e(34,64,15,12,.5); D.e(66,64,15,12,-.5); D.e(50,50,3.5,22); D.l(48,28,40,14); D.l(52,28,60,14); D.c(40,13,1.8); D.c(60,13,1.8); },
+  pato:D=>{ D.e(44,64,32,18); D.c(70,36,13); D.p([[80,36],[96,41],[80,46]],true); D.pt(72,33,1.6); D.p([[14,56],[6,46],[20,66]],true); D.a(44,62,14,200,330); D.l(40,82,40,94); D.l(54,82,54,94); D.p([[34,94],[46,94]]); D.p([[48,94],[60,94]]); D.a(70,50,10,60,150); },
+  sapo:D=>{ D.e(50,62,32,20); D.c(34,38,10); D.c(66,38,10); D.pt(34,38,3.4); D.pt(66,38,3.4); D.a(50,58,18,20,160); D.e(18,82,13,6); D.e(82,82,13,6); D.p([[28,76],[34,86]]); D.p([[72,76],[66,86]]); },
+  oso:D=>{ D.c(50,52,28); D.c(26,26,10); D.c(74,26,10); D.c(26,26,5); D.c(74,26,5); D.e(50,62,12,9); D.e(50,57,4.5,3,0); D.pt(50,57,3); D.pt(38,46,2); D.pt(62,46,2); D.a(50,64,6,20,160); },
+  vaca:D=>{ D.e(50,54,25,29); D.e(20,38,11,5,.5); D.e(80,38,11,5,-.5); D.p([[30,28],[24,14],[36,24]]); D.p([[70,28],[76,14],[64,24]]); D.e(50,74,17,11); D.pt(43,74,2); D.pt(57,74,2); D.pt(40,46,2.4); D.pt(60,46,2.4); D.e(38,34,6,4,.3); D.e(62,62,5,4); },
+  mono:D=>{ D.c(50,48,26); D.c(24,50,9); D.c(76,50,9); D.c(24,50,4.5); D.c(76,50,4.5); D.e(50,58,17,14); D.pt(42,44,2.2); D.pt(58,44,2.2); D.pt(46,58,1.2); D.pt(54,58,1.2); D.a(50,62,7,20,160); D.l(50,74,50,90); },
+  abeja:D=>{ D.e(50,58,28,19); D.l(40,40,38,76); D.l(52,40,52,76); D.l(64,42,66,74); D.e(38,30,12,8,-.6); D.e(62,30,12,8,.6); D.p([[78,58],[92,58]]); D.l(24,56,16,56); D.l(24,56,20,48); D.l(24,56,20,64); },
+});
+const pintarDib=(els,id,x,y,tam)=>{ const k=tam/100, T=(px,py)=>[x+px*k,y+py*k]; DIB[id](ayudasDib(dibujo(T,els))); };
+
+/* Palabras con dibujo: nombre, sílabas */
+const DIBS=[['sol',['sol']],['luna',['lu','na']],['estrella',['es','tre','lla']],['nube',['nu','be']],['flor',['flor']],['rosa',['ro','sa']],['arbol',['ár','bol']],
+  ['casa',['ca','sa']],['mesa',['me','sa']],['silla',['si','lla']],['cama',['ca','ma']],['cuna',['cu','na']],['taza',['ta','za']],['vaso',['va','so']],['llave',['lla','ve']],
+  ['libro',['li','bro']],['lapiz',['lá','piz']],['reloj',['re','loj']],['zapato',['za','pa','to']],['bota',['bo','ta']],['paraguas',['pa','ra','guas']],['pelota',['pe','lo','ta']],
+  ['bicicleta',['bi','ci','cle','ta']],['auto',['au','to']],['barco',['bar','co']],['avion',['a','vión']],['manzana',['man','za','na']],['pera',['pe','ra']],['banana',['ba','na','na']],
+  ['uva',['u','va']],['naranja',['na','ran','ja']],['sandia',['san','dí','a']],['queso',['que','so']],['perro',['pe','rro']],['gato',['ga','to']],['pez',['pez']],
+  ['pajaro',['pá','ja','ro']],['mariposa',['ma','ri','po','sa']],['pato',['pa','to']],['sapo',['sa','po']],['oso',['o','so']],['vaca',['va','ca']],['mono',['mo','no']],['abeja',['a','be','ja']]]
+  .map(([id,sil])=>({ id, sil, pal:sil.join(''), n:sil.length }));
+const DIBP=Object.fromEntries(DIBS.map(d=>[d.id,d]));
+/* Sonido inicial: c(a,o,u) y qu suenan /k/; c(e,i), s y z suenan /s/ (como se dice en Uruguay); v suena como b */
+const sonidoIni=p=>{ const q=sinTilde(p); if (/^qu/.test(q)) return 'k'; if (/^c[aou]/.test(q)) return 'k'; if (/^c[ei]|^[sz]/.test(q)) return 's'; if (/^v/.test(q)) return 'b'; if (/^ll/.test(q)) return 'y'; return q[0]; };
+const finalSil=d=>sinTilde(d.sil[d.sil.length-1]);
+const VOCALES5=['a','e','i','o','u'];
+
+/* ---------- Conciencia fonológica ---------- */
+GEN.fonologica=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[], vistos=new Set(); let g=0, i=0;
+  const orden=['vocal','silabas','inicial','rima'];
+  while (out.length<count && g++<count*80){
+    const t=tipos[i%tipos.length]; let it, key;
+    if (t==='silabas'){ const d=pick(DIBS.filter(x=>x.n<=(sel.nivel==='facil'?3:4))); key='s'+d.id; it={ type:'dibSil', d:d.id, n:d.n }; }
+    else if (t==='vocal'){ const d=pick(DIBS.filter(x=>VOCALES5.includes(sinTilde(x.pal)[0]))); key='v'+d.id; it={ type:'dibVocal', d:d.id, ok:sinTilde(d.pal)[0] }; }
+    else if (t==='inicial'){ const d=pick(DIBS), s=sonidoIni(d.pal), otros=shuffle(DIBS.filter(x=>x.id!==d.id && sonidoIni(x.pal)===s)), no=shuffle(DIBS.filter(x=>sonidoIni(x.pal)!==s));
+      if (!otros.length) continue; key='i'+d.id; const op=shuffle([otros[0],no[0],no[1]]); it={ type:'dibOpc', modo:'inicial', d:d.id, opts:op.map(x=>x.id), ok:op.indexOf(otros[0]) }; }
+    else { const grupos={}; DIBS.forEach(x=>{ (grupos[finalSil(x)]=grupos[finalSil(x)]||[]).push(x); }); const posibles=Object.values(grupos).filter(a=>a.length>=2);
+      const gr=pick(posibles), d=pick(gr), rim=pick(gr.filter(x=>x.id!==d.id)), no=shuffle(DIBS.filter(x=>finalSil(x)!==finalSil(d))); key='r'+d.id; const op=shuffle([rim,no[0],no[1]]);
+      it={ type:'dibOpc', modo:'rima', d:d.id, opts:op.map(x=>x.id), ok:op.indexOf(rim) }; }
+    if (vistos.has(key)) continue; vistos.add(key); i++; it.diff=orden.indexOf(t); out.push(it);
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+const rotuloDib=(els,id,x,y,w)=> els.push({t:'text', x:x+w/2, y, s:9.5, a:'center', c:'#555', str:DIBP[id].pal});
+BLOCKS.dibSil={ full:true, h:()=>38,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Decí la palabra y aplaudí. Pintá un cuadrito por cada golpe (sílaba).'});
+    pintarDib(els,it.d,x+8,y+8,26); rotuloDib(els,it.d,x+8,y+37,26);
+    for (let k=0;k<5;k++){ const bx=x+50+k*17; els.push({t:'rect', x:bx, y:y+16, w:14, h:14, r:2, stroke:'#555', lw:.5, fill: isKey && k<it.n ? CLARO_R : undefined}); }
+  } };
+BLOCKS.dibVocal={ full:true, h:()=>38,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'¿Con qué vocal empieza? Marcala con un círculo.'});
+    pintarDib(els,it.d,x+8,y+8,26); rotuloDib(els,it.d,x+8,y+37,26);
+    VOCALES5.forEach((v,k)=>{ const cx=x+62+k*19, ok=isKey && v===it.ok;
+      els.push({t:'rect', x:cx-7, y:y+16, w:14, h:14, r:7, stroke:ok?RED:'#555', lw:ok?1:.5, fill:ok?CLARO_R:undefined});
+      els.push({t:'text', x:cx, y:y+26, s:16, a:'center', b:true, c:ok?RED:'#111', str:v}); });
+  } };
+BLOCKS.dibOpc={ full:true, h:()=>53,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    const texto= it.modo==='inicial' ? 'Marcá el dibujo que empieza con el mismo sonido que' : 'Marcá el dibujo que rima (termina igual) con';
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:texto+':'});
+    pintarDib(els,it.d,x+8,y+9,26); rotuloDib(els,it.d,x+8,y+38,26); els.push({t:'line', x1:x+46, y1:y+10, x2:x+46, y2:y+44, w:.4, c:'#999', dash:true});
+    it.opts.forEach((o,k)=>{ const bx=x+52+k*38, ok=isKey && k===it.ok;
+      pintarDib(els,o,bx,y+9,26); rotuloDib(els,o,bx,y+38,26);
+      els.push({t:'rect', x:bx+9, y:y+41.5, w:8, h:8, r:4, stroke:ok?RED:'#555', lw:ok?1:.5, fill:ok?CLARO_R:undefined}); });
+  } };
+
+/* ---------- Sílabas y palabras ---------- */
+const CONS_TABLA=['m','p','s','l','t','d','n','b','f'];
+GEN.silabasPal=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[], vistos=new Set(); let g=0, i=0;
+  const orden=['armar','completar','combinar'];
+  while (out.length<count && g++<count*80){
+    const t=tipos[i%tipos.length]; let it, key;
+    const lim=sel.nivel==='facil'?[2,3]:[3,4];
+    if (t==='armar'){ const d=pick(DIBS.filter(x=>x.n>=lim[0] && x.n<=lim[1])); key='a'+d.id; it={ type:'dibArmar', d:d.id, piezas:shuffle([...d.sil]), sil:d.sil }; }
+    else if (t==='completar'){ const d=pick(DIBS.filter(x=>x.n>=2 && x.n<=lim[1])); key='c'+d.id; it={ type:'dibCompletar', d:d.id, falta:rnd(0,d.n-1), sil:d.sil }; }
+    else { const cs=shuffle(CONS_TABLA).slice(0,sel.nivel==='facil'?3:4).sort(), voc=sel.nivel==='facil'?VOCALES5.slice(0,3):VOCALES5; key='t'+cs.join(); it={ type:'tablaSil', cons:cs, voc, ocultas:cs.flatMap((c,r)=>voc.map((v,j)=>(r+j)%2===0?[r,j]:null).filter(Boolean)) }; }
+    if (vistos.has(key)) continue; vistos.add(key); i++; it.diff=orden.indexOf(t); out.push(it);
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.dibArmar={ full:true, h:()=>38,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Ordená las sílabas y escribí la palabra.'});
+    pintarDib(els,it.d,x+8,y+8,26);
+    it.piezas.forEach((s,k)=>{ const bx=x+44+k*22; els.push({t:'rect', x:bx, y:y+10, w:19, h:11, r:2, stroke:'#555', lw:.5}); els.push({t:'text', x:bx+9.5, y:y+18, s:13, a:'center', b:true, str:s}); });
+    lineaEsc(els,x+44,x+44+Math.max(60,it.piezas.length*22),y+32); if (isKey) els.push({t:'text', x:x+46, y:y+31, s:15, b:true, c:RED, str:it.sil.join('')});
+  } };
+BLOCKS.dibCompletar={ full:true, h:()=>38,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá el dibujo y escribí la sílaba que falta.'});
+    pintarDib(els,it.d,x+8,y+8,26);
+    it.sil.forEach((s,k)=>{ const bx=x+44+k*24;
+      if (k===it.falta){ els.push({t:'rect', x:bx, y:y+10, w:21, h:13, r:2, stroke:'#555', lw:.6, dash:true}); if (isKey) els.push({t:'text', x:bx+10.5, y:y+19.5, s:14, a:'center', b:true, c:RED, str:s}); }
+      else els.push({t:'text', x:bx+10.5, y:y+19.5, s:15, a:'center', b:true, str:s}); });
+  } };
+BLOCKS.tablaSil={ full:true, h:(it)=> 14+(it.cons.length+1)*11,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Completá la tabla de sílabas.'});
+    const cw=Math.min(24,(w-24)/it.voc.length), tx=x+14, ty=y+9;
+    els.push({t:'rect', x:tx, y:ty, w:cw, h:11, stroke:'#333', lw:.4, fill:CLARO});
+    it.voc.forEach((v,j)=>{ els.push({t:'rect', x:tx+cw*(j+1), y:ty, w:cw, h:11, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'text', x:tx+cw*(j+1)+cw/2, y:ty+8, s:14, a:'center', b:true, str:v}); });
+    it.cons.forEach((c,r)=>{ const ry=ty+11*(r+1); els.push({t:'rect', x:tx, y:ry, w:cw, h:11, stroke:'#333', lw:.4, fill:CLARO}); els.push({t:'text', x:tx+cw/2, y:ry+8, s:14, a:'center', b:true, str:c});
+      it.voc.forEach((v,j)=>{ const oc=it.ocultas.some(([a,b])=>a===r&&b===j), cx=tx+cw*(j+1); els.push({t:'rect', x:cx, y:ry, w:cw, h:11, stroke:'#333', lw:.4});
+        if (!oc) els.push({t:'text', x:cx+cw/2, y:ry+8, s:13, a:'center', str:c+v}); else if (isKey) els.push({t:'text', x:cx+cw/2, y:ry+8, s:13, a:'center', b:true, c:RED, str:c+v}); }); });
+  } };
+
+/* ---------- Letras y palabras / abecedario ---------- */
+const ABC='abcdefghijklmnñopqrstuvwxyz'.split('');
+const letraDe=d=>sinTilde(d.pal)[0];
+const LETRAS_CON_DIB=[...new Set(DIBS.map(letraDe))].filter(l=>DIBS.filter(d=>letraDe(d)===l).length>=2).sort();
+GEN.letras=function(sel,count){
+  if (sel.modo==='abecedario'){
+    const faltan=shuffle(ABC.map((_,i)=>i)).slice(0,sel.nivel==='facil'?8:14);
+    return { kind:'blocks', cols:1, items:[{ type:'abecedario', faltan }] };
+  }
+  const ls=(sel.letras&&sel.letras.length?sel.letras:['m']).slice(0,8);
+  return { kind:'blocks', cols:1, items:ls.map(l=>({ type:'letraDib', l, pal:shuffle(DIBS.filter(d=>letraDe(d)===l)).slice(0,4).map(d=>d.id) })), sinRespuestas:true, keyItems:SIN_RESP };
+};
+/* Renglón de cuatro líneas: las dos de arriba marcan la altura de las letras, la tercera es el piso */
+function renglon4(els,x,y,w,sp){
+  [[0,'#aaa',.3],[1,'#bbb',.25,true],[2,'#555',.45],[3,'#aaa',.3]].forEach(([k,c,wd,dash])=>els.push({t:'line', x1:x, y1:y+k*sp, x2:x+w, y2:y+k*sp, w:wd, c, dash:!!dash}));
+}
+const modeloLetra=(els,txt,x,y,sp,c)=>els.push({t:'text', x, y:y+2*sp, s:sp*5.45, c:c||'#b9b9b9', str:txt});
+BLOCKS.letraDib={ full:true, h:()=>areaAvail(false)-6,
+  draw(els,it,idx,x,y,w,isKey){
+    const L=it.l.toUpperCase()==='Ñ'?'Ñ':it.l;
+    els.push({t:'text', x:x+w*.25, y:y+34, s:96, a:'center', b:true, str:L.toUpperCase()}); els.push({t:'text', x:x+w*.7, y:y+34, s:96, a:'center', b:true, str:L});
+    els.push({t:'text', x:x+w*.25, y:y+42, s:9, a:'center', c:'#6b7488', str:'mayúscula'}); els.push({t:'text', x:x+w*.7, y:y+42, s:9, a:'center', c:'#6b7488', str:'minúscula'});
+    const n=it.pal.length, cw=w/Math.max(n,1);
+    it.pal.forEach((id,k)=>{ const bx=x+k*cw+(cw-30)/2; pintarDib(els,id,bx,y+50,30);
+      const p=DIBP[id].pal; els.push({t:'text', x:bx+15, y:y+86, s:11, a:'center', b:true, str:p[0].toUpperCase()+p.slice(1)}); });
+    const sp=6.5; let cy=y+98;
+    [[L.toUpperCase(),'#b9b9b9'],[L,'#b9b9b9']].forEach(([t,c])=>{ renglon4(els,x,cy,w,sp);
+      let px=x+2; const paso=measure(t,sp*5.45)+sp*1.6; while (px+paso<x+w*.75){ modeloLetra(els,t,px,cy,sp,c); px+=paso; }
+      cy+=sp*3+6; renglon4(els,x,cy,w,sp); cy+=sp*3+6; });
+    renglon4(els,x,cy,w,sp);
+  } };
+BLOCKS.abecedario={ full:true, h:()=>areaAvail(false)-6,
+  draw(els,it,idx,x,y,w,isKey){
+    els.push({t:'text', x, y:y+5, s:FSB, b:true, str:'Completá las letras que faltan en el abecedario.'});
+    const cols=6, cw=w/cols, ch=Math.min(26,(areaAvail(false)-20)/Math.ceil(ABC.length/cols));
+    ABC.forEach((l,k)=>{ const bx=x+(k%cols)*cw, by=y+10+Math.floor(k/cols)*ch, falta=it.faltan.includes(k);
+      els.push({t:'rect', x:bx+1, y:by, w:cw-2, h:ch-2, r:2, stroke:'#555', lw:.5, fill: falta?undefined:CLARO});
+      if (!falta) els.push({t:'text', x:bx+cw/2, y:by+ch*.62, s:Math.min(26,ch*1.5), a:'center', b:true, str:l.toUpperCase()+' '+l});
+      else if (isKey) els.push({t:'text', x:bx+cw/2, y:by+ch*.62, s:Math.min(26,ch*1.5), a:'center', b:true, c:RED, str:l.toUpperCase()+' '+l}); });
+  } };
+
+/* ---------- Caligrafía con trazos guiados ---------- */
+const TRAZOS=[['rectas verticales','v'],['rectas horizontales','h'],['rectas inclinadas','d'],['zigzag','z'],['ondas','o'],['arcos','a'],['círculos','c'],['bucles','b']];
+function pasoTrazo(t,cx,y,sp,cw){
+  const top=y+.5*sp, bot=y+2*sp, mid=y+1.5*sp, e=[];
+  const L=(x1,y1,x2,y2)=>e.push({t:'line', x1, y1, x2, y2, w:.7, c:'#9a9a9a', dash:true});
+  if (t==='v') L(cx,top,cx,bot);
+  else if (t==='h') L(cx-cw*.35,mid,cx+cw*.35,mid);
+  else if (t==='d') L(cx-cw*.3,bot,cx+cw*.3,top);
+  else if (t==='z'){ L(cx-cw/2,bot,cx-cw/4,top); L(cx-cw/4,top,cx,bot); L(cx,bot,cx+cw/4,top); L(cx+cw/4,top,cx+cw/2,bot); }
+  else if (t==='o'){ const p=arco(0,0,1,180,540,16).map(([a,b],k,arr)=>[cx-cw/2+k/arr.length*cw*1.1, mid+Math.sin(k/arr.length*Math.PI*2)*(bot-top)/2]); p.forEach((q,k)=>{ if (k) L(p[k-1][0],p[k-1][1],q[0],q[1]); }); }
+  else if (t==='a'){ const p=arco(cx,bot,cw*.45,180,360,12); p.forEach((q,k)=>{ if (k) L(p[k-1][0],p[k-1][1],q[0],q[1]); }); }
+  else if (t==='c'){ const p=arco(cx,mid,(bot-top)/2,0,360,20); p.forEach((q,k)=>{ if (k) L(p[k-1][0],p[k-1][1],q[0],q[1]); }); }
+  else { const r=(bot-top)/2.6, p=[...arco(cx-cw*.2,mid,r,100,400,14), ...arco(cx+cw*.05,mid,r,160,-120,10)]; p.forEach((q,k)=>{ if (k) L(p[k-1][0],p[k-1][1],q[0],q[1]); }); L(cx+r*0.3,mid,cx+cw*.45,top); }
+  return e;
+}
+GEN.caligrafia=function(sel,count){
+  const items=[];
+  if (sel.tipo==='trazos'){ const ts=shuffle([...TRAZOS]).slice(0,count); ts.forEach(t=>items.push({ type:'caligrafia', modo:'trazo', t:t[1], nombre:t[0], tam:sel.tam })); }
+  else if (sel.tipo==='letras'){ const ls=(sel.letras&&sel.letras.length?sel.letras:['m','a']); for (let k=0;k<count;k++) items.push({ type:'caligrafia', modo:'letra', l:ls[k%ls.length], tam:sel.tam, modelo:sel.modelo }); }
+  else if (sel.tipo==='palabras'){ shuffle([...DIBS]).slice(0,count).forEach(d=>items.push({ type:'caligrafia', modo:'palabra', d:d.id, tam:sel.tam, modelo:sel.modelo })); }
+  else for (let k=0;k<count;k++) items.push({ type:'caligrafia', modo:'nombre', tam:sel.tam, modelo:sel.modelo, k });
+  return { kind:'blocks', cols:1, items, sinRespuestas:true, keyItems:SIN_RESP };
+};
+BLOCKS.caligrafia={ full:true,
+  h:(it)=> (it.modo==='palabra'? 33 : it.tam==='grande'? 31 : 26),
+  draw(els,it,idx,x,y,w){
+    const sp= it.tam==='grande' ? 7 : 5.8, gris='#b9b9b9';
+    if (it.modo==='trazo'){
+      els.push({t:'text', x, y:y+4, s:9, c:'#6b7488', str:'Repasá siguiendo las líneas: '+it.nombre+'.'});
+      const ry=y+8; renglon4(els,x,ry,w,sp); const cw=sp*2.2; for (let cx=x+cw*.7; cx<x+w-cw*.5; cx+=cw) pasoTrazo(it.t,cx,ry,sp,cw).forEach(e=>els.push(e));
+      return; }
+    if (it.modo==='letra'){
+      const ry=y+3, L=it.l, mayus=L.toUpperCase(); renglon4(els,x,ry,w,sp);
+      if (it.modelo!=='sin'){ let px=x+2; const a=measure(mayus,sp*5.45)+sp*1.8, b=measure(L,sp*5.45)+sp*1.8; for (let k=0;k<4 && px+a<x+w;k++){ modeloLetra(els,mayus,px,ry,sp,gris); px+=a; } for (let k=0;k<12 && px+b<x+w;k++){ modeloLetra(els,L,px,ry,sp,gris); px+=b; } }
+      else { els.push({t:'text', x:x+2, y:ry+2*sp, s:sp*5.45, c:'#111', b:true, str:mayus+' '+L}); }
+      return; }
+    if (it.modo==='palabra'){
+      const d=DIBP[it.d]; pintarDib(els,it.d,x,y+1,23); const rx=x+28, rw=w-28, ry=y+9; renglon4(els,rx,ry,rw,sp);
+      if (it.modelo!=='sin'){ const t=d.pal; let px=rx+2; const paso=measure(t,sp*5.45)+sp*2; for (let k=0;k<4 && px+paso<rx+rw;k++){ modeloLetra(els,t,px,ry,sp,gris); px+=paso; } }
+      else els.push({t:'text', x:rx+2, y:ry+2*sp, s:sp*5.45, c:'#111', b:true, str:d.pal});
+      return; }
+    const nom=(SH && SH.alumno) || '', ry=y+3; renglon4(els,x,ry,w,sp);
+    if (nom && it.modelo!=='sin'){ const t=nom.split(',').reverse().join(' ').trim(); let px=x+2; const paso=measure(t,sp*5.45)+sp*2; for (let k=0;k<3 && px+paso<x+w;k++){ modeloLetra(els,t,px,ry,sp,gris); px+=paso; } }
+    else if (!nom) els.push({t:'text', x:x+1, y:ry-.4, s:8.5, c:'#6b7488', str:it.k===0?'Escribí tu nombre:':''});
+  } };
+
+/* ---------- Escribí el nombre del dibujo ---------- */
+GEN.nombrarDib=function(sel,count){
+  const dibs=shuffle(DIBS.filter(d=>sel.nivel==='facil' ? d.pal.length<=5 : true)).slice(0,count);
+  const banco= sel.ayuda==='banco' ? { type:'texto', full:true, text:'Palabras para elegir:   '+shuffle(dibs.map(d=>d.pal)).join('   ·   ') } : null;
+  return { kind:'blocks', cols:2, items:dibs.map(d=>({ type:'nombrarDib', d:d.id, modo:sel.modo, ayuda:sel.ayuda })), ...(banco ? { top:banco } : {}) };
+};
+BLOCKS.nombrarDib={ h:()=>46,
+  draw(els,it,idx,x,y,w,isKey){
+    const cw=Math.min(w-4,60), d=DIBP[it.d]; numLabel(els,idx,x,y+5);
+    pintarDib(els,it.d,x+(w-26)/2-4,y+4,28);
+    const L=d.pal.length, bw=Math.min(8.4,(w-6)/L);
+    if (it.modo==='casillas'){ const x0=x+(w-bw*L)/2;
+      for (let k=0;k<L;k++){ els.push({t:'rect', x:x0+k*bw, y:y+36, w:bw, h:9, stroke:'#555', lw:.45});
+        const mostrar= (it.ayuda==='inicial' && k===0) || isKey; if (mostrar) els.push({t:'text', x:x0+k*bw+bw/2, y:y+42.6, s:12, a:'center', b:true, c:isKey&&!(it.ayuda==='inicial'&&k===0)?RED:'#111', str:d.pal[k]}); } }
+    else { lineaEsc(els,x+6,x+w-6,y+42,'#555'); if (isKey) els.push({t:'text', x:x+w/2, y:y+41, s:12, a:'center', b:true, c:RED, str:d.pal}); }
+  } };
+
+/* ---------- Catálogo, opciones, niveles y notas ---------- */
+CATALOG.splice(1,0,{ id:'inicial', name:'Primeros pasos (1.º y 2.º)', icon:'lengua', desc:'Letras, sílabas y escritura', items:[
+  { id:'fonologica', name:'Conciencia fonológica', ready:true },
+  { id:'silabasPal', name:'Sílabas y palabras', ready:true },
+  { id:'letras', name:'Letras y abecedario', ready:true },
+  { id:'caligrafia', name:'Caligrafía con trazos', ready:true },
+  { id:'nombrarDib', name:'Escribí lo que ves', ready:true } ] });
+const NIV2=[ {v:'facil',t:'Fácil'},{v:'dificil',t:'Más difícil'} ];
+Object.assign(ACTIVITIES, {
+  fonologica:{ title:'Conciencia fonológica', consigna:'Mirá los dibujos y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6,8],5), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'vocal',t:'¿Con qué vocal empieza?'},{v:'silabas',t:'Contar las sílabas (aplaudir)'},{v:'inicial',t:'¿Con qué sonido empieza?'},{v:'rima',t:'Rimas: ¿cuál termina igual?'} ], def:['vocal','silabas','inicial'] },
+    { id:'nivel', label:'Dificultad', type:'single', options:NIV2, def:'facil' } ] },
+  silabasPal:{ title:'Sílabas y palabras', consigna:'Mirá los dibujos y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'armar',t:'Ordenar las sílabas'},{v:'completar',t:'Completar la sílaba que falta'},{v:'combinar',t:'Tabla de consonantes y vocales'} ], def:['armar','completar'] },
+    { id:'nivel', label:'Dificultad', type:'single', options:NIV2, def:'facil' } ] },
+  letras:{ title:'Letras y abecedario', consigna:'', single:true, cols:1, count:CNT('Hojas',[1],1), groups:[
+    { id:'modo', label:'Qué se trabaja', type:'single', options:[ {v:'letra',t:'Una hoja por letra (dibujos y renglones)'},{v:'abecedario',t:'Abecedario para completar'} ], def:'letra' },
+    { id:'letras', label:'Letras', type:'multi', options:LETRAS_CON_DIB.map(l=>({ v:l, t:l.toUpperCase()+' '+l })), def:['m','p'], showIf:s=>s.modo==='letra' },
+    { id:'nivel', label:'Letras que faltan en el abecedario', type:'single', options:[ {v:'facil',t:'Pocas (8)'},{v:'dificil',t:'Muchas (14)'} ], def:'facil', showIf:s=>s.modo==='abecedario' } ] },
+  caligrafia:{ title:'Caligrafía', consigna:'Repasá siguiendo el modelo.', single:true, cols:1, count:CNT('Cantidad de renglones',[4,6,8,10],6), groups:[
+    { id:'tipo', label:'Qué se practica', type:'single', options:[ {v:'trazos',t:'Trazos (líneas, ondas, círculos, bucles)'},{v:'letras',t:'Letras'},{v:'palabras',t:'Palabras con dibujo'},{v:'nombre',t:'El nombre del alumno'} ], def:'trazos' },
+    { id:'letras', label:'Letras', type:'multi', options:ABC.map(l=>({ v:l, t:l.toUpperCase()+' '+l })), def:['m','a','o'], showIf:s=>s.tipo==='letras' },
+    { id:'tam', label:'Tamaño del renglón', type:'single', options:[ {v:'grande',t:'Grande'},{v:'mediano',t:'Mediano'} ], def:'grande' },
+    { id:'modelo', label:'Modelo', type:'single', options:[ {v:'gris',t:'Letras en gris para repasar'},{v:'sin',t:'Sin modelo (solo el renglón)'} ], def:'gris', showIf:s=>s.tipo!=='trazos' } ] },
+  nombrarDib:{ title:'Escribí lo que ves', consigna:'Mirá cada dibujo y escribí su nombre.', cols:2, count:CNT('Cantidad de dibujos',[4,6,8,10,12],8), groups:[
+    { id:'modo', label:'Dónde se escribe', type:'single', options:[ {v:'casillas',t:'Una casilla por letra'},{v:'linea',t:'Una línea'} ], def:'casillas' },
+    { id:'ayuda', label:'Ayuda', type:'single', options:[ {v:'inicial',t:'Aparece la primera letra'},{v:'banco',t:'Lista de palabras para elegir'},{v:'ninguna',t:'Ninguna'} ], def:'inicial' },
+    { id:'nivel', label:'Palabras', type:'single', options:[ {v:'facil',t:'Cortas'},{v:'dificil',t:'De todo largo'} ], def:'facil' } ] },
+});
+Object.assign(DESC, {
+  fonologica:'Dibujos para escuchar y marcar: vocal inicial, sonido inicial, rimas y sílabas con casillas para pintar.',
+  silabasPal:'Ordenar sílabas, completar la que falta y tablas de consonantes y vocales, con dibujos.',
+  letras:'Una hoja por letra con dibujos, letra grande y renglones, o un abecedario para completar.',
+  caligrafia:'Renglones de cuatro líneas con trazos y letras en gris para repasar.',
+  nombrarDib:'Dibujos de cosas conocidas para escribir su nombre, con casillas por letra.',
+});
+Object.assign(NOTAS, {
+  fonologica:'Jugamos con los sonidos de las palabras. En casa pueden decir palabras y aplaudir sus sílabas.',
+  silabasPal:'Armamos palabras con sílabas. Leer en voz alta cada palabra ayuda.',
+  letras:'Conocemos las letras. Pueden buscar palabras con esa letra en cuentos y carteles.',
+  caligrafia:'Practicamos el trazo. Lo importante es que lo hagan despacio y con buena postura.',
+  nombrarDib:'Escribimos palabras mirando dibujos. Pueden decir la palabra despacio, sonido por sonido.',
+});
+Object.assign(CORTA, { fonologica:3, silabasPal:3, letras:1, caligrafia:4, nombrarDib:4 });
+Object.assign(DIF, {
+  fonologica:{ facil:{tipo:['vocal','silabas','inicial'],nivel:'facil'}, dificil:{tipo:['inicial','rima','silabas'],nivel:'dificil'} },
+  silabasPal:{ facil:{tipo:['armar','completar'],nivel:'facil'}, dificil:{tipo:['armar','completar','combinar'],nivel:'dificil'} },
+  letras:{ facil:{nivel:'facil'}, dificil:{nivel:'dificil'} },
+  caligrafia:{ facil:{tam:'grande',modelo:'gris'}, dificil:{tam:'mediano',modelo:'sin'} },
+  nombrarDib:{ facil:{modo:'casillas',ayuda:'inicial',nivel:'facil'}, dificil:{modo:'linea',ayuda:'ninguna',nivel:'dificil'} },
+});
+
+/* =========================================================
+   PRIMEROS PASOS (1.º y 2.º), etapas 2 y 3: lectura inicial, numeración hasta 100, contar y comparar,
+   sumas y restas con dibujos, partes de la unidad, figuras y cuerpos, medidas y datos.
+   ========================================================= */
+const FEM=new Set(['luna','estrella','nube','flor','rosa','casa','mesa','silla','cama','cuna','taza','llave','bota','pelota','bicicleta','manzana','pera','banana','uva','naranja','sandia','mariposa','vaca','abeja']);
+const artDe=(d,def)=> FEM.has(d.id) ? (def?'la':'una') : (def?'el':'un');
+const plural=p=>{ if (p==='paraguas') return p; if (/ón$/.test(p)) return p.slice(0,-2)+'ones'; if (/z$/.test(p)) return p.slice(0,-1)+'ces'; if (/[aeiou]$/.test(p)) return p+'s'; return p+'es'; };
+const PALABRAS_CONTAR=['manzana','pelota','flor','estrella','pez','mariposa','uva','naranja','auto','casa','sol','pera'].map(id=>DIBP[id]);
+const NUM_PAL=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez'];
+const pastilla=(els,x,y,w,h,txt,marca)=>{ els.push({t:'rect', x, y, w, h, r:h/2, stroke:marca?RED:'#666', lw:marca?.9:.4, fill:marca?CLARO_R:'#ffffff'});
+  els.push({t:'text', x:x+w/2, y:y+h*.68, s:Math.min(11.5, 11.5*(w-3)/Math.max(1,measure(txt,11.5))), a:'center', b:!!marca, c:marca?RED:'#111', str:txt}); };
+function repetirDib(els,id,n,x,y,w,tam,tachar){
+  const per=Math.max(1,Math.floor((w+2)/(tam+2)));
+  if (els) for (let k=0;k<n;k++){ const cx=x+(k%per)*(tam+2), cy=y+Math.floor(k/per)*(tam+2); pintarDib(els,id,cx,cy,tam);
+    if (tachar && k>=n-tachar){ els.push({t:'line', x1:cx+2, y1:cy+2, x2:cx+tam-2, y2:cy+tam-2, w:.9, c:'#111'}); els.push({t:'line', x1:cx+tam-2, y1:cy+2, x2:cx+2, y2:cy+tam-2, w:.9, c:'#111'}); } }
+  return Math.ceil(n/per)*(tam+2);
+}
+const cajita=(els,x,y,w,h,txt,isKey)=>{ els.push({t:'rect', x, y, w, h, r:2, stroke:'#555', lw:.55}); if (txt!==undefined && isKey) els.push({t:'text', x:x+w/2, y:y+h*.7, s:13, a:'center', b:true, c:RED, str:String(txt)}); };
+
+/* ---------- Lectura inicial ---------- */
+GEN.lecturaIni=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['plural','vf','unir'];
+  const pool=()=>shuffle([...DIBS]);
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length];
+    if (t==='unir'){ const ds=pool().slice(0,3), plantillas=['Veo {a} {p}.','Hay {a} {p}.','Aquí está {def} {p}.'];
+      const frases=ds.map((d,k)=>plantillas[k%3].replace('{a}',artDe(d)).replace('{def}',artDe(d,true)).replace('{p}',d.pal));
+      out.push({ type:'dibUnir', frases, dibs:ds.map(d=>d.id), orden:shuffle([0,1,2]), diff:2 }); }
+    else if (t==='vf'){ const [d,otro]=pool(), verdadero=Math.random()<.5, x=verdadero?d:otro;
+      out.push({ type:'dibVF', d:d.id, frase:`Es ${artDe(x)} ${x.pal}.`, ok:verdadero, diff:1 }); }
+    else { const d=pick(DIBS.filter(x=>x.id!=='paraguas')), n=rnd(2,4);
+      out.push({ type:'dibPlural', d:d.id, n, uno:`${artDe(d)} ${d.pal}`, num:NUM_PAL[n], plural:plural(d.pal), diff:0 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.dibUnir={ full:true, h:()=>86,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Leé cada oración y unila con su dibujo.'});
+    it.frases.forEach((f,k)=>{ const fy=y+16+k*26; els.push({t:'text', x:x+10, y:fy+9, s:13, str:f}); PUNTO(els,x+w*.5,fy+7,1.4); });
+    it.orden.forEach((j,k)=>{ const dy=y+9+k*26; pintarDib(els,it.dibs[j],x+w*.62,dy,22); PUNTO(els,x+w*.62-3,dy+11,1.4);
+      if (isKey){ const fy=y+16+j*26+7; els.push({t:'line', x1:x+w*.5, y1:fy, x2:x+w*.62-3, y2:dy+11, w:.9, c:RED}); } });
+  } };
+BLOCKS.dibVF={ full:true, h:()=>32,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá el dibujo. ¿La oración es verdadera?'});
+    pintarDib(els,it.d,x+8,y+8,22); els.push({t:'text', x:x+38, y:y+17, s:13, str:it.frase});
+    pastilla(els,x+38,y+22,22,8,'Verdadero',isKey&&it.ok); pastilla(els,x+64,y+22,22,8,'Falso',isKey&&!it.ok);
+  } };
+BLOCKS.dibPlural={ full:true, h:(it)=>36,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá los dibujos y completá.'});
+    pintarDib(els,it.d,x+8,y+9,18); els.push({t:'text', x:x+8, y:y+32, s:12, b:true, str:it.uno[0].toUpperCase()+it.uno.slice(1)+'.'});
+    const bx=x+70; repetirDib(els,it.d,it.n,bx,y+9,86,18);
+    els.push({t:'text', x:bx, y:y+32, s:12, b:true, str:it.num[0].toUpperCase()+it.num.slice(1)}); const lx=bx+measure(it.num,12)*1.1+3; lineaEsc(els,lx,lx+36,y+32.8,'#555');
+    if (isKey) els.push({t:'text', x:lx+1, y:y+32, s:12, b:true, c:RED, str:it.plural});
+  } };
+
+/* ---------- Numeración hasta 100 ---------- */
+GEN.numCien=function(sel,count){
+  const nv=sel.nivel, top= nv==='facil'?20:nv==='medio'?50:100, tipos=shuffle([...sel.tipo]), out=[], vistos=new Set(); let g=0, i=0;
+  const orden=['cuadro','antpos','serie','recta','comparar','decenas','pares'];
+  while (out.length<count && g++<count*80){
+    const t=tipos[i%tipos.length]; let it, key;
+    if (t==='cuadro'){ key='c'+out.length; const filas= nv==='facil'?2:nv==='medio'?5:10, desde= top>20 && Math.random()<.4 && filas<10 ? 1+10*rnd(0,(10-filas)) : 1;
+      const cant=filas*10, ocultas=shuffle(rango(desde,desde+cant-1)).slice(0,Math.round(cant*(nv==='facil'?.35:.45)));
+      it={ type:'cuadro100', desde, filas, ocultas, full:true }; }
+    else if (t==='antpos'){ const n=rnd(2,top-1); key='a'+n; it=FL([B(n-1,9), {t:String(n),bold:true}, B(n+1,9), '(anterior · número · posterior)']); }
+    else if (t==='serie'){ const paso= nv==='facil'?pick([1,2]) : pick([1,2,5,10]), ini=rnd(0,Math.max(0,top-paso*5)), seq=rango(0,4).map(k=>ini+k*paso), ocultos=shuffle([1,2,3,4]).slice(0,2); key='s'+ini+'-'+paso;
+      it=FL(seq.flatMap((n,k)=>{ const tk= ocultos.includes(k) ? B(n,9) : String(n); return k?['·',tk]:[tk]; })); }
+    else if (t==='recta'){ const max= nv==='facil'?10:20, ocultos=shuffle(rango(1,max-1)).slice(0,3); key='r'+ocultos.join(); it={ type:'recta', titulo:'Completá los números que faltan en la recta.', min:0, max, ocultos, marcar:[] }; }
+    else if (t==='comparar'){ const a=rnd(1,top), b=rnd(1,top); if (a===b) continue; key='cp'+a+'-'+b; it=FL([{t:String(a),bold:true}, B(a<b?'<':'>',8), {t:String(b),bold:true}]); }
+    else if (t==='decenas'){ const n=rnd(11,top-1); key='d'+n; it=FL([`${n} =`, B(Math.floor(n/10),6), 'decenas y', B(n%10,6), 'unidades']); }
+    else { const n=rnd(1,top); key='p'+n; it=FL([`${n} es un número`, B(n%2?'impar':'par',14), '(par o impar)']); }
+    if (vistos.has(key)) continue; vistos.add(key); i++; it.diff=orden.indexOf(t); out.push(it);
+  }
+  return out;
+};
+BLOCKS.cuadro100={ full:true, h:(it)=> 16+it.filas*Math.min(15,(W-2*M)/10),
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Completá los números que faltan.'});
+    const cw=Math.min(15,(w-2)/10), gx=x+(w-cw*10)/2, gy=y+10;
+    for (let f=0;f<it.filas;f++) for (let c=0;c<10;c++){ const n=it.desde+f*10+c, oc=it.ocultas.includes(n), bx=gx+c*cw, by=gy+f*cw;
+      els.push({t:'rect', x:bx, y:by, w:cw, h:cw, stroke:'#444', lw:.4, fill: oc?undefined:CLARO});
+      if (!oc) els.push({t:'text', x:bx+cw/2, y:by+cw*.66, s:Math.min(15,cw*1.05), a:'center', str:String(n)}); else if (isKey) els.push({t:'text', x:bx+cw/2, y:by+cw*.66, s:Math.min(15,cw*1.05), a:'center', b:true, c:RED, str:String(n)}); }
+  } };
+
+/* ---------- Contar y comparar con dibujos ---------- */
+GEN.conteoDib=function(sel,count){
+  const nv=sel.nivel, top= nv==='facil'?8:nv==='medio'?12:20, tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['contar','dibujar','comparar'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length], d=pick(PALABRAS_CONTAR);
+    if (t==='contar') out.push({ type:'conteoDib', modo:'contar', d:d.id, n:rnd(2,top), diff:0 });
+    else if (t==='dibujar'){ const n=rnd(2,Math.min(top,10)); out.push({ type:'conteoDib', modo:'dibujar', d:d.id, n, texto:`Dibujá ${NUM_PAL[n]||n} ${plural(d.pal)}.`, diff:1 }); }
+    else { let d2=pick(PALABRAS_CONTAR.filter(x=>x.id!==d.id)), a=rnd(2,top), b=rnd(2,top); if (a===b) b=a+1>top?a-1:a+1; out.push({ type:'conteoDib', modo:'comparar', d:d.id, a, d2:d2.id, b, diff:2 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.conteoDib={ full:true,
+  h:(it,w)=> it.modo==='comparar' ? 14+repetirDib(null,it.d,it.a,0,0,w-40,13)+repetirDib(null,it.d2,it.b,0,0,w-40,13)+6 : it.modo==='dibujar' ? 36 : 12+Math.max(20,repetirDib(null,it.d,it.n,0,0,w-50,13)),
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='contar'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Contá y escribí cuántos hay.'});
+      repetirDib(els,it.d,it.n,x+8,y+9,w-50,13); cajita(els,x+w-32,y+11,24,14,it.n,isKey); }
+    else if (it.modo==='dibujar'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:it.texto}); els.push({t:'rect', x:x+8, y:y+9, w:w-8, h:23, r:2, stroke:'#9aa3b5', lw:.4});
+      if (isKey) repetirDib(els,it.d,it.n,x+10,y+11,w-12,9); }
+    else {
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'¿Dónde hay más? Marcá el grupo que tiene más.'});
+      const h1=repetirDib(els,it.d,it.a,x+8,y+9,w-40,13); pastilla(els,x+w-24,y+9+h1/2-4,16,8,'Más',isKey&&it.a>it.b);
+      const y2=y+11+h1; const h2=repetirDib(els,it.d2,it.b,x+8,y2,w-40,13); pastilla(els,x+w-24,y2+h2/2-4,16,8,'Más',isKey&&it.b>it.a); }
+  } };
+
+/* ---------- Sumas y restas con dibujos y material concreto ---------- */
+GEN.cuentaDib=function(sel,count){
+  const nv=sel.nivel, top= nv==='facil'?10:nv==='medio'?15:20, tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['suma','resta','marco10','decena'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length], d=pick(PALABRAS_CONTAR);
+    if (t==='suma'){ const a=rnd(1,top-1), b=rnd(1,top-a); out.push({ type:'cuentaDib', modo:'suma', d:d.id, a, b, diff:0 }); }
+    else if (t==='resta'){ const a=rnd(3,top), b=rnd(1,a-1); out.push({ type:'cuentaDib', modo:'resta', d:d.id, a, b, diff:1 }); }
+    else if (t==='marco10'){ const k=rnd(1,9); out.push({ type:'cuentaDib', modo:'marco10', k, diff:2 }); }
+    else { const dec=rnd(1,nv==='facil'?3:9), uni=rnd(0,9); out.push({ type:'cuentaDib', modo:'decena', dec, uni, diff:3 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.cuentaDib={ full:true,
+  h:(it,w)=> it.modo==='marco10' ? 36 : it.modo==='decena' ? 44 : it.modo==='suma' ? 9+Math.ceil((it.a+it.b+1)/Math.max(1,Math.floor((w-8)/14)))*14+16 : 9+Math.max(12,repetirDib(null,it.d,it.a,0,0,w-16,12))+16,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='suma'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Contá, sumá y escribí el resultado.'});
+      const per=Math.max(1,Math.floor((w-8)/14)), celdas=[...Array(it.a).fill('d'),'+',...Array(it.b).fill('d')];
+      celdas.forEach((c,k)=>{ const cx=x+8+(k%per)*14, cy=y+9+Math.floor(k/per)*14; if (c==='d') pintarDib(els,it.d,cx,cy,12); else els.push({t:'text', x:cx+6, y:cy+9, s:18, a:'center', b:true, str:'+'}); });
+      const yy=y+9+Math.ceil(celdas.length/per)*14+4, eq=`${it.a} + ${it.b} =`;
+      els.push({t:'text', x:x+8, y:yy+6.5, s:13, b:true, str:eq}); cajita(els,x+8+measure(eq,13)*1.1+3,yy,22,9,it.a+it.b,isKey); }
+    else if (it.modo==='resta'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Se tachan los que se van. ¿Cuántos quedan?'});
+      const h1=repetirDib(els,it.d,it.a,x+8,y+9,(w-70)/2*.9*2,12,it.b), yy=y+9+Math.max(h1,12)+6, eq=`${it.a} − ${it.b} =`;
+      els.push({t:'text', x:x+8, y:yy+6.5, s:13, b:true, str:eq}); cajita(els,x+8+measure(eq,13)*1.1+3,yy,22,9,it.a-it.b,isKey); }
+    else if (it.modo==='marco10'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'¿Cuántos puntos faltan para completar 10?'});
+      for (let k=0;k<10;k++){ const bx=x+8+(k%5)*13, by=y+9+Math.floor(k/5)*13; els.push({t:'rect', x:bx, y:by, w:13, h:13, stroke:'#444', lw:.5}); if (k<it.k) PUNTO(els,bx+6.5,by+6.5,4.2);
+        else if (isKey) PUNTO(els,bx+6.5,by+6.5,4.2,RED); }
+      const e1=`${it.k} + `; els.push({t:'text', x:x+88, y:y+21, s:13, b:true, str:e1}); const cx=x+88+measure(e1,13)*1.1; cajita(els,cx,y+13,20,11,10-it.k,isKey); els.push({t:'text', x:cx+24, y:y+21, s:13, b:true, str:'= 10'}); }
+    else {
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Cada barra es una decena (10) y cada cuadradito es una unidad. ¿Qué número es?'});
+      for (let k=0;k<it.dec;k++){ const bx=x+8+k*7; els.push({t:'rect', x:bx, y:y+9, w:5, h:26, stroke:'#444', lw:.5, fill:CLARO}); for (let j=1;j<10;j++) els.push({t:'line', x1:bx, y1:y+9+j*2.6, x2:bx+5, y2:y+9+j*2.6, w:.2, c:'#555'}); }
+      const ux=x+16+it.dec*7; for (let k=0;k<it.uni;k++) els.push({t:'rect', x:ux+(k%5)*5.6, y:y+9+Math.floor(k/5)*5.6, w:4.6, h:4.6, stroke:'#444', lw:.4, fill:CLARO});
+      const tx=Math.max(x+96,ux+30); els.push({t:'text', x:tx, y:y+17, s:11.5, b:true, str:'decenas:'}); cajita(els,tx+22,y+10,12,9,it.dec,isKey);
+      els.push({t:'text', x:tx+38, y:y+17, s:11.5, b:true, str:'unidades:'}); cajita(els,tx+62,y+10,12,9,it.uni,isKey);
+      els.push({t:'text', x:tx, y:y+31, s:11.5, b:true, str:'El número es'}); cajita(els,tx+32,y+24,18,10,it.dec*10+it.uni,isKey); }
+  } };
+
+/* ---------- Partes de la unidad: mitad, cuarta parte, octavo ---------- */
+function figDividida(els,forma,n,pintadas,x,y,tam,iguales,pintar){
+  const R=tam/2, cx=x+R, cy=y+R;
+  const cel= forma==='rect' ? (n===2?[[0,0,.5,1],[.5,0,.5,1]] : n===4?[[0,0,.5,.5],[.5,0,.5,.5],[0,.5,.5,.5],[.5,.5,.5,.5]] : n===3?[[0,0,1/3,1],[1/3,0,1/3,1],[2/3,0,1/3,1]] : rango(0,7).map(k=>[(k%4)/4,Math.floor(k/4)/2,.25,.5])) : [];
+  if (forma==='rect'){
+    const ww=tam*1.4;
+    if (!iguales) { els.push({t:'rect', x, y, w:ww, h:tam, stroke:'#222', lw:.8}); els.push({t:'line', x1:x+ww*.3, y1:y, x2:x+ww*.3, y2:y+tam, w:.6, c:'#222'}); return; }
+    cel.forEach(([a,b,c,d],k)=>els.push({t:'rect', x:x+a*ww, y:y+b*tam, w:c*ww, h:d*tam, stroke:'#222', lw:.7, fill: pintar && k<pintadas ? '#cfc8ff' : undefined}));
+  } else {
+    els.push({t:'rect', x, y, w:tam, h:tam, r:R, stroke:'#222', lw:.8});
+    const ang0=-Math.PI/2, ang=k=>ang0+k*2*Math.PI/n;
+    if (!iguales){ els.push({t:'line', x1:cx-R, y1:cy-R*.4, x2:cx+R, y2:cy-R*.4, w:.6, c:'#222'}); return; }
+    if (n===2) els.push({t:'line', x1:cx, y1:cy-R, x2:cx, y2:cy+R, w:.6, c:'#222'}); else for (let k=0;k<n;k++) els.push({t:'line', x1:cx, y1:cy, x2:cx+R*Math.cos(ang(k)), y2:cy+R*Math.sin(ang(k)), w:.6, c:'#222'});
+    if (pintar) for (let k=0;k<pintadas;k++){ const a0=n===2? (k===0?-Math.PI/2:Math.PI/2) : ang(k), a1=n===2? a0+Math.PI : ang(k+1);
+      for (let a=a0+.05; a<a1-.03; a+=.11) els.push({t:'line', x1:cx+2*Math.cos(a), y1:cy+2*Math.sin(a), x2:cx+(R-.6)*Math.cos(a), y2:cy+(R-.6)*Math.sin(a), w:.55, c:'#b9b0f5'}); }
+  }
+}
+GEN.partesUnidad=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0; const ns= sel.nivel==='facil'?[2,4]:[2,4,8];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length], forma=pick(['circulo','rect']), n=pick(ns);
+    if (t==='pintar'){ const k=forma==='circulo' && n===2 ? 1 : rnd(1,n-1); out.push({ type:'fraccionFig', modo:'pintar', forma, n:forma==='rect'&&n===8?8:n, k, diff:0 }); }
+    else if (t==='leer'){ const k=rnd(1,n-1); out.push({ type:'fraccionFig', modo:'leer', forma, n, k, diff:1 }); }
+    else out.push({ type:'fraccionFig', modo:'iguales', forma, n:2, iguales:Math.random()<.5, diff:2 });
+  }
+  return { kind:'blocks', cols:2, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+const NOM_FRAC={ '1/2':'la mitad','1/4':'la cuarta parte','3/4':'tres cuartos','1/8':'un octavo','2/4':'dos cuartos','3/8':'tres octavos' };
+BLOCKS.fraccionFig={ h:()=>56,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5); const tam=30, fx=x+10;
+    if (it.modo==='iguales'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Las partes son iguales?'}); figDividida(els,it.forma,2,0,fx,y+11,tam,it.iguales,false);
+      pastilla(els,x+8,y+46,20,7,'Sí',isKey&&it.iguales); pastilla(els,x+32,y+46,20,7,'No',isKey&&!it.iguales); return; }
+    if (it.modo==='pintar'){
+      const f=it.k+'/'+it.n; els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:`Pintá ${NOM_FRAC[f]||f} (${f}).`}); figDividida(els,it.forma,it.n,it.k,fx,y+11,tam,true,isKey); return; }
+    els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Qué parte está pintada?'}); figDividida(els,it.forma,it.n,it.k,fx,y+11,tam,true,true);
+    const bx=x+8; els.push({t:'text', x:bx, y:y+52, s:11, b:true, str:'Pintadas:'}); cajita(els,bx+20,y+46,9,8,it.k,isKey); els.push({t:'text', x:bx+31, y:y+52, s:11, b:true, str:'de'}); cajita(els,bx+39,y+46,9,8,it.n,isKey);
+  } };
+
+/* ---------- Figuras y cuerpos geométricos ---------- */
+const POLIG=[ ['triángulo',3,p=>[[50,12],[92,86],[8,86]]],['cuadrado',4,p=>[[16,16],[84,16],[84,84],[16,84]]],['rectángulo',4,p=>[[8,28],[92,28],[92,72],[8,72]]],
+  ['rombo',4,p=>[[50,8],[90,50],[50,92],[10,50]]],['pentágono',5,p=>Array.from({length:5},(_,k)=>[50+42*Math.cos(-Math.PI/2+k*2*Math.PI/5),52+42*Math.sin(-Math.PI/2+k*2*Math.PI/5)])],
+  ['hexágono',6,p=>Array.from({length:6},(_,k)=>[50+42*Math.cos(k*Math.PI/3),50+42*Math.sin(k*Math.PI/3)])] ];
+const NO_POLIG={
+  circulo:D=>D.c(50,50,38), ovalo:D=>D.e(50,50,42,26), semicirculo:D=>{ D.p([...arco(50,62,40,180,360,16)],false); D.l(10,62,90,62); },
+  abierta:D=>D.p([[16,84],[16,16],[84,16],[84,84]]), curva:D=>{ D.p([[14,80],[14,20],[60,20]]); D.a(60,50,30,-90,90); D.l(60,80,14,80); },
+};
+const CUERPOS={
+  cubo:[true,D=>{ D.p([[14,36],[64,36],[64,86],[14,86]],true); D.p([[14,36],[36,14],[86,14],[64,36]]); D.p([[86,14],[86,64],[64,86]]); D.p([[14,86],[36,64],[36,14]]); D.l(36,64,86,64); }],
+  caja:[true,D=>{ D.p([[10,44],[70,44],[70,84],[10,84]],true); D.p([[10,44],[30,24],[90,24],[70,44]]); D.p([[90,24],[90,64],[70,84]]); }],
+  piramide:[true,D=>{ D.p([[10,76],[56,86],[90,66],[40,56]],true); D.p([[50,10],[10,76]]); D.p([[50,10],[56,86]]); D.p([[50,10],[90,66]]); D.l(50,10,40,56); }],
+  esfera:[false,D=>{ D.c(50,50,38); D.a(50,50,38,0,180); D.e(50,50,38,10); }],
+  cilindro:[false,D=>{ D.e(50,24,30,9); D.l(20,24,20,76); D.l(80,24,80,76); D.a(50,76,30,0,180); }],
+  cono:[false,D=>{ D.l(50,10,18,76); D.l(50,10,82,76); D.e(50,76,32,10); }],
+};
+GEN.geoIni=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0;
+  const orden=['lados','poligonos','cuerpos','cuadricula'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length];
+    if (t==='poligonos'){ if (Math.random()<.5){ const f=pick(POLIG); out.push({ type:'figIni', modo:'poligono', id:f[0], es:true, diff:1 }); } else out.push({ type:'figIni', modo:'poligono', id:pick(Object.keys(NO_POLIG)), es:false, diff:1 }); }
+    else if (t==='lados'){ const f=pick(sel.nivel==='facil'?POLIG.slice(0,3):POLIG); out.push({ type:'figIni', modo:'lados', id:f[0], n:f[1], diff:0 }); }
+    else if (t==='cuerpos'){ const id=pick(Object.keys(CUERPOS)); out.push({ type:'figIni', modo:'cuerpo', id, es:CUERPOS[id][0], diff:2 }); }
+    else { const k=pick([0,1,2]), pts=[ [[1,1],[4,1],[4,4]], [[1,1],[5,1],[5,4],[1,4]], [[1,4],[3,1],[5,4]] ][k]; out.push({ type:'figIni', modo:'cuadricula', pts, diff:3 }); }
+  }
+  return { kind:'blocks', cols:2, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+function dibFig(els,id,x,y,tam){
+  const k=tam/100, T=(px,py)=>[x+px*k,y+py*k], D=ayudasDib(dibujo(T,els));
+  const f=POLIG.find(p=>p[0]===id); if (f){ D.p(f[2](),true); return; }
+  if (NO_POLIG[id]) NO_POLIG[id](D); else CUERPOS[id][1](D);
+}
+BLOCKS.figIni={ h:(it)=> it.modo==='cuadricula' ? 64 : 58,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='cuadricula'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'Copiá la figura en la otra cuadrícula.'});
+      const c=5.4, g1=x+8, g2=x+8+7*c+8, gy=y+10;
+      [g1,g2].forEach(gx=>{ for (let k=0;k<=7;k++){ els.push({t:'line', x1:gx+k*c, y1:gy, x2:gx+k*c, y2:gy+7*c, w:.2, c:'#aaa'}); els.push({t:'line', x1:gx, y1:gy+k*c, x2:gx+7*c, y2:gy+k*c, w:.2, c:'#aaa'}); } });
+      const dib=(gx,col,wd)=>it.pts.forEach((p,k)=>{ const q=it.pts[(k+1)%it.pts.length]; els.push({t:'line', x1:gx+p[0]*c, y1:gy+p[1]*c, x2:gx+q[0]*c, y2:gy+q[1]*c, w:wd, c:col}); });
+      dib(g1,'#111',.9); if (isKey) dib(g2,RED,.9); return; }
+    const tam=34, fx=x+10;
+    if (it.modo==='poligono'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Es un polígono?'}); dibFig(els,it.id,fx,y+9,tam);
+      pastilla(els,x+8,y+46,26,7,'Polígono',isKey&&it.es); pastilla(els,x+37,y+46,32,7,'No polígono',isKey&&!it.es); return; }
+    if (it.modo==='lados'){
+      els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'Contá los lados y los vértices.'}); dibFig(els,it.id,fx,y+9,tam);
+      els.push({t:'text', x:x+8, y:y+51, s:10.5, b:true, str:'Lados:'}); cajita(els,x+20,y+45,9,8,it.n,isKey); els.push({t:'text', x:x+33, y:y+51, s:10.5, b:true, str:'Vértices:'}); cajita(els,x+51,y+45,9,8,it.n,isKey); return; }
+    els.push({t:'text', x:x+8, y:y+5, s:10.5, b:true, str:'¿Es un poliedro?'}); dibFig(els,it.id,fx,y+9,tam);
+    pastilla(els,x+8,y+46,26,7,'Poliedro',isKey&&it.es); pastilla(els,x+37,y+46,32,7,'No poliedro',isKey&&!it.es);
+  } };
+
+/* ---------- Medir y comparar ---------- */
+GEN.medidasIni=function(sel,count){
+  const tipos=shuffle([...sel.tipo]), out=[]; let i=0, g=0; const orden=['regla','comparar','vasos','balanza'];
+  while (out.length<count && g++<count*6){
+    const t=tipos[i++%tipos.length];
+    if (t==='regla'){ const lens=shuffle(rango(sel.nivel==='facil'?2:3, sel.nivel==='facil'?9:14)).slice(0,4); out.push({ type:'reglaMedir', lens, diff:0 }); }
+    else if (t==='comparar'){ const a=rnd(30,90), b=a+pick([-1,1])*rnd(15,40); out.push({ type:'medIni', modo:'largo', a, b:Math.max(20,Math.min(100,b)), diff:1 }); }
+    else if (t==='vasos'){ const a=rnd(2,9), b=rnd(2,9); out.push({ type:'medIni', modo:'vasos', a:a===b?a+1:a, b, diff:2 }); }
+    else { const P=[['casa',1000],['auto',800],['vaca',600],['perro',20],['gato',5],['manzana',.2],['pez',.1],['pelota',.4]], [a,b]=shuffle([...P]).slice(0,2); if (Math.max(a[1],b[1])/Math.min(a[1],b[1])<2) continue; out.push({ type:'medIni', modo:'balanza', a:a[0], b:b[0], mas:a[1]>b[1]?0:1, diff:3 }); }
+  }
+  return { kind:'blocks', cols:1, items:out.sort((a,b)=>a.diff-b.diff) };
+};
+BLOCKS.reglaMedir={ full:true, h:(it)=> 28+it.lens.length*14,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Medí cada línea con la regla y escribí cuántos centímetros mide.'});
+    const rx=x+8, ry=y+9; els.push({t:'rect', x:rx, y:ry, w:140, h:11, stroke:'#444', lw:.5, fill:'#f4f1ff'});
+    for (let k=0;k<=14;k++){ const px=rx+k*10; els.push({t:'line', x1:px, y1:ry, x2:px, y2:ry+(k%1===0?5:3), w:.4, c:'#333'}); if (k<14) els.push({t:'line', x1:px+5, y1:ry, x2:px+5, y2:ry+3, w:.25, c:'#333'}); if (k) els.push({t:'text', x:px, y:ry+9.5, s:7.5, a:'center', str:String(k)}); }
+    it.lens.forEach((L,k)=>{ const ly=y+30+k*14; els.push({t:'line', x1:rx, y1:ly, x2:rx+L*10, y2:ly, w:1.4, c:'#111'}); els.push({t:'line', x1:rx, y1:ly-2, x2:rx, y2:ly+2, w:.6, c:'#111'}); els.push({t:'line', x1:rx+L*10, y1:ly-2, x2:rx+L*10, y2:ly+2, w:.6, c:'#111'});
+      cajita(els,rx+148,ly-5,16,10,L,isKey); els.push({t:'text', x:rx+166, y:ly+2, s:11, b:true, str:'cm'}); });
+  } };
+BLOCKS.medIni={ full:true, h:(it)=> it.modo==='largo' ? 42 : it.modo==='vasos' ? 52 : 70,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+5);
+    if (it.modo==='largo'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Marcá la cinta más larga.'});
+      [[it.a,y+10],[it.b,y+25]].forEach(([L,cy],k)=>{ els.push({t:'rect', x:x+8, y:cy, w:L*1.4, h:9, stroke:'#222', lw:.6, fill:CLARO}); pastilla(els,x+w-26,cy+1,18,7,'Más larga',false);
+        const mas = (k===0?it.a>it.b:it.b>it.a); if (isKey && mas) pastilla(els,x+w-26,cy+1,18,7,'Más larga',true); });
+      return; }
+    if (it.modo==='vasos'){
+      els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'¿Qué vaso tiene más agua? Marcalo.'});
+      [it.a,it.b].forEach((nv,k)=>{ const vx=x+20+k*60, vy=y+10; els.push({t:'line', x1:vx, y1:vy, x2:vx+6, y2:vy+34, w:.8, c:'#222'}); els.push({t:'line', x1:vx+30, y1:vy, x2:vx+24, y2:vy+34, w:.8, c:'#222'}); els.push({t:'line', x1:vx+6, y1:vy+34, x2:vx+24, y2:vy+34, w:.8, c:'#222'});
+        els.push({t:'rect', x:vx+6.5, y:vy+34-nv*3.4, w:17, h:nv*3.4, fill:'#cfe6ff'});
+        pastilla(els,vx+6,vy+38,18,7,'Más',isKey && (k===0?it.a>it.b:it.b>it.a)); });
+      return; }
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá la balanza. Marcá lo que pesa más.'});
+    const cx=x+w/2-10, by=y+30, inc=it.mas===0?-7:7;
+    els.push({t:'line', x1:cx, y1:by, x2:cx, y2:by+34, w:1, c:'#222'}); els.push({t:'line', x1:cx-14, y1:by+34, x2:cx+14, y2:by+34, w:1, c:'#222'});
+    els.push({t:'line', x1:cx-34, y1:by-inc, x2:cx+34, y2:by+inc, w:1.2, c:'#222'});
+    [[-34,-inc,it.a],[34,inc,it.b]].forEach(([dx,dy,id],k)=>{ const px=cx+dx, py=by+dy; els.push({t:'line', x1:px, y1:py, x2:px-10, y2:py+14, w:.5, c:'#555'}); els.push({t:'line', x1:px, y1:py, x2:px+10, y2:py+14, w:.5, c:'#555'}); els.push({t:'line', x1:px-12, y1:py+14, x2:px+12, y2:py+14, w:1, c:'#222'});
+      pintarDib(els,id,px-9,py-14,18); pastilla(els,px-12,py+19,24,7,DIBP[id].pal,isKey&&it.mas===k); });
+  } };
+
+/* ---------- Datos y azar ---------- */
+const AZAR=[['Al tirar un dado sale un número menor que 7.','seguro'],['Al tirar un dado sale el número 8.','imposible'],['Al tirar una moneda sale cara.','posible'],['Mañana sale el sol.','seguro'],
+  ['En una bolsa hay solo pelotas rojas. Sacás una azul.','imposible'],['Mañana llueve.','posible'],['Un pez vive en el agua.','seguro'],['Un perro sabe volar como un pájaro.','imposible'],
+  ['En una bolsa hay manzanas rojas y verdes. Sacás una roja.','posible'],['Después del lunes viene el martes.','seguro'],['Hoy es sábado y mañana es miércoles.','imposible'],['Al tirar un dado sale un número par.','posible']];
+const MASCOTAS=[['perro','perros'],['gato','gatos'],['pez','peces'],['pajaro','pájaros'],['pato','patos'],['mariposa','mariposas']];
+GEN.datosIni=function(sel,count){
+  const out=[], tipos=shuffle([...sel.tipo]);
+  if (tipos.includes('pictograma')){
+    const cats=shuffle([...MASCOTAS]).slice(0,sel.nivel==='facil'?3:4), cant=cats.map(()=>rnd(1,sel.nivel==='facil'?5:7)); const total=cant.reduce((a,b)=>a+b,0), mx=Math.max(...cant), cuentan=cant.filter(c=>c===mx).length===1;
+    out.push({ type:'pictograma', cats, cant });
+    const k=rnd(0,cats.length-1); out.push(FL([`¿Cuántos ${cats[k][1]} hay?`, B(cant[k],8)],0));
+    if (cuentan) out.push(FL(['¿Qué animal hay más?', B(cats[cant.indexOf(mx)][1],20)],0));
+    out.push(FL(['¿Cuántos animales hay en total?', B(total,8)],0));
+  }
+  if (tipos.includes('azar')) shuffle([...AZAR]).slice(0,count).forEach(a=>out.push({ type:'azarOpc', texto:a[0], ok:a[1] }));
+  return { kind:'blocks', cols:1, items:out };
+};
+BLOCKS.pictograma={ full:true, h:(it)=> 14+it.cats.length*15,
+  draw(els,it,idx,x,y,w,isKey){
+    els.push({t:'text', x:x+8, y:y+5, s:FSB, b:true, str:'Mirá el gráfico: cada dibujo es un animal de la clase.'});
+    it.cats.forEach(([id,pl],k)=>{ const ry=y+10+k*15; els.push({t:'rect', x:x+8, y:ry, w:w-8, h:14, stroke:'#9aa3b5', lw:.4}); els.push({t:'text', x:x+11, y:ry+9, s:11, b:true, str:pl});
+      for (let j=0;j<it.cant[k];j++) pintarDib(els,id,x+44+j*14,ry+1,12); });
+  } };
+BLOCKS.azarOpc={ full:true, h:(it,w)=> wrapText(it.texto,FSB,w-8).length*LHB+14,
+  draw(els,it,idx,x,y,w,isKey){
+    numLabel(els,idx,x,y+4); const L=wrapText(it.texto,FSB,w-8); L.forEach((ln,j)=>els.push({t:'text', x:x+8, y:y+4+j*LHB, s:FSB, str:ln}));
+    const by=y+L.length*LHB+1; ['seguro','posible','imposible'].forEach((o,k)=>pastilla(els,x+8+k*36,by,32,7.5,o,isKey&&it.ok===o));
+  } };
+
+/* ---------- Catálogo, opciones, niveles y notas ---------- */
+CATALOG.find(a=>a.id==='inicial').items.push(
+  { id:'lecturaIni', name:'Lectura inicial con dibujos', ready:true },
+  { id:'numCien', name:'Números hasta 100', ready:true },
+  { id:'conteoDib', name:'Contar y comparar', ready:true },
+  { id:'cuentaDib', name:'Sumas y restas con dibujos', ready:true },
+  { id:'partesUnidad', name:'Mitad y partes iguales', ready:true },
+  { id:'geoIni', name:'Figuras y cuerpos', ready:true },
+  { id:'medidasIni', name:'Medir y comparar', ready:true },
+  { id:'datosIni', name:'Datos y azar', ready:true } );
+const NIV3I=[ {v:'facil',t:'Fácil'},{v:'medio',t:'Medio'},{v:'dificil',t:'Más difícil'} ];
+Object.assign(ACTIVITIES, {
+  lecturaIni:{ title:'Leo y miro los dibujos', consigna:'Leé y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'plural',t:'Uno y varios (singular y plural)'},{v:'vf',t:'¿Verdadero o falso?'},{v:'unir',t:'Unir la oración con el dibujo'} ], def:['plural','vf','unir'] } ] },
+  numCien:{ title:'Números hasta 100', consigna:'Resolvé.', cols:2, count:CNT('Cantidad de ejercicios',[1,2,4,6,8,10],6), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'cuadro',t:'Cuadro de números para completar'},{v:'antpos',t:'Anterior y posterior'},{v:'serie',t:'Series (de 1, 2, 5 o 10 en 10)'},{v:'recta',t:'Recta numérica'},{v:'comparar',t:'Comparar (< o >)'},{v:'decenas',t:'Decenas y unidades'},{v:'pares',t:'Pares e impares'} ], def:['antpos','serie','comparar','decenas'] },
+    { id:'nivel', label:'Hasta', type:'single', options:[ {v:'facil',t:'20'},{v:'medio',t:'50'},{v:'dificil',t:'100'} ], def:'facil' } ] },
+  conteoDib:{ title:'Contar y comparar', consigna:'Mirá los dibujos y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'contar',t:'Contar y escribir cuántos hay'},{v:'dibujar',t:'Dibujar una cantidad'},{v:'comparar',t:'Dónde hay más'} ], def:['contar','comparar','dibujar'] },
+    { id:'nivel', label:'Cantidades', type:'single', options:[ {v:'facil',t:'Hasta 8'},{v:'medio',t:'Hasta 12'},{v:'dificil',t:'Hasta 20'} ], def:'facil' } ] },
+  cuentaDib:{ title:'Sumas y restas con dibujos', consigna:'Mirá los dibujos y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'suma',t:'Juntar (suma)'},{v:'resta',t:'Sacar (resta)'},{v:'marco10',t:'Completar 10'},{v:'decena',t:'Decenas y unidades con barras y cubitos'} ], def:['suma','resta','marco10'] },
+    { id:'nivel', label:'Números', type:'single', options:[ {v:'facil',t:'Hasta 10'},{v:'medio',t:'Hasta 15'},{v:'dificil',t:'Hasta 20'} ], def:'facil' } ] },
+  partesUnidad:{ title:'Mitad y partes iguales', consigna:'Mirá las figuras y resolvé.', cols:2, count:CNT('Cantidad de ejercicios',[4,6,8,10],6), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'pintar',t:'Pintar la mitad, la cuarta parte…'},{v:'leer',t:'Escribir qué parte está pintada'},{v:'iguales',t:'¿Las partes son iguales?'} ], def:['pintar','leer','iguales'] },
+    { id:'nivel', label:'Partes', type:'single', options:[ {v:'facil',t:'Mitades y cuartos'},{v:'dificil',t:'También octavos'} ], def:'facil' } ] },
+  geoIni:{ title:'Figuras y cuerpos', consigna:'Mirá las figuras y resolvé.', cols:2, count:CNT('Cantidad de ejercicios',[4,6,8,10],6), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'lados',t:'Contar lados y vértices'},{v:'poligonos',t:'¿Polígono o no?'},{v:'cuerpos',t:'¿Poliedro o no? (cuerpos)'},{v:'cuadricula',t:'Copiar una figura en la cuadrícula'} ], def:['lados','poligonos','cuerpos'] },
+    { id:'nivel', label:'Figuras', type:'single', options:[ {v:'facil',t:'Triángulo, cuadrado y rectángulo'},{v:'dificil',t:'También pentágono, hexágono y rombo'} ], def:'facil' } ] },
+  medidasIni:{ title:'Medir y comparar', consigna:'Mirá y resolvé.', single:true, cols:1, count:CNT('Cantidad de ejercicios',[2,3,4,5],3), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'regla',t:'Medir con la regla (en centímetros)'},{v:'comparar',t:'Largo y corto'},{v:'vasos',t:'Más y menos agua'},{v:'balanza',t:'Pesa más y pesa menos'} ], def:['regla','comparar','vasos','balanza'] },
+    { id:'nivel', label:'Longitudes', type:'single', options:[ {v:'facil',t:'De 2 a 9 cm'},{v:'dificil',t:'De 3 a 14 cm'} ], def:'facil' } ] },
+  datosIni:{ title:'Datos y azar', consigna:'Mirá y resolvé.', single:true, cols:1, count:CNT('Cantidad de afirmaciones',[2,3,4,5,6],4), groups:[
+    { id:'tipo', label:'Tipo de actividad', type:'multi', options:[ {v:'pictograma',t:'Gráfico con dibujos (pictograma)'},{v:'azar',t:'Seguro, posible o imposible'} ], def:['pictograma','azar'] },
+    { id:'nivel', label:'Datos', type:'single', options:[ {v:'facil',t:'3 animales, hasta 5'},{v:'dificil',t:'4 animales, hasta 7'} ], def:'facil', showIf:s=>s.tipo.includes('pictograma') } ] },
+});
+Object.assign(DESC, {
+  lecturaIni:'Oraciones cortas para unir con su dibujo, verdadero o falso, y uno y varios.',
+  numCien:'Cuadro del 1 al 100 para completar, series, anterior y posterior, recta, decenas y pares.',
+  conteoDib:'Contar dibujos, dibujar una cantidad y decidir dónde hay más.',
+  cuentaDib:'Sumas y restas con dibujos, completar 10 y decenas y unidades con barras y cubitos.',
+  partesUnidad:'Círculos y rectángulos divididos para pintar la mitad, la cuarta parte y el octavo.',
+  geoIni:'Lados y vértices, polígonos, cuerpos geométricos y copiar figuras en una cuadrícula.',
+  medidasIni:'Regla en centímetros (a tamaño real), largo y corto, más y menos agua, y balanzas.',
+  datosIni:'Un gráfico con dibujos para leer y afirmaciones seguras, posibles o imposibles.',
+});
+Object.assign(NOTAS, {
+  lecturaIni:'Leemos oraciones cortas con dibujos. Pueden leer en voz alta y señalar con el dedo.',
+  numCien:'Practicamos los números hasta 100. Contar de 10 en 10 y de 5 en 5 ayuda mucho.',
+  conteoDib:'Contamos y comparamos. Pueden contar objetos de la casa: cucharas, zapatos, botones.',
+  cuentaDib:'Sumamos y restamos con dibujos. Si pueden, usen tapitas o porotos para comprobar.',
+  partesUnidad:'Trabajamos con mitades y cuartos. Pueden doblar una hoja de papel para verlo.',
+  geoIni:'Conocemos figuras y cuerpos. Busquen en casa objetos con forma de cubo, caja o pelota.',
+  medidasIni:'Medimos y comparamos. Pueden medir objetos con una regla en casa.',
+  datosIni:'Leemos un gráfico con dibujos y pensamos qué es seguro, posible o imposible.',
+});
+Object.assign(CORTA, { lecturaIni:3, numCien:4, conteoDib:3, cuentaDib:3, partesUnidad:4, geoIni:4, medidasIni:2, datosIni:3 });
+Object.assign(DIF, {
+  lecturaIni:{ facil:{tipo:['plural','vf']}, dificil:{tipo:['vf','unir']} },
+  numCien:{ facil:{nivel:'facil',tipo:['antpos','serie','comparar']}, dificil:{nivel:'dificil',tipo:['serie','comparar','decenas','pares']} },
+  conteoDib:{ facil:{nivel:'facil',tipo:['contar','dibujar']}, dificil:{nivel:'dificil',tipo:['contar','comparar','dibujar']} },
+  cuentaDib:{ facil:{nivel:'facil',tipo:['suma','resta']}, dificil:{nivel:'dificil',tipo:['suma','resta','marco10','decena']} },
+  partesUnidad:{ facil:{nivel:'facil',tipo:['pintar','iguales']}, dificil:{nivel:'dificil',tipo:['pintar','leer','iguales']} },
+  geoIni:{ facil:{nivel:'facil',tipo:['lados','poligonos']}, dificil:{nivel:'dificil',tipo:['lados','poligonos','cuerpos','cuadricula']} },
+  medidasIni:{ facil:{nivel:'facil',tipo:['regla','comparar']}, dificil:{nivel:'dificil',tipo:['regla','balanza','vasos']} },
+  datosIni:{ facil:{nivel:'facil',tipo:['pictograma','azar']}, dificil:{nivel:'dificil',tipo:['pictograma','azar']} },
+});
+
 function syncNivelUI(){
   const hay=!!DIF[state.activity], nv=OPT.nivel, h=$('nivelHelp');
   let t='';
@@ -6235,6 +6965,22 @@ GEN.evaluacion = function(sel,count,ctx){
   return { kind:'blocks', cols:1, items, fit: sel.hojas==='una', warn:aviso };
 };
 
+Object.assign(RANGO,{ fonologica:[1,2], silabasPal:[1,2], letras:[1,2], caligrafia:[1,2], nombrarDib:[1,2], lecturaIni:[1,2], numCien:[1,2], conteoDib:[1,2], cuentaDib:[1,2], partesUnidad:[1,2], geoIni:[1,2], medidasIni:[1,2], datosIni:[1,2] });
+Object.assign(PRESET,{
+  fonologica:{ 1:{tipo:['vocal','silabas','inicial'],nivel:'facil'}, 2:{tipo:['inicial','rima','silabas'],nivel:'dificil'} },
+  silabasPal:{ 1:{tipo:['armar','completar'],nivel:'facil'}, 2:{tipo:['armar','completar','combinar'],nivel:'dificil'} },
+  letras:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
+  caligrafia:{ 1:{tipo:'trazos',tam:'grande',modelo:'gris'}, 2:{tipo:'letras',tam:'mediano',modelo:'gris'} },
+  nombrarDib:{ 1:{modo:'casillas',ayuda:'inicial',nivel:'facil'}, 2:{modo:'linea',ayuda:'ninguna',nivel:'dificil'} },
+  lecturaIni:{ 1:{tipo:['plural','vf']}, 2:{tipo:['vf','unir','plural']} },
+  numCien:{ 1:{nivel:'facil',tipo:['antpos','serie','comparar','decenas']}, 2:{nivel:'dificil',tipo:['serie','comparar','decenas','pares']} },
+  conteoDib:{ 1:{nivel:'facil'}, 2:{nivel:'medio'} },
+  cuentaDib:{ 1:{nivel:'facil',tipo:['suma','resta','marco10']}, 2:{nivel:'dificil',tipo:['suma','resta','decena']} },
+  partesUnidad:{ 1:{nivel:'facil',tipo:['pintar','iguales']}, 2:{nivel:'dificil',tipo:['pintar','leer','iguales']} },
+  geoIni:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
+  medidasIni:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
+  datosIni:{ 1:{nivel:'facil'}, 2:{nivel:'dificil'} },
+});
 /* ---------- Aplicar el grado ---------- */
 OPT.grado=0;
 try{ const g=Number(localStorage.getItem('hojas-grado')); if (g>=1 && g<=6) OPT.grado=g; }catch(e){}

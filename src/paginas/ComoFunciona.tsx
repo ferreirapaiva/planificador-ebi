@@ -92,6 +92,7 @@ const SECCIONES: Seccion[] = [
     tile: 'bg-amarillo-400 text-slate-900',
     titulo: 'Hojas de actividades',
     puntos: [
+      'Primeros pasos (1.º y 2.º): conciencia fonológica, sílabas, letras con dibujos, caligrafía con trazos guiados, lectura inicial, números hasta 100, contar y sumar con dibujos, mitad y partes iguales, figuras, medidas con regla y datos.',
       'Fichas de Matemática (porcentajes, múltiplos, enteros, plano cartesiano, volumen, probabilidad…), de Lengua (sinónimos, puntuación, sujeto y predicado, diptongo e hiato, dictados, producción de textos) y de Ciencias (esquemas, animales, experimentos, mapas), en PDF con su hoja de respuestas.',
       'Herramientas para el aula: evaluaciones con rúbrica en una sola hoja, autoevaluación y coevaluación, diplomas, notas para las familias, carteles, juegos, tickets de salida, planillas, bingo y tarjetas.',
       'Podés pedir la ficha en nivel fácil o difícil, y una versión adaptada: letra grande, letras más separadas para la dislexia y blanco y negro.',
