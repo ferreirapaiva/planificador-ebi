@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, NIVELES_POR_DEFECTO, type RegistroEvaluacion } from '../datos/db';
 import { guardarRegistro, instrumentosDe, logrosDeCriterio, registroDesdeInstrumento, registroNuevo, useRegistros, fechaCorta } from '../datos/aula';
@@ -13,6 +14,7 @@ const colorCelda = (r: RegistroEvaluacion, nivel: number | undefined) =>
 
 function Editor({ registro, alumnos, onCerrar }: { registro: RegistroEvaluacion; alumnos: ContextoClase['alumnos']; onCerrar: () => void }) {
   const r = registro;
+  const navegar = useNavigate();
   const cambiar = (p: Partial<RegistroEvaluacion>) => guardarRegistro({ ...r, ...p });
   const poner = (alumnoId: string, i: number, v: string) => {
     const fila = { ...(r.resultados[alumnoId] ?? {}) };
@@ -99,7 +101,17 @@ function Editor({ registro, alumnos, onCerrar }: { registro: RegistroEvaluacion;
                     <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-slate-100" aria-hidden>
                       <div className="h-full rounded-full bg-menta-500" style={{ width: `${pct}%` }} />
                     </div>
-                    {l.faltan.length > 0 && <p className="mt-2 text-sm text-slate-700"><b>Falta reforzar:</b> {l.faltan.map((a) => a.nombre).join('; ')}</p>}
+                    {l.faltan.length > 0 && (
+                      <p className="mt-2 text-sm text-slate-700">
+                        <b>Falta reforzar:</b>{' '}
+                        {l.faltan.map((a, k) => (
+                          <span key={a.id}>
+                            {k > 0 && '; '}
+                            <button type="button" onClick={() => navegar(`/clase?ver=ptp&nuevo=${a.id}`)} title="Armar un proyecto de trabajo personalizado" className="rounded font-semibold text-blue-700 underline hover:text-blue-900">{a.nombre}</button>
+                          </span>
+                        ))}
+                      </p>
+                    )}
                   </>
                 )}
               </li>

@@ -82,6 +82,7 @@ const SECCIONES: Seccion[] = [
       'Asistencia diaria: marcá presente, falta o falta justificada, y mirá el resumen del mes por alumno.',
       'Evaluaciones: registrá el nivel de cada alumno en cada criterio (desde una rúbrica de tus planificaciones o en blanco) y mirá quién lo logró y a quién reforzar.',
       'Informe para las familias: con la asistencia y los resultados, listo para imprimir, guardar en PDF o copiar; uno por alumno o de todo el grupo.',
+      'Proyecto de trabajo personalizado: para un alumno que necesita más apoyo, con objetivos por criterio, apoyos y adaptaciones, acciones y un seguimiento con gráficos. Se arma desde los registros de evaluación y se comparte con la docente de apoyo en un archivo.',
       'Diario de clase: anotá lo que planeaste, lo que hiciste de verdad y lo que quedó pendiente, y pasalo al día siguiente con un toque.',
     ],
     enlaces: [{ to: '/clase', texto: 'Mi clase' }],
