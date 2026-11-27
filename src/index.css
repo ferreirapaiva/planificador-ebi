@@ -124,8 +124,14 @@ body {
     --color-amarillo-50: #3a3010;
     --color-amber-50: #3a3010;
     --color-amber-100: #4a3d12;
+    --color-sky-50: #102a3d;
     --color-sky-100: #14344a;
+    --color-sky-200: #1f4d6b;
+    --color-amber-200: #6b5414;
+    --color-fuchsia-50: #3a1532;
     --color-fuchsia-100: #44183a;
+    --color-fuchsia-200: #6b2a5c;
+    --color-emerald-200: #1f6b52;
     --color-emerald-50: #123a30;
     --color-emerald-100: #174a3b;
     --color-red-50: #3d1b22;
@@ -164,9 +170,12 @@ body {
   html[data-theme="dark"] .text-amber-800,
   html[data-theme="dark"] .text-amber-900 { color: #ffd66b; }
   html[data-theme="dark"] .text-emerald-700,
-  html[data-theme="dark"] .text-emerald-800 { color: #6fe3b0; }
-  html[data-theme="dark"] .text-sky-700 { color: #7cc8f5; }
-  html[data-theme="dark"] .text-fuchsia-700 { color: #f09fd0; }
+  html[data-theme="dark"] .text-emerald-800,
+  html[data-theme="dark"] .text-emerald-900 { color: #6fe3b0; }
+  html[data-theme="dark"] .text-sky-700,
+  html[data-theme="dark"] .text-sky-900 { color: #7cc8f5; }
+  html[data-theme="dark"] .text-fuchsia-700,
+  html[data-theme="dark"] .text-fuchsia-900 { color: #f09fd0; }
   html[data-theme="dark"] .text-red-700,
   html[data-theme="dark"] .hover\:text-red-600:hover { color: #ff9a9a; }
   html[data-theme="dark"] .border-amber-300 { border-color: #7a6014; }

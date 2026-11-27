@@ -10,10 +10,20 @@ export function SelectorGrupo({ compacto }: { compacto?: boolean }) {
     return (
       <Link
         to="/grupos"
-        className="no-imprimir flex min-h-11 items-center gap-2 rounded-[14px] border-[1.5px] border-dashed border-slate-300 px-3 text-[13px] font-bold text-slate-600 hover:border-blue-400 hover:text-blue-700"
+        title={compacto ? 'Agregar mis grupos' : undefined}
+        className={`no-imprimir flex min-h-11 items-center gap-2 rounded-[14px] border-[1.5px] border-dashed border-slate-300 px-3 text-[13px] font-bold whitespace-nowrap text-slate-600 hover:border-blue-400 hover:text-blue-700 ${compacto ? 'justify-center' : ''}`}
       >
-        <Icono nombre="grupo" tamano={18} />
-        Agregar mis grupos
+        <Icono nombre="grupo" tamano={18} className="shrink-0" />
+        {compacto ? (
+          <>
+            <span className="sm:hidden">
+              Grupos<span className="sr-only"> (agregar mis grupos)</span>
+            </span>
+            <span className="hidden sm:inline">Agregar mis grupos</span>
+          </>
+        ) : (
+          'Agregar mis grupos'
+        )}
       </Link>
     );
   return (
