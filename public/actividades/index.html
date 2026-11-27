@@ -77,6 +77,16 @@
   .embebido .intro p{color:var(--muted)}
   .embebido .intro .mini{border-radius:999px}
   .embebido .btn.ghost{border-width:1.5px}
+  /* Dentro del Planificador el marco crece con el contenido: la barra inferior y los avisos los muestra la app. */
+  .embebido .mbar{display:none !important}
+  .embebido #msg{display:none !important}
+  @media (max-width:900px){ .embebido main{padding:0 0 8px} .embebido #preview, .embebido #comboPanel{scroll-margin-top:140px} }
+  /* Celular: áreas en dos columnas para que los nombres no se corten */
+  @media (max-width:560px){
+    .embebido .folders{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .embebido .area{grid-column:auto; justify-content:flex-start; min-height:48px; padding:8px 12px; border-radius:16px}
+    .embebido .area b{font-size:.88rem}
+  }
   /* ---------- Tema oscuro (solo en pantalla: la hoja de vista previa y el PDF siguen claros) ---------- */
   @media screen{
     html[data-theme="dark"]{ color-scheme:dark;
@@ -291,6 +301,10 @@
     .area b{font-size:.82rem}
     .area .ic{width:26px; height:26px}
     .row2{grid-template-columns:1fr}
+    /* Botones secundarios uno debajo del otro: con dos por fila el texto quedaba en tres renglones */
+    .actions.two{flex-direction:column}
+    .actions.two .btn{flex:none; width:100%; white-space:nowrap}
+    .tabs button{padding:7px 11px; font-size:.9rem; white-space:nowrap}
   }
   .comp-text{display:block; width:100%; padding:10px 12px; border:2px solid var(--line); border-radius:11px; font-size:.95rem; line-height:1.45; resize:vertical; background:#fff}
   .comp-text:focus{border-color:var(--c); outline:none}
@@ -4328,7 +4342,10 @@ function fallbackDownload(blob,name){
 
 /* ================= Varios ================= */
 let flashT;
-function flash(text,kind){ const m=$('msg'); m.textContent=text; m.className='msg '+(kind||''); clearTimeout(flashT); flashT=setTimeout(()=>{m.textContent='';},4000); }
+function flash(text,kind){
+  // Dentro del Planificador el aviso lo muestra la app (el marco es tan alto como el contenido y un aviso fijo quedaría fuera de la vista).
+  if (window.self !== window.top){ try{ parent.postMessage({ tipo:'hojas-aviso', texto:String(text), clase:kind||'' }, '*'); }catch(e){} }
+  const m=$('msg'); m.textContent=text; m.className='msg '+(kind||''); clearTimeout(flashT); flashT=setTimeout(()=>{m.textContent='';},4000); }
 
 function buildData(actId, P, count, nivel='propio'){
   const A=ACTIVITIES[actId];
@@ -4854,8 +4871,15 @@ initSample();
 <script>
 /* Avisa al Planificador la altura del contenido para que el marco no tenga scroll propio. */
 if (window.self !== window.top) {
-  var avisar = function(){ try { parent.postMessage({ tipo: 'hojas-altura', alto: document.documentElement.scrollHeight }, '*'); } catch(e){} };
+  var avisar = function(){ try { parent.postMessage({ tipo: 'hojas-altura', alto: document.documentElement.scrollHeight, movil: window.innerWidth < 900 }, '*'); } catch(e){} };
   window.addEventListener('load', function(){ avisar(); if (window.ResizeObserver) new ResizeObserver(avisar).observe(document.body); });
+  window.addEventListener('resize', avisar);
+  /* Botones de la barra inferior de la app (celular): «Ver hoja» y «Descargar PDF». */
+  window.addEventListener('message', function(e){
+    if (e.source !== window.parent || !e.data || e.data.tipo !== 'hojas-accion') return;
+    if (e.data.accion === 'ver') document.getElementById('mView').click();
+    else if (e.data.accion === 'descargar') document.getElementById('mDownload').click();
+  });
 }
 </script>
 </body>

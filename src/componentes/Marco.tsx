@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Icono, type NombreIcono } from './Iconos';
 import { SelectorGrupo } from './SelectorGrupo';
@@ -19,7 +20,7 @@ const SECCIONES: { to: string; etiqueta: string; icono: NombreIcono; activa?: (r
 
 function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-3 rounded-xl">
+    <Link to="/" className="flex shrink-0 items-center gap-3 rounded-xl whitespace-nowrap">
       <span className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-gradient-to-br from-blue-600 to-coral-500 text-white">
         <Icono nombre="check" tamano={22} grosor={2.6} />
       </span>
@@ -34,6 +35,17 @@ function Logo() {
 export function Marco() {
   const { pathname } = useLocation();
   const esActiva = (s: (typeof SECCIONES)[number]) => (s.activa ? s.activa(pathname) : pathname.startsWith(s.to));
+  // Celular: la barra de secciones se desplaza de costado; al cambiar de pantalla se centra la sección activa
+  // para que siempre se vea dónde estás (sin mover la página).
+  const navMovil = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = navMovil.current;
+    const activa = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!nav || !activa) return;
+    const a = activa.getBoundingClientRect(), n = nav.getBoundingClientRect();
+    const destino = nav.scrollLeft + (a.left - n.left) - (n.width - a.width) / 2;
+    nav.scrollTo({ left: Math.max(0, destino), behavior: 'smooth' });
+  }, [pathname]);
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <GuiaInicial />
@@ -70,12 +82,16 @@ export function Marco() {
       <header className="no-imprimir sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur lg:hidden">
         <div className="flex items-center gap-3 px-4 pt-3 pb-2">
           <Logo />
-          <div className="ml-auto min-w-0 max-w-44 flex-1">
+          <div className="ml-auto min-w-0 max-w-44 flex-1 basis-0">
             <SelectorGrupo compacto />
           </div>
           <BotonTema />
         </div>
-        <nav aria-label="Principal" className="flex gap-1.5 overflow-x-auto px-4 pb-3 [scrollbar-width:none]">
+        <nav
+          ref={navMovil}
+          aria-label="Principal"
+          className="flex scroll-px-4 gap-1.5 overflow-x-auto overscroll-x-contain px-4 pb-3 [mask-image:linear-gradient(to_right,transparent,#000_16px,#000_calc(100%-28px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {SECCIONES.map((s) => (
             <NavLink
               key={s.to}
