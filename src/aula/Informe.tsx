@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { db, type Alumno, type Asistencia, type Grupo, type RegistroEvaluacion } from '../datos/db';
+import { db, type Alumno, type Asistencia, type Grupo, type PTP, type RegistroEvaluacion } from '../datos/db';
+import { textoApoyo, usePTPs } from '../datos/ptp';
 import { fechaCorta, fechaLarga, resumenAsistencia, useAsistencias, useRegistros } from '../datos/aula';
 import { hoyIso } from '../datos/planSemanal';
 import { Aviso, AreaTexto, Boton } from '../componentes/ui';
 import { CLASE_FECHA, CLASE_SELECT, type ContextoClase } from './comun';
 
-type Opciones = { desde: string; hasta: string; asistencia: boolean; registros: RegistroEvaluacion[] };
+type Opciones = { desde: string; hasta: string; asistencia: boolean; registros: RegistroEvaluacion[]; conPtp: boolean; ptps: PTP[] };
 
 /** Lo que cuenta el informe de un alumno, ya ordenado. */
 function contenidoInforme(alumno: Alumno, asistencias: Asistencia[], o: Opciones) {
@@ -23,7 +24,10 @@ function contenidoInforme(alumno: Alumno, asistencias: Asistencia[], o: Opciones
     .filter((e) => e.filas.length);
   const logrados = evals.flatMap((e) => e.filas.filter((f) => f.logrado).map((f) => f.criterio));
   const trabajando = evals.flatMap((e) => e.filas.filter((f) => !f.logrado).map((f) => f.criterio));
-  return { asis, evals, logrados, trabajando };
+  const ptp = o.conPtp ? o.ptps.find((x) => x.alumnoId === alumno.id && x.estado === 'activo') ?? null : null;
+  const acompanamiento = ptp ? (ptp.familiaResumen.trim() ? ptp.familiaResumen.trim() : ptp.objetivos.map((x) => x.texto.trim() || x.criterio).filter(Boolean).join('; ')) : '';
+  const apoyos = ptp ? [...ptp.apoyos.map(textoApoyo), ...(ptp.apoyosOtros.trim() ? [ptp.apoyosOtros.trim()] : [])] : [];
+  return { asis, evals, logrados, trabajando, ptp, acompanamiento, apoyos };
 }
 
 function HojaInforme({ grupo, alumno, asistencias, opciones }: { grupo: Grupo; alumno: Alumno; asistencias: Asistencia[]; opciones: Opciones }) {
@@ -79,7 +83,15 @@ function HojaInforme({ grupo, alumno, asistencias, opciones }: { grupo: Grupo; a
         </section>
       )}
 
-      {c.evals.length === 0 && !(opciones.asistencia && c.asis.dias > 0) && <p className="mt-4 text-slate-500">No hay datos registrados en este período.</p>}
+      {c.ptp && (c.acompanamiento || c.apoyos.length > 0) && (
+        <section className="mt-4 break-inside-avoid">
+          <h3 className="m-0 border-b-2 border-blue-600 pb-1 text-[16px] font-extrabold text-blue-700">Cómo lo acompañamos</h3>
+          {c.acompanamiento && <p className="mt-2 mb-0 whitespace-pre-wrap">{c.acompanamiento}</p>}
+          {c.apoyos.length > 0 && <p className="mt-2 mb-0"><b>Apoyos:</b> {c.apoyos.join('; ')}.</p>}
+        </section>
+      )}
+
+      {c.evals.length === 0 && !(opciones.asistencia && c.asis.dias > 0) && !c.ptp && <p className="mt-4 text-slate-500">No hay datos registrados en este período.</p>}
 
       {alumno.observacion?.trim() && (
         <section className="mt-4">
@@ -107,6 +119,8 @@ function textoPlano(grupo: Grupo, alumno: Alumno, asistencias: Asistencia[], o: 
   }
   if (c.logrados.length) l.push(`Lo que ya logra: ${c.logrados.join('; ')}.`);
   if (c.trabajando.length) l.push(`Lo que seguimos trabajando: ${c.trabajando.join('; ')}.`);
+  if (c.ptp && c.acompanamiento) l.push('', `Cómo lo acompañamos: ${c.acompanamiento}`);
+  if (c.apoyos.length) l.push(`Apoyos: ${c.apoyos.join('; ')}.`);
   if (alumno.observacion?.trim()) l.push('', `Observaciones: ${alumno.observacion.trim()}`);
   return l.join('\n').trim();
 }
@@ -118,6 +132,8 @@ export function Informe({ grupo, alumnos }: ContextoClase & { grupo: Grupo }) {
   const [desde, setDesde] = useState(() => `${hoyIso().slice(0, 4)}-01-01`);
   const [hasta, setHasta] = useState(hoyIso);
   const [conAsistencia, setConAsistencia] = useState(true);
+  const [conPtp, setConPtp] = useState(true);
+  const ptps = usePTPs(grupo.id);
   const [excluidos, setExcluidos] = useState<string[]>([]);
   const [aviso, setAviso] = useState('');
   const alumno = alumnos.find((a) => a.id === alumnoId) ?? alumnos[0];
@@ -125,7 +141,7 @@ export function Informe({ grupo, alumnos }: ContextoClase & { grupo: Grupo }) {
   useEffect(() => setObs(alumno?.observacion ?? ''), [alumno?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const registros = useMemo(() => todos.filter((r) => !excluidos.includes(r.id)).sort((a, b) => a.fecha.localeCompare(b.fecha)), [todos, excluidos]);
-  const opciones: Opciones = { desde, hasta, asistencia: conAsistencia, registros };
+  const opciones: Opciones = { desde, hasta, asistencia: conAsistencia, registros, conPtp, ptps };
   const [imprimiendo, setImprimiendo] = useState<'uno' | 'todos' | null>(null);
 
   const guardarObs = async () => {
@@ -193,6 +209,11 @@ export function Informe({ grupo, alumnos }: ContextoClase & { grupo: Grupo }) {
           <label className="flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-700">
             <input type="checkbox" checked={conAsistencia} onChange={(e) => setConAsistencia(e.target.checked)} className="h-5 w-5 accent-blue-600" /> Incluir asistencia
           </label>
+          {ptps.some((x) => x.estado === 'activo') && (
+            <label className="flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-700">
+              <input type="checkbox" checked={conPtp} onChange={(e) => setConPtp(e.target.checked)} className="h-5 w-5 accent-blue-600" /> Incluir «Cómo lo acompañamos» (proyecto personalizado)
+            </label>
+          )}
         </div>
         {todos.length > 0 && (
           <fieldset className="m-0 border-0 p-0">

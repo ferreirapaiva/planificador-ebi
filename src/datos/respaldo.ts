@@ -1,4 +1,4 @@
-import { db, type Asistencia, type EntradaDiario, type Grupo, type RegistroEvaluacion, type PlanAnual, type PlanSemanal, type Planificacion, type Seguimiento } from './db';
+import { db, type PTP, type Asistencia, type EntradaDiario, type Grupo, type RegistroEvaluacion, type PlanAnual, type PlanSemanal, type Planificacion, type Seguimiento } from './db';
 import { registrarCopia } from './copias';
 
 export type Respaldo = {
@@ -18,6 +18,8 @@ export type Respaldo = {
   asistencia?: Asistencia[];
   evaluaciones?: RegistroEvaluacion[];
   diario?: EntradaDiario[];
+  /** Desde que existen los proyectos de trabajo personalizados. */
+  ptps?: PTP[];
 };
 
 /** Copia protegida con contraseña: AES-GCM de 256 bits con la clave derivada por PBKDF2. */
@@ -35,11 +37,12 @@ async function sha256(texto: string) {
   const h = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto)));
   return [...h].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
-type ParaHuella = Pick<Respaldo, 'planificaciones' | 'planesAnuales' | 'planesSemanales' | 'grupos' | 'seguimiento' | 'asistencia' | 'evaluaciones' | 'diario'>;
+type ParaHuella = Pick<Respaldo, 'planificaciones' | 'planesAnuales' | 'planesSemanales' | 'grupos' | 'seguimiento' | 'asistencia' | 'evaluaciones' | 'diario' | 'ptps'>;
 /** Los respaldos anteriores no traen asistencia, evaluaciones ni diario: su huella se calculó sin ellos y se sigue verificando igual. */
 const textoDeHuella = (r: ParaHuella) => {
   const base = [r.planificaciones, r.planesAnuales, r.planesSemanales ?? [], r.grupos ?? [], r.seguimiento ?? []];
-  return JSON.stringify(r.asistencia || r.evaluaciones || r.diario ? [...base, r.asistencia ?? [], r.evaluaciones ?? [], r.diario ?? []] : base);
+  const aula = r.asistencia || r.evaluaciones || r.diario ? [...base, r.asistencia ?? [], r.evaluaciones ?? [], r.diario ?? []] : base;
+  return JSON.stringify(r.ptps ? [...aula, r.ptps] : aula);
 };
 
 async function claveDe(clave: string, sal: Uint8Array, iteraciones: number) {
@@ -66,7 +69,7 @@ async function descifrar(c: Cifrado, clave: string) {
 
 /** Junta todo lo que hay en este navegador, con su huella para poder verificarlo después. */
 export async function armarRespaldo(): Promise<Respaldo> {
-  const [planificaciones, planesAnuales, planesSemanales, grupos, seguimiento, asistencia, evaluaciones, diario] = await Promise.all([
+  const [planificaciones, planesAnuales, planesSemanales, grupos, seguimiento, asistencia, evaluaciones, diario, ptps] = await Promise.all([
     db.planificaciones.toArray(),
     db.planesAnuales.toArray(),
     db.planesSemanales.toArray(),
@@ -75,8 +78,9 @@ export async function armarRespaldo(): Promise<Respaldo> {
     db.asistencia.toArray(),
     db.evaluaciones.toArray(),
     db.diario.toArray(),
+    db.ptps.toArray(),
   ]);
-  const base = { planificaciones, planesAnuales, planesSemanales, grupos, seguimiento, asistencia, evaluaciones, diario };
+  const base = { planificaciones, planesAnuales, planesSemanales, grupos, seguimiento, asistencia, evaluaciones, diario, ptps };
   return { app: 'planificador-ebi', version: 2, fecha: new Date().toISOString(), huella: await sha256(textoDeHuella(base)), ...base };
 }
 
@@ -98,6 +102,7 @@ export const resumenDe = (r: Respaldo) => ({
   asistencia: r.asistencia?.length ?? 0,
   evaluaciones: r.evaluaciones?.length ?? 0,
   diario: r.diario?.length ?? 0,
+  ptps: r.ptps?.length ?? 0,
 });
 export type Resumen = ReturnType<typeof resumenDe>;
 const cuenta = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
@@ -112,6 +117,7 @@ export const textoDeResumen = (n: Resumen) =>
     ...(n.asistencia ? [cuenta(n.asistencia, 'día de asistencia', 'días de asistencia')] : []),
     ...(n.evaluaciones ? [cuenta(n.evaluaciones, 'registro de evaluación', 'registros de evaluación')] : []),
     ...(n.diario ? [cuenta(n.diario, 'día del diario de clase', 'días del diario de clase')] : []),
+    ...(n.ptps ? [cuenta(n.ptps, 'proyecto de trabajo personalizado', 'proyectos de trabajo personalizados')] : []),
   ].join(', ');
 
 /** Descarga un archivo .json con todo lo de este navegador; con contraseña, queda protegido. */
@@ -170,7 +176,7 @@ export async function leerRespaldo(archivo: File, clave?: string): Promise<Respa
 export async function restaurarDatos(datos: Respaldo) {
   let agregadas = 0;
   let actualizadas = 0;
-  await db.transaction('rw', [db.planificaciones, db.planesAnuales, db.planesSemanales, db.grupos, db.seguimiento, db.asistencia, db.evaluaciones, db.diario], async () => {
+  await db.transaction('rw', [db.planificaciones, db.planesAnuales, db.planesSemanales, db.grupos, db.seguimiento, db.asistencia, db.evaluaciones, db.diario, db.ptps], async () => {
     for (const [tabla, items] of [
       [db.planificaciones, datos.planificaciones],
       [db.planesAnuales, datos.planesAnuales],
@@ -180,6 +186,7 @@ export async function restaurarDatos(datos: Respaldo) {
       [db.asistencia, Array.isArray(datos.asistencia) ? datos.asistencia : []],
       [db.evaluaciones, Array.isArray(datos.evaluaciones) ? datos.evaluaciones : []],
       [db.diario, Array.isArray(datos.diario) ? datos.diario : []],
+      [db.ptps, Array.isArray(datos.ptps) ? datos.ptps : []],
     ] as const) {
       for (const item of items as { id: string; modificada: number }[]) {
         if (!item?.id) continue;
@@ -193,3 +200,8 @@ export async function restaurarDatos(datos: Respaldo) {
   });
   return { agregadas, actualizadas };
 }
+
+/** Cifra y descifra cualquier texto con contraseña (para compartir un proyecto personalizado de forma segura). */
+export const cifrarTexto = cifrar;
+export const descifrarTexto = descifrar;
+export type TextoCifrado = Cifrado;

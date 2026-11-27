@@ -9,6 +9,8 @@ import { perteneceAlGrupo, useGrupos } from '../datos/grupos';
 import { PROGRAMAS } from '../datos/programas';
 import { claveGrupo, progresoUC, useSeguimiento } from '../datos/seguimiento';
 import { posponerRecordatorio, useEstadoCopia } from '../datos/copias';
+import { pendientesPTP, usePTPs } from '../datos/ptp';
+import { sumarDias } from '../datos/planSemanal';
 import { Icono, type NombreIcono } from '../componentes/Iconos';
 
 /** Colores de cada espacio curricular para tarjetas y barras. */
@@ -55,6 +57,11 @@ export function Inicio() {
   const dadosProg = avances.reduce((n, a) => n + a.dados, 0);
 
   const isoHoy = hoy.toISOString().slice(0, 10);
+  const todosPTP = usePTPs();
+  const avisosPTP = todosPTP
+    .map((p) => ({ p, x: pendientesPTP(p).find((y) => y.fecha <= sumarDias(isoHoy, 7)) }))
+    .filter((a): a is { p: (typeof todosPTP)[number]; x: { fecha: string; texto: string } } => !!a.x)
+    .slice(0, 3);
   const calendario = planAnual?.calendario ?? calendarioPorDefecto(hoy.getMonth() >= 10 ? hoy.getFullYear() + 1 : hoy.getFullYear());
   const proximas = [
     ...calendario.efemerides.map((e) => ({ fecha: e.fecha, nombre: e.nombre })),
@@ -87,6 +94,19 @@ export function Inicio() {
           <button type="button" onClick={() => posponerRecordatorio(1)} className="min-h-11 rounded-full px-3 text-sm font-extrabold text-amarillo-800 hover:underline">
             Recordármelo mañana
           </button>
+        </section>
+      )}
+      {avisosPTP.length > 0 && (
+        <section aria-label="Proyectos de trabajo personalizados" className="rounded-[24px] bg-blue-100 px-5 py-4">
+          <p className="m-0 text-[15px] font-extrabold text-blue-900">Proyectos de trabajo personalizados para revisar</p>
+          <ul className="m-0 mt-2 list-none space-y-1.5 p-0">
+            {avisosPTP.map(({ p, x }) => (
+              <li key={p.id} className="flex flex-wrap items-center gap-2 text-sm text-blue-900">
+                <span className="min-w-0 flex-1 basis-60"><b>{p.alumnoNombre}</b> · {x.texto} · {x.fecha < isoHoy ? 'venció el ' : 'el '}{new Date(x.fecha + 'T00:00').toLocaleDateString('es-UY', { day: 'numeric', month: 'short' })}</span>
+                <Link to={`/clase?ver=ptp&ptp=${p.id}`} className="inline-flex min-h-9 items-center rounded-full bg-blue-600 px-4 text-sm font-extrabold text-white hover:bg-blue-700">Abrir</Link>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
       {/* Bienvenida */}

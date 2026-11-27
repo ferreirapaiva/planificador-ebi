@@ -6,12 +6,14 @@ import { Asistencia } from '../aula/Asistencia';
 import { Evaluaciones } from '../aula/Evaluaciones';
 import { Informe } from '../aula/Informe';
 import { Diario } from '../aula/Diario';
+import { ProyectoPersonalizado } from '../aula/PTP';
 import { FaltaLista } from '../aula/comun';
 
 const PESTANAS = [
   { id: 'asistencia', nombre: 'Asistencia', necesitaLista: true },
   { id: 'evaluaciones', nombre: 'Evaluaciones', necesitaLista: true },
   { id: 'informe', nombre: 'Informe para familias', necesitaLista: true },
+  { id: 'ptp', nombre: 'Proyecto personalizado', necesitaLista: false },
   { id: 'diario', nombre: 'Diario de clase', necesitaLista: false },
 ] as const;
 
@@ -29,7 +31,7 @@ export function MiClase() {
       <div>
         <h1 className="text-[30px] font-extrabold tracking-tight text-slate-900">Mi clase</h1>
         <p className="mt-1 max-w-2xl text-slate-600">
-          La asistencia, los resultados de cada evaluación y el diario de tu grupo{activo ? <b> {activo.nombre}</b> : ''}, todo en un solo lugar.
+          La asistencia, los resultados de cada evaluación, los proyectos personalizados y el diario de tu grupo{activo ? <b> {activo.nombre}</b> : ''}, todo en un solo lugar.
         </p>
       </div>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Secciones de Mi clase">
@@ -44,6 +46,8 @@ export function MiClase() {
           <Asistencia {...ctx} />
         ) : pestana.id === 'evaluaciones' ? (
           <Evaluaciones {...ctx} />
+        ) : pestana.id === 'ptp' ? (
+          <ProyectoPersonalizado grupo={activo} alumnos={alumnos} />
         ) : pestana.id === 'informe' && activo ? (
           <Informe {...ctx} grupo={activo} />
         ) : (

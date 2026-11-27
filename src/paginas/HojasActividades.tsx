@@ -16,7 +16,7 @@ type Aviso = { texto: string; clase: string; n: number };
 export function HojasActividades() {
   // Si se llega desde una clase del plan semanal, se pasa el tema al generador (?q=…&c=…&uc=…).
   const [params] = useSearchParams();
-  const vinculo = ['q', 'c', 'uc'].filter((k) => params.get(k)).map((k) => `${k}=${encodeURIComponent(params.get(k) ?? '')}`).join('&');
+  const vinculo = ['q', 'c', 'uc', 'alumno', 'nivel', 'adapt'].filter((k) => params.get(k)).map((k) => `${k}=${encodeURIComponent(params.get(k) ?? '')}`).join('&');
   const destino = `actividades/index.html${vinculo ? `?${vinculo}` : ''}`;
   const marco = useRef<HTMLIFrameElement>(null);
   const [alto, setAlto] = useState<number | null>(null);

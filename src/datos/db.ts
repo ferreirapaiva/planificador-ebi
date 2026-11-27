@@ -211,7 +211,61 @@ export type EntradaDiario = {
   modificada: number;
 };
 
+/**
+ * Proyecto de trabajo personalizado (PTP): lo que se hace con un alumno que necesita más apoyo.
+ * Es autosuficiente (guarda el nombre del alumno y los puntos de su seguimiento) para poder
+ * compartirlo con la docente de apoyo, que lo abre en su propia copia de la app.
+ */
+export type ObjetivoPTP = {
+  id: string;
+  /** Criterio del que sale (el mismo texto que usan los registros de evaluación). */
+  criterio: string;
+  /** Qué se espera lograr, en concreto. */
+  texto: string;
+  /** Nivel que se quiere alcanzar, de 0 (en inicio) a 1 (destacado). */
+  meta: number;
+  /** Nivel con el que se empezó, de 0 a 1 (null si no se conocía). */
+  partida: number | null;
+  revision: string;
+  estado: 'en-curso' | 'logrado' | 'ajustar';
+};
+export type AccionPTP = { id: string; texto: string; fecha: string; hecha: boolean; responsable: string };
+/** Un punto del seguimiento de un criterio: nivel de 0 a 1 en una fecha. */
+export type PuntoPTP = { id: string; fecha: string; criterio: string; nivel: number; nota: string; autor: string; origen: 'manual' | 'registro' };
+export type RevisionPTP = { id: string; fecha: string; nota: string; autor: string };
+export type PTP = {
+  id: string;
+  grupoKey: string;
+  alumnoId: string;
+  alumnoNombre: string;
+  grupoNombre: string;
+  estado: 'activo' | 'cerrado';
+  inicio: string;
+  revisarEl: string;
+  docente: string;
+  apoyo: string;
+  situacion: string;
+  estrategias: string;
+  contexto: string;
+  objetivos: ObjetivoPTP[];
+  apoyos: string[];
+  apoyosOtros: string;
+  acciones: AccionPTP[];
+  familiaAcuerdos: string;
+  familiaFecha: string;
+  equipo: string;
+  /** Lo que se cuenta a la familia en el informe sobre cómo se acompaña al alumno. */
+  familiaResumen: string;
+  puntos: PuntoPTP[];
+  revisiones: RevisionPTP[];
+  /** Asistencia por mes (se completa al compartir, para que se vea sin los registros del grupo). */
+  asistenciaMensual?: { mes: string; pct: number; dias: number }[];
+  creada: number;
+  modificada: number;
+};
+
 export const db = new Dexie('planificador-ebi') as Dexie & {
+  ptps: EntityTable<PTP, 'id'>;
   asistencia: EntityTable<Asistencia, 'id'>;
   evaluaciones: EntityTable<RegistroEvaluacion, 'id'>;
   diario: EntityTable<EntradaDiario, 'id'>;
@@ -241,6 +295,18 @@ db.version(5).stores({
   asistencia: 'id, grupoKey, fecha',
   evaluaciones: 'id, grupoKey, fecha',
   diario: 'id, grupoKey, fecha',
+});
+
+db.version(6).stores({
+  planificaciones: 'id, modificada, tipo',
+  planesAnuales: 'id, modificada, anio',
+  planesSemanales: 'id, modificada, fecha',
+  grupos: 'id, nombre',
+  seguimiento: 'id, grupoKey, ucId',
+  asistencia: 'id, grupoKey, fecha',
+  evaluaciones: 'id, grupoKey, fecha',
+  diario: 'id, grupoKey, fecha',
+  ptps: 'id, grupoKey, alumnoId, modificada',
 });
 
 export const nuevoId = () => crypto.randomUUID();

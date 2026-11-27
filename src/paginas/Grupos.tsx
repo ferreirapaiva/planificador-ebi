@@ -84,7 +84,7 @@ export function Grupos() {
   const eliminar = async (g: Grupo) => {
     const ok = await confirmar({
       titulo: `¿Eliminar el grupo «${g.nombre}»?`,
-      mensaje: 'Sus planificaciones y horarios no se borran: quedan sin grupo. Se borran su lista de alumnos, la asistencia, los registros de evaluación, el diario de clase y el avance del programa que marcaste para este grupo.',
+      mensaje: 'Sus planificaciones y horarios no se borran: quedan sin grupo. Se borran su lista de alumnos, la asistencia, los registros de evaluación, el diario de clase, los proyectos de trabajo personalizados y el avance del programa que marcaste para este grupo.',
       aceptar: 'Eliminar',
       peligro: true,
     });
@@ -98,6 +98,7 @@ export function Grupos() {
     await db.asistencia.where('grupoKey').equals(g.id).delete();
     await db.evaluaciones.where('grupoKey').equals(g.id).delete();
     await db.diario.where('grupoKey').equals(g.id).delete();
+    await db.ptps.where('grupoKey').equals(g.id).delete();
     await db.grupos.delete(g.id);
     if (activo?.id === g.id) elegir(null);
   };

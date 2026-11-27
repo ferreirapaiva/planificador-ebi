@@ -4237,7 +4237,7 @@ function layoutBlocks(d, isKey){
 
 function snapshot(){
   const P=cur();
-  return JSON.parse(JSON.stringify({ activity:state.activity, title:P.title, consigna:P.consigna, nota:P.nota, sel:P.sel, data:state.data,
+  return JSON.parse(JSON.stringify({ activity:state.activity, title:P.title, consigna:P.consigna, nota:P.nota, alumno:OPT.apoyoAlumno||undefined, sel:P.sel, data:state.data,
     variants: (state.variants && state.variants.length>1) ? state.variants : null,
     versionLabels: (state.variants && state.variants.length>1) ? (state.versionLabels||null) : null }));
 }
@@ -6022,6 +6022,24 @@ const VINC=[
 ];
 const AREA_UC=[[/matematic/,'mate'],[/lengua|comunicaci|literatura/,'lengua'],[/ciencias|naturales|sociales|historia|geografia|biolog/,'ciencias']];
 const CON_TEMA=['sopaL','crucigrama','unir','completar','vf','ahorcado'];
+/* Hojas de apoyo (desde el proyecto de trabajo personalizado de un alumno): nombre en la hoja, nivel fácil y versión adaptada. */
+function aplicarApoyo(){
+  const qs=new URLSearchParams(location.search), al=(qs.get('alumno')||'').trim();
+  if (!al) return;
+  const ad=(qs.get('adapt')||'').split(',').filter(Boolean), nv=qs.get('nivel');
+  OPT.apoyoAlumno=al.slice(0,60);
+  OPT.adapt={ letra:ad.includes('letra'), disl:ad.includes('disl'), bn:ad.includes('bn'), escPrev:OPT.adapt.letra ? OPT.adapt.escPrev : OPT.scale };
+  if (OPT.adapt.letra && OPT.scale<1.4){ OPT.scale=1.4; $('scale').value='1.4'; }
+  if (nv==='facil' || nv==='dificil'){ OPT.nivel=nv; $('nivel').value=nv; syncNivelUI(); }
+  syncAdaptUI();
+}
+function bannerApoyo(){
+  if (!OPT.apoyoAlumno) return;
+  const box=$('vinc'); box.hidden=false;
+  const partes=[OPT.adapt.letra&&'letra grande', OPT.adapt.disl&&'letras más separadas', OPT.adapt.bn&&'blanco y negro'].filter(Boolean);
+  box.insertAdjacentHTML('afterbegin', `<b>Hojas de apoyo para ${esc(OPT.apoyoAlumno)}</b><span class="hint">Las hojas salen con su nombre, en nivel ${OPT.nivel==='dificil'?'difícil':'fácil'}${partes.length?' y con la versión adaptada ('+partes.join(', ')+')':''}.</span><button type="button" class="mini" id="quitarApoyo">Quitar el modo apoyo</button>`);
+  $('quitarApoyo').onclick=()=>{ OPT.apoyoAlumno=''; OPT.adapt={ letra:false, disl:false, bn:false, escPrev:1 }; OPT.scale=1; $('scale').value='1'; OPT.nivel='propio'; $('nivel').value='propio'; syncNivelUI(); syncAdaptUI(); $('quitarApoyo').closest('#vinc').querySelectorAll('b,.hint,#quitarApoyo').forEach((n,i)=>{ if (i<3) n.remove(); }); renderPreview(); save(); };
+}
 function vincular(){
   const qs=new URLSearchParams(location.search), q=(qs.get('q')||'').trim(), c=(qs.get('c')||'').trim(), uc=norm(qs.get('uc')||'');
   if (!q && !c) return;
@@ -6289,7 +6307,9 @@ if (OPT.esc.escuela||OPT.esc.grupo||OPT.esc.docente) $('escDet').open=true;
 ensurePer(state.activity);
 renderAreas(); selectActivity(state.activity); renderCombo(); renderWeekUI(); renderFavs();
 renderPreguntas(); renderHist(); renderPaqueteUI(); syncAlumnosUI(); syncAdaptUI();
+aplicarApoyo();
 vincular();
+bannerApoyo();
 initDownloads();
 initSample();
 </script>
